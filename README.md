@@ -8,12 +8,13 @@
 - Tomcat : SpringFramework 기반 Biz 서비스 처리
 
 ## 공통 환경
-| 과정 | 날짜 | 내용 |
+| 항목 | 날짜 | 내용 |
 |:---|:---|:---|
 | git | | 형상관리 |  
 | md | | Markdown Language, 표준 문서 포맷 |  
 | Visual Studio Code | | 편집기 |  
 | az | | azure client |  
+| java | https://jdk.java.net/17/ | | 
 | Apache | | |
 | Tomcat | | | 
 | MariaDB | | | 
