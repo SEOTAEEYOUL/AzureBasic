@@ -39,24 +39,8 @@ Write-Output "hello"
 ls
 dir
 
-echo "."
-echo "."
-echo "."
 
-# d=pwd
-$d=Get-Location
-Set-Location "C:\Program Files"
-$a = Get-ChildItem | sort -Property length -Descending | Select-Object -First 1 -Property Directory
-$a
-
-$files = Get-ChildItem
-$files
-
-Set-Location "$d"
-
-$a = Get-ChildItem | sort -Property length -Descending | Select-Object -First 1 -Property Directory
-$a
 
 echo ""
 echo "...."
-./servie.ps1
+Invoke-Command ./servie.ps1
