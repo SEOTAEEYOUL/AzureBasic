@@ -233,7 +233,7 @@ Import-Alias -Path "C:\PowerShell_Lab\MyAlias.csv" -Force
 
 | 명령어 | 설명 | 예시 | 
 |:---|:---|:---|
-| Import-CSV | CSV 파일 읽기 | -Path ./vm_parameter_template.csv |
+| Import-CSV | CSV 파일 읽기 | Import-CSV -Path ./vm_parameter_template.csv |
 | Set-AzVMOperatingSystem | VM OS 지정 | -Windows, -Linux |  
 | Set-AzVMSourceImage | VM 이미지 지정 | Standard_D1_v2 |
 
