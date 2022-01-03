@@ -17,13 +17,13 @@
 1. NIC 생성 
 2. VM 생성 관련 정보들 
 3. VM 배포
-- 프로젝트 때 사용한 VM 생성 스크립트  
-   | 파일명 | 설명 | 
-   |:---|:---|  
-   | vm_deployscript_template.ps1 | VM 생성 파워셀 스크립트 |  
-   | vm_parameter_template.csv | VM 생성 파워셀 스크립트 인자 파일 |   
+### 프로젝트 때 사용한 VM 생성 스크립트  
+| 파일명 | 설명 | 
+|:---|:---|  
+| vm_deployscript_template.ps1 | VM 생성 파워셀 스크립트 |  
+| vm_parameter_template.csv | VM 생성 파워셀 스크립트 인자 파일 |   
 
-- 자원 목록   
+### 자원 목록   
 | 항목 | 자원명 | 설명 | 사이징 | end point | Resource Group | Location |  
 |:---|:---|:---|:---|:---|:---|:---| 
 | Resource Group | rg-sksq-network-prd | network 자원 그룹 | | | koreacentral | 
