@@ -5,6 +5,8 @@
 > [빠른 시작: Azure CDN 프로필 및 엔드포인트 만들기](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-create-new-endpoint)  
 > [자습서: Azure App Service 웹앱에 Azure CDN 추가](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-add-to-web-app)  
 
+## 기본 원칙
+- 구독 당 하나의 VNet 생성
 
 ## 리소스 생성 절차
 1. Resource Group 생성 
@@ -36,7 +38,7 @@
 | Storage Account | sksqprdhomepagefiles1 | | | PE-sksqprdhompagefiles1 | rg-sksq-homepage-prd | koreacentral |
 | VM | SKSQ-COMPPT1 | Web 서버 | Standard D8s v3 | 10.234.4.134 | rg-sksq-homepage-prd | koreacentral |  
 | VM | SKSQ-COMPAP1 | WAS 서버 | Standard D8s v3 | rg-sksq-homepage-prd |rg-sksq-homepage-prd | koreacentral |
-| DB | mysql-homepage-prd | MySQL 5.7 | GP_Gen5_8(범용, vCore 8개, 5GB) | PE-sksqhomepageprdmysql |  | koreacentral |
+| DB | mysql-homepage-prd | MySQL 5.7 | GP_Gen5_8(범용, vCore 8개, 5GB) | PE-sksqhomepageprdmysql | rg-sksq-homepage-prd | koreacentral |
 
 
 ### subnet
