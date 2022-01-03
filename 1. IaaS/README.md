@@ -23,27 +23,28 @@
 | vm_deployscript_template.ps1 | VM 생성 파워셀 스크립트 |  
 | vm_parameter_template.csv | VM 생성 파워셀 스크립트 인자 파일 | 
 
-| 항목 | 자원 | 설명 | 디스크 |  
-|:---|:---|:---|:---|  
-| Resource Group | rg-sksq-network-prd | network 자원 그룹 | | 
-| Resource Group | rg-sksq-homepage-prd | Home Page 자원 그룹 | | 
-| Vnet | vnet-sksq-prd | 홈페이지 VNet| |
-| subnet | | | |
-| subnet | | | |
-| Storage Account | sksqprdhomepagefiles1 | | | 
-| Storage Account endpoint | PE-sksqprdhompagefiles1 | | | 
-| VM | SKSQ-COMPPT1 | PT 1 | |
-| VM | SKSQ-COMPAP1 | AP 1 | |
-| MySQL | mysql-homepage-prd | | | 
-| MySQL endpoint | PE-sksqhomepageprdmysql | 
+| 항목 | 자원명 | 설명 | 사이징 | end point | Resource Group | Location |  
+|:---|:---|:---|:---|:---|:---|:---| 
+| Resource Group | rg-sksq-network-prd | network 자원 그룹 | | | koreacentral | 
+| Resource Group | rg-sksq-homepage-prd | Home Page 자원 그룹 |  | | koreacentral | 
+| Vnet | vnet-sksq-prd | 홈페이지 VNet | 10.234.4.0/22 | rg-sksq-network-prd | koreacentral |  
+| subnet | snet-sksq-prd-10.234.4.160-191-anf | HostedWorkloads | | 10.234.4.160/27 | rg-sksq-network-prd | koreacentral |  
+| subnet | snet-sksq-prd-10.234.4.128-159-dmz | 외부에서 접근 시 사용되는 자원 배포 영역 | | 10.234.4.128/27 | rg-sksq-network-prd | koreacentral |   
+| subnet | snet-sksq-prd-10.234.4.0-127-frontend | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | | 10.234.4.0/25 | rg-sksq-network-prd | koreacentral |  
+| subnet | snet-sksq-prd-10.234.5.0-255-backend | | | 10.234.5.0/24 | rg-sksq-network-prd | koreacentral |  
+| Storage Account | sksqprdhomepagefiles1 | | | PE-sksqprdhompagefiles1 | rg-sksq-homepage-prd | koreacentral |
+| VM | SKSQ-COMPPT1 | PT 1 | Standard D8s v3 | 10.234.4.134 | rg-sksq-homepage-prd | koreacentral |  
+| VM | SKSQ-COMPAP1 | AP 1 | Standard D8s v3 | rg-sksq-homepage-prd | | koreacentral |
+| MySQL | mysql-homepage-prd | | | PE-sksqhomepageprdmysql |  | koreacentral |
+
 
 ### subnet
 | AddressPrefix | Name | ResourceGroup | Purpose |
 |:---|:---|:---|:---|
 | 10.234.4.160/27 | snet-sksq-prd-10.234.4.160-191-anf | rg-sksq-network-prd | HostedWorkloads |
-| 10.234.4.128/27 | snet-sksq-prd-10.234.4.128-159-dmz | rg-sksq-network-prd || 
-| 10.234.4.0/25 | snet-sksq-prd-10.234.4.0-127-frontend | rg-sksq-network-prd ||
-| 10.234.5.0/24 | snet-sksq-prd-10.234.5.0-255-backend | rg-sksq-network-prd | PrivateEndpoints |  
+| 10.234.4.128/27 | snet-sksq-prd-10.234.4.128-159-dmz | rg-sksq-network-prd | 외부에서 접근 시 사용되는 자원 배포 영역 | 
+| 10.234.4.0/25 | snet-sksq-prd-10.234.4.0-127-frontend | rg-sksq-network-prd | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 |
+| 10.234.5.0/24 | snet-sksq-prd-10.234.5.0-255-backend | rg-sksq-network-prd | PrivateEndpoints | |
 
 
 ## MariaDB
