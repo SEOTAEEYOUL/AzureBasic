@@ -17,20 +17,21 @@
 1. NIC 생성 
 2. VM 생성 관련 정보들 
 3. VM 배포
-- 프로젝트 때 사용한 VM 생성 스크립트
-| 파일명 | 설명 |
-|:---|:---|
-| vm_deployscript_template.ps1 | VM 생성 파워셀 스크립트 |  
-| vm_parameter_template.csv | VM 생성 파워셀 스크립트 인자 파일 | 
+- 프로젝트 때 사용한 VM 생성 스크립트  
+   | 파일명 | 설명 | 
+   |:---|:---|  
+   | vm_deployscript_template.ps1 | VM 생성 파워셀 스크립트 |  
+   | vm_parameter_template.csv | VM 생성 파워셀 스크립트 인자 파일 |   
 
+- 자원 목록   
 | 항목 | 자원명 | 설명 | 사이징 | end point | Resource Group | Location |  
 |:---|:---|:---|:---|:---|:---|:---| 
 | Resource Group | rg-sksq-network-prd | network 자원 그룹 | | | koreacentral | 
 | Resource Group | rg-sksq-homepage-prd | Home Page 자원 그룹 |  | | koreacentral | 
 | Vnet | vnet-sksq-prd | 홈페이지 VNet | 10.234.4.0/22 | rg-sksq-network-prd | koreacentral |  
-| subnet | snet-sksq-prd-10.234.4.160-191-anf | HostedWorkloads | | 10.234.4.160/27 | rg-sksq-network-prd | koreacentral |  
-| subnet | snet-sksq-prd-10.234.4.128-159-dmz | 외부에서 접근 시 사용되는 자원 배포 영역 | | 10.234.4.128/27 | rg-sksq-network-prd | koreacentral |   
-| subnet | snet-sksq-prd-10.234.4.0-127-frontend | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | | 10.234.4.0/25 | rg-sksq-network-prd | koreacentral |  
+| subnet | snet-sksq-prd-10.234.4.160-191-anf | HostedWorkloads | 10.234.4.160/27 | rg-sksq-network-prd | koreacentral |  
+| subnet | snet-sksq-prd-10.234.4.128-159-dmz | 외부에서 접근 시 사용되는 자원 배포 영역 | 10.234.4.128/27 | rg-sksq-network-prd | koreacentral |   
+| subnet | snet-sksq-prd-10.234.4.0-127-frontend | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | 10.234.4.0/25 | rg-sksq-network-prd | koreacentral |  
 | subnet | snet-sksq-prd-10.234.5.0-255-backend | | | 10.234.5.0/24 | rg-sksq-network-prd | koreacentral |  
 | Storage Account | sksqprdhomepagefiles1 | | | PE-sksqprdhompagefiles1 | rg-sksq-homepage-prd | koreacentral |
 | VM | SKSQ-COMPPT1 | PT 1 | Standard D8s v3 | 10.234.4.134 | rg-sksq-homepage-prd | koreacentral |  
