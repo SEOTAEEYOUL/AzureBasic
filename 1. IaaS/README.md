@@ -28,7 +28,7 @@
 |:---|:---|:---|:---|:---|:---|:---| 
 | Resource Group | rg-sksq-network-prd | Network 자원 그룹 | | | | koreacentral | 
 | Resource Group | rg-sksq-homepage-prd | Home Page 자원 그룹 | | | | koreacentral | 
-| Vnet | vnet-sksq-prd | 홈페이지 VNet | 10.234.4.0/22 | rg-sksq-network-prd | koreacentral |  
+| Vnet | vnet-sksq-prd | 홈페이지 VNet | 10.234.4.0/22 | | rg-sksq-network-prd | koreacentral |  
 | subnet | snet-sksq-prd-10.234.4.160-191-anf | HostedWorkloads | | 10.234.4.160/27 | rg-sksq-network-prd | koreacentral |  
 | subnet | snet-sksq-prd-10.234.4.128-159-dmz | 외부에서 접근 시 사용되는 자원 배포 영역 | | 10.234.4.128/27 | rg-sksq-network-prd | koreacentral |   
 | subnet | snet-sksq-prd-10.234.4.0-127-frontend | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | | 10.234.4.0/25 | rg-sksq-network-prd | koreacentral |  
