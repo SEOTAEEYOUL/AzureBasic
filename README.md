@@ -28,11 +28,11 @@
 ### IaaS
 | 항목 | 날짜 | 내용 | 
 |:---|:---|:---|  
-| 3-tier 기본 환경 구성 | 2022.02.08 | |
-| 3-tier 기본 환경 외부 접근 구성 | 2022.02.10 | |
-| CDN 적용을 통한 고도화 | 2022.02.14 | | 
-| Azure Cli 를 통한 자원 배포(IaC - 1) | 2022.02.15 | |    
-| Azure DevOps 를 통한 자원 배포(IaC - 2) | | 2022.02.18 |  
+| 3-tier 기본 환경 구성 | 2022.02.08 | Vnet, subnet, NSG, apache, tomcat, mysql 구성 </br> - VM, disk, Storage Account, Internal L4, VMSS, AppGateway 구성 |
+| 3-tier 기본 환경 외부 접근 구성 | 2022.02.10 | 3-tier 기본 환경에 CDN 적용, Azure DNS 설정, AppGateway 구성 변경 </br> - Application Gateway 구성 </br> - Azure DNS 구성 </br> |
+| CDN 적용을 통한 고도화 | 2022.02.14 | 3-tier 기본 환경에 CDN 적용, Azure DNS 설정, AppGateway 구성 변경 </br> - Storage Account Blob 배포 및 Storage Exploror/SAS 를 이용한 Static 문서 Upload </br> - Azure CDN 배포 및 구성 </br> - 정상 동작 테스트 </br> - apache 서버 삭제  | 
+| Azure Cli 를 통한 자원 배포(IaC - 1) | 2022.02.15 | azure cli, powershell, ARMTemplate 사용한 배포 테스트 |    
+| Azure DevOps 를 통한 자원 배포(IaC - 2) | 2022.02.18 | azure devops 에 저장소 설정 및 Pipeline 을 만들어 배포 하기 |  
 
 ### AKS
 | 항목 | 날짜 | 내용 | 
