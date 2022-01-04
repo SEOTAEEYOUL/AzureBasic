@@ -28,18 +28,25 @@
 ### IaaS
 | 항목 | 날짜 | 내용 | 
 |:---|:---|:---|  
-| 3-tier 기본 환경 구성 | | |
-| 3-tier 기본 환경 외부 접근 구성 | | |
-| CDN 적용을 통한 고도화 | | | 
-| Azure Cli 를 통한 자원 배포(IaC - 1) | | |    
-| Azure DevOps 를 통한 자원 배포(IaC - 2) | | |  
+| 3-tier 기본 환경 구성 | 2022.02.08 | |
+| 3-tier 기본 환경 외부 접근 구성 | 2022.02.10 | |
+| CDN 적용을 통한 고도화 | 2022.02.14 | | 
+| Azure Cli 를 통한 자원 배포(IaC - 1) | 2022.02.15 | |    
+| Azure DevOps 를 통한 자원 배포(IaC - 2) | | 2022.02.18 |  
 
 ### AKS
 | 항목 | 날짜 | 내용 | 
 |:---|:---|:---|  
+| Docker/Kubernetes | 2022.02.21 | Container 란 ? </br> - 설치 및 간단한 Docker Image 만들기 </br> Kubernetes 란 ? </br> - Minikube 설치 및 사용 |
+| Azure Kubernetes Service 구성 | 2022.02.22 | AKS Cluster 설계 및 생성, 로깅, 모니터링 하기 </br> - 3 tier 를 Pod 롤 배포하기 </br> - CDN, mysql(Managed, DaemonSet) 구성 </br> - Ingress Controller 구성 </br>- DNS 에 등록 외부에서 접근하기 |
+| AutoScaler 구성 | 2022.02.25 | |
+| Azure DevOps 를 통한 Pod 배포 | 2022.03.03 | Pod, Node AutoScaler 구성 및 모니터링 하기 </br> - deployment </br> - Storage Class </br> - Prometheus/AlertManager, Grafana |  
+| OSS 를 통한 Pod 배포 | 2022.03.03 | Repos 구성, Pipeline 구성, Pod 배포 </br> Gitea, Jenkins, Harbor, ArgoCD 를 통한 GitOps 구성 </br> - webhook, Jenkinsflies 구성/작성 </br> - blue/green 배포 |
+
+### SKT 환경 고려 사항
 | 항목 | 날짜 | 내용 | 
 |:---|:---|:---|  
-| 3-tier 기본 환경 구성 | | |
+| SKT랜딩존 환경 고려사항 | 2022.03.04 | SKT랜딩존 환경 고려사항 |
 
 ## 공통 환경  
 | 항목 | 날짜 | 내용 | 
