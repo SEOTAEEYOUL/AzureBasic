@@ -70,26 +70,24 @@
 
 | 항목 | 날짜 | 내용 |
 |:---|:---|:---| 
-| tenent | | | 
-| management group | | | 
-| subscription | | | 
-| resource group | | | 
-| vnet | | | 
-| subnet | | | 
-| Azure DNS | | |  
-| Application Gateway | | | 
-| vm | | | 
-| MariaDB/MySQL | | |  
+| resource group | 2022.02.08 | 자원 그룹 | 
+| VNet | 2022.02.08 | 구독당 하나의 VNet 구성 | 
+| subnet | 2022.02.08 | DMZ, frontend, backend 로 구분 생성 | 
+| vm | 2022.02.08 | WEB, WAS VM 으로 생성 | 
+| MariaDB/MySQL | 2022.02.08 | PaaS(Managed DB) 형태로 생성 |  
+| Azure DNS | 2022.02.10 | Azure 인프라를 사용하여 이름 확인을 제공하는 DNS 도메인에 대한 호스팅 서비스 |  
+| Application Gateway | 2022.02.10 | 웹 애플리케이션에 대한 트래픽을 관리할 수 있도록 하는 웹 트래픽 부하 분산 장치 | 
+| CDN | 2022.02.10 | CDN(콘텐츠 배달 네트워크)은 사용자에게 웹 콘텐츠를 효율적으로 제공할 수 있는 서버의 분산 네트워크 |  
 
 ---
 
 ## Azure CaaS(AKS) + PaaS(MySQL)  
 | 과정 | 날짜 | 내용 |
 |:---|:---|:---|  
-| Docker | | Container |
-| Kubernetes | | Container as a Service, 아키텍처 | 
-| AKS | | Azure Kubernetes Service | 
-| DevOps | | OSS 기반, Azure DevOps 기반 |  
-| Landing Zone | | Azure Landing Zone 요소 설명 | 
+| Docker | 2022.02.21 | Container |
+| Kubernetes | 2022.02.21 | Container as a Service, 아키텍처 | 
+| AKS | 2022.02.22 ~ 23 | Azure Kubernetes Service | 
+| DevOps | 2022.03.03 | OSS 기반, Azure DevOps 기반 |  
+| Landing Zone | 2022.03.04 | Azure Landing Zone 요소 설명 | 
 
 ---
