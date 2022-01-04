@@ -75,6 +75,7 @@
 | subnet | 2022.02.08 | DMZ, frontend, backend 로 구분 생성 | 
 | vm | 2022.02.08 | WEB, WAS VM 으로 생성 | 
 | MariaDB/MySQL | 2022.02.08 | PaaS(Managed DB) 형태로 생성 |  
+| Azure App Service 도메인 | 2022.02.10 | Domain 생성/관리 |   
 | Azure DNS | 2022.02.10 | Azure 인프라를 사용하여 이름 확인을 제공하는 DNS 도메인에 대한 호스팅 서비스 |  
 | Application Gateway | 2022.02.10 | 웹 애플리케이션에 대한 트래픽을 관리할 수 있도록 하는 웹 트래픽 부하 분산 장치 | 
 | CDN | 2022.02.10 | CDN(콘텐츠 배달 네트워크)은 사용자에게 웹 콘텐츠를 효율적으로 제공할 수 있는 서버의 분산 네트워크 |  
