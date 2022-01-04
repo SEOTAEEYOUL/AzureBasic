@@ -16,6 +16,18 @@
 | [2022-02-21](./meetings/2022-02-21.md) | [2022-02-22](./meetings/2022-02-22.md) | | | [2022-02-25](./meetings/2022-02-25.md) | 
 | | | [2022-03-03](./meetings/2022-03-03.md) | [2022-03-04](./meetings/2022-02-04.md) |
 
+## 과정명
+| 항목 | 날짜 | 내용 | 
+|:---|:---|:---|  
+| 아키텍처 구성을 위한 기본 | 2022.01.25 | 3-tier 구성의 웹 전환을 대상으로 할 때 Azure 구독 획득 후 해야 할 일에 대한 설명 </br> 
+구독, RBAC, 자원그룹, Vnet, subnet, VM, disk, Storage Account, PaaS, SaaS 구성 및 배포 방법 </br>  - Naming Rule 및 필수 Label 포함 </br>
+아키텍처 작성, Azure 계산기 를 사용하여 비용 산출하기 </br>
+- Network 설계서 및 Infra Hybrid Cloud 자료 참조 |  
+| 배포 실습을 위한 공통 환경/도구 구성 | 2022.01.27 | azure portal, azure cli, visual studio code, powershell, git cli, github, md, devops 환경 구성 </br>
+- 간단한 md/git 사용법 </br>
+- PowerShell 에서 배포 및 삭제 |  
+
+
 
 ## 공통 환경  
 | 항목 | 날짜 | 내용 | 
