@@ -48,7 +48,7 @@
 | Azure DNS | | |  
 | Application Gateway | | | 
 | vm | | | 
-| MariaDB | | |  
+| MariaDB/MySQL | | |  
 
 ---
 
