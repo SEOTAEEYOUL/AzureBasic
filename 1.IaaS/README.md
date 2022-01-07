@@ -65,6 +65,7 @@
 1. Application 생성
 2. Rule 생성
 
+
 ## CDN 
 ### 생성 절차
 1. CDN 생성
@@ -73,7 +74,9 @@
    - HomePage : https://sksquare-homepage-dev-cdn.azureedge.net/
 2. Rule 생성
 
-## DNS 등록
+## App Service 도메인
+
+### DNS 등록
 1. CNAME : sksquare-homepage-dev-cdn.azureedge.net
    - www.sksquaredev.com 의 서비스 주소
 2. A Record : 20.196.232.11
