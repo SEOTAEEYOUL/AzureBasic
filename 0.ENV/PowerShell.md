@@ -13,13 +13,27 @@
   ![WindowsPowerShellInAction-1.3.jpg](./img/WindowsPowerShellInAction-1.3.jpg)  
 
 ## PowerShell 언어 구문분석
-- ![WindowsPowerShellInAction-1.4.jpg](./img/WindowsPowerShellInAction-1.4.jpg)  
+-
+  ![WindowsPowerShellInAction-1.4.jpg](./img/WindowsPowerShellInAction-1.4.jpg)  
 
 
 ## 예약어
 | 예약어 | 의미 |
 |:---|:---|  
-| $_ | 파이프라인으로 넘어온 배열 또는 컬렉션의 각각요소들을 의미 |
+| $_ | 파이프라인으로 넘어온 배열 또는 컬렉션의 각각요소들을 의미 |  
+| $$ | 실행 명령명 |
+| $? | 이전 명령줄의 마지막 토큰 |  
+| $^ | 마지막 명령의 부울 상태 | 
+
+## 비교 연산자
+| 연산자 | 의미 | 부등호 |
+|:---:|:---|:---| 
+| -eq | Equals(같다) | = |
+| -ne | Does not equal(같지않다) | != |
+| -gt | Greather than(크다) | > |  
+| -lt | Less than(작다) | < |  
+| -ge | Greater than or equal to(크거나 같다) | >= |
+| -le | Less than or equal to (작거나 같다) | <= |  
 
 
 ## Sample
