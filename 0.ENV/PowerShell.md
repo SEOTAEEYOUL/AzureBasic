@@ -257,6 +257,11 @@ Import-Alias -Path "C:\PowerShell_Lab\MyAlias.csv" -Force
 
 
 ## Resource Group 만들기
+```powershell
+New-AzResourceGroup `
+   -ResourceGroupName "myResourceGroupVM" `
+   -Location "koreacentral"
+```
 
 ## VNet 만들기
 
@@ -269,42 +274,63 @@ Import-Alias -Path "C:\PowerShell_Lab\MyAlias.csv" -Force
 ## disk 만들기
 
 ## nic 만들기
+[가상 머신에 네트워크 인터페이스 추가 또는 제거](https://docs.microsoft.com/ko-kr/azure/virtual-network/virtual-network-network-interface-vm)
+| 도구 | 명령 |  
+|:---|:---|
+| CLI | az network nic create |  
+| PowerShell | New-AzNetworkInterface |  
 
 ## public-ip 만들기
 
 ## VM 만들기
+* [빠른 시작: PowerShell을 사용하여 Azure에서 Windows 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/quick-create-powershell)  
+* [빠른 시작: PowerShell을 사용하여 Azure에서 Linux 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/quick-create-powershell)
+
+```powershell
+$cred = Get-Credential
+New-AzVm `
+    -ResourceGroupName "myResourceGroupVM" `
+    -Name "myVM" `
+    -Location "koreacentral" `
+    -VirtualNetworkName "myVnet" `
+    -SubnetName "mySubnet" `
+    -SecurityGroupName "myNetworkSecurityGroup" `
+    -PublicIpAddressName "myPublicIpAddress" `
+    -Credential $cred
+```
+---
 
 | 명령어(cmdlet) | 설명 | 예시 | 
-|:---|:---|:---|
+|:---|:---|:---|  
+| New-AzResourceGroup | 리소스 그룹 만들기 | -Name myResourceGroup -Location EastUS | 
 | Import-CSV | CSV 파일 읽기 | Import-CSV -Path ./vm_parameter_template.csv |
 | Set-AzVMOperatingSystem | VM OS 지정 | -Windows, -Linux |  
 | Set-AzVMSourceImage | VM 이미지 지정 | Standard_D1_v2 |
 | ForEach-Object | 파이프라인에서 항목을 반복 | | 
 | Select-AzSubscription | 구독 선택 | | 
-| ConvertTo-SecureString | | | 
-| New-Object | 새 사용자 지정 PowerShell 개체를 만듬 | |  
-| Get-AzVirtualNetwork | | |  
-| Get-AzVirtualNetworkSubnetConfig | | |  
-| Get-AzNetworkSecurityGroup | | |  
-| Get-AzNetworkInterface | | |  
-| New-AzNetworkInterface | | |  
-| Get-AzNetwrokInterface | | | 
-| New-AzVMConfig | | |  
-| Set-AzVMOperatingSystem | | |  
-| Set-AzVMSourceImage | | |  
-| New-AzVMConfig | | |  
-| Set-AzVMOperatingSystem | | |  
-| Set-AzVMSourceImage | | |  
-| Set-AzVMNetworkInterface | | |  
-| Add-AzVMNetworkInterface | | |  
-| Set-AzVMOSDisk | | |  
-| Add-AzVMDataDisk | | |  
-| Add-AzVMBootDiagnostic | | |  
-| New-AzVM | | |  
-| Get-AzRecoveryServiceVault | | |  
-| Set-AzRecoveryServicesVaultContext | | | 
-| Get-AzRecoveryServiceBackupProtetionPolicy | | |  
-| Enable-AzRecoveryServiceBackupProtection | | | 
+| ConvertTo-SecureString | SecureString 타입으로 만듬 | | 
+| New-Object | 개체를 만듬 | |  
+| Get-AzVirtualNetwork | 가상 네트워크에 대한 정보 가져오기 | -Name "myVNet" -ResourceGroupName $myResourceGroup |  
+| Get-AzVirtualNetworkSubnetConfig | 서브넷에 대한 정보 가져오기 |  -Name "mySubnet1" -VirtualNetwork $vnet |  
+| Get-AzNetworkSecurityGroup | 네트워크 보안 그룹을 가져옴| |  
+| Get-AzNetworkInterface | 네트워크 인터페이스 구하기 | |  
+| New-AzNetworkInterface | 네트워크 인터페이스를 생성 | |  
+| New-AzVMConfig | 구성 가능한 가상 머신 개체 | |  
+| Set-AzVMOperatingSystem | 가상 머신의 운영 체제 속성을 설정 | -Windows, -Linux |  
+| Set-AzVMSourceImage | 가상 머신의 이미지를 지정 | |  
+| New-AzVMConfig | 구성 가능한 가상 머신 개체를 만듬 | |  
+| Set-AzVMOperatingSystem | 가상 머신의 운영 체제 속성을 설정 | |  
+| Set-AzVMSourceImage | 가상 머신의 이미지를 지정 | |  
+| Set-AzVMNetworkInterface | 가상 머신에 네트워크 인터페이스를 추가 | |  
+| Add-AzVMNetworkInterface | 네트워크 인터페이스 추가  | |  
+| Set-AzVMOSDisk | 가상 머신의 운영 체제 디스크 속성을 설정 | |  
+| Add-AzVMDataDisk | 가상 머신에 데이터 디스크를 추가 | |  
+| Add-AzVMBootDiagnostic | 가상 머신의 부팅 진단 속성을 수정 </br> 진단 데이터는 지정된 계정에 저장 |  -VM $VM -Enable -ResourceGroupName "ResourceGroup11" -StorageAccountName "DiagnosticStorage" |  
+| New-AzVM | 가상 머신을 생성 | |  
+| Get-AzRecoveryServiceVault | Recovery Services 자격 증명 모음 목록을 가져옴 | |  
+| Set-AzRecoveryServicesVaultContext | 볼트 컨텍스트를 설정 | | 
+| Get-AzRecoveryServiceBackupProtectionPolicy | 볼트에 대한 백업 보호 정책을 가져옴 | |  
+| Enable-AzRecoveryServiceBackupProtection | 지정된 백업 보호 정책이 있는 항목에 대한 백업을 활성화 | | 
 
 
 
