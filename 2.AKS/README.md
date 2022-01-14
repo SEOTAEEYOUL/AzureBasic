@@ -12,3 +12,7 @@
 -  UltraDisk 
   - 상태 저장 응용 프로그램에 대해 높은 처리량, 높은 IOPS 및 일관 된 짧은 대기 시간 디스크 저장소를 제공
   - --aks-custom-headers EnableUltraSSD=true : 
+
+
+### 가용성 영역
+- 한국 중부

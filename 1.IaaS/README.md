@@ -19,6 +19,8 @@
 1. NIC 생성 
 2. VM 생성 관련 정보들 
 3. VM 배포
+   > [관리 디스크의 스토리지 형식 업데이트](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/convert-disk-storage) 
+
 ### 프로젝트 때 사용한 VM 생성 스크립트  
 | 파일명 | 설명 | 
 |:---|:---|  

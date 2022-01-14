@@ -1,5 +1,8 @@
 # Visual Studio Code
 
+## Plugin
+[Print](https://marketplace.visualstudio.com/items?itemName=pdconsec.vscode-print)  
+
 ## 1.56.2 : 일부 windows 에서 webview 오류 발생시 대체 방업
 ### 오류 메시지
 ```
