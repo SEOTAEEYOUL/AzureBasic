@@ -274,10 +274,38 @@ Import-Alias -Path "C:\PowerShell_Lab\MyAlias.csv" -Force
 
 ## VM 만들기
 
-| 명령어 | 설명 | 예시 | 
+| 명령어(cmdlet) | 설명 | 예시 | 
 |:---|:---|:---|
 | Import-CSV | CSV 파일 읽기 | Import-CSV -Path ./vm_parameter_template.csv |
 | Set-AzVMOperatingSystem | VM OS 지정 | -Windows, -Linux |  
 | Set-AzVMSourceImage | VM 이미지 지정 | Standard_D1_v2 |
+| ForEach-Object | 파이프라인에서 항목을 반복 | | 
+| Select-AzSubscription | 구독 선택 | | 
+| ConvertTo-SecureString | | | 
+| New-Object | 새 사용자 지정 PowerShell 개체를 만듬 | |  
+| Get-AzVirtualNetwork | | |  
+| Get-AzVirtualNetworkSubnetConfig | | |  
+| Get-AzNetworkSecurityGroup | | |  
+| Get-AzNetworkInterface | | |  
+| New-AzNetworkInterface | | |  
+| Get-AzNetwrokInterface | | | 
+| New-AzVMConfig | | |  
+| Set-AzVMOperatingSystem | | |  
+| Set-AzVMSourceImage | | |  
+| New-AzVMConfig | | |  
+| Set-AzVMOperatingSystem | | |  
+| Set-AzVMSourceImage | | |  
+| Set-AzVMNetworkInterface | | |  
+| Add-AzVMNetworkInterface | | |  
+| Set-AzVMOSDisk | | |  
+| Add-AzVMDataDisk | | |  
+| Add-AzVMBootDiagnostic | | |  
+| New-AzVM | | |  
+| Get-AzRecoveryServiceVault | | |  
+| Set-AzRecoveryServicesVaultContext | | | 
+| Get-AzRecoveryServiceBackupProtetionPolicy | | |  
+| Enable-AzRecoveryServiceBackupProtection | | | 
+
+
 
 ## 
