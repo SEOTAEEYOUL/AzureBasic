@@ -5,7 +5,9 @@
 
 > [Back to Basics: The PowerShell Foreach Loop](https://adamtheautomator.com/powershell-foreach/)  
 > [Managing CSV Files in PowerShell with Import-Csv](https://adamtheautomator.com/import-csv/)  
-> [Understanding Import-Csv and the ForEach Loop](https://adamtheautomator.com/import-csv-foreach/)
+> [Understanding Import-Csv and the ForEach Loop](https://adamtheautomator.com/import-csv-foreach/)  
+> [PowerShell을 사용하여 가상 네트워크 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-network/quick-create-powershell)
+
 
 ## PowerShell 명령어 구조
 - command -parameter1 -parameter2  argument1 argument2
@@ -16,6 +18,10 @@
 -
   ![WindowsPowerShellInAction-1.4.jpg](./img/WindowsPowerShellInAction-1.4.jpg)  
 
+
+## 모듈
+- Install-Module -Name Az.Compute
+- Install-Module -Name Az.Network
 
 ## 예약어
 | 예약어 | 의미 |
@@ -259,19 +265,71 @@ Import-Alias -Path "C:\PowerShell_Lab\MyAlias.csv" -Force
 ## Resource Group 만들기
 ```powershell
 New-AzResourceGroup `
-   -ResourceGroupName "myResourceGroupVM" `
+   -ResourceGroupName "rg-skcc-homepage-dev" `
    -Location "koreacentral"
+```
+```powershell
+$rg = @{
+    Name = 'rg-skcc-homepage-dev'
+    Location = 'koreacentral'
+}
+New-AzResourceGroup @rg
+```
+### 리소스 그룹 잠금
+```powershell
+New-AzResourceLock -LockName LockGroup -LockLevel CanNotDelete -ResourceGroupName rg-skcc-homepage-dev
+```
+- 확인
+```
+Get-AzResourceLock -ResourceGroupName rg-skcc-homepage-prd
 ```
 
 ## VNet 만들기
+- vnet : vnet-skcc-dev
+```powershell
+$vnet = @{
+    Name = 'vnet-skcc-dev'
+    ResourceGroupName = 'rg-skcc-homepage-dev'
+    Location = 'koreacentral'
+    AddressPrefix = '10.0.0.0/16'    
+}
+$virtualNetwork = New-AzVirtualNetwork @vnet
+```
 
 ## NSG 만들기
+```powershell
+```
 
 ## subnet 만들기
+- frontend subnet : snet-skcc-dev-10.234.4.128-159-frontend
+- backend subnet : snet-skcc-dev-10.234.5.0-255-backend
+```powershell
+$subnet_frontend = @{
+    Name = 'snet-skcc-dev-frontend'
+    VirtualNetwork = $virtualNetwork
+    AddressPrefix = '10.0.0.0/28'
+}
+$subnetConfig_frontend = Add-AzVirtualNetworkSubnetConfig @subnet_frontend
+$subnet_backend = @{
+    Name = 'snet-skcc-dev-backend'
+    VirtualNetwork = $virtualNetwork
+    AddressPrefix = '10.0.1.0/28'
+}
+$subnetConfig_backend = Add-AzVirtualNetworkSubnetConfig @subnet_backend
+```
+
+## 가상 네트워크에 subnet 연결
+```powershell
+$virtualNetwork | Set-AzVirtualNetwork
+```
 
 
-
-## disk 만들기
+## Storage Account 만들기
+- SKU : "Standard_LRS" (가장 저렴한 중복성 옵션)
+- 생성시 시간이 1 ~ 2 분 걸림
+```powershell
+New-AzStorageAccount -ResourceGroupName rg-homepage -Name skccdevhomepage -Location koreacentral -SkuName "Standard_LRS"
+```
 
 ## nic 만들기
 [가상 머신에 네트워크 인터페이스 추가 또는 제거](https://docs.microsoft.com/ko-kr/azure/virtual-network/virtual-network-network-interface-vm)
@@ -285,7 +343,69 @@ New-AzResourceGroup `
 ## VM 만들기
 * [빠른 시작: PowerShell을 사용하여 Azure에서 Windows 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/quick-create-powershell)  
 * [빠른 시작: PowerShell을 사용하여 Azure에서 Linux 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/quick-create-powershell)
+* [여러 NIC가 있는 Windows 가상 컴퓨터 만들기 및 관리](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/multiple-nics?toc=/azure/virtual-network/toc.json)
 
+
+### NIC 만들기
+```
+$frontEnd = $virtualNetwork.Subnets|?{$_.Name -eq 'snet-skcc-dev-frontend'}
+$myNic1 = New-AzNetworkInterface -ResourceGroupName "rg-skcc-homepage-dev" `
+    -Name "nic-skcc-homepage-pt1" `
+    -Location "koreacentral" `
+    -SubnetId $frontEnd.Id
+```
+
+### VM 크기 설정
+```
+$vmConfig = New-AzVMConfig -VMName "vm-skcc-home-pt1" -VMSize "Standard_DS3_v2"
+```
+
+### 소스 이미지 구성
+```
+$vmConfig = Set-AzVMOperatingSystem -VM $vmConfig `
+    -Windows `
+    -ComputerName "myVM" `
+    -Credential $cred `
+    -ProvisionVMAgent `
+    -EnableAutoUpdate
+$vmConfig = Set-AzVMSourceImage -VM $vmConfig `
+    -PublisherName "MicrosoftWindowsServer" `
+    -Offer "WindowsServer" `
+    -Skus "2016-Datacenter" `
+    -Version "latest"
+```
+
+### 인터페이스 추가
+```
+$vmConfig = Add-AzVMNetworkInterface -VM $vmConfig -Id $myNic1.Id -Primary
+```
+
+### VM 만들기
+```
+New-AzVM -VM $vmConfig -ResourceGroupName "rg-skcc-homepage-dev" -Location "koreacentral"
+```
+
+### apache vm 만들기
+- VM 자격 증명을 설정 : Get-Credential
+- -AsJob : 백그라운드 옵션
+```powershell
+$cred = Get-Credential
+$apache-vm1 = @{
+    ResourceGroupName = 'rg-skcc-homepage-dev'
+    Location = 'koreacentral'
+    Name = 'vm-skcc-homept1'
+    VMSize = 'Standard_DS3_v2'
+    SecurityGroupName = ''
+    PublicIpAddressName = ''
+    VirtualNetworkName = 'vnet-skcc-dev'
+    SubnetName = 'vnet-skcc-dev-frontend'
+    OpenPorts = '80,3389'
+    Credential = $cred
+}
+New-AzVM @apache-vm -AsJob
+```
+
+### tomcat vm 만들기
 ```powershell
 $cred = Get-Credential
 New-AzVm `
@@ -296,8 +416,15 @@ New-AzVm `
     -SubnetName "mySubnet" `
     -SecurityGroupName "myNetworkSecurityGroup" `
     -PublicIpAddressName "myPublicIpAddress" `
+    -OpenPorts 80,3389 `
     -Credential $cred
 ```
+
+## 리소스 정리
+```
+Remove-AzResourceGroup -Name 'rg-skcc-homepage-dev' -Force
+```
+
 ---
 
 | 명령어(cmdlet) | 설명 | 예시 | 
@@ -307,7 +434,7 @@ New-AzVm `
 | Set-AzVMOperatingSystem | VM OS 지정 | -Windows, -Linux |  
 | Set-AzVMSourceImage | VM 이미지 지정 | Standard_D1_v2 |
 | ForEach-Object | 파이프라인에서 항목을 반복 | | 
-| Select-AzSubscription | 구독 선택 | | 
+| Select-AzSubscription | 현재 및 기본 Azure 구독을 변경 | | 
 | ConvertTo-SecureString | SecureString 타입으로 만듬 | | 
 | New-Object | 개체를 만듬 | |  
 | Get-AzVirtualNetwork | 가상 네트워크에 대한 정보 가져오기 | -Name "myVNet" -ResourceGroupName $myResourceGroup |  
@@ -332,6 +459,6 @@ New-AzVm `
 | Get-AzRecoveryServiceBackupProtectionPolicy | 볼트에 대한 백업 보호 정책을 가져옴 | |  
 | Enable-AzRecoveryServiceBackupProtection | 지정된 백업 보호 정책이 있는 항목에 대한 백업을 활성화 | | 
 
+[PowerShell-Script-Sample.md](./PowerShell-Script-Sample.md)
 
-
-## 
+## [Azure Storage 방화벽 및 가상 네트워크 구성](https://github.com/MicrosoftDocs/azure-docs.ko-kr/blob/master/articles/storage/common/storage-network-security.md)

@@ -1,0 +1,10 @@
+$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
+$content = @"
+"product_code","product_name","price"
+"POSH00001","연필","100"
+"POSH00002","지우개","50"
+"POSH00003","노트","110"
+"POSH00004","자","90"
+"POSH00005","형광펜","70"
+"@
+$content > test.csv
