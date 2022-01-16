@@ -438,7 +438,7 @@ $apache-vm1 = @{
     PublicIpAddressName = ''
     VirtualNetworkName = 'vnet-skcc-dev'
     SubnetName = 'vnet-skcc-dev-frontend'
-    OpenPorts = '80,3389'
+    OpenPorts = '8180,7500'
     Credential = $cred
 }
 New-AzVM @apache-vm -AsJob
@@ -468,17 +468,17 @@ Remove-AzResourceGroup -Name 'rg-skcc-homepage-dev' -Force
 
 | 명령어(cmdlet) | 설명 | 예시 | 
 |:---|:---|:---|  
+| Import-CSV | CSV 파일 읽기 | Import-CSV -Path ./vm_parameter_template.csv |
+| ForEach-Object | 파이프라인에서 항목을 반복 | | 
+| ConvertTo-SecureString | SecureString 타입으로 만듬 | | 
+| New-Object | 개체를 만듬 | |  
 | New-AzResourceGroup | 리소스 그룹 만들기 | -Name myResourceGroup -Location EastUS | 
 | Get-AzLocation | 지역 목록 검색 | Get-AzLocation | select Location |  
 | New-AzStorageAccount | 스토리지 계정 생성 | |  
 | New-AzStorageContainer | 컨테이너 만들기 | |  
-| Import-CSV | CSV 파일 읽기 | Import-CSV -Path ./vm_parameter_template.csv |
 | Set-AzVMOperatingSystem | VM OS 지정 | -Windows, -Linux |  
 | Set-AzVMSourceImage | VM 이미지 지정 | Standard_D1_v2 |
-| ForEach-Object | 파이프라인에서 항목을 반복 | | 
 | Select-AzSubscription | 현재 및 기본 Azure 구독을 변경 | | 
-| ConvertTo-SecureString | SecureString 타입으로 만듬 | | 
-| New-Object | 개체를 만듬 | |  
 | Get-AzVirtualNetwork | 가상 네트워크에 대한 정보 가져오기 | -Name "myVNet" -ResourceGroupName $myResourceGroup |  
 | Get-AzVirtualNetworkSubnetConfig | 서브넷에 대한 정보 가져오기 |  -Name "mySubnet1" -VirtualNetwork $vnet |  
 | Get-AzNetworkSecurityGroup | 네트워크 보안 그룹을 가져옴| |  
