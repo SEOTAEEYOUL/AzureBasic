@@ -375,13 +375,6 @@ Remove-AzStorageAccount `
   -ResourceGroupName 'rg-skcc-homepage-dev'
 ```
 
-## nic 만들기
-[가상 머신에 네트워크 인터페이스 추가 또는 제거](https://docs.microsoft.com/ko-kr/azure/virtual-network/virtual-network-network-interface-vm)
-| 도구 | 명령 |  
-|:---|:---|
-| CLI | az network nic create |  
-| PowerShell | New-AzNetworkInterface |  
-
 ## NSG Rule 만들기
 ### Create an inbound network security group rule for port 22
 ```powershell
@@ -438,8 +431,13 @@ $pip = New-AzPublicIpAddress `
 * [여러 NIC가 있는 Windows 가상 컴퓨터 만들기 및 관리](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/multiple-nics?toc=/azure/virtual-network/toc.json)  
 * [랩: 가상 머신 배포 및 관리.](https://github.com/MicrosoftLearning/AZ-103KO-MicrosoftAzureAdministrator/blob/master/Instructions/Labs/02a%20-%20Deploy%20and%20Manage%20Virtual%20Machines%20(az-100-03).md)
 
+### nic 만들기
+[가상 머신에 네트워크 인터페이스 추가 또는 제거](https://docs.microsoft.com/ko-kr/azure/virtual-network/virtual-network-network-interface-vm)
+| 도구 | 명령 |  
+|:---|:---|
+| CLI | az network nic create |  
+| PowerShell | New-AzNetworkInterface |  
 
-### NIC 만들기
 #### vnet 정보 가져오기
 ```powershell
 $virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq 'vnet-skcc-dev'}
