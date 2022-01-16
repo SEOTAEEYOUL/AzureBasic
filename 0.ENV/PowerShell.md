@@ -458,7 +458,7 @@ $nic = New-AzNetworkInterface `
 
 ### credential object 정의
 ```powershell
-$securePassword = ConvertTo-SecureString ' ' -AsPlainText -Force
+$securePassword = ConvertTo-SecureString 'dlatl!00' -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential ("azureuser", $securePassword)
 ```
 
@@ -531,6 +531,8 @@ $vmConfig = Add-AzVMNetworkInterface `
 
 ### SSH key 구성
 #### SSH 키 쌍 만들기
+- [ssh-keygen](https://www.ssh.com/academy/ssh/keygen) 사용
+- 옵션 -t rsa : 모든 SSH 클라이언트는 이 알고리즘을 지원
 ```
 PS C:\workspace\AzureBasic\0.ENV> ssh-keygen -t rsa -b 4096
 
@@ -618,7 +620,7 @@ $apache-vm1 = @{
     PublicIpAddressName = ''
     VirtualNetworkName = 'vnet-skcc-dev'
     SubnetName = 'vnet-skcc-dev-frontend'
-    OpenPorts = '8180,7500'
+    OpenPorts = '10080,7500'
     Credential = $cred
 }
 New-AzVM @apache-vm -AsJob
