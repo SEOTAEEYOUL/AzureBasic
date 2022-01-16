@@ -69,8 +69,8 @@ The key's randomart image is:
 +----[SHA256]-----+
 PS C:\workspace\AzureBasic\0.ENV> $vnet = $virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq 'vnet-skcc-dev'}
 
-PS C:\workspace\AzureBasic\0.ENV> $pip = New-AzPublicIpAddress `
->>   -Name "nic-skcc-comdpt1" `
+PS C:\workspace\AzureBasic> $pip = New-AzPublicIpAddress `
+>>   -Name "pip-skcc-comdpt1" `
 >>   -ResourceGroupName "rg-skcc-homepage-dev" `
 >>   -Location "koreacentral" `
 >>   -AllocationMethod Static `
@@ -82,10 +82,6 @@ Cmdlet invocation changes :
     Old Way : Sku = Standard means the Standard Public IP is zone-redundant.
     New Way : Sku = Standard and Zone = {} means the Standard Public IP has no zones. If you want to create a zone-redundant Public IP address, please specify all the zones in the region. For example, Zone = ['1', '2', '3'].
 Note : Go to https://aka.ms/azps-changewarnings for steps to suppress this breaking change warning, and other information on breaking changes in Azure PowerShell.
-Confirm
-Are you sure you want to overwrite resource 'nic-skcc-comdpt1'
-[Y] Yes [N] No [S] Suspend [?] Help (default is "Yes"): Y
-PS C:\workspace\AzureBasic\0.ENV> $frontEnd = $virtualNetwork.Subnets|?{$_.Name -eq 'snet-skcc-dev-frontend'}
 
 PS C:\workspace\AzureBasic\0.ENV> $nic = New-AzNetworkInterface `
 >>   -ResourceGroupName "rg-skcc-homepage-dev" `
@@ -148,6 +144,28 @@ NetworkProfile  : {NetworkInterfaces}
 OSProfile       : {ComputerName, AdminUsername, AdminPassword, LinuxConfiguration}
 StorageProfile  : {ImageReference}
 
+PS C:\workspace\AzureBasic> $vmName="vm-skcc-comdpt1"
+
+PS C:\workspace\AzureBasic> $resourceGroup = Get-AzResourceGroup -Name 'rg-skcc-homepage-dev'
+
+PS C:\workspace\AzureBasic> $location = $resourceGroup.Location
+
+PS C:\workspace\AzureBasic> $osDiskType = (Get-AzDisk -ResourceGroupName $resourceGroup.ResourceGroupName)[0].Sku.Name
+
+PS C:\workspace\AzureBasic> $osDiskType = "StandardSSD_LRS"
+
+PS C:\workspace\AzureBasic> $osDiskSizeInGB = 64
+
+
+PS C:\workspace\AzureBasic> $vmConfig = Set-AzVMOSDisk `
+>>   -VM $vmConfig `
+>>   -Name "$($vmName)-OsDisk01" `
+>>   -DiskSizeinGB $osDiskSizeInGB `
+>>   -StorageAccountType $osDiskType `
+>>   -CreateOption FromImage `
+>>   -Caching ReadWrite `
+>>   -Linux
+
 
 PS C:\workspace\AzureBasic\0.ENV> New-AzVM -VM $vmConfig `
 >>   -ResourceGroupName "rg-skcc-homepage-dev" `
@@ -160,4 +178,24 @@ RequestId IsSuccessStatusCode StatusCode ReasonPhrase
                          True         OK OK
 
 PS C:\workspace\AzureBasic\0.ENV>
+```
+
+### Boot Diagostics 경고 없애기 
+```
+PS C:\workspace\AzureBasic> $vmConfig = Set-AzVMBootDiagnostic `
+>>   -VM $vmConfig `
+>>   -Enable `
+>>   -resourceGroup "rg-skcc-homepage-dev" `
+>>   -StorageAccountName "skccdevhomepagedev"
+
+PS C:\workspace\AzureBasic> New-AzVM -VM $vmConfig `
+>>   -ResourceGroupName "rg-skcc-homepage-dev" `
+>>   -Location "koreacentral"
+
+
+RequestId IsSuccessStatusCode StatusCode ReasonPhrase
+--------- ------------------- ---------- ------------
+                         True         OK OK
+
+PS C:\workspace\AzureBasic>
 ```

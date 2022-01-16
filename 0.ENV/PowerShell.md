@@ -348,6 +348,7 @@ $storage_account = @{
 }
 New-AzStorageAccount @storage_account
 ```
+![skccdevhomepagedev.png](./img/skccdevhomepagedev.png)
 ### 컨테이너 만들기
 ```
 # Create variables
@@ -365,6 +366,8 @@ for ($i = 1; $i -le 3; $i++) {
 # Approach 3: Create containers using the PowerShell Split method
 "$($prefixName)4 $($prefixName)5 $($prefixName)6".split() | New-AzStorageContainer -Context $ctx
 ```
+- boot diagnostics 컨테이너  
+![skccdevhomepagedev-diagnostics.png](./img/skccdevhomepagedev-diagnostics.png)
 ### 제거
 ```
 Remove-AzStorageAccount `
@@ -416,21 +419,24 @@ $nsg = New-AzNetworkSecurityGroup `
   -Name "nsg-skcc-homepage" `
   -SecurityRules $nsgRuleSSH,$nsgRuleWeb
 ```
+![nsg-skcc-homepage.png](./img/nsg-skcc-homepage.png)
 ## public-ip 만들기
 ```powershell
-$vent = $virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq 'vnet-skcc-dev'}
+$vnet = $virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq 'vnet-skcc-dev'}
 $pip = New-AzPublicIpAddress `
-  -Name "nic-skcc-comdpt1" `
+  -Name "pip-skcc-comdpt1" `
   -ResourceGroupName "rg-skcc-homepage-dev" `
   -Location "koreacentral" `
   -AllocationMethod Static `
   -IdleTimeoutInMinutes 4
 ```
+![pip-skcc-comdpt1.png](./img/pip-skcc-comdpt1.png)
 
 ## VM 만들기
 * [빠른 시작: PowerShell을 사용하여 Azure에서 Windows 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/quick-create-powershell)  
 * [빠른 시작: PowerShell을 사용하여 Azure에서 Linux 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/quick-create-powershell)
-* [여러 NIC가 있는 Windows 가상 컴퓨터 만들기 및 관리](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/multiple-nics?toc=/azure/virtual-network/toc.json)
+* [여러 NIC가 있는 Windows 가상 컴퓨터 만들기 및 관리](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/multiple-nics?toc=/azure/virtual-network/toc.json)  
+* [랩: 가상 머신 배포 및 관리.](https://github.com/MicrosoftLearning/AZ-103KO-MicrosoftAzureAdministrator/blob/master/Instructions/Labs/02a%20-%20Deploy%20and%20Manage%20Virtual%20Machines%20(az-100-03).md)
 
 
 ### NIC 만들기
@@ -450,6 +456,7 @@ $nic = New-AzNetworkInterface `
   -PublicIpAddressId $pip.Id `
   -NetworkSecurityGroupId $nsg.Id
 ```
+![nic-skcc-comdpt1.png](./img/nic-skcc-comdpt1.png)
 
 ### credential object 정의
 ```powershell
@@ -521,7 +528,7 @@ $vmConfig = Set-AzVMSourceImage `
 ```
 $vmConfig = Add-AzVMNetworkInterface `
   -VM $vmConfig `
-  -Id $nic.Id -Primary
+  -Id $nic.Id
 ```
 
 ### SSH key 구성
@@ -561,9 +568,28 @@ Add-AzVMSshPublicKey `
   -Path "/home/azureuser/.ssh/authorized_keys"
 ```
 
+### OS Disk 설정
+```pwsh
+$vmName="vm-skcc-comdpt1"
+$resourceGroup = Get-AzResourceGroup -Name 'rg-skcc-homepage-dev'
+$location = $resourceGroup.Location
+$osDiskType = (Get-AzDisk -ResourceGroupName $resourceGroup.ResourceGroupName)[0].Sku.Name
+$osDiskType = "StandardSSD_LRS"
+$osDiskSizeInGB = 64
+$vmConfig = Set-AzVMOSDisk `
+  -VM $vmConfig `
+  -Name "$($vmName)-OsDisk01" `
+  -DiskSizeinGB $osDiskSizeInGB `
+  -StorageAccountType $osDiskType `
+  -CreateOption FromImage `
+  -Caching ReadWrite `
+  -Linux
+```
+![vm-skcc-comdpt1-OsDisk01.png](./img/vm-skcc-comdpt1-OsDisk01.png)
+
 ### boot diagnotics
 ```
-$vmConfig = SetAzVMBootDiagnotic `
+$vmConfig = Set-AzVMBootDiagnostic `
   -VM $vmConfig `
   -Enable `
   -resourceGroup "rg-skcc-homepage-dev" `
@@ -576,7 +602,8 @@ New-AzVM -VM $vmConfig `
   -ResourceGroupName "rg-skcc-homepage-dev" `
   -Location "koreacentral"
 ```
-
+![rg-skcc-homepage-dev.png](./img/rg-skcc-homepage-dev.png)  
+![vm-skcc-comdpt1.png](./img/vm-skcc-comdpt1.png)  
 
 
 ### apache vm 만들기
