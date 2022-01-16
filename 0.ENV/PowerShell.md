@@ -20,6 +20,7 @@
 
 
 ## 모듈
+- Get-InstalledModule -Name "Az"
 - Install-Module -Name Az.Compute
 - Install-Module -Name Az.Network
 
@@ -328,7 +329,27 @@ $virtualNetwork | Set-AzVirtualNetwork
 - SKU : "Standard_LRS" (가장 저렴한 중복성 옵션)
 - 생성시 시간이 1 ~ 2 분 걸림
 ```powershell
-New-AzStorageAccount -ResourceGroupName rg-homepage -Name skccdevhomepage -Location koreacentral -SkuName "Standard_LRS"
+New-AzStorageAccount `
+  -ResourceGroupName rg-skcc-homepage-dev `
+  -Name skccdevhomepagedev `
+  -Location koreacentral `
+  -SkuName "Standard_LRS" `
+  -Kind StorageV2
+```
+
+```powershell
+$storage_account = @{
+    Name = 'skccdevhomepagedev'
+    ResourceGroupName = 'rg-skcc-homepage-dev'
+    Location = 'koreacentral'
+    SkuName = 'Standard_LRS'
+    Kind = 'StorageV2'
+}
+New-AzStorageAccount @storage_account
+```
+### 제거
+```
+Remove-AzStorageAccount -Name 'skccdevhomepagedev' -ResourceGroupName 'rg-skcc-homepage-dev'
 ```
 
 ## nic 만들기
@@ -430,6 +451,8 @@ Remove-AzResourceGroup -Name 'rg-skcc-homepage-dev' -Force
 | 명령어(cmdlet) | 설명 | 예시 | 
 |:---|:---|:---|  
 | New-AzResourceGroup | 리소스 그룹 만들기 | -Name myResourceGroup -Location EastUS | 
+| Get-AzLocation | 지역 목록 검색 | Get-AzLocation | select Location |  
+| New-AzStorageAccount | 스토리지 계정 생서 | |
 | Import-CSV | CSV 파일 읽기 | Import-CSV -Path ./vm_parameter_template.csv |
 | Set-AzVMOperatingSystem | VM OS 지정 | -Windows, -Linux |  
 | Set-AzVMSourceImage | VM 이미지 지정 | Standard_D1_v2 |
