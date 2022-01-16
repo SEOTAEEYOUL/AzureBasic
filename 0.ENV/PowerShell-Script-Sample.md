@@ -40,3 +40,124 @@ $secure2
 $SecurePassword = ConvertTo-SecureString "dlatl!00" -AsPlainText -Force
 $Credential = New-Object System.Management.Automation.PSCredential("sysadmin",$SecurePassword);
 ```
+
+## VM 만들기
+```
+PS C:\workspace\AzureBasic\0.ENV> ssh-keygen -t rsa -b 4096
+
+Generating public/private rsa key pair.
+Enter file in which to save the key (C:\Users\taeey/.ssh/id_rsa): ./.ssh/id_rsa
+./.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in ./.ssh/id_rsa
+Your public key has been saved in ./.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:gEfKu1joY11R+waG51xWMs2roEHi/qgirTDdcn5j4OU taeey@DESKTOP-QR555PR
+The key's randomart image is:
++---[RSA 4096]----+
+|      . . oo.    |
+|   ..+.o . +o    |
+|   .+o= = o  .   |
+|   ..o.B.=  .    |
+|  ..o .oS.o.     |
+| o =ooo  ..      |
+|o.B.=*           |
+|+o.=o E          |
+|oo...o .         |
++----[SHA256]-----+
+PS C:\workspace\AzureBasic\0.ENV> $vnet = $virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq 'vnet-skcc-dev'}
+
+PS C:\workspace\AzureBasic\0.ENV> $pip = New-AzPublicIpAddress `
+>>   -Name "nic-skcc-comdpt1" `
+>>   -ResourceGroupName "rg-skcc-homepage-dev" `
+>>   -Location "koreacentral" `
+>>   -AllocationMethod Static `
+>>   -IdleTimeoutInMinutes 4
+
+WARNING: Upcoming breaking changes in the cmdlet 'New-AzPublicIpAddress' :
+Default behaviour of Zone will be changed
+Cmdlet invocation changes :
+    Old Way : Sku = Standard means the Standard Public IP is zone-redundant.
+    New Way : Sku = Standard and Zone = {} means the Standard Public IP has no zones. If you want to create a zone-redundant Public IP address, please specify all the zones in the region. For example, Zone = ['1', '2', '3'].
+Note : Go to https://aka.ms/azps-changewarnings for steps to suppress this breaking change warning, and other information on breaking changes in Azure PowerShell.
+Confirm
+Are you sure you want to overwrite resource 'nic-skcc-comdpt1'
+[Y] Yes [N] No [S] Suspend [?] Help (default is "Yes"): Y
+PS C:\workspace\AzureBasic\0.ENV> $frontEnd = $virtualNetwork.Subnets|?{$_.Name -eq 'snet-skcc-dev-frontend'}
+
+PS C:\workspace\AzureBasic\0.ENV> $nic = New-AzNetworkInterface `
+>>   -ResourceGroupName "rg-skcc-homepage-dev" `
+>>   -Name "nic-skcc-comdpt1" `
+>>   -Location "koreacentral" `
+>>   -SubnetId $frontEnd.Id `
+>>   -PublicIpAddressId $pip.Id `
+>>   -NetworkSecurityGroupId $nsg.Id
+
+Confirm
+Are you sure you want to overwrite resource 'nic-skcc-comdpt1'
+[Y] Yes [N] No [S] Suspend [?] Help (default is "Yes"): Y
+PS C:\workspace\AzureBasic\0.ENV> $frontEnd.Id
+
+/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-skcc-homepage-dev/providers/Microsoft.Network/virtualNetworks/vnet-skcc-dev/subnets/snet-skcc-dev-frontend
+PS C:\workspace\AzureBasic\0.ENV> $pip.id
+
+/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-skcc-homepage-dev/providers/Microsoft.Network/publicIPAddresses/nic-skcc-comdpt1
+PS C:\workspace\AzureBasic\0.ENV> $nsg.id
+
+/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-skcc-homepage-dev/providers/Microsoft.Network/networkSecurityGroups/nsg-skcc-homepage
+PS C:\workspace\AzureBasic\0.ENV> $securePassword = ConvertTo-SecureString ' ' -AsPlainText -Force
+
+PS C:\workspace\AzureBasic\0.ENV> $cred = New-Object System.Management.Automation.PSCredential ("azureuser", $securePassword)
+
+PS C:\workspace\AzureBasic\0.ENV> $vmConfig = New-AzVMConfig `
+>>   -VMName "vm-skcc-comdpt1" `
+>>   -VMSize "Standard_B2s"
+
+PS C:\workspace\AzureBasic\0.ENV> $vmConfig = Set-AzVMOperatingSystem `
+>>   -VM $vmConfig `
+>>   -Linux `
+>>   -ComputerName "vm-skcc-comdpt1" `
+>>   -Credential $cred `
+>>   -DisablePasswordAuthentication
+
+PS C:\workspace\AzureBasic\0.ENV> $vmConfig = Set-AzVMSourceImage `
+>>   -VM $vmConfig `
+>>   -PublisherName "Canonical" `
+>>   -Offer "UbuntuServer" `
+>>   -Skus "18.04-LTS" `
+>>   -Version "latest"
+
+PS C:\workspace\AzureBasic\0.ENV> $vmConfig = Add-AzVMNetworkInterface `
+>>   -VM $vmConfig `
+>>   -Id $nic.Id         
+
+PS C:\workspace\AzureBasic\0.ENV> $sshPublicKey = cat ~/.ssh/id_rsa.pub
+
+PS C:\workspace\AzureBasic\0.ENV> Add-AzVMSshPublicKey `
+>>   -VM $vmConfig `
+>>   -KeyData $sshPublicKey `
+>>   -Path "/home/azureuser/.ssh/authorized_keys"
+
+
+
+Name            : vm-skcc-comdpt1
+HardwareProfile : {VmSize}
+NetworkProfile  : {NetworkInterfaces}
+OSProfile       : {ComputerName, AdminUsername, AdminPassword, LinuxConfiguration}
+StorageProfile  : {ImageReference}
+
+
+PS C:\workspace\AzureBasic\0.ENV> New-AzVM -VM $vmConfig `
+>>   -ResourceGroupName "rg-skcc-homepage-dev" `
+>>   -Location "koreacentral"
+
+WARNING: Since the VM is created using premium storage or managed disk, existing standard storage account, skccdevhomepagedev, is used for boot diagnostics.
+
+RequestId IsSuccessStatusCode StatusCode ReasonPhrase
+--------- ------------------- ---------- ------------
+                         True         OK OK
+
+PS C:\workspace\AzureBasic\0.ENV>
+```

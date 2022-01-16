@@ -367,7 +367,9 @@ for ($i = 1; $i -le 3; $i++) {
 ```
 ### 제거
 ```
-Remove-AzStorageAccount -Name 'skccdevhomepagedev' -ResourceGroupName 'rg-skcc-homepage-dev'
+Remove-AzStorageAccount `
+  -Name 'skccdevhomepagedev' `
+  -ResourceGroupName 'rg-skcc-homepage-dev'
 ```
 
 ## nic 만들기
@@ -377,7 +379,53 @@ Remove-AzStorageAccount -Name 'skccdevhomepagedev' -ResourceGroupName 'rg-skcc-h
 | CLI | az network nic create |  
 | PowerShell | New-AzNetworkInterface |  
 
+## NSG Rule 만들기
+### Create an inbound network security group rule for port 22
+```powershell
+$nsgRuleSSH = New-AzNetworkSecurityRuleConfig `
+  -Name "nsg-rule-ssh"  `
+  -Protocol "Tcp" `
+  -Direction "Inbound" `
+  -Priority 1000 `
+  -SourceAddressPrefix * `
+  -SourcePortRange * `
+  -DestinationAddressPrefix * `
+  -DestinationPortRange 22 `
+  -Access "Allow"
+```
+
+### Create an inbound network security group rule for port 80
+```powershell
+$nsgRuleWeb = New-AzNetworkSecurityRuleConfig `
+  -Name "nsg-rule-www"  `
+  -Protocol "Tcp" `
+  -Direction "Inbound" `
+  -Priority 1001 `
+  -SourceAddressPrefix * `
+  -SourcePortRange * `
+  -DestinationAddressPrefix * `
+  -DestinationPortRange 10080 `
+  -Access "Allow"
+```
+
+### Create a network security group
+```powershell
+$nsg = New-AzNetworkSecurityGroup `
+  -ResourceGroupName "rg-skcc-homepage-dev" `
+  -Location "koreacentral" `
+  -Name "nsg-skcc-homepage" `
+  -SecurityRules $nsgRuleSSH,$nsgRuleWeb
+```
 ## public-ip 만들기
+```powershell
+$vent = $virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq 'vnet-skcc-dev'}
+$pip = New-AzPublicIpAddress `
+  -Name "nic-skcc-comdpt1" `
+  -ResourceGroupName "rg-skcc-homepage-dev" `
+  -Location "koreacentral" `
+  -AllocationMethod Static `
+  -IdleTimeoutInMinutes 4
+```
 
 ## VM 만들기
 * [빠른 시작: PowerShell을 사용하여 Azure에서 Windows 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/quick-create-powershell)  
@@ -386,43 +434,150 @@ Remove-AzStorageAccount -Name 'skccdevhomepagedev' -ResourceGroupName 'rg-skcc-h
 
 
 ### NIC 만들기
+#### vnet 정보 가져오기
+```powershell
+$virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq 'vnet-skcc-dev'}
 ```
+
+#### 
+```powershell
 $frontEnd = $virtualNetwork.Subnets|?{$_.Name -eq 'snet-skcc-dev-frontend'}
-$myNic1 = New-AzNetworkInterface -ResourceGroupName "rg-skcc-homepage-dev" `
-    -Name "nic-skcc-homepage-pt1" `
-    -Location "koreacentral" `
-    -SubnetId $frontEnd.Id
+$nic = New-AzNetworkInterface `
+  -ResourceGroupName "rg-skcc-homepage-dev" `
+  -Name "nic-skcc-comdpt1" `
+  -Location "koreacentral" `
+  -SubnetId $frontEnd.Id `
+  -PublicIpAddressId $pip.Id `
+  -NetworkSecurityGroupId $nsg.Id
+```
+
+### credential object 정의
+```powershell
+$securePassword = ConvertTo-SecureString ' ' -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential ("azureuser", $securePassword)
 ```
 
 ### VM 크기 설정
 ```
-$vmConfig = New-AzVMConfig -VMName "vm-skcc-home-pt1" -VMSize "Standard_DS3_v2"
+$vmConfig = New-AzVMConfig `
+  -VMName "vm-skcc-comdpt1" `
+  -VMSize "Standard_B2s"
 ```
 
+### VM 크기 예시
+- Standard_B2s : [B-시리즈 버스터블 가상 머신](https://docs.microsoft.com/ko-kr/azure/virtual-machines/sizes-b-series-burstable)
+  - CPU : 2 vCPU
+  - 메모리 : 4 GiB
+  - 임시 스토리지(SSD) : 8 GiB
+
+- Standard_D1_v2 : [Dv2 시리즈](https://docs.microsoft.com/ko-kr/azure/virtual-machines/dv2-dsv2-series)
+  - CPU : 1 vCPU
+  - 메모리 : 3.5 GiB
+  - 임시 스토리지(SSD) : 50 GiB
+
+- Standard_DS3_v2 : DSv2 시리즈
+  - CPU : 4 vCPU
+  - 메모리 : 14 GiB
+  - 임시 스토리지(SSD) : 28 GiB
+
+
+
 ### 소스 이미지 구성
-```
-$vmConfig = Set-AzVMOperatingSystem -VM $vmConfig `
-    -Windows `
-    -ComputerName "myVM" `
-    -Credential $cred `
-    -ProvisionVMAgent `
-    -EnableAutoUpdate
+#### Windows
+```powershell
+$vmConfig = Set-AzVMOperatingSystem `
+  -VM $vmConfig `
+  -Windows `
+  -ComputerName "vm-skcc-comdpt1" `
+  -Credential $cred `
+  -ProvisionVMAgent `
+  -EnableAutoUpdate
 $vmConfig = Set-AzVMSourceImage -VM $vmConfig `
-    -PublisherName "MicrosoftWindowsServer" `
-    -Offer "WindowsServer" `
-    -Skus "2016-Datacenter" `
-    -Version "latest"
+  -PublisherName "MicrosoftWindowsServer" `
+  -Offer "WindowsServer" `
+  -Skus "2016-Datacenter" `
+  -Version "latest"
+```
+
+#### Linux (Ubuntu)
+- APACHE : vm-skcc-comdpt1
+- TOMCAT : vm-skcc-comdap1
+```powershell
+$vmConfig = Set-AzVMOperatingSystem `
+  -VM $vmConfig `
+  -Linux `
+  -ComputerName "vm-skcc-comdpt1" `
+  -Credential $cred `
+  -DisablePasswordAuthentication
+$vmConfig = Set-AzVMSourceImage `
+  -VM $vmConfig `
+  -PublisherName "Canonical" `
+  -Offer "UbuntuServer" `
+  -Skus "18.04-LTS" `
+  -Version "latest"
 ```
 
 ### 인터페이스 추가
 ```
-$vmConfig = Add-AzVMNetworkInterface -VM $vmConfig -Id $myNic1.Id -Primary
+$vmConfig = Add-AzVMNetworkInterface `
+  -VM $vmConfig `
+  -Id $nic.Id -Primary
+```
+
+### SSH key 구성
+#### SSH 키 쌍 만들기
+```
+PS C:\workspace\AzureBasic\0.ENV> ssh-keygen -t rsa -b 4096
+
+Generating public/private rsa key pair.
+Enter file in which to save the key (C:\Users\taeey/.ssh/id_rsa): ./.ssh/id_rsa
+./.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in ./.ssh/id_rsa
+Your public key has been saved in ./.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:gEfKu1joY11R+waG51xWMs2roEHi/qgirTDdcn5j4OU taeey@DESKTOP-QR555PR
+The key's randomart image is:
++---[RSA 4096]----+
+|      . . oo.    |
+|   ..+.o . +o    |
+|   .+o= = o  .   |
+|   ..o.B.=  .    |
+|  ..o .oS.o.     |
+| o =ooo  ..      |
+|o.B.=*           |
+|+o.=o E          |
+|oo...o .         |
++----[SHA256]-----+
+PS C:\workspace\AzureBasic\0.ENV>
+```
+```powershell
+$sshPublicKey = cat ~/.ssh/id_rsa.pub
+Add-AzVMSshPublicKey `
+  -VM $vmConfig `
+  -KeyData $sshPublicKey `
+  -Path "/home/azureuser/.ssh/authorized_keys"
+```
+
+### boot diagnotics
+```
+$vmConfig = SetAzVMBootDiagnotic `
+  -VM $vmConfig `
+  -Enable `
+  -resourceGroup "rg-skcc-homepage-dev" `
+  -StorageAccountName "skccdevhomepagedev"
 ```
 
 ### VM 만들기
 ```
-New-AzVM -VM $vmConfig -ResourceGroupName "rg-skcc-homepage-dev" -Location "koreacentral"
+New-AzVM -VM $vmConfig `
+  -ResourceGroupName "rg-skcc-homepage-dev" `
+  -Location "koreacentral"
 ```
+
+
 
 ### apache vm 만들기
 - VM 자격 증명을 설정 : Get-Credential
