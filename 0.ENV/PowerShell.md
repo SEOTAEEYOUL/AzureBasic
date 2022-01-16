@@ -325,9 +325,10 @@ $virtualNetwork | Set-AzVirtualNetwork
 ```
 
 
-## Storage Account 만들기
+## Storage Account
 - SKU : "Standard_LRS" (가장 저렴한 중복성 옵션)
 - 생성시 시간이 1 ~ 2 분 걸림
+### Stroage Account 만들기
 ```powershell
 New-AzStorageAccount `
   -ResourceGroupName rg-skcc-homepage-dev `
@@ -346,6 +347,23 @@ $storage_account = @{
     Kind = 'StorageV2'
 }
 New-AzStorageAccount @storage_account
+```
+### 컨테이너 만들기
+```
+# Create variables
+$containerName  = "individual-container"
+$prefixName     = "loop"
+
+# Approach 1: Create a container
+New-AzStorageContainer -Name $containerName -Context $ctx
+
+# Approach 2: Create containers with a PowerShell loop
+for ($i = 1; $i -le 3; $i++) { 
+    New-AzStorageContainer -Name (-join($prefixName, $i)) -Context $ctx
+   } 
+
+# Approach 3: Create containers using the PowerShell Split method
+"$($prefixName)4 $($prefixName)5 $($prefixName)6".split() | New-AzStorageContainer -Context $ctx
 ```
 ### 제거
 ```
@@ -452,7 +470,8 @@ Remove-AzResourceGroup -Name 'rg-skcc-homepage-dev' -Force
 |:---|:---|:---|  
 | New-AzResourceGroup | 리소스 그룹 만들기 | -Name myResourceGroup -Location EastUS | 
 | Get-AzLocation | 지역 목록 검색 | Get-AzLocation | select Location |  
-| New-AzStorageAccount | 스토리지 계정 생서 | |
+| New-AzStorageAccount | 스토리지 계정 생성 | |  
+| New-AzStorageContainer | 컨테이너 만들기 | |  
 | Import-CSV | CSV 파일 읽기 | Import-CSV -Path ./vm_parameter_template.csv |
 | Set-AzVMOperatingSystem | VM OS 지정 | -Windows, -Linux |  
 | Set-AzVMSourceImage | VM 이미지 지정 | Standard_D1_v2 |
