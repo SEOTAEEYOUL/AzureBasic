@@ -4,7 +4,8 @@
 * [자습서: Azure Portal을 사용하여 가상 네트워크 피어링으로 가상 네트워크 연결](https://docs.microsoft.com/ko-kr/azure/virtual-network/tutorial-connect-virtual-networks-portal)  
 * [Azure CLI를 사용하여 가상 네트워크 피어링으로 가상 네트워크 연결](https://docs.microsoft.com/ko-kr/azure/virtual-network/tutorial-connect-virtual-networks-cli)
 * [PowerShell을 사용하여 VNet-VNet VPN Gateway 연결 구성](https://docs.microsoft.com/ko-kr/azure/vpn-gateway/vpn-gateway-vnet-vnet-rm-ps)
-* [PowerShell과 함께 Application Gateway를 사용하여 엔드투엔드 TLS 구성](https://github.com/MicrosoftDocs/azure-docs.ko-kr/blob/master/articles/application-gateway/application-gateway-end-to-end-ssl-powershell.md)
+* [PowerShell과 함께 Application Gateway를 사용하여 엔드투엔드 TLS 구성](https://github.com/MicrosoftDocs/azure-docs.ko-kr/blob/master/articles/application-gateway/application-gateway-end-to-end-ssl-powershell.md)  
+* [How to re-size Azure virtual networks that are peered—now in preview](https://azure.microsoft.com/ko-kr/blog/how-to-resize-azure-virtual-networks-that-are-peered-now-in-preview/)
 
 ## 만드는 이유
 - 두 네트워크 간에 트래픽을 라우팅하는 데 사용
