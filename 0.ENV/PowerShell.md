@@ -23,6 +23,12 @@
 - Get-InstalledModule -Name "Az"
 - Install-Module -Name Az.Compute
 - Install-Module -Name Az.Network
+- Install-Module -Name Az.MySql -AllowPrerelease
+
+## 서비스
+- Register-AzResourceProvider -ProviderNamespace Microsoft.DBforMySQL
+- Register-AzResourceProvider -ProviderNamespace "Microsoft.RecoveryServices"
+- Register-AzResourceProvider -ProviderNamespace Microsoft.Network
 
 ## 예약어
 | 예약어 | 의미 |
@@ -40,7 +46,7 @@
 | -gt | Greather than(크다) | > |  
 | -lt | Less than(작다) | < |  
 | -ge | Greater than or equal to(크거나 같다) | >= |
-| -le | Less than or equal to (작거나 같다) | <= |  
+| -le | Less than or equal to(작거나 같다) | <= |  
 
 
 ## Sample
@@ -561,7 +567,7 @@ The key's randomart image is:
 PS C:\workspace\AzureBasic\0.ENV>
 ```
 ```powershell
-$sshPublicKey = cat ~/.ssh/id_rsa.pub
+$sshPublicKey = cat ./.ssh/id_rsa.pub
 Add-AzVMSshPublicKey `
   -VM $vmConfig `
   -KeyData $sshPublicKey `
@@ -569,7 +575,7 @@ Add-AzVMSshPublicKey `
 ```
 
 ### OS Disk 설정
-```pwsh
+```powershell
 $vmName="vm-skcc-comdpt1"
 $resourceGroup = Get-AzResourceGroup -Name 'rg-skcc-homepage-dev'
 $location = $resourceGroup.Location
@@ -605,6 +611,23 @@ New-AzVM -VM $vmConfig `
 ![rg-skcc-homepage-dev.png](./img/rg-skcc-homepage-dev.png)  
 ![vm-skcc-comdpt1.png](./img/vm-skcc-comdpt1.png)  
 
+### Backup 적용
+- 기본 정책을 설정
+  ```powershell
+  $policy = Get-AzRecoveryServicesBackupProtectionPolicy `
+    -Name "DefaultPolicy"
+  ```
+
+- VM 백업을 사용하도록 설정
+  ```powershell
+  $vm='vm-skcc-comdpt1';
+  Enable-AzRecoveryServicesBackupProtection `
+      -ResourceGroupName "rg-skcc-homepage-dev" `
+      -Name "$vm" `
+      -Policy $policy
+  ```
+![rsv-skcc-VMBackup-dev.png](./img/rsv-skcc-VMBackup-dev.png)  
+![rsv-skcc-VMBackup-dev-backup-items.png](./img/rsv-skcc-VMBackup-dev-backup-items.png)  
 
 ### apache vm 만들기
 - VM 자격 증명을 설정 : Get-Credential
