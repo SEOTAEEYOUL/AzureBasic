@@ -17,6 +17,19 @@
 
 ## Create IP tag for Internet and Routing Preference.
 ```powershell
+
+## 변수 선언
+$resourceGroup = "rg-skcc-ag"
+$location = "koreacentral"
+
+$agVnetName = "vnet-skcc-ag"
+$agVnetPrefix = "10.21.0.0/16"
+
+$agPulicIPName = "pip-ag"
+$agDomainNameLabel = "skcchomepage"
+$customFqdn = "skcchomepage.koreacentral.cloudapp.azure.com"
+ 
+
 $tag = @{
     IpTagType = 'RoutingPreference'
     Tag = 'Internet'   
@@ -24,10 +37,21 @@ $tag = @{
 $ipTag = New-AzPublicIpTag @tag
 
 ## Create IP. ##
+New-AzPublicIpAddress `
+  -ResourceGroupName $resourceGroup `
+  -Location $location `
+  -Name $agPulicIPName `
+  -AllocationMethod Static `
+  -Sku Standard
+
+$agPulicIPName = "pip-ag"
+$agDomainNameLabel = "skcchomepage"
+$customFqdn = "skcchomepage.koreacentral.cloudapp.azure.com"
+
 $ip = @{
-    Name = 'myStandardPublicIP-RP'
-    ResourceGroupName = 'QuickStartCreateIP-rg'
-    Location = 'eastus2'
+    Name = $agPulicIPName
+    ResourceGroupName = $resourceGroup
+    Location = $location
     Sku = 'Standard'
     AllocationMethod = 'Static'
     IpAddressVersion = 'IPv4'
@@ -35,6 +59,16 @@ $ip = @{
     Zone = 1,2,3   
 }
 New-AzPublicIpAddress @ip
+
+# Add DNS domain label of a public IP address
+$publicIp = Get-AzPublicIpAddress `
+  -Name $agPulicIPName `
+  -ResourceGroupName $resourceGroup
+$publicIp.DnsSettings = @{"DomainNameLabel" = $agDomainNameLabel}
+Set-AzPublicIpAddress -PublicIpAddress $publicIp
+$publicIp = Get-AzPublicIpAddress `
+  -Name $agPulicIPName `
+  -ResourceGroupName $resourceGroup
 ```
 
 ```powershell
