@@ -11,6 +11,8 @@ $agVnetName = "vnet-skcc-ag"
 $agVnetPrefix = "10.21.0.0/16"
 
 $agPulicIPName = "pip-ag"
+$agDomainNameLabel = "skcchomepage"
+$customFqdn = "skcchomepage.koreacentral.cloudapp.azure.com"
 
 $agIPConfigName = "ag-ip-cfg"
 $agFrontendIPConfigName = "ag-fe-cfg"
@@ -48,6 +50,16 @@ New-AzPublicIpAddress `
   -Name $agPulicIPName `
   -AllocationMethod Static `
   -Sku Standard
+  
+# Add DNS domain label of a public IP address
+$publicIp = Get-AzPublicIpAddress `
+  -Name $agPulicIPName `
+  -ResourceGroupName $resourceGroup
+$publicIp.DnsSettings = @{"DomainNameLabel" = "skcchomepage"}
+Set-AzPublicIpAddress -PublicIpAddress $publicIp
+$publicIp = Get-AzPublicIpAddress `
+  -Name $agPulicIPName `
+  -ResourceGroupName $resourceGroup
 
 ## 애플리케이션 게이트웨이 만들기
 ### 1. IP 구성 및 frontend port 만들기
@@ -60,6 +72,7 @@ $subnet = Get-AzVirtualNetworkSubnetConfig `
 $pip  = Get-AzPublicIPAddress `
   -ResourceGroupName $resourceGroup `
   -Name $agPulicIPName
+
  
 $gipconfig = New-AzApplicationGatewayIPConfiguration `
   -Name $agIPConfigName  `

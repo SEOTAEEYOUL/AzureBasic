@@ -41,6 +41,12 @@ az network vnet peering create `
   --vnet-name vnet-skcc-ag `
   --remote-vnet $vNet2Id `
   --allow-vnet-access
+az network vnet peering create `
+  --name peering-vnet-skcc-dev-vnet-skcc-ag `
+  --resource-group rg-skcc-home-dev `
+  --vnet-name vnet-skcc-dev `
+  --remote-vnet $vNet1Id `
+  --allow-vnet-access
 ```
 
 ### 3. peeringState 가 Connected 로 변경되었는지 확인

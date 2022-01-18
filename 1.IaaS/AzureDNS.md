@@ -55,6 +55,8 @@ az network dns record-set a add-record `
   -n www -a 20.196.196.53
 ```
 ![dns-zone-www.png](./img/dns-zone-www.png)
+![www.nodespringboot-org.png](./img/www.nodespringboot-org.png)
+
 
 ## 레코드 보기
 ```powershell
@@ -77,13 +79,27 @@ Non-authoritative answer:
 Name:    www.nodespringboot.org
 Address:  20.196.196.53
 
+PS D:\workspace\AzureBasic\1.IaaS> nslookup www.nodespringboot.org
+
+Server:  dns.google
+Address:  8.8.8.8
+
+DNS request timed out.
+    timeout was 2 seconds.
+DNS request timed out.
+    timeout was 2 seconds.
+Non-authoritative answer:
+Name:    skcchomepage.koreacentral.cloudapp.azure.com
+Address:  20.196.196.53
+Aliases:  www.nodespringboot.org
+
 PS C:\workspace\AzureBasic\1.IaaS> az network dns record-set list -g rg-skcc-homepage-dev -z nodespringboot.org -o table
 
 Fqdn                     Name    ProvisioningState    ResourceGroup         Ttl
 -----------------------  ------  -------------------  --------------------  ------
 nodespringboot.org.      @       Succeeded            rg-skcc-homepage-dev  172800
 nodespringboot.org.      @       Succeeded            rg-skcc-homepage-dev  3600
-www.nodespringboot.org.  www     Succeeded            rg-skcc-homepage-dev  300
+www.nodespringboot.org.  www     Succeeded            rg-skcc-homepage-dev  3600
 
 PS C:\workspace\AzureBasic\1.IaaS>
 ```
