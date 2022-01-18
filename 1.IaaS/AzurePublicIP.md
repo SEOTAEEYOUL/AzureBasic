@@ -1,8 +1,21 @@
-# Azure Public IP
+# Azure Public IP Address
+- 인터넷 리소스가 Azure 리소스에 대한 인바운드 통신을 할 수 있음
+- Public IP Address 리소스를 연결할 수 있는 일부 리소스
+  - Virtual machine network interfaces
+  - Virtual machine scale sets
+  - Public Load Balancers
+  - Virtual Network Gateways (VPN/ER)
+  - NAT gateways
+  - Application Gateways
+  - Azure Firewall
+  - Bastion Host
 
-## Create IP tag for Internet and Routing Preference. ##
+## PowerShell 명령어
+* [New-AzPublicIpAddress](https://docs.microsoft.com/en-us/powershell/module/az.network/new-azpublicipaddress?view=azps-7.1.0)
+* [Get-AzPublicIpAddress](https://docs.microsoft.com/en-us/powershell/module/az.network/get-azpublicipaddress?view=azps-7.1.0)
+* [Set-AzPublicIpAddress](https://docs.microsoft.com/en-us/powershell/module/az.network/set-azpublicipaddress?view=azps-7.1.0)
 
-
+## Create IP tag for Internet and Routing Preference.
 ```powershell
 $tag = @{
     IpTagType = 'RoutingPreference'
@@ -54,5 +67,4 @@ REMARKS
     For more information, type: "Get-Help New-AzPublicIpAddress -Detailed"
     For technical information, type: "Get-Help New-AzPublicIpAddress -Full"
     For online help, type: "Get-Help New-AzPublicIpAddress -Online"
-
 ```
