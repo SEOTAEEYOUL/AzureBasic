@@ -3,11 +3,53 @@
 - ​PowerShell은 여러분이 여러분의 Microsoft 기반 장비와 애플리케이션들을 일관된 관리 프로세스로 관리하는데 사용될 수 있는 툴이다. 
 - 이 툴은 관리자와 개발자 모두에게 매력적이어서 명령줄과 간단하지만 고급진 스크립트를 실제 프로그램으로 확장시킬 수 있다.
 
+> [Windows에 PowerShell 설치](https://docs.microsoft.com/ko-kr/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2)  
+> [CentOS에 PowerShell 설치](https://docs.microsoft.com/ko-kr/powershell/scripting/install/install-centos?view=powershell-7.2)
+> [Ubuntu에 PowerShell 설치](https://docs.microsoft.com/ko-kr/powershell/scripting/install/install-ubuntu?view=powershell-7.2)
 > [Back to Basics: The PowerShell Foreach Loop](https://adamtheautomator.com/powershell-foreach/)  
 > [Managing CSV Files in PowerShell with Import-Csv](https://adamtheautomator.com/import-csv/)  
 > [Understanding Import-Csv and the ForEach Loop](https://adamtheautomator.com/import-csv-foreach/)  
 > [PowerShell을 사용하여 가상 네트워크 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-network/quick-create-powershell)
 
+
+## PowerShell 설치
+### Windows
+```powershell
+msiexec.exe /package PowerShell-7.2.1-win-x64.msi /quiet ADD_EXPLORER_CONTEXT_MENU_OPENPOWERSHELL=1 ENABLE_PSREMOTING=1 REGISTER_MANIFEST=1 USE_MU=1 ENABLE_MU=1
+```
+[PowerShell-7.2.1-win-x64.msi](https://github.com/PowerShell/PowerShell/releases/download/v7.2.1/PowerShell-7.2.1-win-x64.msi)
+
+### Ubuntu
+- Repository 
+  - Ubuntu 20.04 - https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+  - Ubuntu 18.04 - https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+```bash
+# Update the list of packages
+sudo apt-get update
+# Install pre-requisite packages.
+sudo apt-get install -y wget apt-transport-https software-properties-common
+# Download the Microsoft repository GPG keys
+wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+# Register the Microsoft repository GPG keys
+sudo dpkg -i packages-microsoft-prod.deb
+# Update the list of packages after we added packages.microsoft.com
+sudo apt-get update
+# Install PowerShell
+sudo apt-get install -y powershell
+# Start PowerShell
+pwsh
+```
+### Version 보기
+```powershell
+$PSVersionTable.PSVersion
+
+Get-Host | Select-Object Version
+```
+
+---
+
+## PowerShell 명령(cmdlet)
+- cmdlet은 독립 실행 파일이 아닌 네이티브 PowerShell 명령
 
 ## PowerShell 명령어 구조
 - command -parameter1 -parameter2  argument1 argument2
@@ -21,14 +63,17 @@
 
 ## 모듈
 - Get-InstalledModule -Name "Az"
+- Install-Module -Name Az.Accounts -AllowClobber 
 - Install-Module -Name Az.Compute
 - Install-Module -Name Az.Network
-- Install-Module -Name Az.MySql -AllowPrerelease
+- Install-Module -Name Az.MySql -AllowClobber
 
 ## 서비스
 - Register-AzResourceProvider -ProviderNamespace Microsoft.DBforMySQL
 - Register-AzResourceProvider -ProviderNamespace "Microsoft.RecoveryServices"
 - Register-AzResourceProvider -ProviderNamespace Microsoft.Network
+- 등록된 서비스 보기
+  - Get-AzResourceProvider | Select ProviderNamespace
 
 ## 예약어
 | 예약어 | 의미 |
@@ -74,12 +119,6 @@ Get-Help Get-Service -Detailed
 Get-Help Get-NetAdater -full
 ```
 
-### Version 보기
-```powershell
-$PSVersionTable.PSVersion
-
-Get-Host | Select-Object Version
- ```
 
 ### 파일 Path 및 내용 가져오기
 ```powershell

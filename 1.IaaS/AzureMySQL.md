@@ -1,14 +1,23 @@
 # [Azure MySQL](https://docs.microsoft.com/ko-kr/azure/mysql/overview)
 
+- [Azure Database for MySQL에 대한 Private Link](https://docs.microsoft.com/ko-kr/azure/mysql/concepts-data-access-security-private-link)
+
 
 ## PowerShell
 * [New-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/new-azmysqlserver?view=azps-7.1.0#examples)  
 * [Get-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/get-azmysqlserver?view=azps-7.1.0)
 * [Update-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/update-azmysqlserver?view=azps-7.1.0)
+* [Remove-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/remove-azmysqlserver?view=azps-7.1.0)
 
 ## 모듈
 ```powershell
-Install-Module -Name Az.MySql -AllowPrerelease
+Install-Module -Name Az.MySql -AllowClobber
+```
+
+### 공급자 등록
+- Azure Database for MySQL 서비스를 처음 사용하는 경우 Microsoft.DBforMySQL 리소스 공급자를 등록해야 함
+```
+Register-AzResourceProvider -ProviderNamespace Microsoft.DBforMySQL
 ```
 
 ## SKU
@@ -26,53 +35,75 @@ Install-Module -Name Az.MySql -AllowPrerelease
 Write-Host "구독 선택"
 Set-AzContext -SubscriptionId '9ebb0d63-8327-402a-bdd4-e222b01329a1'
 
+Write-Host "구독 확인"
+Get-AzContext
+
 Write-Host "MySQL 서버 생성"
-$Password = Read-Host `
-  -Prompt 'Please enter your password' `
-  -AsSecureString
+# $Password = Read-Host `
+#   -Prompt 'Please enter your password' `
+#   -AsSecureString
+Write-Host "Convert password to secure string"
+$Password = ConvertTo-SecureString 'dlalt!00' -AsPlainText -Force
 $tags = @{
   owner='SeoTaeYeol'
   environment='dev'
   serviceTitle='homepage'
   personalInformation='no'
 }
+
+Write-Host "- 최소 스토리지 : 5120"
+Write-Host "- 서버백업 지역 중복 사용 여부 : Disabled"
 New-AzMySqlServer `
-  -Name db-mysql-homepage `
-  -ResourceGroupName rg-skcc-homepage `
+  -Name mysql-homepage `
+  -ResourceGroupName rg-skcc-homepage-dev `
   -Sku B_Gen5_1 `
-  -GeoRedundantBackup Enabled `
+  -GeoRedundantBackup Disabled `
   -Location koreacentral `
   -AdministratorUsername myadmin `
-  -Tag owner=$tags `
-  -AdministratorLoginPassword $Password
+  -AdministratorLoginPassword $Password `
+  -StorageInMb 5120 `
+  -StorageAutogrow Enabled `
+  -Tag $tags
+
+Write-Host "백업 설정"
+Update-AzMySqlServer `
+  -Name mysql-homepage `
+  -ResourceGroupName rg-skcc-homepage-dev `
+  -BackupRetentionDay 14
 
 Write-Host "방화벽 규칙 적용"
 New-AzMySqlFirewallRule `
   -Name AllowMyIP `
-  -ResourceGroupName myresourcegroup `
-  -ServerName mydemoserver `
+  -ResourceGroupName rg-skcc-homepage-dev `
+  -ServerName mysql-homepage `
   -StartIPAddress 192.168.0.1 `
   -EndIPAddress 192.168.0.1
 
 Write-Host "Azure Database for MySQL 서버에서 SSL을 사용하지 않도록 설정"
 Update-AzMySqlServer `
-  -Name mydemoserver `
-  -ResourceGroupName myresourcegroup `
+  -Name mysql-homepage `
+  -ResourceGroupName rg-skcc-homepage-dev `
   -SslEnforcement Disabled
 
 Write-Host "연결정보 가져오기"
 Get-AzMySqlServer `
-  -Name mydemoserver `
-  -ResourceGroupName myresourcegroup |
+  -Name mysql-homepage `
+  -ResourceGroupName rg-skcc-homepage-dev |
   Select-Object `
     -Property FullyQualifiedDomainName, AdministratorLogin
 
 Write-Host ""
 Get-AzMySqlServer `
   -ResourceGroupName PowershellMySqlTest `
-  -ServerName mysql-test | Update-AzMySqlServer `
-    -BackupRetentionDay 23 `
-    -StorageMb 10240
+  -ServerName mysql-homepage | `
+    Update-AzMySqlServer `
+      -BackupRetentionDay 23 `
+      -StorageMb 10240
+```
+```
+Remove-AzMySqlServer `
+  -ResourceGroupName rg-skcc-homepage-dev `
+  -Name mysql-homepage
 ```
 
 ## CLI
@@ -107,6 +138,17 @@ az mysql server firewall-rule create `
 az mysql server show `
   --resource-group myresourcegroup `
   --name mydemoserver
+```
+### private endpoint 만들기
+```
+az network private-endpoint create \  
+    --name pe-mysql-homepage \  
+    --resource-group rg-skcc-homepage-dev \  
+    --vnet-name vnet-skcc-dev  \  
+    --subnet snet-skcc-dev-frontend \  
+    --private-connection-resource-id $(az resource show -g rg-skcc-homepage-dev -n mysql --resource-type "Microsoft.DBforMySQL/servers" --query "id" -o tsv) \    
+    --group-id mysqlServer \  
+    --connection-name myConnection  
 ```
 
 ## 운영 명령
