@@ -38,7 +38,7 @@ Set-AzContext -SubscriptionId '9ebb0d63-8327-402a-bdd4-e222b01329a1'
 Write-Host "구독 확인"
 Get-AzContext
 
-Write-Host "MySQL 서버 생성"
+Write-Host "MySQL 서버 생성 - 수분소요"
 # $Password = Read-Host `
 #   -Prompt 'Please enter your password' `
 #   -AsSecureString
@@ -54,22 +54,24 @@ $tags = @{
 Write-Host "- 최소 스토리지 : 5120"
 Write-Host "- 서버백업 지역 중복 사용 여부 : Disabled"
 New-AzMySqlServer `
-  -Name mysql-homepage-dev `
+  -Name mysql-homepage `
   -ResourceGroupName rg-skcc-homepage-dev `
   -Sku B_Gen5_1 `
+  -BackupRetentionDay 14 `
   -GeoRedundantBackup Disabled `
   -Location koreacentral `
   -AdministratorUsername mysqladmin `
   -AdministratorLoginPassword $Password `
-  -StorageInMb 5120 `
   -StorageAutogrow Enabled `
-  -Tag $tags
+  -StorageInMb 5120 `
+  -Tag $tags `
+  -Version 5.7
 
-Write-Host "백업 설정"
-Update-AzMySqlServer `
-  -Name mysql-homepage-dev `
-  -ResourceGroupName rg-skcc-homepage-dev `
-  -BackupRetentionDay 14
+# Write-Host "백업 설정"
+# Update-AzMySqlServer `
+#   -Name mysql-homepage-dev `
+#   -ResourceGroupName rg-skcc-homepage-dev `
+#   -BackupRetentionDay 14
 
 Write-Host "방화벽 규칙 적용"
 New-AzMySqlFirewallRule `
@@ -86,6 +88,7 @@ Update-AzMySqlServer `
   -SslEnforcement Disabled
 
 Write-Host "연결정보 가져오기"
+# mysql-homepage.mysql.database.azure.com
 Get-AzMySqlServer `
   -Name mysql-homepage `
   -ResourceGroupName rg-skcc-homepage-dev |

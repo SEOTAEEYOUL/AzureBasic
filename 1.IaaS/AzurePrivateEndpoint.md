@@ -21,6 +21,8 @@ $vnetName = "vnet-skcc-dev"
 $resourceGroupName = "rg-skcc-homepage-dev"
 $subnetName = "snet-skcc-dev-frontend"
 $privateEndPointName = "pe-skccdevhomepagemysql"
+$subscriptionId = "9ebb0d63-8327-402a-bdd4-e222b01329a1"
+
 
 $virtualNetwork = Get-AzVirtualNetwork `
   -ResourceName $vnetName `
@@ -31,10 +33,11 @@ $subnet = $virtualNetwork | `
     Where-Object Name -eq $subnetName
 $plsConnection = `
   New-AzPrivateLinkServiceConnection `
-    -Name 'MyPLSConnections' -PrivateLinkServiceId '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/privateLinkServices/privateLinkService' `
+    -Name $privateEndPointName `
+    -PrivateLinkServiceId "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Network/privateLinkServices/privateLinkService" `
     -RequestMessage 'Please Approve my request'
 New-AzPrivateEndpoint `
-  -Name 'MyPrivateEndpoint' `
+  -Name $privateEndPointName `
   -ResourceGroup $resourceGroupName `
   -Location $location `
   -PrivateLinkServiceConnection $plsConnection  `
