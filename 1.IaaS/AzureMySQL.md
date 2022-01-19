@@ -54,12 +54,12 @@ $tags = @{
 Write-Host "- 최소 스토리지 : 5120"
 Write-Host "- 서버백업 지역 중복 사용 여부 : Disabled"
 New-AzMySqlServer `
-  -Name mysql-homepage `
+  -Name mysql-homepage-dev `
   -ResourceGroupName rg-skcc-homepage-dev `
   -Sku B_Gen5_1 `
   -GeoRedundantBackup Disabled `
   -Location koreacentral `
-  -AdministratorUsername myadmin `
+  -AdministratorUsername mysqladmin `
   -AdministratorLoginPassword $Password `
   -StorageInMb 5120 `
   -StorageAutogrow Enabled `
@@ -67,7 +67,7 @@ New-AzMySqlServer `
 
 Write-Host "백업 설정"
 Update-AzMySqlServer `
-  -Name mysql-homepage `
+  -Name mysql-homepage-dev `
   -ResourceGroupName rg-skcc-homepage-dev `
   -BackupRetentionDay 14
 
@@ -75,7 +75,7 @@ Write-Host "방화벽 규칙 적용"
 New-AzMySqlFirewallRule `
   -Name AllowMyIP `
   -ResourceGroupName rg-skcc-homepage-dev `
-  -ServerName mysql-homepage `
+  -ServerName mysql-homepage-dev `
   -StartIPAddress 192.168.0.1 `
   -EndIPAddress 192.168.0.1
 
