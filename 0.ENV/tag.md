@@ -41,3 +41,152 @@ Azure 리소스, 리소스 그룹 및 구독에 태그를 적용하여 논리적
 | 태그 이름 | Key | 설명 | 예제 값 |  
 |:---|:---|:---|:---|  
 | 기밀성 | Confidentiality | 취급 데이터의 기밀성 | Internal Use Only |
+
+## PowerShell Sample
+```powershell
+#  기조 태그 조회
+$tags = `
+  (Get-AzResource `
+    -ResourceGroupName myResourceGroup `
+    -Name myVM).Tags
+# 태그 보기
+$tags
+
+# +=를 사용하여 $tags 목록에 새 키/값 쌍을 추가
+$tags += @{
+  environment='dev'
+  serviceTitle='homepage'
+  personalInformation='no'
+}
+
+# 변수에 정의 된 모든 태그를 설정
+Set-AzResource `
+  -ResourceGroupName myResourceGroup `
+  -Name myVM `
+  -ResourceType "Microsoft.Compute/VirtualMachines" -Tag $tags
+
+# 리소스의 태그 표시
+(Get-AzResource `
+  -ResourceGroupName myResourceGroup `
+  -Name myVM).Tags
+```
+
+## ResourceType 보기
+### 모든 리소스 공급자와 구독에 대한 등록 상태
+```powershell
+Get-AzResourceProvider `
+  -ListAvailable | `
+    Select-Object `
+      ProviderNamespace, RegistrationState
+```
+
+### 등록된 모든 리소스 공급자
+```powershell
+Get-AzResourceProvider `
+  -ListAvailable | `
+    Where-Object `
+      RegistrationState -eq "Registered" | `
+        Select-Object ProviderNamespace, RegistrationState | `
+          Sort-Object ProviderNamespace
+```
+```powershell
+PS D:\workspace\AzureBasic> Get-AzResourceProvider `
+>>   -ListAvailable | `
+>>     Where-Object `
+>>       RegistrationState -eq "Registered" | `
+>>         Select-Object ProviderNamespace, RegistrationState | `
+>>           Sort-Object ProviderNamespace
+
+
+ProviderNamespace                  RegistrationState
+-----------------                  -----------------
+Microsoft.ADHybridHealthService    Registered
+Microsoft.Advisor                  Registered
+Microsoft.AlertsManagement         Registered
+Microsoft.Authorization            Registered
+Microsoft.Cdn                      Registered
+Microsoft.ChangeAnalysis           Registered
+Microsoft.Compute                  Registered
+Microsoft.ContainerInstance        Registered
+Microsoft.ContainerRegistry        Registered
+Microsoft.ContainerService         Registered
+Microsoft.DBforMySQL               Registered
+Microsoft.DBforPostgreSQL          Registered
+Microsoft.DevTestLab               Registered
+Microsoft.Diagnostics              Registered
+Microsoft.DocumentDB               Registered
+Microsoft.DomainRegistration       Registered
+Microsoft.GuestConfiguration       Registered
+microsoft.insights                 Registered
+Microsoft.KeyVault                 Registered
+Microsoft.Maintenance              Registered
+Microsoft.ManagedIdentity          Registered
+Microsoft.Management               Registered
+Microsoft.MarketplaceNotifications Registered
+Microsoft.MarketplaceOrdering      Registered
+Microsoft.Network                  Registered
+Microsoft.OperationalInsights      Registered
+Microsoft.OperationsManagement     Registered
+Microsoft.PolicyInsights           Registered
+Microsoft.RecoveryServices         Registered
+Microsoft.ResourceGraph            Registered
+Microsoft.ResourceHealth           Registered
+Microsoft.Resources                Registered
+Microsoft.SaaS                     Registered
+Microsoft.Security                 Registered
+Microsoft.SerialConsole            Registered
+Microsoft.Sql                      Registered
+Microsoft.Storage                  Registered
+Microsoft.Web                      Registered
+
+PS D:\workspace\AzureBasic> 
+```
+
+#### grep 사용한 경우
+```powershell
+PS D:\workspace\AzureBasic> Get-AzResourceProvider -ListAvailable | Select-Object ProviderNamespace, RegistrationState | grep -v NotReg
+
+
+ProviderNamespace                       RegistrationState
+-----------------                       -----------------
+Microsoft.ContainerInstance             Registered
+Microsoft.DocumentDB                    Registered
+Microsoft.AlertsManagement              Registered
+Microsoft.Network                       Registered
+Microsoft.Compute                       Registered
+Microsoft.Storage                       Registered
+Microsoft.ResourceHealth                Registered
+Microsoft.Advisor                       Registered
+Microsoft.Security                      Registered
+Microsoft.SaaS                          Registered
+Microsoft.ContainerRegistry             Registered
+Microsoft.OperationalInsights           Registered
+Microsoft.ContainerService              Registered
+Microsoft.OperationsManagement          Registered
+Microsoft.ManagedIdentity               Registered
+Microsoft.Management                    Registered
+Microsoft.ChangeAnalysis                Registered
+Microsoft.DevTestLab                    Registered
+Microsoft.KeyVault                      Registered
+Microsoft.Web                           Registered
+microsoft.insights                      Registered
+Microsoft.Sql                           Registered
+Microsoft.Maintenance                   Registered
+Microsoft.DBforPostgreSQL               Registered
+Microsoft.Diagnostics                   Registered
+Microsoft.MarketplaceNotifications      Registered
+Microsoft.DBforMySQL                    Registered
+Microsoft.Cdn                           Registered
+Microsoft.RecoveryServices              Registered
+Microsoft.DomainRegistration            Registered
+Microsoft.PolicyInsights                Registered
+Microsoft.GuestConfiguration            Registered
+Microsoft.ADHybridHealthService         Registered
+Microsoft.Authorization                 Registered
+Microsoft.MarketplaceOrdering           Registered
+Microsoft.ResourceGraph                 Registered
+Microsoft.Resources                     Registered
+Microsoft.SerialConsole                 Registered
+
+PS D:\workspace\AzureBasic> 
+```
