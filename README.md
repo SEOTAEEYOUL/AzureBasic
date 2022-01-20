@@ -6,7 +6,7 @@
 ## AS-IS
 - Apache, Tomcat, MySQL/MariaDB 로 이루어진 서비스
 - Apache : Static 문서 처리
-- Tomcat : SpringFramework 기반 Biz 서비스 처리
+- Tomcat : SpringBoot 기반 Biz 서비스 처리
 
 ## 일정
 | 월 | 화 | 수 | 목 | 금 |
