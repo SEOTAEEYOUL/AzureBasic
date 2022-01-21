@@ -1,5 +1,8 @@
 # MarkDown
 - 쉽고 빠르게 스타일문서를 작성
+![Markdown-mark.png](./img/Markdown-mark.png)
+  <img src=./img/Markdown-mark.png width=12 height=12>
+
 
 ## 장점
 1. 문법이 쉽다.

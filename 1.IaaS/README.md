@@ -67,19 +67,21 @@
 1. Application 생성
 2. Rule 생성
 
+## Application Gateway
+
 
 ## CDN 
 ### 생성 절차
 1. CDN 생성
    - Profile 생성 : sksq-lz-prd-cdn
    - endpoint 생성 : sksquare-homepage-dev-cdn.azureedge.net
-   - HomePage : https://sksquare-homepage-dev-cdn.azureedge.net/
+   - HomePage : https://skcc-homepage-dev-cdn.azureedge.net/
 2. Rule 생성
 
 ## App Service 도메인
 
 ### DNS 등록
-1. CNAME : sksquare-homepage-dev-cdn.azureedge.net
+1. CNAME : skcc-homepage-dev-cdn.azureedge.net
    - www.sksquaredev.com 의 서비스 주소
 2. A Record : 20.196.232.11
    - applicaion gateway 의 ip 로 CDN 장애시 tomcat 서버로 직접 붙기 위함
