@@ -30,18 +30,18 @@
 ### 자원 목록    
 | 항목 | 자원명 | 설명 | 사이징 | end point | Resource Group | Location |  
 |:---|:---|:---|:---|:---|:---|:---| 
-| Resource Group | rg-sksq-network-prd | Network 자원 그룹 | | | | koreacentral | 
-| Resource Group | rg-sksq-homepage-prd | Home Page 자원 그룹 | | | | koreacentral | 
-| Vnet | vnet-sksq-prd | 홈페이지 VNet | 10.234.4.0/22 | | rg-sksq-network-prd | koreacentral |  
-| subnet | snet-sksq-prd-10.234.4.160-191-anf | HostedWorkloads | | 10.234.4.160/27 | rg-sksq-network-prd | koreacentral |  
-| subnet | snet-sksq-prd-10.234.4.128-159-dmz | 외부에서 접근 시 사용되는 자원 배포 영역 | | 10.234.4.128/27 | rg-sksq-network-prd | koreacentral |   
-| subnet | snet-sksq-prd-10.234.4.0-127-frontend | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | | 10.234.4.0/25 | rg-sksq-network-prd | koreacentral |  
-| subnet | snet-sksq-prd-10.234.5.0-255-backend | | | 10.234.5.0/24 | rg-sksq-network-prd | koreacentral |  
-| Storage Account | sksqprdhomepagefiles1 | | | PE-sksqprdhompagefiles1 | rg-sksq-homepage-prd | koreacentral |
-| VM | SKSQ-COMPPT1 | Web 서버 | Standard D8s v3 | 10.234.4.134 | rg-sksq-homepage-prd | koreacentral |  
-| VM | SKSQ-COMPAP1 | WAS 서버 | Standard D8s v3 | 
-10.234.5.36 |rg-sksq-homepage-prd | koreacentral |
-| DB | mysql-homepage-prd | MySQL 5.7 | GP_Gen5_8(범용, vCore 8개, 5GB) | PE-sksqhomepageprdmysql | rg-sksq-homepage-prd | koreacentral |
+| Resource Group | rg-skcc-network-dev | Network 자원 그룹 | | | | koreacentral | 
+| Resource Group | rg-skcc-homepage-dev | Home Page 자원 그룹 | | | | koreacentral | 
+| Vnet | vnet-sksq-prd | 홈페이지 VNet | 10.234.4.0/22 | | rg-skcc-network-dev | koreacentral |  
+| subnet | snet-skcc-dev-10.234.4.160-191-anf | HostedWorkloads | | 10.234.4.160/27 | rg-skcc-network-prd | koreacentral |  
+| subnet | snet-skcc-prd-10.234.4.128-159-dmz | 외부에서 접근 시 사용되는 자원 배포 영역 | | 10.234.4.128/27 | rg-skcc-network-prd | koreacentral |   
+| subnet | snet-skcc-prd-10.234.4.0-127-frontend | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | | 10.234.4.0/25 | rg-skcc-network-prd | koreacentral |  
+| subnet | snet-skcc-prd-10.234.5.0-255-backend | | | 10.234.5.0/24 | rg-skcc-network-prd | koreacentral |  
+| Storage Account | sksqprdhomepagefiles1 | | | PE-sksqprdhompagefiles1 | rg-skcc-homepage-dev | koreacentral |
+| VM | SKCC-COMPPT1 | Web 서버 | Standard D8s v3 | 10.234.4.134 | rg-skcc-homepage-dev | koreacentral |  
+| VM | SKCC-COMPAP1 | WAS 서버 | Standard D8s v3 | 
+10.234.5.36 |rg-skcc-homepage-dev | koreacentral |
+| DB | mysql-homepage-dev | MySQL 5.7 | GP_Gen5_8(범용, vCore 8개, 5GB) | PE-skcchomepageprdmysql | rg-skcc-homepage-dev | koreacentral |
 
 
 ### subnet
