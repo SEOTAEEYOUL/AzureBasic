@@ -1,14 +1,3 @@
-# Azure CDN(Content Delivery Network)  
-사용자에게 웹 콘텐츠를 효율적으로 제공할 수 있는 서버의 분산 네트워크
-
-* [New-AzResourceGroupDeployment](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment?view=azps-7.1.0)
-## PowerShell
-```powershell
-$cdnName="skcc-homepage-dev-cdn"
-```
-
-## ARMTemplate
-```json
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
@@ -64,8 +53,8 @@ $cdnName="skcc-homepage-dev-cdn"
     {
       "type": "Microsoft.Cdn/profiles",
       "apiVersion": "2020-04-15",
-      "name": "[parameters('profileName')]",
-      "location": "[parameters('location')]",
+      "name": "[parameters('CDN.profileName')]",
+      "location": "[parameters('CDN.location')]",
       "sku": {
         "name": "[parameters('CDNSku')]"
       }
@@ -73,10 +62,10 @@ $cdnName="skcc-homepage-dev-cdn"
     {
       "type": "Microsoft.Cdn/profiles/endpoints",
       "apiVersion": "2020-04-15",
-      "name": "[format('{0}/{1}', parameters('profileName'), parameters('endpointName'))]",
+      "name": "[format('{0}/{1}', parameters('CDN.profileName'), parameters('CDN.endpointName'))]",
       "location": "[parameters('location')]",
       "properties": {
-        "originHostHeader": "[parameters('originUrl')]",
+        "originHostHeader": "[parameters('CDN.originUrl')]",
         "isHttpAllowed": true,
         "isHttpsAllowed": true,
         "queryStringCachingBehavior": "IgnoreQueryString",
@@ -128,46 +117,14 @@ $cdnName="skcc-homepage-dev-cdn"
           {
             "name": "origin1",
             "properties": {
-              "hostName": "[parameters('originUrl')]"
+              "hostName": "[parameters('CDN.originUrl')]"
             }
           }
         ]
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Cdn/profiles', parameters('profileName'))]"
+        "[resourceId('Microsoft.Cdn/profiles', parameters('CDN.profileName'))]"
       ]
     }
   ]
 }
-```
-
-```powershell
-# $location = Read-Host -Prompt "Enter the location (i.e. eastus)"
-$locationName = "koreacentral"
-$resourceGroupName = "rg-skcc-homepage-dev"
-
-$templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.cdn/cdn-with-custom-origin/azuredeploy.json"
-
-
-# New-AzResourceGroup`
-#  -Name $resourceGroupName `
-#  -Location $locationName
-New-AzResourceGroupDeployment `
-  -ResourceGroupName $resourceGroupName `
-  -TemplateFile azure-cdn-deploy.json
-#  -TemplateUri $templateUri
-```
-```
-$tags = @{
-  owner='SeoTaeYeol'
-  environment='dev'
-  serviceTitle='homepage'
-  personalInformation='no'
-}
-New-AzResourceGroupDeployment `
-  -ResourceGroupName $resourceGroupName `
-  -TemplateFile azure-cdn-deploy.json `
-  -TemplateParameterFile azure-cdn-param.json ` 
-  -Tag $tags
-```
-![Deploy to Azure](https://aka.ms/deploytoazurebutton)

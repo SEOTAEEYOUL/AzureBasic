@@ -28,3 +28,11 @@ $vmDataDisk = $vmName + "-DataDisk01"
 $osDataDiskSizeInGB = 64
 $StorageAccountType = 'StandardSSD_LRS'
 
+$tags = @{
+  owner='SeoTaeYeol'
+  environment='dev'
+  serviceTitle='homepage'
+  personalInformation='no'
+}
+
+
