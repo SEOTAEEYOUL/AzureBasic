@@ -53,8 +53,8 @@
     {
       "type": "Microsoft.Cdn/profiles",
       "apiVersion": "2020-04-15",
-      "name": "[parameters('CDN.profileName')]",
-      "location": "[parameters('CDN.location')]",
+      "name": "[parameters('profileName')]",
+      "location": "[parameters('location')]",
       "sku": {
         "name": "[parameters('CDNSku')]"
       }
@@ -62,10 +62,10 @@
     {
       "type": "Microsoft.Cdn/profiles/endpoints",
       "apiVersion": "2020-04-15",
-      "name": "[format('{0}/{1}', parameters('CDN.profileName'), parameters('CDN.endpointName'))]",
+      "name": "[format('{0}/{1}', parameters('profileName'), parameters('endpointName'))]",
       "location": "[parameters('location')]",
       "properties": {
-        "originHostHeader": "[parameters('CDN.originUrl')]",
+        "originHostHeader": "[parameters('originUrl')]",
         "isHttpAllowed": true,
         "isHttpsAllowed": true,
         "queryStringCachingBehavior": "IgnoreQueryString",
@@ -117,13 +117,13 @@
           {
             "name": "origin1",
             "properties": {
-              "hostName": "[parameters('CDN.originUrl')]"
+              "hostName": "[parameters('originUrl')]"
             }
           }
         ]
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Cdn/profiles', parameters('CDN.profileName'))]"
+        "[resourceId('Microsoft.Cdn/profiles', parameters('profileName'))]"
       ]
     }
   ]

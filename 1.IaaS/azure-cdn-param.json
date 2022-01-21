@@ -2,12 +2,14 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "CDN": {
-      "value": {
-        "profileName": "sksq-homepage-dev-cdn",
-        "endpointName": "www",
-        "originUrl": "skcchomepage.koreacentral.cloudapp.azure.com"
-      }
+    "profileName": {
+      "value": "sksq-homepage-dev-cdn"
+    },
+    "endpointName": {
+      "value": "www"
+    },
+    "originUrl": {
+      "value": "skcchomepage.koreacentral.cloudapp.azure.com"
     }
   }
 }

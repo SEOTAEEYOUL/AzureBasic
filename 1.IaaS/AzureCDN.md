@@ -143,7 +143,7 @@ $cdnName="skcc-homepage-dev-cdn"
 
 ```powershell
 # $location = Read-Host -Prompt "Enter the location (i.e. eastus)"
-$locationName = "koreacentral"
+$locationName = "global"
 $resourceGroupName = "rg-skcc-homepage-dev"
 
 $templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.cdn/cdn-with-custom-origin/azuredeploy.json"
