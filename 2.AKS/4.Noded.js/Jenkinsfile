@@ -1,0 +1,80 @@
+def pod_label="jenkins-slave-${UUID.randomUUID().toString()}"
+
+
+def image_server="harbor.chatops.ga"
+def service_account="jenkins"
+def docker_id="Harbor"
+def cicd_namespace="cicd"
+def cicd_pvc="cicd-workspace"
+def namespace="cicd"
+
+
+def app="nodejs-bot"
+def version="1.2.0"
+
+podTemplate(
+  label:pod_label, serviceAccount: "${service_account}", namespace: "${cicd_namespace}",
+  containers: [
+    containerTemplate(name: 'tree', image: 'iankoulski/tree', ttyEnabled: true, command: 'cat'),
+    containerTemplate(name: 'docker', image: "docker:19.03", ttyEnabled: true, command: 'cat'),
+    containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-7-alpine', ttyEnabled: true, command: 'cat')
+  ],
+  volumes: [
+    hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock')
+    // hostPathVolume(hostPath: '/var/lib/docker', mountPath: '/var/lib/docker'),
+    // hostPathVolume(hostPath: '/etc/hosts', mountPath: '/etc/hosts')
+    // persistentVolumeClaim(mountPath: '/home/jenkins/agent/workspace', claimName: "$cicd_pvc")
+  ],
+  workspaceVolume: persistentVolumeClaimWorkspaceVolume(claimName: "$cicd_pvc", readOnly: false)
+)
+{
+  node(pod_label) {
+    stage('Preparation') { // for display purposes
+      echo "Current workspace : ${workspace}"
+      sh "ls -lt  package.json nodejs-exporter.js logger.js redis-ha.js server.js"
+    }
+
+    stage('Checkout') {
+      sh "rm -f /home/jenkins/agent/workspace/${app}/.git/index.lock"
+      checkout scm
+      slackSend(channel: "alert", color: '#0000FF', message: "Checkout - SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      // container('tree') {
+      //   sh 'env'
+      //   sh 'tree'
+      //   sh 'test -f old-evn.txt && cat old-env.txt'
+      //   sh 'env > old-env.txt'
+      // }
+    }
+
+    stage('Build Node.js Project & Docker Image') {
+      container('docker') {
+        sh "docker build --rm=true --network=host --tag ${app}:${version} ."
+        sh "docker tag ${app}:${version} ${image_server}/${namespace}/${app}:${version}"
+        slackSend(channel: "alert", color: '#0000FF', message: "Docker Build - SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+      }
+    }
+
+    stage('Push Docker Image') {
+      container('docker') {
+        try {
+          withDockerRegistry(credentialsId: "${docker_id}", url: "http://${image_server}") {
+            // sh "docker push ${image_server}/${namespace}/${app}:${version}"
+            docker.image("${image_server}/${namespace}/${app}:${version}").push( )
+          }
+          // send slack notification
+          slackSend(channel: "alert", color: '#0000FF', message: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+        catch(Exception e) {
+          // mark build as failed
+          currentBuild.result = "FAILURE";
+          // send slack notification
+          slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          // throw the error
+          echo e.toString( )
+          throw e
+        }
+      } // container
+    } // stage
+  } // node
+
+}

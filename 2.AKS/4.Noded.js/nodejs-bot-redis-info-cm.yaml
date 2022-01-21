@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: nodejs-bot
+  name: nodejs-bot-redis-info
+  namespace: mta-dev
+data:
+  redis-info.json: |
+    {
+      "clusterInfo"  : {
+        "name"        : "www.skmta.net",
+        "description" : "A-TCL Multi-Tenancy Alert"
+      },
+      "clientInfo"   : { 
+        "enableOfflineQueue"   : "false",
+        "maxRetriesPerRequest" : "1"
+      },
+      "serverInfo"   : {
+        "db"          : "2",
+        "svcInfo"    : [
+          {
+            "namespace": "mta-session",
+            "auth"     : "*",
+            "server": {
+              "name"   : "mta-session",
+              "master" : {
+                "svc"  : "redis-master.mta-dev.svc.cluster.local",
+                "port" : "6379"
+              },
+              "slave"  : {
+                "svc"  : "redis-slave.mta-dev.svc.cluster.local",
+                "port" : "6379"
+              },
+              "sentinel"  : {
+                "svc"  : "redis.mta-dev.svc.cluster.local",
+                "port" : "26379"
+              }
+            }
+          }
+        ]
+      }
+    }
+

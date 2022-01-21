@@ -1,0 +1,182 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nodejs-bot
+    component: nodejs-bot
+    release: monitoring
+    version: 1.0.3
+  name: nodejs-bot
+  namespace: mta-dev
+  # annotations:
+  #   prometheus.io/scrape: 'true'
+  #   prometheus.io/port: "8080"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-bot
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nodejs-bot
+        component: nodejs-bot
+        version: 1.0.3
+    spec:
+      tolerations:
+      # - key: "dedicated"
+      #   operator: "Exists"
+      #  effect: "NoSchedule"
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: role
+      #           operator: In
+      #           values:
+      #           # - "worker"
+      #           - "master"
+      #           # - "management"
+      #           # - "proxy"
+      serviceAccount: nodejs-bot-role
+      serviceAccountName: nodejs-bot-role
+      containers:
+      - name: nodejs-bot
+        imagePullPolicy: IfNotPresent
+        # image: 723226886640.dkr.ecr.ap-northeast-2.amazonaws.com/nodejs-bot:1.0.3
+        image: harbor.skmta.net/mta-dev/nodejs-bot:1.0.3
+        # securityContext:
+        #   capabilities:
+        #     add:
+        #       - NET_ADMIN
+        #       - SYS_MODULE
+        #       - NET_RAW
+        env:
+        - name: SLACK_TOKEN
+          # value: "xoxb-719432660198-749665049011-EuNnxOKPC1uICSvx7N7ohod6"
+          # value: "xoxb-719432660198-1074835145332-OBBUqd2VQFdctC2Y4HzvRdsv"
+          value: "xoxb-1219098448230-1257217978624-QsnbONsMnzanNACxQBWtkScb"
+        - name: DEBUG
+          value: "false"
+        - name: LOG
+          value: "false"
+        - name: SYS_NAME
+          value: "A-TCL:SK Multitenancy Alert Bot"
+        # - name: SYS_IP
+        #   value: "172.30.0.58"
+        - name: SYS_URL
+          value: "www.skmta.net"
+        - name: REDIS_CONF
+          value: "/home/appadmin/redis-info.json"
+        # - name: REDIS_PASSWORD
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: redis-pass
+        #       key: password
+        - name: REDIS_MAX_RETRIES_PER_REQUEST
+        # values: "20" -> defult value
+          value: "1"
+        - name: REDIS_OFFLINE_QUEUE
+        # values: "true" -> defult value
+          value: "false"
+        - name: REDIS_DB
+          value: "2"
+        ports:
+        - containerPort: 8080
+          name: nodejs-bot
+        # - containerPort: 8090
+        #   name: nodejs
+        volumeMounts:
+        - name: redis-info-volume
+          mountPath: /home/appadmin/redis-info.json
+          subPath: redis-info.json
+        - name: get-redis-master
+          mountPath: /usr/local/bin/get-redis-master.sh
+          subPath: get-redis-master.sh
+        - name: get-redis-info
+          mountPath: /usr/local/bin/get-redis-info.sh
+          subPath: get-redis-info.sh
+        - name: top-node
+          mountPath: /usr/local/bin/get_top_node.sh
+          subPath: get_top_node.sh
+        - name: top-pod
+          mountPath: /usr/local/bin/get_top_pod.sh
+          subPath: get_top_pod.sh
+        - name: delete-pods
+          mountPath: /usr/local/bin/delete-pods.sh
+          subPath: delete-pods.sh
+        resources:
+          limits:
+            cpu: 100m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 512Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      # dnsPolicy: ClusterFirst
+      hostAliases:
+        - hostnames:
+          - mta-prd.skmta.net
+          ip: 172.30.0.58
+        - hostnames:
+          - mta-stg.skmta.net
+          ip: 172.30.0.37
+        - hostnames:
+          - mta-dev.skmta.net
+          ip: 172.30.0.37
+      # restartPolicy: Always
+      # schedulerName: default-scheduler
+      # securityContext: {}
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: redis-info-volume
+        configMap:
+          defaultMode: 365
+          items:
+          - key: redis-info.json
+            path: redis-info.json
+          name: nodejs-bot-redis-info
+      - name: get-redis-master
+        configMap:
+          defaultMode: 365
+          items:
+          - key: get-redis-master.sh
+            path: get-redis-master.sh
+          name: nodejs-bot-script
+      - name: get-redis-info
+        configMap:
+          defaultMode: 365
+          items:
+          - key: get-redis-info.sh
+            path: get-redis-info.sh
+          name: nodejs-bot-script
+      - name: top-node
+        configMap:
+          defaultMode: 365
+          items:
+          - key: get_top_node.sh
+            path: get_top_node.sh
+          name: nodejs-bot-script
+      - name: top-pod
+        configMap:
+          defaultMode: 365
+          items:
+          - key: get_top_pod.sh
+            path: get_top_pod.sh
+          name: nodejs-bot-script
+      - name: delete-pods
+        configMap:
+          defaultMode: 365
+          items:
+          - key: delete-pods.sh
+            path: delete-pods.sh
+          name: nodejs-bot-script

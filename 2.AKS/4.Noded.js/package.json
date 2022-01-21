@@ -1,0 +1,30 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "An Slack app that use of Message Menus",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Seo,TaeeYoul <taeeyoul@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "JSON": "^1.0.0",
+    "body-parser": "^1.19.0",
+    "botkit": "^0.7.4",
+    "child_process": "^1.0.2",
+    "dateformat": "^3.0.3",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "ioredis": "^4.14.1",
+    "kubernetes-client": "^8.3.4",
+    "os": "^0.1.1",
+    "prom-client": "^11.5.3",
+    "prometheus-gc-stats": "^0.6.2",
+    "slack-client": "^2.0.6",
+    "slack-node": "^0.1.8"
+  }
+}

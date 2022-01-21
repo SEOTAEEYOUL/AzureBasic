@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis-pass # Modify Redis Instance Name
+  namespace: mta-dev
+type: Opaque
+data:
+  # Root password (base64): foobars
+  # echo -n "foobars" | base64
+  password: Zm9vYmFycw==

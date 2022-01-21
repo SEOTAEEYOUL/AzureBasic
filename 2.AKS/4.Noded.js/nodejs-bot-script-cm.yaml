@@ -1,0 +1,456 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: nodejs-bot
+  name: nodejs-bot-script
+  namespace: mta-dev
+data:
+  get-redis-master.sh: |
+    #!/bin/bash
+    
+    HOSTNAME="172.30.0.58,skt-twddmst01
+    172.30.0.59,skt-twddwk01
+    172.30.0.60,skt-twddwk02
+    172.30.0.78,skt-twddwk03
+    172.30.0.79,skt-twddwk04"
+    
+    NAMESPACE="twd-dev-bff,개발:bff-redis
+    twd-dev-cor,개발:core-redis
+    twd-stg-bff,스테이징:bff-redis
+    twd-stg-cor,스테이징:core-redis"
+    
+    namespace=""
+    namespace_name=""
+    pod_name=""
+    ip=""
+    hostname=""
+    
+    
+    
+    for n in $NAMESPACE
+    do
+      namespace=`echo "$n" | cut -d',' -f1`
+      namespace_name=`echo "$n" | cut -d',' -f2`
+      # echo "$namespace [$namespace_name]"
+      # kubectl get pod -o wide -lredis-role --all-namespaces -o custom-columns="namespace:metadata.namespace,name:metadata.name,IP:spec.nodeName,APP:metadata.labels.redis-role||awk '{print $1','$2','$3}'"
+      pod=`kubectl get pod -o wide -lredis-role=master -n $namespace -o custom-columns="NAME:metadata.name,IP:spec.nodeName" --no-headers| awk '{ print $1","$2 }'`
+      for p in $pod
+      do
+        pod_name=`echo "$p" | cut -d',' -f1`
+        ip=`echo "$p" | cut -d',' -f2`
+        for h in $HOSTNAME
+        do
+          f1=`echo "$h" | cut -d',' -f1`
+          if [ "$f1" == "$ip" ]
+          then
+            hostname=`echo "$h" | cut -d',' -f2`
+            printf "[%-12s] %-50s %s[%s]\n" $namespace $pod_name $hostname $ip
+            # printf "%-50s %s[%s]\n" $pod_name $hostname $ip
+            break;
+          fi
+        done
+      done
+    done
+  get-redis-info.sh: |
+    #!/bin/bash
+    
+    namespace=""
+    chk_redis=""
+    chk_script=""
+    auth=""
+    chk_log=""
+    chk_param=""
+    master=""
+    slave=""
+    sentinel=""
+    show_conf=""
+    master_cnt=0
+    slave_cnt=0
+    sentinel_cnt=0
+    tail_cnt=10
+    reset_master=""
+    
+    master_status=""
+    slave_status=""
+    sentinel_status=""
+    
+    today( ) {
+      date +%Y/%m/%d-%H:%M:%d
+    }
+    
+    load_redis_info( )
+    {
+      echo "*SERVER* *SENTINEL*"
+      echo "\`\`\`"
+      kubectl get pod -n $namespace -o wide -l'redis-role in (master,slave,sentinel)'
+      echo "\`\`\`"
+      echo "---"
+      echo "*SERVICE*"
+      echo "\`\`\`"
+      kubectl -n $namespace get svc | grep redis
+      echo "\`\`\`"
+      echo "---"
+    
+      ret_code=0
+    
+      # echo "---"
+      # echo "---"
+      # echo "---"
+      echo "```$namespace``` Check Redis *Master* Server"
+      master=`kubectl get pod -n $namespace -lredis-role=master | grep -v "NAME" | head -1 | awk '{ print $1 }'`
+      if [ "$master" == "" ]
+      then
+        echo "Namespace[\'$namespace\']: redis *master* *not* *found*";
+        ret_code=1;
+      else
+        echo "\`$master\`"
+        master_cnt=`kubectl get pod -n $namespace -lredis-role=master -o wide | egrep -v "NAME|Terminating" | wc -l`
+      fi
+    
+      echo "```$namespace``` Check Redis *Slave* Server"
+      slave=`kubectl get pod -n $namespace -lredis-role=slave | grep -v "NAME" | awk '{ print $1 }'`
+      if [ "$slave" == "" ]
+      then
+        echo "Namespace[\'$namespace\']: redis *slave* *not* *found*";
+        ret_code=1;
+      else
+        # echo "\`$slave\`"
+        print_code "$slave"
+        slave_cnt=`kubectl get pod -n $namespace -lredis-role=slave -o wide | egrep -v "NAME|Terminating" | wc -l`
+      fi
+    
+      echo "```$namespace``` Check Redis *Sentinel* Server"
+      sentinel=`kubectl get pod -n $namespace -lredis-role=sentinel | grep -v "NAME" | awk '{ print $1 }'`
+      if [ "$sentinel" == "" ]
+      then
+        echo "Namespace[\'$namespace\']: redis *sentinel* *not* *found*";
+        ret_code=1;
+      else
+        # echo "\`$sentinel\`"
+        print_code "$sentinel"
+        sentinel_cnt=`kubectl get pod -n $namespace -lredis-role=sentinel -o wide | egrep -v "NAME|Terminating" | wc -l`
+      fi
+    
+    
+      if [ "$master_cnt" == "1" ]
+      then
+        master_status="*OK*";
+      else
+        master_status="*NOT* *OK*";
+      fi
+    
+      if [ "$slave_cnt" == "2" ]
+      then
+        slave_status="*OK*"
+      else
+        slave_status="*NOT* *OK*";
+      fi
+    
+      if [ "$sentinel_cnt" == "3" ]
+      then
+        sentinel_status="*OK*"
+      else
+        sentinel_status="*NOT* *OK*";
+      fi
+    
+      echo "---"
+      echo "*Master*    Cnt : Desired : 1, Current : $master_cnt [ $master_status ]"
+      echo "*Slave*     Cnt : Desired : 2, Current : $slave_cnt [ $slave_status ]"
+      echo "*Sentinel*  Cnt : Desired : 3, Current : $sentinel_cnt [ $sentinel_status ]"
+      echo "---"
+    
+      if [ $master_cnt -ne 1 ]
+      then
+        echo "Error : Master Server Count[$master_cnt] Not 1"
+        ret_code=1;
+      fi
+      if [ "$slave_cnt" == "2" ]
+      then
+        slave_status="OK"
+      else
+        slave_status="NOT OK";
+      fi
+    
+      if [ "$sentinel_cnt" == "3" ]
+      then
+        sentinel_status="OK"
+      else
+        sentinel_status="NOT OK";
+      fi
+    
+      echo "Check *Sentinel* _Info_"
+      for s in $sentinel
+      do
+        kubectl -n $namespace exec $s -c sentinel -it -- redis-cli -p 26379 -a $auth -c info sentinel | grep master0
+      done
+      return $ret_code
+    }
+    print_code( ) {
+      list="$1"
+      for i in $list
+      do
+        echo "\`$i\`"
+      done
+    }
+    
+    chk_redis( ) {
+      echo "---"
+      echo "Master"
+      if [ "$master" == "" ]
+      then
+        echo "master not found ..."
+        return 1;
+      fi
+      echo "---"
+      kubectl get pod -n $namespace -lredis-role=master -o wide
+      echo "- sysctl net.core.somaxconn"
+      kubectl -n $namespace exec $master -c redis -it -- sysctl net.core.somaxconn
+      echo "- du -sh /redis-master-data/dump.rdb /redis-master-data/appendonly.aof"
+      kubectl -n $namespace exec $master -c redis -it -- du -sh /redis-master-data/dump.rdb /redis-master-data/appendonly.aof
+      echo "---"
+    
+    
+      echo "---"
+      echo "Slave"
+      if [ "$slave" == "" ]
+      then
+        echo "slave not found ..."
+        return 1;
+      fi
+      kubectl get pod -n $namespace -lredis-role=slave -o wide
+    
+      for s in $slave
+      do
+        kubectl -n $namespace exec $s -c redis -it -- ps -ef
+        kubectl -n $namespace exec $s -c redis -it -- ps v `pidof redis-server` -opid,ppid,user,vsz,rss,time,stat,comm,args | egrep -v "ps|redis-launcher"
+      done
+    
+      echo "---"
+      echo "Sentinel"
+      if [ "$sentinel" == "" ]
+      then
+        echo "slave not found ..."
+        return 1;
+      fi
+      kubectl get pod -n $namespace -lredis-role=sentinel -o wide
+      for s in $sentinel
+      do
+        kubectl -n $namespace exec $s -c sentinel -it -- ps v `pidof redis-server` -opid,ppid,user,vsz,rss,time,stat,comm,args | egrep -v "ps|redis-launcher"
+        kubectl -n $namespace exec $s -c sentinel -it -- ls -lt /etc/redis
+        kubectl -n $namespace exec $s -c sentinel -it -- redis-cli -p 26379 -a $auth -c info sentinel
+      done
+    
+      return 0
+    }
+    
+    reset_master_info( ) {
+      SENTINEL_IPS=`kubectl -n $namespace get pod --field-selector=status.phase=Running -o jsonpath='{range .items[*]}{.metadata.name} {..podIP} {.status.containerStatuses[0].state}{"\n"}{end}' -lredis-role=sentinel|awk '{print $1}'`
+      if [ "$SENTINEL_IPS" != "" ]
+      then
+        for s in $SENTINEL_IPS
+        do
+          echo "kubectl -n $namespace exec $s -it -- redis-cli -p 26379 -a \"${auth}\" -c sentinel reset mymaster"
+          kubectl -n $namespace exec $s -it -- redis-cli -p 26379 -a \"${auth}\" -c sentinel reset mymaster
+        done
+      fi
+      return 0
+    }
+    main( ) {
+      if [ $# -lt 2 ]
+      then
+        echo "$0 -n namespace 명"
+        exit 1;
+      fi
+    
+      while getopts "n:a:rh" opt
+      do
+        case $opt in
+          n)
+            # echo "n is ${OPTARG}"
+            namespace=${OPTARG}
+            ;;
+          a)
+            # echo "a is ${OPTARG}"
+            auth=${OPTARG}
+            ;;
+          r)
+            # echo "r is ${OPTARG}"
+            reset_master="true";
+           ;;
+          h | *)
+            # echo "$0 -n \"redis namespace 명\""
+            exit 1;
+            ;;
+          \?)
+            echo "Invalid option: -$OPTARG" >&2
+            # echo "$0 -n \"redis namespace 명\""
+            exit 1;
+            ;;
+          :)
+            echo "Option -$OPTARG requires an argument." >&2
+            echo "$0 -n \"redis namespace 명\""
+            exit 1;
+            ;;
+        esac
+      done
+    
+      today
+      if [ "$namespace" == "" ]
+      then
+        echo "$0 -n \"redis namespace 명\""
+        exit 1; 
+      fi
+      if [ "$reset_master" == "true" ]
+      then
+        reset_master_info
+        exit 0;
+      fi
+      load_redis_info
+      # chk_redis
+    }
+    main $@
+  get_top_node.sh: |
+    #!/bin/bash
+    
+    
+    HOSTNAME="172.30.0.58,skt-twddmst01
+    172.30.0.59,skt-twddwk01
+    172.30.0.60,skt-twddwk02
+    172.30.0.78,skt-twddwk03
+    172.30.0.79,skt-twddwk04"
+    TMPFILE=$(mktemp)
+    
+    kubectl top node > $TMPFILE
+    
+    
+    node=""
+    status=""
+    role=""
+    hostname=""
+    
+    date
+    echo "---"
+    echo "NAME         Status     ROLE       Hostname        IP ADDRESSS CPU(cores)  CPU%  MEMORY(bytes) MEMORY%" 
+    # echo "-----------  ---------  ---------  --------------  ----------- ----------  ----- ------------- -------"
+    for info in `kubectl get node | grep -v NAME | awk '{ print $1"|"$2"|"$3 }'`
+    do
+      node=`echo "$info" | cut -d'|' -f1`
+      status=`echo "$info" | cut -d'|' -f2`
+      role=`echo "$info" | cut -d'|' -f3`
+      if [[ "$role" =~ "," ]]
+      then
+        # roles=${role%%,*} 
+        role=`echo "$role" | cut -d',' -f2`
+        # echo "node[$node]::role[$role]";
+      fi
+      # echo "kubectl label node $node role=$role --overwrite"
+      for l in $HOSTNAME
+      do
+        ip=`echo "$l" | cut -d',' -f1`
+        hostname=`echo "$l" | cut -d',' -f2`
+        if [[ "$node" = "$ip" ]]
+        then
+          # echo "$ip $role $hostname"
+          # echo "$TOP_LINES"
+          while IFS= read top_l
+          do
+            _ip=`echo "$top_l" | cut -d' ' -f1`
+            if [[ "$ip" = "$_ip" ]]
+            then
+              # echo "[$ip][$status][$role][$hostname][$top_l]"
+              # echo "[$top_l]"
+              # printf "%s %s %s %s\n" $ip $role $hostname $top_l
+              echo "$ip $status $role $hostname $top_l" | awk '{ printf "%-12s %-9s %-10s  %-16s %-6s %8s   %4s     %10s %4s\n", $1, $2, $3, $4, $5, $6, $7, $8, $9 }'
+            fi
+          done < $TMPFILE
+          break;
+        fi
+      done
+      # echo "--"
+    done
+    # echo "-----------  ---------  ---------  --------------  ----------- ----------  ----- ------------- -------"
+    
+    \rm -f $TMPFILE
+  get_top_pod.sh: |
+    #!/bin/bash
+    
+    
+    namespace=""
+    name=""
+    cpu=""
+    memory=""
+    code='````'
+    
+    
+    printf "*%s*\n" $(date)
+    printf "%3.3s" $code
+    echo "---"
+    # kubectl top pod --all-namespaces | head -1;kubectl top pod --all-namespaces | grep -v NAME | egrep -v "kube-system|istio\-system" | sort -k 3 -r -h | head -70
+    # NAMESPACE      NAME                                                              CPU(cores)   MEMORY(bytes)
+    # mtw-dev-dvs    jenkins-slave-wlrpk-94hw6                                         1045m        740Mi           
+    # mtw-dev        bff-nodejs-mobile-0.0.1-8688d6dd48-nftbw                          258m         2390Mi          
+    cnt=0
+    mod=0
+    
+    echo "NAMESPACE      NAME                                                              CPU(cores)   MEMORY(bytes)"
+    for l in $(kubectl top pod --all-namespaces | grep -v NAME | egrep -v "kube-system|istio\-system" | sort -k 3 -r -h | head -70 | awk '{ print $1"|"$2"|"$3"|"$4 }')
+    do
+      if [ $cnt -ne 0 ]
+      then
+        mod=`expr $cnt % 3` 
+        if [ $mod -eq 0 ]
+        then
+          printf "%3.3s" $code
+        fi
+      fi
+    
+      cnt=`expr $cnt + 1`
+      namespace=`echo "$l" | cut -d'|' -f1`
+      name=`echo "$l" | cut -d'|' -f2`
+      cpu=`echo "$l" | cut -d'|' -f3`
+      memory=`echo "$l" | cut -d'|' -f4`
+    
+      if [ $cnt -ne 0 ]
+      then
+        mod=`expr $cnt % 3`
+        if [ $mod -eq 0 ]
+        then
+          printf "%-15s%-65s%10s%10s%3.3s\n" $namespace $name $cpu $memory $code
+        else
+          printf "%-15s%-65s%10s%10s\n" $namespace $name $cpu $memory
+        fi
+      fi
+    done
+    printf "%3.3s\n" $code
+  delete-pods.sh: |
+    #!/bin/bash
+    
+    
+    NAMESPACE="walkerhill
+    monitoring
+    prometheus
+    grafana
+    metrics
+    kube-system"
+    
+    tot_cnt=0
+    cnt=0
+    
+    
+    for n in $NAMESPACE
+    do
+      cnt=0
+      for p in $( kubectl get pods --field-selector=status.phase!=Running -n $n | egrep -v "NAME|No" | awk '{ print $1 }')
+      do
+         cnt=`expr $cnt + 1`
+         echo "pod[$p] -> kubectl -n $n delete $p --grace-period=0 --force"
+         kubectl -n $n delete $p --grace-period=0 --force
+      done
+      if [ $cnt -gt 0 ]
+      then
+        printf "namespace[%-11s] 삭제된 Running 중이 아닌 pod : %3d 개\n" $n $cnt
+      fi
+      tot_cnt=`expr $tot_cnt + $cnt`
+    done
+    printf "총 삭제된 Running 중이 아닌 pod : %3d 개\n" $tot_cnt

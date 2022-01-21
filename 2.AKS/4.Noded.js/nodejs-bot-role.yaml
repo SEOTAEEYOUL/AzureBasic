@@ -1,0 +1,28 @@
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nodejs-bot-role
+subjects:
+- kind: ServiceAccount
+  name: nodejs-bot-role
+  namespace: mta-dev
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nodejs-bot-role
+  namespace: mta-dev
+secrets:
+- name: default-token-rtvsw
+# secrets:
+# - name: default-token-rtvsw
+# imagePullSecretes:
+# -name: mtwd.icp.skt.com
+imagePullSecrets:
+- name: infra-registry-key
+- name: sa-kube-system
