@@ -5,7 +5,7 @@
 ```powershell
 $locationName="koreacentral"
 $resoruceGroupName="rg-skcc-homepage-dev"
-$keyvaultName="kv-skcc-sslcert-lz"
+$keyvaultName="kv-skcc-sslcert-homepage"
 New-AzKeyVault `
   -Name $keyvaultName `
   -ResourceGroupName $resoruceGroupName `
