@@ -215,7 +215,7 @@ vmware                          2.0.1      Azure VMware Solution commands.      
 webapp                          0.3.1      Additional commands for Azure AppService.                                                                          True       False           False
 ```
 
-### azure-evops 확장 설치
+### azure-devops 확장 설치
 ```
 az extension add -n azure-devops 
 ```

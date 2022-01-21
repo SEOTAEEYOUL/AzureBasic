@@ -78,8 +78,7 @@
 |:---|:---|:---|
 | Subscription | SK Square-<환경> | SK Square-LandingZone |  
 | Resource Group | rg-sksq-<서비스 구분>-<환경> | rg-sksq-lz-network-prd | 
-| Virtual Machine	[리눅스/윈도우 공통] | SKSQ-<업무명><환경><서버 용도><숫자>
-상세) 고객사명(SKSQ)-업무명(ERP)개발(D)/운영(P)서버용도(DB)번호(#) | SKSQ-WSUSPAP1 |
+| Virtual Machine	[리눅스/윈도우 공통] | SKSQ-<업무명><환경><서버 용도><숫자> </br> 상세) 고객사명(SKSQ)-업무명(ERP)개발(D)/운영(P)서버용도(DB)번호(#) | SKSQ-WSUSPAP1 |
 | Storage account name (general) | <sksq><환경><서비스 고유 명칭><숫자> | sksqprddbafiles1 |
 | Storage account name (diagnostics) |<sksq><환경>stdiag | sksqlzprdstdiag |  
 | Managed Disk name | <VM 명>-ssd<##> </br> <VM 명>-<디스크용도><##> | SKSQ-WSUSPAP1-ssd01 </br> SKSQ-ERPPDB1-log01 | 
@@ -95,6 +94,6 @@
 | Connection | conn-<VNET 용도 구분>-<환경>-<연결 사이트 구분> | conn-shared-service-prd-ergw |  
 | VNet Peering Connection | vnetpeering-<Source VNET 환경>-<Destination VNET 환경>-<숫자> | vnetpeering-lz-dev-1 </br> vnetpeering-prd-lz-1 |  
 | Load Balanced Rules Config | plb/ilb-<SKU Type>-<서비스 용도 구분>-<LB Rule 구분>-<LB 용도 구분>-rule<#> | ilb-std-erp-internal-ERPPAP-ASCS-prd1-rule1 |  
-| Azure Application Gateway	sksq-<환경>-agw | sksq-lz-prd-appgw | 
+| Azure Application Gateway | sksq-<환경>-agw | sksq-lz-prd-appgw | 
 | Recovery Services | sksq-rsv-<서비스 또는 애플리케이션 명>backup-<환경> | sksq-rsv-VMbackup-lz | 
 | Shared Image Gallery | sksq_<환경>_image_gallery | sksq_dev_image_gallery |
