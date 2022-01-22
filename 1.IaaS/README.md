@@ -21,6 +21,16 @@
 3. VM 배포
    > [관리 디스크의 스토리지 형식 업데이트](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/convert-disk-storage) 
 
+## Apache, Tomcat 설치 및 구성
+
+## Application Gateway
+- NET (가상 네트워크) 내에서 트래픽 부하를 분산
+
+## Azure CDN
+- 글로벌 수준 에서만 경로 기반 부하 분산을 수행
+- VM, Container 수준에서 작동하지 않음으로 Application Gateway 를 사용 연결  
+> [Azure 전면 도어 표준/프리미엄 (미리 보기)에 대 한 질문과 대답](https://github.com/MicrosoftDocs/azure-docs.ko-kr/blob/master/articles/frontdoor/standard-premium/faq.md)
+
 ### 프로젝트 때 사용한 VM 생성 스크립트  
 | 파일명 | 설명 | 
 |:---|:---|  
@@ -79,6 +89,7 @@
 2. Rule 생성
 
 ## App Service 도메인
+- Domain : nodespringboot.org
 
 ### DNS 등록
 1. CNAME : nodespringboot.org
