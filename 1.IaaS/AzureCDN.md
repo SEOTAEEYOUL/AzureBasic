@@ -2,9 +2,99 @@
 사용자에게 웹 콘텐츠를 효율적으로 제공할 수 있는 서버의 분산 네트워크
 
 * [New-AzResourceGroupDeployment](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment?view=azps-7.1.0)
+
+
 ## PowerShell
+
+### cmdlet 목록
 ```powershell
-$cdnName="skcc-homepage-dev-cdn"
+Get-Command -Module Az.Cdn
+```
+
+### 도움말 보기
+```powershell
+Get-Help Get-AzCdnProfile
+```
+
+### AzureCDN 환경 설정
+```powershell
+$resourceGroupName="rg-skcc-homepage-dev"
+$locationName="koreacentral" # "Central US"
+$cdnProfileName="skcc-homepage-dev-cdn"
+$cdnSku="Standard_Akamai"
+$originName="www"
+$originHostName="skcchomepage.koreacentral.cloudapp.azure.com"
+$cdnEndPointName="cdnposhdoc"
+```
+
+### Azure CDN 프로필 보기
+```powershell
+Get-AzCdnProfile
+
+# Output the name of all profiles on this subscription.
+Get-AzCdnProfile | ForEach-Object { Write-Host $_.Name }
+
+# Return only **Azure CDN from Verizon** profiles.
+Get-AzCdnProfile | Where-Object { $_.Sku.Name -eq "Standard_Verizon" }
+
+Get-AzCdnProfile -ProfileName $cdnProfileName -ResourceGroupName $resourceGroupName
+
+# Get a single endpoint.
+Get-AzCdnEndpoint -ProfileName $cdnProfileName -ResourceGroupName $resourceGroupName -EndpointName cdndocdemo
+
+# Get all of the endpoints on a given profile. 
+Get-AzCdnEndpoint -ProfileName $cdnProfileName -ResourceGroupName $resourceGroupName
+
+# Return all of the endpoints on all of the profiles.
+Get-AzCdnProfile | Get-AzCdnEndpoint
+
+# Return all of the endpoints in this subscription that are currently running.
+Get-AzCdnProfile | Get-AzCdnEndpoint | Where-Object { $_.ResourceState -eq "Running" }
+```
+
+### CDN Profile
+```powershell
+# Create a new profile
+New-AzCdnProfile `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName CdnDemoRG `
+  -Sku $cdnSku `
+  -Location $locationName
+```
+
+### CDN Endpoint 만들기
+```powershell
+# Create a new endpoint
+New-AzCdnEndpoint `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName CdnDemoRG `
+  -Location $locationName `
+  -EndpointName cdnposhdoc `
+  -OriginName $originName `
+  -OriginHostName $originHostName
+
+# Create a new profile and endpoint (same as above) in one line
+New-AzCdnProfile `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName CdnDemoRG `
+  -Sku $cdnSku `
+  -Location $locationName | `
+    New-AzCdnEndpoint `
+      -EndpointName cdnposhdoc `
+      -OriginName $originName `
+      -OriginHostName $originHostName
+```
+
+### 엔드 포인트 이름 가용성 확인
+```powershell
+# Retrieve availability
+$availability = `
+  Get-AzCdnEndpointNameAvailability `
+    -EndpointName "cdnposhdoc"
+
+# If available, write a message to the console.
+If($availability.NameAvailable) { Write-Host "Yes, that endpoint name is available." }
+Else { Write-Host "No, that endpoint name is not available." }
 ```
 
 ## ARMTemplate

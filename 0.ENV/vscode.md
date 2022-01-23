@@ -45,6 +45,16 @@
 [Visual Studio Code를 사용하여 Python 초보자 개발 환경 설정](https://docs.microsoft.com/ko-kr/learn/modules/python-install-vscode/)  
 [Pylance: The best Python extension for VS Code](https://towardsdatascience.com/pylance-the-best-python-extension-for-vs-code-ae299f35548c)
 
+### Azure  
+> [Azure CLI Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azurecli)  
+> [Azure Account](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account)  
+> [Azure Resources](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups)  
+> [Azure Resource Manager (ARM) Tools](https://marketplace.visualstudio.com/items?itemName=msazurermtools.azurerm-vscode-tools)  
+> [Azure Terraform](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform)  
+> [Kubernetes](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)  
+> [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)  
+
+
 ## 단축키  
 
 - Ctrl + Shift + P : Command Palette (명령 팔레트)

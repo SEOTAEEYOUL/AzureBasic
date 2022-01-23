@@ -1,5 +1,14 @@
 # 공통 환경 (도구 포함)  
 
+## [Windows 패키지 관리자](./choco.md)  
+- choco는 별도로 설치
+- CMD던 pwsh던 관리자 권한으로 실행
+
+## [윈도 앱 설치 관리자(패키지 관리자)](https://github.com/microsoft/winget-cli/releases) 
+- MS Store에서 설치
+- winget은 기본 내장에 권한 문제 없음
+- MSI/EXE/MSIX만 설치할 수 있음 
+
 ## [git 설치](https://git-scm.com/downloads) 
 - [2.34.1](https://git-scm.com/download/win)  
 
