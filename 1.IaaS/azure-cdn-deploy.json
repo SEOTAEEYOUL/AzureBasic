@@ -66,9 +66,7 @@
       "location": "[parameters('location')]",
       "properties": {
         "originHostHeader": "[parameters('originUrl')]",
-        "isHttpAllowed": true,
-        "isHttpsAllowed": true,
-        "queryStringCachingBehavior": "IgnoreQueryString",
+        "queryStringCachingBehavior": "[parameters(IgnoreQueryString')]",
         "contentTypesToCompress": [
           "application/eot",
           "application/font",
@@ -113,14 +111,100 @@
           "text/x-java-source"
         ],
         "isCompressionEnabled": true,
+        "isHttpAllowed": true,
+        "isHttpsAllowed": true,
+        "queryStringCachingBehavior": "[parameters(IgnoreQueryString')]",
+        "optimizationType": "GeneralWebDelivery",
         "origins": [
           {
-            "name": "origin1",
+            "name": "origin-homepage-01",
             "properties": {
               "hostName": "[parameters('originUrl')]"
+              "originHostHeader": "www.springnode.net",
+              "priority": 1,
+              "weight": 1000,
+              "enabled": true
             }
           }
-        ]
+        ],
+        "originGroups": [
+            {
+                "name": "origin-homepage-grp-01",
+                "properties": {
+                    "origins": [
+                        {
+                            "id": "[resourceId('Microsoft.Cdn/profiles/endpoints/origins', parameters('profiles_sksq_lz_prd_cdn_name'), 'skcc-homepage-dev-cdn', 'origin-homepage-01')]"
+                        }
+                    ]
+                }
+            }
+        ],
+        "defaultOriginGroup": {
+            "id": "[resourceId('Microsoft.Cdn/profiles/endpoints/origingroups', parameters('profiles_sksq_lz_prd_cdn_name'), 'skcc-homepage-dev-cdn', 'origin-homepage-grp-01')]"
+        },
+        "geoFilters": [],
+        "deliveryPolicy": {
+            "rules": [
+                {
+                    "name": "originHomepageGrp01Rule1",
+                    "order": 1,
+                    "conditions": [
+                        {
+                            "name": "UrlPath",
+                            "parameters": {
+                                "operator": "Contains",
+                                "negateCondition": false,
+                                "matchValues": [
+                                    "/kor/",
+                                    "/eng/",
+                                    "/download/"
+                                ],
+                                "transforms": [],
+                                "@odata.type": "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlPathMatchConditionParameters"
+                            }
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "name": "CacheExpiration",
+                            "parameters": {
+                                "cacheBehavior": "BypassCache",
+                                "cacheType": "All",
+                                "@odata.type": "#Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "originHomepageGrp01Rule2",
+                    "order": 2,
+                    "conditions": [
+                        {
+                            "name": "UrlFileExtension",
+                            "parameters": {
+                                "operator": "Contains",
+                                "negateCondition": false,
+                                "matchValues": [
+                                    ".do"
+                                ],
+                                "transforms": [],
+                                "@odata.type": "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFileExtensionMatchConditionParameters"
+                            }
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "name": "CacheExpiration",
+                            "parameters": {
+                                "cacheBehavior": "BypassCache",
+                                "cacheType": "All",
+                                "@odata.type": "#Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
       },
       "dependsOn": [
         "[resourceId('Microsoft.Cdn/profiles', parameters('profileName'))]"

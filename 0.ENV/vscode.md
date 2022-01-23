@@ -53,6 +53,7 @@
 > [Azure Terraform](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform)  
 > [Kubernetes](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)  
 > [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)  
+> [Azure Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack)  
 
 
 ## 단축키  

@@ -5,11 +5,27 @@
     "profileName": {
       "value": "sksq-homepage-dev-cdn"
     },
+    "sku": {
+      "value": "Standard_Microsoft"
+    },
+    "location": {
+      "value": "Global"
+    },
+    "queryStringCachingBehavior": {
+      "value": "UseQueryString" // "IgnoreQueryString"
+    },    
+    "customdomains": {
+      "value": "www.springboot.net"
+    },
+    "origins": {
+      "value": "www.springboot.net"
+    }
     "endpointName": {
-      "value": "www"
+      "value": "skcc-homepage-dev-cdn.azureedge.net"
     },
     "originUrl": {
       "value": "skcchomepage.koreacentral.cloudapp.azure.com"
+      // "value": "sksqdevhomepageblob1.z12.web.core.windows.net"
     }
   }
 }

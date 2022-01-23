@@ -17,6 +17,35 @@ Get-Help Get-AzCdnProfile
 ```
 
 ### AzureCDN 환경 설정
+- 원본
+  - 이름 : origin-homepage-01
+  - 원본형식 : "사용자 지정 원본"
+  - 원본 호스트 이름 : "skccweb.koreacentral.cloudapp.azure.com"
+    - 목록에서 원본 호스트 이름을 선택하거나, 사용자 지정 이름을 입력하거나, IP 주소를 입력하세요. CDN은 이 원본에서 콘텐츠를 가져옵니다.
+  - 원본 호스트 헤더 : "www.springnode.net"
+    - 각 요청과 함께 원본에 보낸 호스트 헤더 값입니다. 이 값을 비워 두면 요청 호스트 이름에 따라 이 값이 결정됩니다. 웹앱, Blob 스토리지 및 클라우드 서비스와 같은 Azure CDN 원본을 사용하려면 이 호스트 헤더 값이 기본적으로 원본 호스트 이름과 일치해야 합니다.
+  - HTTP 포트 : 80
+  - HTTPS 포트 : 443
+  - 우선 순위 : 1
+  - 가중치 1000
+- 캐시 규칙 : "각 공유난 URL 캐시"
+- 지역 필터링 : 설정되지 않음
+- 최적화 : "일반 웹 배달"
+- 규칙 엔진
+  - originHomepageGrp01Rule1
+    - if URL 경로
+      - 연산자 : "포함" : 
+        - "/kor", 
+        - "/eng", 
+        - "/download"
+      - 케이스 변환 : "변환 안 함"
+    - 캐시 동작 : "캐시 무시"
+  - originHomepageGrp01Rule2
+    - if URL 경로
+      - 연산자 : "포함" : 
+        - ".do" 
+      - 케이스 변환 : "변환 안 함"
+    - 캐시 동작 : "캐시 무시" 
 ```powershell
 $resourceGroupName="rg-skcc-homepage-dev"
 $locationName="koreacentral" # "Central US"
@@ -24,7 +53,10 @@ $cdnProfileName="skcc-homepage-dev-cdn"
 $cdnSku="Standard_Akamai"
 $originName="www"
 $originHostName="skcchomepage.koreacentral.cloudapp.azure.com"
-$cdnEndPointName="cdnposhdoc"
+$cdnEndPointName="skcc-homepage-dev-cdn.azureedge.net" # "www"
+
+$cdnCustomDomainHostName="www.nodespring.net"
+$cdnCustomDomainName="nodespring.net"
 ```
 
 ### Azure CDN 프로필 보기
@@ -37,13 +69,20 @@ Get-AzCdnProfile | ForEach-Object { Write-Host $_.Name }
 # Return only **Azure CDN from Verizon** profiles.
 Get-AzCdnProfile | Where-Object { $_.Sku.Name -eq "Standard_Verizon" }
 
-Get-AzCdnProfile -ProfileName $cdnProfileName -ResourceGroupName $resourceGroupName
+Get-AzCdnProfile `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName $resourceGroupName
 
 # Get a single endpoint.
-Get-AzCdnEndpoint -ProfileName $cdnProfileName -ResourceGroupName $resourceGroupName -EndpointName cdndocdemo
+Get-AzCdnEndpoint `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName $resourceGroupName `
+  -EndpointName cdndocdemo
 
 # Get all of the endpoints on a given profile. 
-Get-AzCdnEndpoint -ProfileName $cdnProfileName -ResourceGroupName $resourceGroupName
+Get-AzCdnEndpoint `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName $resourceGroupName
 
 # Return all of the endpoints on all of the profiles.
 Get-AzCdnProfile | Get-AzCdnEndpoint
@@ -57,7 +96,7 @@ Get-AzCdnProfile | Get-AzCdnEndpoint | Where-Object { $_.ResourceState -eq "Runn
 # Create a new profile
 New-AzCdnProfile `
   -ProfileName $cdnProfileName `
-  -ResourceGroupName CdnDemoRG `
+  -ResourceGroupName $resourceGroupName `
   -Sku $cdnSku `
   -Location $locationName
 ```
@@ -67,20 +106,20 @@ New-AzCdnProfile `
 # Create a new endpoint
 New-AzCdnEndpoint `
   -ProfileName $cdnProfileName `
-  -ResourceGroupName CdnDemoRG `
+  -ResourceGroupName $resourceGroupName `
   -Location $locationName `
-  -EndpointName cdnposhdoc `
+  -EndpointName $cdnEndPointName `
   -OriginName $originName `
   -OriginHostName $originHostName
 
 # Create a new profile and endpoint (same as above) in one line
 New-AzCdnProfile `
   -ProfileName $cdnProfileName `
-  -ResourceGroupName CdnDemoRG `
+  -ResourceGroupName $resourceGroupName `
   -Sku $cdnSku `
   -Location $locationName | `
     New-AzCdnEndpoint `
-      -EndpointName cdnposhdoc `
+      -EndpointName $cdnEndPointName `
       -OriginName $originName `
       -OriginHostName $originHostName
 ```
@@ -90,11 +129,37 @@ New-AzCdnProfile `
 # Retrieve availability
 $availability = `
   Get-AzCdnEndpointNameAvailability `
-    -EndpointName "cdnposhdoc"
+    -EndpointName $cdnEndPointName
 
 # If available, write a message to the console.
-If($availability.NameAvailable) { Write-Host "Yes, that endpoint name is available." }
-Else { Write-Host "No, that endpoint name is not available." }
+If ($availability.NameAvailable) { `
+  Write-Host "Yes, that endpoint name is available." `
+} `
+Else { `
+  Write-Host "No, that endpoint name is not available." `
+}
+```
+
+### 사용자 지정 도메인 추가
+```powershell
+# Get an existing endpoint
+$endpoint = Get-AzCdnEndpoint `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName $resourceGroupName `
+  -EndpointName $cdnEndPointName
+
+# Check the mapping
+$result = `
+  Test-AzCdnCustomDomain `
+    -CdnEndpoint $endpoint `
+    -CustomDomainHostName $cdnCustomDomainHostName
+
+# Create the custom domain on the endpoint
+If ($result.CustomDomainValidated) { `
+  New-AzCdnCustomDomain -CustomDomainName Contoso `
+    -HostName $cdnCustomDomainHostName `
+    -CdnEndpoint $endpoint `
+}
 ```
 
 ## ARMTemplate
