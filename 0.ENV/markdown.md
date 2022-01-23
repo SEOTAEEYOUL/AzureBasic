@@ -1,7 +1,9 @@
 # MarkDown
 - 쉽고 빠르게 스타일문서를 작성
+- 깃헙의 저장소Repository에 관한 정보를 기록(README.md)  
+- 설치방법, 소스코드 설명, 이슈 등을 간단하게 기록하고 가독성을 높일 수 있음
 ![Markdown-mark.png](./img/Markdown-mark.png)
-  <img src=./img/Markdown-mark.png width=12 height=12>
+<img src=./img/Markdown-mark.png height=30>
 
 
 ## 장점
