@@ -6,8 +6,9 @@
 > [Bicep 파일의 구조 및 구문 이해](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/bicep/file)  
 > [빠른 시작: Visual Studio Code를 사용하여 Bicep 파일 만들기](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/bicep/quickstart-create-bicep-use-visual-studio-code?tabs=CLI)  
 > [Azure Resource Manager (ARM) Tools](https://marketplace.visualstudio.com/items?itemName=msazurermtools.azurerm-vscode-tools)
-> [Introducing the Azure Az PowerShell module](https://docs.microsoft.com/ko-kr/powershell/azure/new-azureps-module-az?view=azps-7.1.0)
-
+> [Introducing the Azure Az PowerShell module](https://docs.microsoft.com/ko-kr/powershell/azure/new-azureps-module-az?view=azps-7.1.0)  
+> [빠른 시작: Visual Studio Code를 사용하여 ARM 템플릿 만들기](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/quickstart-create-templates-use-visual-studio-code?tabs=CLI)  
+> [빠른 시작: 템플릿 사양 만들기 및 배포](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/quickstart-create-template-specs?tabs=azure-powershell)  
 ## Template 형식
 - 템플릿에 포함되는 요소
 ```json
