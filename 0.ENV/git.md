@@ -1,5 +1,48 @@
 # git
 
+## .gitignore
+프로젝트 작업시 로컬 환경의 정보나 빌드 정보등 원격 저장소에 관리하지 말아야되는 파일들에 대해서 지정하여 원격 저장소에 실수로 올라가지 않도록 관리하는 파일  
+정의한 정보들에 해당하는 파일들에 대하여 git track하지 않도록 설정하는 역할을 한다.
+- 보안상으로 위험성이 있는 파일  
+- 프로젝트와 관계없는 파일
+- 용량이 너무 커서 제외해야되는 파일
+
+### 작성규칙
+- '#'로 시작하는 라인은 무시한다.
+- 표준 Glob 패턴을 사용한다.
+- 슬래시(/)로 시작하면 하위 디렉터리에 적용되지(recursivity) 않는다.
+- 디렉터리는 슬래시(/)를 끝에 사용하는 것으로 표현한다.
+- 느낌표(!)로 시작하는 패턴의 파일은 무시하지 않는다.
+
+### Example
+```
+# ignore all .class files
+*.class
+
+# exclude lib.class from "*.class", meaning all lib.class are still tracked
+!lib.class
+
+# ignore all json files whose name begin with 'temp-'
+temp-*.json
+
+# only ignore the build.log file in current directory, not those in its subdirectories
+/build.log
+
+# specify a folder with slash in the end
+# ignore all files in any directory named temp
+temp/
+
+# ignore doc/notes.txt, but not doc/server/arch.txt
+bin/*.txt
+
+# ignore all .pdf files in the doc/ directory and any of its subdirectories
+# /** matches 0 or more directories
+doc/**/*.pdf
+```
+
+
+
+## 사용예
 ### 일반적인 동기화 후 변경 사항 올리기
 ```
 PS > git add *
