@@ -21,6 +21,7 @@ Get-Help Get-AzCdnProfile
   - 이름 : origin-homepage-01
   - 원본형식 : "사용자 지정 원본"
   - 원본 호스트 이름 : "skccweb.koreacentral.cloudapp.azure.com"
+    - 여기서는 application gateway 이름 
     - 목록에서 원본 호스트 이름을 선택하거나, 사용자 지정 이름을 입력하거나, IP 주소를 입력하세요. CDN은 이 원본에서 콘텐츠를 가져옵니다.
   - 원본 호스트 헤더 : "www.springnode.net"
     - 각 요청과 함께 원본에 보낸 호스트 헤더 값입니다. 이 값을 비워 두면 요청 호스트 이름에 따라 이 값이 결정됩니다. 웹앱, Blob 스토리지 및 클라우드 서비스와 같은 Azure CDN 원본을 사용하려면 이 호스트 헤더 값이 기본적으로 원본 호스트 이름과 일치해야 합니다.
@@ -48,15 +49,17 @@ Get-Help Get-AzCdnProfile
     - 캐시 동작 : "캐시 무시" 
 ```powershell
 $resourceGroupName="rg-skcc-homepage-dev"
-$locationName="koreacentral" # "Central US"
+$locationName="Global" # "Central US"
 $cdnProfileName="skcc-homepage-dev-cdn"
 $cdnSku="Standard_Akamai"
-$originName="www"
-$originHostName="skcchomepage.koreacentral.cloudapp.azure.com"
-$cdnEndPointName="skcc-homepage-dev-cdn.azureedge.net" # "www"
+$originName="origin-homepage-01"
+$originHostHeader="www.nodespringboot.org"
+$originHostName="skcchomepage.koreacentral.cloudapp.azure.com" # applicationGateway EndPoint
 
-$cdnCustomDomainHostName="www.nodespring.net"
-$cdnCustomDomainName="nodespring.net"
+$cdnEndPointName="skcc-homepage-dev-cdn" # "www"
+
+$cdnCustomDomainHostName="www.nodespringboot.org"
+$cdnCustomDomainName="nodespringboot" # Custom Domain 자원의 이름(자원명)
 ```
 
 ### Azure CDN 프로필 보기
@@ -77,7 +80,7 @@ Get-AzCdnProfile `
 Get-AzCdnEndpoint `
   -ProfileName $cdnProfileName `
   -ResourceGroupName $resourceGroupName `
-  -EndpointName cdndocdemo
+  -EndpointName $cdnEndPointName
 
 # Get all of the endpoints on a given profile. 
 Get-AzCdnEndpoint `
@@ -110,6 +113,7 @@ New-AzCdnEndpoint `
   -Location $locationName `
   -EndpointName $cdnEndPointName `
   -OriginName $originName `
+  -OriginHostHeader $originHostHeader `
   -OriginHostName $originHostName
 
 # Create a new profile and endpoint (same as above) in one line
@@ -124,7 +128,7 @@ New-AzCdnProfile `
       -OriginHostName $originHostName
 ```
 
-### 엔드 포인트 이름 가용성 확인
+### 엔드 포인트 이름 사용 여부 확인
 ```powershell
 # Retrieve availability
 $availability = `
@@ -141,6 +145,7 @@ Else { `
 ```
 
 ### 사용자 지정 도메인 추가
+- DNS 에 CNAME 추가해야 함
 ```powershell
 # Get an existing endpoint
 $endpoint = Get-AzCdnEndpoint `
@@ -156,9 +161,10 @@ $result = `
 
 # Create the custom domain on the endpoint
 If ($result.CustomDomainValidated) { `
-  New-AzCdnCustomDomain -CustomDomainName Contoso `
+  New-AzCdnCustomDomain `
+    -CustomDomainName $cdnCustomDomainName ` # 자원명 (nodespringboot )
     -HostName $cdnCustomDomainHostName `
-    -CdnEndpoint $endpoint `
+    -CdnEndpoint $endpoint
 }
 ```
 
