@@ -3,7 +3,14 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
-!**/*.un~
+
+## ignore all .un~
+**/*.un~
+**/*.*~
+
+### VS Code ###
+.vscode/
+1.IaaS/자료
 
 ### STS ###
 .apt_generated
@@ -27,7 +34,3 @@ target/
 /nbdist/
 /.nb-gradle/
 build/
-
-### VS Code ###
-.vscode/
-/1.IaaS/자료
