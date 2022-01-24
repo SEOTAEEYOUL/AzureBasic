@@ -15,17 +15,29 @@
       "value": "UseQueryString" // "IgnoreQueryString"
     },    
     "customdomains": {
-      "value": "www.springboot.net"
+      "value": "www.nodespringboot.org"
     },
     "origins": {
-      "value": "www.springboot.net"
-    }
+      "value": "origin-homepage-01" // www.nodespringboot.org
+    },
+    "originHostHeader": {
+      "value": "www.nodespringboot.org"
+    },
+    "originHost": {
+      "value": "skcchomepage.koreacentral.cloudapp.azure.com" // application gateway endpoint 설정
+    },
     "endpointName": {
-      "value": "skcc-homepage-dev-cdn.azureedge.net"
+      "value": "skcc-homepage-dev-cdn" // skcc-homepage-dev-cdn.azureedge.net
     },
     "originUrl": {
       "value": "skcchomepage.koreacentral.cloudapp.azure.com"
       // "value": "sksqdevhomepageblob1.z12.web.core.windows.net"
+    },
+    "CustomDomainHost": {
+      "value": "www.nodespringboot.org"
+    },
+    "CustomDomainName": {
+      "value": "nodespringboot" // Custom Domain 자원의 이름(자원명)
     }
   }
 }

@@ -26,6 +26,27 @@ New-AzDnsRecordSet -Name www `
   -Ttl 300 `
   -DnsRecords (New-AzDnsRecordConfig -IPv4Address "20.196.196.53")
 ```
+### CNAME
+#### New
+```powershell
+$Records = @()
+$Records += New-AzDnsRecordConfig -Cname www.nodespringboot.org
+$RecordSet = New-AzDnsRecordSet -Name "www" -RecordType CNAME -ResourceGroupName "rg-skcc-homepage-dev" -TTL 3600 -ZoneName "nodespringboot.org" -DnsRecords $Records
+```
+#### Set
+```powershell
+$Zone = Get-AzDnsZone `
+  -ResourceGroupName "rg-skcc-homepage-dev"
+$RecordSet = `
+  Get-AzDnsRecordSet `
+    -Name "www" `
+    -RecordType CNAME -Zone $Zone
+$RecordSet.Records[0].Cname="skcc-homepage-dev-cdn.azureedge.net"
+# $RecordSet.Records[0].Email = "admin.myzone.com"
+Set-AzDnsRecordSet -RecordSet $RecordSet
+```
+
+
 ### 수행 결과
 ```powershell
 PS C:\workspace\AzureBasic\1.IaaS> New-AzDnsRecordSet -Name www `
@@ -48,12 +69,27 @@ Records           : {20.196.196.53}
 Metadata          : 
 ProvisioningState : Succeeded
 ```
-```bash
+```powershell
 az network dns record-set a add-record `
   -g rg-skcc-homepage-dev `
   -z nodespringboot.org `
-  -n www -a 20.196.196.53
+  -n www -a 20.196.196.53 # skcc-homepage-dev-cdn.azureedge.net
 ```
+```powershell
+az network dns record-set cname create `
+  -g MyResourceGroup -z nodespringboot.org -n MyRecordSet `
+  --ttl 30 --zone-name nodespringboot.org
+  # az network dns record-set cname create --name MyRecordSet --resource-group MyResourceGroup --ttl 30 --zone-name www.mysite.com
+```
+```
+az network dns record-set cname list --resource-group rg-skcc-homepage-dev --zone-name nodespringboot.org -o table       
+
+Name    ResourceGroup         Ttl    Type    Metadata
+------  --------------------  -----  ------  ----------
+www     rg-skcc-homepage-dev  3600   CNAME
+```
+
+
 ![dns-zone-www.png](./img/dns-zone-www.png)
 ![www.nodespringboot-org.png](./img/www.nodespringboot-org.png)
 

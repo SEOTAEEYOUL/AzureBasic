@@ -140,7 +140,7 @@
             }
         ],
         "defaultOriginGroup": {
-            "id": "[resourceId('Microsoft.Cdn/profiles/endpoints/origingroups', parameters('profiles_sksq_lz_prd_cdn_name'), 'skcc-homepage-dev-cdn', 'origin-homepage-grp-01')]"
+            "id": "[resourceId('Microsoft.Cdn/profiles/endpoints/origingroups', parameters('profiles_sksq_skcc_prd_cdn_name'), 'skcc-homepage-dev-cdn', 'origin-homepage-grp-01')]"
         },
         "geoFilters": [],
         "deliveryPolicy": {

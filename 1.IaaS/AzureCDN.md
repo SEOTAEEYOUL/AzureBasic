@@ -6,8 +6,10 @@
 ## 생성절차
 1. CDN Profile 생성(New-AzCdnProfile)
 2. Endpoint 생성(New-AzCdnEndpoint)
-3. Custom Domain 생성
-4. Rule 작성
+3. DNS 에 www 에 CDN endpoint 등록
+4. Custom Domain 생성(New-AzCdnCustomDomain)
+   - 기존 엔드포인트에 사용자 지정 도메인 이름을 추가
+5. Rule 작성
 
 ## PowerShell
 
@@ -52,6 +54,7 @@ Get-Help Get-AzCdnProfile
         - ".do" 
       - 케이스 변환 : "변환 안 함"
     - 캐시 동작 : "캐시 무시" 
+![cdn-sku-Standard_Akamai.png](./img/cdn-sku-Standard_Akamai.png)
 ```powershell
 $resourceGroupName="rg-skcc-homepage-dev"
 $locationName="Global" # "Central US"
@@ -59,7 +62,8 @@ $cdnProfileName="skcc-homepage-dev-cdn"
 $cdnSku="Standard_Microsoft" # Standard_Akamai
 $originName="origin-homepage-01"
 $originHostHeader="www.nodespringboot.org"
-$originHostName="skcchomepage.koreacentral.cloudapp.azure.com" # applicationGateway EndPoint
+$applicationEndPoint="skcchomepage.koreacentral.cloudapp.azure.com" # applicationGateway EndPoint
+$originHostName=$applicationEndPoint
 
 $cdnEndPointName="skcc-homepage-dev-cdn" # "www"
 
@@ -110,6 +114,7 @@ New-AzCdnProfile `
 ```
 
 ### CDN Endpoint 만들기
+CDN 설정 메뉴의 "원본" 에 대한 설정
 ```powershell
 # Create a new endpoint
 New-AzCdnEndpoint `
@@ -134,6 +139,7 @@ New-AzCdnProfile `
 ```
 
 ### 엔드 포인트 이름 사용 여부 확인
+endpoint 작성 전 확인하기
 ```powershell
 # Retrieve availability
 $availability = `
@@ -150,13 +156,29 @@ Else { `
 ```
 
 ### 사용자 지정 도메인 추가
-- DNS 에 CNAME 추가해야 함
+DNS 에 CNAME 추가해야 함
+- 기존 Application Gateway endpoint 에서 CDN endpoint 로 변경
+#### Set
+```powershell
+$Zone = Get-AzDnsZone `
+  -ResourceGroupName $resourceGroupName
+$RecordSet = `
+  Get-AzDnsRecordSet `
+    -Name "www" `
+    -RecordType CNAME -Zone $Zone
+$RecordSet.Records[0].Cname="$cdnEndPointName.azureedge.net"
+# $RecordSet.Records[0].Email = "admin.myzone.com"
+Set-AzDnsRecordSet -RecordSet $RecordSet
+```
+
+- 사용자 지정 도메인 추가
 ```powershell
 # Get an existing endpoint
-$endpoint = Get-AzCdnEndpoint `
-  -ProfileName $cdnProfileName `
-  -ResourceGroupName $resourceGroupName `
-  -EndpointName $cdnEndPointName
+$endpoint = `
+  Get-AzCdnEndpoint `
+    -ProfileName $cdnProfileName `
+    -ResourceGroupName $resourceGroupName `
+    -EndpointName $cdnEndPointName
 
 # Check the mapping
 $result = `
@@ -165,12 +187,123 @@ $result = `
     -CustomDomainHostName $cdnCustomDomainHostName
 
 # Create the custom domain on the endpoint
+# -CustomDomainName :자원명 (nodespringboot )
 If ($result.CustomDomainValidated) { `
   New-AzCdnCustomDomain `
-    -CustomDomainName $cdnCustomDomainName ` # 자원명 (nodespringboot )
+    -CustomDomainName $cdnCustomDomainName `
     -HostName $cdnCustomDomainHostName `
     -CdnEndpoint $endpoint
 }
+```
+
+## Endpoint 수정
+CDN 설정 메뉴의 "압축" 에 대한 설정
+```powershell
+# Get an existing endpoint
+$endpoint = `
+  Get-AzCdnEndpoint `
+    -ProfileName $cdnProfileName `
+    -ResourceGroupName $resourceGroupName `
+    -EndpointName $cdnEndPointName
+
+# Set up content compression
+$endpoint.IsCompressionEnabled = $true
+$endpoint.ContentTypesToCompress = "text/javascript","text/css","application/json"
+
+# Save the changed endpoint and apply the changes
+Set-AzCdnEndpoint -CdnEndpoint $endpoint
+```
+
+## CDN 자산 제거/사전 로드
+CDN 설정 메뉴의 "캐시 규칙" 에 대한 설정
+- Unpublish-AzCdnEndpointContent : 캐시된 자산을 제거
+- Publish-AzCdnEndpointContent : 자산을 지원되는 엔드포인트에 사전 로드
+```powershell
+# Purge some assets.
+Unpublish-AzCdnEndpointContent `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName $resourceGroupName `
+  -EndpointName $cdnEndPointName `
+  -PurgeContent "/images/kitten.png","/video/rickroll.mp4"
+
+# Pre-load some assets.
+Publish-AzCdnEndpointContent `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName $resourceGroupName `
+  -EndpointName $cdnEndPointName `
+  -LoadContent "/images/kitten.png","/video/rickroll.mp4"
+
+# Purge everything in /images/ on all endpoints.
+Get-AzCdnProfile | `
+  Get-AzCdnEndpoint | `
+    Unpublish-AzCdnEndpointContent `
+      -PurgeContent "/images/*"
+```
+
+### Rule
+```powershell
+$cond1 = `
+  New-AzCdnDeliveryRuleCondition `
+    -MatchVariable UrlPath -Operator Equal -MatchValue ".do"
+
+$action1 = New-AzCdnDeliveryRuleAction `
+  -CacheBehavior "Ignore"
+
+New-AzCdnDeliveryRule `
+  -Name "rule1" `
+  -Order 1 `
+  -Condition $cond1 `
+  -Action $action1
+```
+
+### CDN 엔드포인트 시작/중지
+- Start-AzCdnEndpoint : 개별 엔드포인트 또는 엔드포인트 그룹 시작
+- Stop-AzCdnEndpoint : 개별 엔드포인트 또는 엔드포인트 그룹 중지
+```powershell
+# Stop the cdndocdemo endpoint
+Stop-AzCdnEndpoint -ProfileName CdnDemo -ResourceGroupName CdnDemoRG -EndpointName cdndocdemo
+
+# Stop all endpoints
+Get-AzCdnProfile | Get-AzCdnEndpoint | Stop-AzCdnEndpoint
+
+# Start all endpoints
+Get-AzCdnProfile | Get-AzCdnEndpoint | Start-AzCdnEndpoint
+```
+
+### CDN 리소스 삭제
+- DNS 에서 cdn endpoint 가 등록(A or CNAME) 되어 있으면 삭제 or 변경 후 리소스 삭제 가능
+#### - 기존 Application Gateway endpoint 로 변경
+```powershell
+$Zone = Get-AzDnsZone `
+  -ResourceGroupName $resourceGroupName
+$RecordSet = `
+  Get-AzDnsRecordSet `
+    -Name "www" `
+    -RecordType CNAME -Zone $Zone
+$RecordSet.Records[0].Cname="$applicationEndPoint"
+# $RecordSet.Records[0].Email = "admin.myzone.com"
+Set-AzDnsRecordSet -RecordSet $RecordSet
+```
+
+#### CDN Endpoint && Profile 삭제
+```powershell
+# Remove a single endpoint
+Remove-AzCdnEndpoint `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName $resourceGroupName `
+  -EndpointName $cdnEndPointName
+
+# Remove all the endpoints on a profile and skip confirmation (-Force)
+Get-AzCdnProfile `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName $resourceGroupName | `
+    Get-AzCdnEndpoint | `
+      Remove-AzCdnEndpoint -Force
+
+# Remove a single profile
+Remove-AzCdnProfile `
+  -ProfileName $cdnProfileName `
+  -ResourceGroupName $resourceGroupName
 ```
 
 ## ARMTemplate

@@ -1,61 +1,116 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-      "profiles_skcc_homepage_dev_cdn_name": {
-          "defaultValue": "skcc-homepage-dev-cdn",
-          "type": "String"
-      }
-  },
-  "variables": {},
-  "resources": [
-      {
-          "type": "Microsoft.Cdn/profiles/endpoints",
-          "apiVersion": "2020-09-01",
-          "name": "[concat(parameters('profiles_skcc_homepage_dev_cdn_name'), '/', parameters('profiles_skcc_homepage_dev_cdn_name'))]",
-          "location": "Global",
-          "properties": {
-              "originHostHeader": "www.springnode.net",
-              "contentTypesToCompress": [],
-              "isCompressionEnabled": false,
-              "isHttpAllowed": true,
-              "isHttpsAllowed": true,
-              "queryStringCachingBehavior": "IgnoreQueryString",
-              "origins": [
-                  {
-                      "name": "origin-homepage-01",
-                      "properties": {
-                          "hostName": "skcchomepage.koreacentral.cloudapp.azure.com",
-                          "enabled": true
-                      }
-                  }
-              ],
-              "originGroups": [],
-              "geoFilters": []
-          }
-      },
-      {
-          "type": "Microsoft.Cdn/profiles/endpoints/customdomains",
-          "apiVersion": "2020-09-01",
-          "name": "[concat(parameters('profiles_skcc_homepage_dev_cdn_name'), '/', parameters('profiles_skcc_homepage_dev_cdn_name'), '/nodespringboot')]",
-          "dependsOn": [
-              "[resourceId('Microsoft.Cdn/profiles/endpoints', parameters('profiles_skcc_homepage_dev_cdn_name'), parameters('profiles_skcc_homepage_dev_cdn_name'))]"
-          ],
-          "properties": {
-              "hostName": "www.nodespringboot.org"
-          }
-      },
-      {
-          "type": "Microsoft.Cdn/profiles/endpoints/origins",
-          "apiVersion": "2020-09-01",
-          "name": "[concat(parameters('profiles_skcc_homepage_dev_cdn_name'), '/', parameters('profiles_skcc_homepage_dev_cdn_name'), '/origin-homepage-01')]",
-          "dependsOn": [
-              "[resourceId('Microsoft.Cdn/profiles/endpoints', parameters('profiles_skcc_homepage_dev_cdn_name'), parameters('profiles_skcc_homepage_dev_cdn_name'))]"
-          ],
-          "properties": {
-              "hostName": "skcchomepage.koreacentral.cloudapp.azure.com",
-              "enabled": true
-          }
-      }
-  ]
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "profiles_skcc_homepage_dev_cdn_name": {
+            "defaultValue": "skcc-homepage-dev-cdn",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Cdn/profiles",
+            "apiVersion": "2020-09-01",
+            "name": "[parameters('profiles_skcc_homepage_dev_cdn_name')]",
+            "location": "Global",
+            "sku": {
+                "name": "Standard_Microsoft"
+            },
+            "kind": "cdn",
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/endpoints",
+            "apiVersion": "2020-09-01",
+            "name": "[concat(parameters('profiles_skcc_homepage_dev_cdn_name'), '/', parameters('profiles_skcc_homepage_dev_cdn_name'))]",
+            "location": "Global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_skcc_homepage_dev_cdn_name'))]"
+            ],
+            "properties": {
+                "originHostHeader": "www.nodespringboot.org",
+                "contentTypesToCompress": [],
+                "isCompressionEnabled": false,
+                "isHttpAllowed": true,
+                "isHttpsAllowed": true,
+                "queryStringCachingBehavior": "IgnoreQueryString",
+                "origins": [
+                    {
+                        "name": "origin-homepage-01",
+                        "properties": {
+                            "hostName": "skcchomepage.koreacentral.cloudapp.azure.com",
+                            "originHostHeader": "www.nodespringboot.org",
+                            "priority": 1,
+                            "weight": 1000,
+                            "enabled": true
+                        }
+                    }
+                ],
+                "originGroups": [],
+                "geoFilters": [],
+                "deliveryPolicy": {
+                    "rules": [
+                        {
+                            "name": "homePageRule01",
+                            "order": 1,
+                            "conditions": [
+                                {
+                                    "name": "UrlFileExtension",
+                                    "parameters": {
+                                        "operator": "Contains",
+                                        "negateCondition": false,
+                                        "matchValues": [
+                                            ".do",
+                                            ".jsp"
+                                        ],
+                                        "transforms": [],
+                                        "@odata.type": "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFileExtensionMatchConditionParameters"
+                                    }
+                                }
+                            ],
+                            "actions": [
+                                {
+                                    "name": "CacheExpiration",
+                                    "parameters": {
+                                        "cacheBehavior": "BypassCache",
+                                        "cacheType": "All",
+                                        "@odata.type": "#Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/endpoints/customdomains",
+            "apiVersion": "2020-09-01",
+            "name": "[concat(parameters('profiles_skcc_homepage_dev_cdn_name'), '/', parameters('profiles_skcc_homepage_dev_cdn_name'), '/nodespringboot')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/endpoints', parameters('profiles_skcc_homepage_dev_cdn_name'), parameters('profiles_skcc_homepage_dev_cdn_name'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_skcc_homepage_dev_cdn_name'))]"
+            ],
+            "properties": {
+                "hostName": "www.nodespringboot.org"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/endpoints/origins",
+            "apiVersion": "2020-09-01",
+            "name": "[concat(parameters('profiles_skcc_homepage_dev_cdn_name'), '/', parameters('profiles_skcc_homepage_dev_cdn_name'), '/origin-homepage-01')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/endpoints', parameters('profiles_skcc_homepage_dev_cdn_name'), parameters('profiles_skcc_homepage_dev_cdn_name'))]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_skcc_homepage_dev_cdn_name'))]"
+            ],
+            "properties": {
+                "hostName": "skcchomepage.koreacentral.cloudapp.azure.com",
+                "originHostHeader": "www.nodespringboot.org",
+                "priority": 1,
+                "weight": 1000,
+                "enabled": true
+            }
+        }
+    ]
 }
