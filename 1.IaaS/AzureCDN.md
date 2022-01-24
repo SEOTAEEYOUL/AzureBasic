@@ -3,6 +3,11 @@
 
 * [New-AzResourceGroupDeployment](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment?view=azps-7.1.0)
 
+## 생성절차
+1. CDN Profile 생성(New-AzCdnProfile)
+2. Endpoint 생성(New-AzCdnEndpoint)
+3. Custom Domain 생성
+4. Rule 작성
 
 ## PowerShell
 
@@ -51,7 +56,7 @@ Get-Help Get-AzCdnProfile
 $resourceGroupName="rg-skcc-homepage-dev"
 $locationName="Global" # "Central US"
 $cdnProfileName="skcc-homepage-dev-cdn"
-$cdnSku="Standard_Akamai"
+$cdnSku="Standard_Microsoft" # Standard_Akamai
 $originName="origin-homepage-01"
 $originHostHeader="www.nodespringboot.org"
 $originHostName="skcchomepage.koreacentral.cloudapp.azure.com" # applicationGateway EndPoint
