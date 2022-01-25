@@ -1,0 +1,129 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+      "applicationGateways_ag_skcc_name": {
+          "defaultValue": "ag-skcc",
+          "type": "String"
+      },
+      "virtualNetworks_vnet_skcc_ag_externalid": {
+          "defaultValue": "/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-skcc-ag/providers/Microsoft.Network/virtualNetworks/vnet-skcc-ag",
+          "type": "String"
+      },
+      "publicIPAddresses_pip_ag_externalid": {
+          "defaultValue": "/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-skcc-ag/providers/Microsoft.Network/publicIPAddresses/pip-ag",
+          "type": "String"
+      }
+  },
+  "variables": {},
+  "resources": [
+      {
+          "type": "Microsoft.Network/applicationGateways",
+          "apiVersion": "2020-11-01",
+          "name": "[parameters('applicationGateways_ag_skcc_name')]",
+          "location": "koreacentral",
+          "properties": {
+              "sku": {
+                  "name": "Standard_v2",
+                  "tier": "Standard_v2",
+                  "capacity": 1
+              },
+              "gatewayIPConfigurations": [
+                  {
+                      "name": "ag-ip-cfg",
+                      "properties": {
+                          "subnet": {
+                              "id": "[concat(parameters('virtualNetworks_vnet_skcc_ag_externalid'), '/subnets/snet-skcc-ag')]"
+                          }
+                      }
+                  }
+              ],
+              "sslCertificates": [],
+              "trustedRootCertificates": [],
+              "trustedClientCertificates": [],
+              "sslProfiles": [],
+              "frontendIPConfigurations": [
+                  {
+                      "name": "ag-fe-cfg",
+                      "properties": {
+                          "privateIPAllocationMethod": "Dynamic",
+                          "publicIPAddress": {
+                              "id": "[parameters('publicIPAddresses_pip_ag_externalid')]"
+                          }
+                      }
+                  }
+              ],
+              "frontendPorts": [
+                  {
+                      "name": "ag-fe-port",
+                      "properties": {
+                          "port": 80
+                      }
+                  }
+              ],
+              "backendAddressPools": [
+                  {
+                      "name": "ag-be-pool",
+                      "properties": {
+                          "backendAddresses": []
+                      }
+                  }
+              ],
+              "backendHttpSettingsCollection": [
+                  {
+                      "name": "ag-be-http-setting",
+                      "properties": {
+                          "port": 80,
+                          "protocol": "Http",
+                          "cookieBasedAffinity": "Enabled",
+                          "pickHostNameFromBackendAddress": false,
+                          "affinityCookieName": "ApplicationGatewayAffinity",
+                          "requestTimeout": 30
+                      }
+                  }
+              ],
+              "httpListeners": [
+                  {
+                      "name": "ag-listener",
+                      "properties": {
+                          "frontendIPConfiguration": {
+                              "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGateways_ag_skcc_name')), '/frontendIPConfigurations/ag-fe-cfg')]"
+                          },
+                          "frontendPort": {
+                              "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGateways_ag_skcc_name')), '/frontendPorts/ag-fe-port')]"
+                          },
+                          "protocol": "Http",
+                          "hostNames": [],
+                          "requireServerNameIndication": false,
+                          "customErrorConfigurations": []
+                      }
+                  }
+              ],
+              "urlPathMaps": [],
+              "requestRoutingRules": [
+                  {
+                      "name": "ag-fe-rule1",
+                      "properties": {
+                          "ruleType": "Basic",
+                          "httpListener": {
+                              "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGateways_ag_skcc_name')), '/httpListeners/ag-listener')]"
+                          },
+                          "backendAddressPool": {
+                              "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGateways_ag_skcc_name')), '/backendAddressPools/ag-be-pool')]"
+                          },
+                          "backendHttpSettings": {
+                              "id": "[concat(resourceId('Microsoft.Network/applicationGateways', parameters('applicationGateways_ag_skcc_name')), '/backendHttpSettingsCollection/ag-be-http-setting')]"
+                          }
+                      }
+                  }
+              ],
+              "probes": [],
+              "rewriteRuleSets": [],
+              "redirectConfigurations": [],
+              "privateLinkConfigurations": [],
+              "enableHttp2": false,
+              "customErrorConfigurations": []
+          }
+      }
+  ]
+}
