@@ -181,7 +181,7 @@ Microsoft.RecoveryServices              Registered
 Microsoft.DomainRegistration            Registered
 Microsoft.PolicyInsights                Registered
 Microsoft.GuestConfiguration            Registered
-Microsoft.ADHybridHealthService         Registered
+Microsoft.ADHy"2020bridHealthService         Registered
 Microsoft.Authorization                 Registered
 Microsoft.MarketplaceOrdering           Registered
 Microsoft.ResourceGraph                 Registered

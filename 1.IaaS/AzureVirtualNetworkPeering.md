@@ -43,7 +43,7 @@ az network vnet peering create `
   --allow-vnet-access
 az network vnet peering create `
   --name peering-vnet-skcc-dev-vnet-skcc-ag `
-  --resource-group rg-skcc-home-dev `
+  --resource-group rg-skcc-homepage-dev `
   --vnet-name vnet-skcc-dev `
   --remote-vnet $vNet1Id `
   --allow-vnet-access

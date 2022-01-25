@@ -105,3 +105,26 @@ New-AzResourceGroupDeployment `
   -ResourceGroupName $resourceGroupName `
   -TemplateFile $templateFileName
 ```
+
+### 실행 예
+```powershell
+PS D:\workspace\AzureBasic\1.IaaS> New-AzResourceGroupDeployment `
+>>   -ResourceGroupName $resourceGroupName `
+>>   -TemplateFile azure-cdn-deploy-20220124.json
+
+
+DeploymentName          : azure-cdn-deploy-20220124
+ResourceGroupName       : rg-skcc-homepage-dev
+ProvisioningState       : Succeeded
+Timestamp               : 2022-01-24 오전 8:21:31
+Mode                    : Incremental
+TemplateLink            : 
+Parameters              : 
+                          Name                                   Type                       Value
+                          =====================================  =========================  ==========
+                          profiles_skcc_homepage_dev_cdn_name    String                     skcc-homepage-dev-cdn
+
+Outputs                 : 
+DeploymentDebugLogLevel : 
+
+```
