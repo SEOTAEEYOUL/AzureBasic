@@ -75,7 +75,78 @@ To https://github.com/SEOTAEEYOUL/A-TCL-DA.git
 ```
 
 ## 충돌이 발생했을 때
+### 로컬과 리모트의 내용이 틀릴때 "git pull" 이 안되는 경우
 ```
+PS D:\workspace\AzureBasic> git pull
+error: Pulling is not possible because you have unmerged files.
+hint: Fix them up in the work tree, and then use 'git add/rm <file>'
+hint: as appropriate to mark resolution and make a commit.
+fatal: Exiting because of an unresolved conflict.
+```
+### "git status" 명령으로 로컬 저장소의 현재 branch 에 마지막으로 commit 된 내용과 현재 상태를 비교
+```
+PS D:\workspace\AzureBasic> git status
+On branch main
+Your branch and 'origin/main' have diverged,
+and have 1 and 2 different commits each, respectively.
+  (use "git pull" to merge the remote branch into yours)
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Changes to be committed:
+        new file:   2.AKS/AKS.md
+        new file:   2.AKS/Bastion.md
+        new file:   2.AKS/IngressController.md
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+        both modified:   1.IaaS/AzureCDN.md
+```
+### git commit -am "주석" 명령을 실행한 후 git pull 수행
+```
+PS > git commit -am "2022-01-25 status 후"
+[main d23982e] 2022-01-25 status 후
+PS D:\workspace\AzureBasic> git pull
+Already up to date.
+PS > git add *
+PS > git commit -m "2022-01-25"
+On branch main
+Your branch is ahead of 'origin/main' by 2 commits.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+```
+### 이후 정상적으로 git push
+```
+PS > git push
+Enumerating objects: 35, done.
+Counting objects: 100% (28/28), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (15/15), done.
+Writing objects: 100% (15/15), 7.90 KiB | 1011.00 KiB/s, done.
+Total 15 (delta 11), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (11/11), completed with 8 local objects.
+To https://github.com/SEOTAEEYOUL/AzureBasic.git
+   428a5a4..d23982e  main -> main
+```
+```
+PS > git add *
+PS > git commit -m "2022-02-25"
+[main 4538627] 2022-02-25
+ 1 file changed, 16 insertions(+)
+PS > git push
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 578 bytes | 144.00 KiB/s, done.
+Total 4 (delta 3), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To https://github.com/SEOTAEEYOUL/AzureBasic.git
+   d23982e..4538627  main -> main
+PS D:\workspace\AzureBasic>
 ```
 
 ### 많이 쓰이는 Git 명령어
