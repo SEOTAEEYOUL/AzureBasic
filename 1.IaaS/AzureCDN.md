@@ -244,7 +244,8 @@ Get-AzCdnProfile | `
 ```powershell
 $cond1 = `
   New-AzCdnDeliveryRuleCondition `
-    -MatchVariable UrlPath -Operator Equal -MatchValue ".do"
+    -MatchVariable UrlPath `
+    -Operator Equal -MatchValue ".do"
 
 $action1 = New-AzCdnDeliveryRuleAction `
   -CacheBehavior "Ignore"

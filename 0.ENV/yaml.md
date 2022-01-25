@@ -2,7 +2,9 @@
 사람이 읽을 수 있는 데이터 직렬화 언어
 ![yaml.png](./img/yaml.png)
 
-![xml-json-yaml.png](./img/xml-json-yaml.png)
+![xml-json-yaml.png](./img/xml-json-yaml.png)  
+
+> [YAML 스키마 참조](https://docs.microsoft.com/ko-kr/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema)  
 
 ## 작성법
 - 들여쓰기(indent)
