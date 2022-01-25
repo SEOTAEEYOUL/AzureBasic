@@ -28,6 +28,11 @@ git config user.name
 
 ### Example
 ```
+## ignore all .un~
+**/*.un~
+**/*.*~
+**/*~
+
 # ignore all .class files
 *.class
 
