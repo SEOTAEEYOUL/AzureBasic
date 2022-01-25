@@ -1,5 +1,17 @@
 # git
 
+## 사용자 정보 입력
+### git config -global : 특정 사용자(즉 현재 사용자)에게만 적용되는 설정
+```
+git config --global user.name "John Doe"
+git config --global user.email johndoe@example.com
+```
+
+### 사용자 정보 보기
+```
+git config user.name
+```
+
 ## .gitignore
 프로젝트 작업시 로컬 환경의 정보나 빌드 정보등 원격 저장소에 관리하지 말아야되는 파일들에 대해서 지정하여 원격 저장소에 실수로 올라가지 않도록 관리하는 파일  
 정의한 정보들에 해당하는 파일들에 대하여 git track하지 않도록 설정하는 역할을 한다.
@@ -60,6 +72,10 @@ Total 7 (delta 4), reused 0 (delta 0), pack-reused 0
 remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
 To https://github.com/SEOTAEEYOUL/A-TCL-DA.git
    ae55972..f86690a  main -> main
+```
+
+## 충돌이 발생했을 때
+```
 ```
 
 ### 많이 쓰이는 Git 명령어
