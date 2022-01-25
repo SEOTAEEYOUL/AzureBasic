@@ -28,10 +28,20 @@ git config user.name
 
 ### Example
 ```
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
 ## ignore all .un~
 **/*.un~
 **/*.*~
 **/*~
+
+### VS Code ###
+.vscode/
+1.IaaS/자료
 
 # ignore all .class files
 *.class
