@@ -241,11 +241,18 @@ Get-AzCdnProfile | `
 ```
 
 ### Rule
+- 실제 작동하지는 않음
+- 예시 설명 부족으로 추측하여 설정한 코드
 ```powershell
 $cond1 = `
   New-AzCdnDeliveryRuleCondition `
     -MatchVariable UrlPath `
+<<<<<<< HEAD
     -Operator Equal -MatchValue ".do"
+=======
+    -Operator Equal `
+    -MatchValue ".do"
+>>>>>>> 428a5a4b051e56c857947c26b3b3f2694d5e5ff2
 
 $action1 = New-AzCdnDeliveryRuleAction `
   -CacheBehavior "Ignore"
