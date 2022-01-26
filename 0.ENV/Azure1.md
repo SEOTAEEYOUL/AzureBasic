@@ -48,6 +48,7 @@
 ### 리소스 그룹
 - 동일한 수명, 동일한 프로젝트에 속하는 리소를 함께 그룹으로 묶은 논리적인 그룹
 - 리소스는 하나의 리소스 그룹에 속해야 하면 이동할 수 있음
+- 역할 기반 액세스 제어(RBAC) 로 라이프사이클 관리 지원
 
 ### 리소스 공급자(Resoruce Provider)
 - 리소스를 제공하는 서비스
@@ -244,6 +245,7 @@
 
 ## SaaS vs PaaS vs IaaS
 ![what-is-paas.png](./img/what-is-paas.png)
+![Cloud-Service-Model.jpg](./img/Cloud-Service-Model.jpg)
 
 ## [Naming Rule](./NamingRule.md)  
 
