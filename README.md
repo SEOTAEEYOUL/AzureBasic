@@ -23,33 +23,33 @@ bbbrbbbrbbb# Azure Basic
 ### 공통
 || 항목 | 날짜 | 내용 | 
 |:---|:---|:---|:---|  
-| Azure1 | 아키텍처 구성을 위한 기본 | 2022.01.25 | 3-tier 구성의 웹 전환을 대상으로 할 때 Azure 구독 획득 후 해야 할 일에 대한 설명 </br> 구독, RBAC, 자원그룹, VNet, subnet, VM, disk, Storage Account, PaaS, SaaS 구성 및 배포 방법 </br>  - Naming Rule 및 필수 Label 포함 </br> 아키텍처 작성, Azure 계산기 를 사용하여 비용 산출하기 </br> - Network 설계서 및 Infra Hybrid Cloud 자료 참조 |  
-| Azure2 | 배포 실습을 위한 공통 환경/도구 구성 | 2022.01.27 | azure portal, azure cli, visual studio code, powershell, git cli, github, md, devops 환경 구성 </br>
+| [Azure1]((./0.ENV/Azure1.md)| 아키텍처 구성을 위한 기본 | 2022.01.25 | 3-tier 구성의 웹 전환을 대상으로 할 때 Azure 구독 획득 후 해야 할 일에 대한 설명 </br> 구독, RBAC, 자원그룹, VNet, subnet, VM, disk, Storage Account, PaaS, SaaS 구성 및 배포 방법 </br>  - Naming Rule 및 필수 Label 포함 </br> 아키텍처 작성, Azure 계산기 를 사용하여 비용 산출하기 </br> - Network 설계서 및 Infra Hybrid Cloud 자료 참조 |  
+| [Azure2]((./0.ENV/Azure2.md)) | 배포 실습을 위한 공통 환경/도구 구성 | 2022.01.27 | azure portal, azure cli, visual studio code, powershell, git cli, github, md, devops 환경 구성 </br>
 - 간단한 md/git 사용법 </br>
 - PowerShell 에서 배포 및 삭제 |  
 
 ### IaaS
 || 항목 | 날짜 | 내용 | 
 |:---|:---|:---|:---|  
-| Azure3 | 3-tier 기본 환경 구성 | 2022.02.10 | Vnet, subnet, NSG, apache, tomcat, mysql 구성 </br> - VM, disk, Storage Account, Internal L4, VMSS, AppGateway 구성 |
-| Azure4 | 3-tier 기본 환경 외부 접근 구성 | 2022.02.10 | 3-tier 기본 환경에 CDN 적용, Azure DNS 설정, AppGateway 구성 변경 </br> - Application Gateway 구성 </br> - Azure DNS 구성 </br> |
-| Azure5 | CDN 적용을 통한 고도화 | 2022.02.17 | 3-tier 기본 환경에 CDN 적용, Azure DNS 설정, AppGateway 구성 변경 </br> - Storage Account Blob 배포 및 Storage Exploror/SAS 를 이용한 Static 문서 Upload </br> - Azure CDN 배포 및 구성 </br> - 정상 동작 테스트 </br> - apache 서버 삭제  | 
-| Azure6 | Azure Cli 를 통한 자원 배포(IaC - 1) | 2022.02.27 | azure cli, powershell, ARMTemplate 사용한 배포 테스트 |    
-| Azure7 | Azure DevOps 를 통한 자원 배포(IaC - 2) | 2022.02.18 | azure devops 에 저장소 설정 및 Pipeline 을 만들어 배포 하기 |  
+| [Azure3]((./0.ENV/Azure3.md)) | 3-tier 기본 환경 구성 | 2022.02.10 | Vnet, subnet, NSG, apache, tomcat, mysql 구성 </br> - VM, disk, Storage Account, Internal L4, VMSS, AppGateway 구성 |
+| [Azure4])(./0.ENV/Azure4.md) | 3-tier 기본 환경 외부 접근 구성 | 2022.02.10 | 3-tier 기본 환경에 CDN 적용, Azure DNS 설정, AppGateway 구성 변경 </br> - Application Gateway 구성 </br> - Azure DNS 구성 </br> |
+| [Azure5](./0.ENV/Azure5.md) | CDN 적용을 통한 고도화 | 2022.02.17 | 3-tier 기본 환경에 CDN 적용, Azure DNS 설정, AppGateway 구성 변경 </br> - Storage Account Blob 배포 및 Storage Exploror/SAS 를 이용한 Static 문서 Upload </br> - Azure CDN 배포 및 구성 </br> - 정상 동작 테스트 </br> - apache 서버 삭제  | 
+| [Azure6](./0.ENV/Azure6.md) | Azure Cli 를 통한 자원 배포(IaC - 1) | 2022.02.27 | azure cli, powershell, ARMTemplate 사용한 배포 테스트 |    
+| [Azure7](./0.ENV/Azure7.md) | Azure DevOps 를 통한 자원 배포(IaC - 2) | 2022.02.18 | azure devops 에 저장소 설정 및 Pipeline 을 만들어 배포 하기 |  
 
 ### AKS
 || 항목 | 날짜 | 내용 | 
 |:---|:---|:---|:---|  
-| Azure8 | Docker/Kubernetes | 2022.02.24 | Container 란 ? </br> - 설치 및 간단한 Docker Image 만들기 </br> Kubernetes 란 ? </br> - Minikube 설치 및 사용 |
-| Azure9 | Azure Kubernetes Service 구성 | 2022.02.24 | AKS Cluster 설계 및 생성, 로깅, 모니터링 하기 </br> - 3 tier 를 Pod 롤 배포하기 </br> - CDN, mysql(Managed, DaemonSet) 구성 </br> - Ingress Controller 구성 </br>- DNS 에 등록 외부에서 접근하기 |
-| Azure10 | AutoScaler 구성 | 2022.02.25 | Pod, Node AutoScaler 구성 및 모니터링 하기 </br> - deployment </br> - Storage Class </br> - Prometheus/AlertManager, Grafana |
-| Azure11 | Azure DevOps 를 통한 Pod 배포 | 2022.03.03 | Repos 구성, Pipeline 구성, Pod 배포 </br> - blue/green 배포 |  
-| Azure12 | OSS 를 통한 Pod 배포 | 2022.03.03 | Gitea, Jenkins, Harbor, ArgoCD 를 통한 GitOps 구성 </br> - webhook, Jenkinsflies 구성/작성 </br> - blue/green 배포 |
+| [Azure8](./0.ENV/Azure8.md) | Docker/Kubernetes | 2022.02.24 | Container 란 ? </br> - 설치 및 간단한 Docker Image 만들기 </br> Kubernetes 란 ? </br> - Minikube 설치 및 사용 |
+| [Azure9](./0.ENV/Azure9.md) | Azure Kubernetes Service 구성 | 2022.02.24 | AKS Cluster 설계 및 생성, 로깅, 모니터링 하기 </br> - 3 tier 를 Pod 롤 배포하기 </br> - CDN, mysql(Managed, DaemonSet) 구성 </br> - Ingress Controller 구성 </br>- DNS 에 등록 외부에서 접근하기 |
+| [Azure10](./0.ENV/Azure10.md) | AutoScaler 구성 | 2022.02.25 | Pod, Node AutoScaler 구성 및 모니터링 하기 </br> - deployment </br> - Storage Class </br> - Prometheus/AlertManager, Grafana |
+| [Azure11](./0.ENV/Azure11.md) | Azure DevOps 를 통한 Pod 배포 | 2022.03.03 | Repos 구성, Pipeline 구성, Pod 배포 </br> - blue/green 배포 |  
+| [Azure12](./0.ENV/Azure12.md) | OSS 를 통한 Pod 배포 | 2022.03.03 | Gitea, Jenkins, Harbor, ArgoCD 를 통한 GitOps 구성 </br> - webhook, Jenkinsflies 구성/작성 </br> - blue/green 배포 |
 
 ### SKT 환경 고려 사항
 || 항목 | 날짜 | 내용 | 
 |:---|:---|:---|:---|  
-| Azure13 | SKT랜딩존 환경 고려사항 | 2022.03.04 | SKT랜딩존 환경 고려사항 |
+| [Azure13](./0.ENV/Azure13.md) | SKT랜딩존 환경 고려사항 | 2022.03.04 | SKT랜딩존 환경 고려사항 |
 
 ## 공통 환경  
 | 항목 | 날짜 | 내용 | 
