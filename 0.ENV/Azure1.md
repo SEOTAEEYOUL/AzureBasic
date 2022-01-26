@@ -248,6 +248,7 @@
 ![Cloud-Service-Model.jpg](./img/Cloud-Service-Model.jpg)
 
 ## [Naming Rule](./NamingRule.md)  
+- [명명 규칙 정의](https://docs.microsoft.com/ko-kr/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming)
 
 ## [Tag](./tag.md) 
 키/값 문자열 쌍이며, 범위는 Azure 구독임
