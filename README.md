@@ -54,7 +54,7 @@ bbbrbbbrbbb# Azure Basic
 ## 공통 환경  
 | 항목 | 날짜 | 내용 | 
 |:---|:---|:---|  
-| choco | 2022.01.25 | 윈도우 패키지 관리자 |  
+| choco | 2022.01.27 | 윈도우 패키지 관리자 |  
 | git | 2022.01.27 | 형상관리, 사용법 |  
 | MarkDown | 2022.01.27 | Markdown Language, Github 사용(README.md), 표준 문서 포맷, 사용법 |  
 | Visual Studio Code | 2022.01.27 | 편집기 |  
