@@ -242,6 +242,8 @@
 ### Application Manager
 - 경로 기반 웹서비스 분산을 위해 사용
 
+![what-is-paas.png](./img/what-is-paas.png)
+
 ## [Naming Rule](./NamingRule.md)
 
 ## [Tag](./tag.md)
