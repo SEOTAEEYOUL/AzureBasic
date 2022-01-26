@@ -10,9 +10,12 @@
 $resourceGroup = "rg-skcc-ag"
 $location = "koreacentral"
 
-$agName = "Standard_v2"
-$agTier = "Standard_v2"
-$agCapacity = 2
+# $agName = "Standard_v2" 
+# $agTier = "Standard_v2"
+# $agCapacity = 2 
+$agName = "Standard" 
+$agTier = "Standard"
+$agCapacity = 1 
 
 $agSubnetName = "snet-skcc-ag"
 $agSubnetPrefix = "10.21.0.0/24"
