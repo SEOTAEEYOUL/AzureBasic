@@ -1,4 +1,4 @@
-# 2022-01-27 배포 실습을 위한 공통 환경/도구 구성
+# Azure02 배포 실습을 위한 공통 환경/도구 구성
 - azure portal, azure cli, visual studio code, powershell, git cli, github, md, devops 환경 구성
 
 ## Azure Portal
