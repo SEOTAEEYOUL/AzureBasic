@@ -4,6 +4,7 @@
 
 ![application-gateway-qs-resources.png](./img/application-gateway-qs-resources.png)
 
+
 ## 변수 설정
 ```powershell
 $resourceGroup = "rg-skcc-ag"
