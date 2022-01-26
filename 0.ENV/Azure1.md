@@ -242,11 +242,16 @@
 ### Application Manager
 - 경로 기반 웹서비스 분산을 위해 사용
 
+## SaaS vs PaaS vs IaaS
 ![what-is-paas.png](./img/what-is-paas.png)
 
-## [Naming Rule](./NamingRule.md)
+## [Naming Rule](./NamingRule.md)  
 
-## [Tag](./tag.md)
+## [Tag](./tag.md) 
+키/값 문자열 쌍이며, 범위는 Azure 구독임
+- 작성자 : 리소스 작성자에 따라
+- 부서/서비스 : 부서별 청구
+- 환경 : 개발/운영
 
 ## [가격 계산기](https://azure.microsoft.com/ko-kr/pricing/calculator/)  
 
