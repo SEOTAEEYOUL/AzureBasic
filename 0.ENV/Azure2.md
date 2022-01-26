@@ -12,6 +12,7 @@
 ## [PowerShell](./PowerShell.md)
 
 ## [Git](./git.md)
+컴퓨터 파일의 변경사항을 추적하고 여려 명의 사용자들 간에 해당 파일들의 작업을 조율하기 위한 분산 버전 관리 시스템
 - git cli
 - github
 
