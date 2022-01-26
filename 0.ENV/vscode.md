@@ -18,19 +18,8 @@
 > [indent-rainbow](https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow)  
 > [Auto Rename Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag)  
 > [Auto close Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag)  
-> [CSS Peek](https://marketplace.visualstudio.com/items?itemName=pranaygp.vscode-css-peek) : Ctrl 키로 누른 상태에서 클릭시 정의된 CSS 로 이동  
-> [HTML CSS Support](https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css) : html 에서 css 자동 완성 이용  
-> [HTML to CSS autocompletion](https://marketplace.visualstudio.com/items?itemName=solnurkarim.html-to-css-autocompletion)
-> [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
 > [Active File In StatusBar](https://marketplace.visualstudio.com/items?itemName=RoscoP.ActiveFileInStatusBar)  
-> [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)  
-> [TODO Highlight](https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight)  
-> [TypeScript Extension Pack](https://marketplace.visualstudio.com/items?itemName=loiane.ts-extension-pack)  
 > [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
-> [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)  
-> [Rainbow Brackets](https://marketplace.visualstudio.com/items?itemName=2gua.rainbow-brackets)  
-> [Base16 Themes](https://marketplace.visualstudio.com/items?itemName=AndrsDC.base16-themes)  
-> [Code Runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)  
 > [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)  
 > [Print](https://marketplace.visualstudio.com/items?itemName=pdconsec.vscode-print)  
 
@@ -39,11 +28,9 @@
 > [GitLens — Git supercharged](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)  
 > [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)  
 
-### Python 확장팩  
-[Visual Studio Code를 사용하여 Python 초보자 개발 환경 설정](https://docs.microsoft.com/ko-kr/learn/modules/python-install-vscode/)  
-[Pylance: The best Python extension for VS Code](https://towardsdatascience.com/pylance-the-best-python-extension-for-vs-code-ae299f35548c)
 
 ### Azure  
+> [Docs Authoring Pack](https://marketplace.visualstudio.com/items?itemName=docsmsft.docs-authoring-pack)
 > [Azure CLI Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azurecli)  
 > [Azure Account](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account)  
 > [Azure Resources](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups)  
@@ -57,6 +44,25 @@
 [MarketPlace:Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
 
 > [Github:Draw.io VS Code Integration](https://github.com/hediet/vscode-drawio)
+
+
+### Python 확장팩  
+[Visual Studio Code를 사용하여 Python 초보자 개발 환경 설정](https://docs.microsoft.com/ko-kr/learn/modules/python-install-vscode/)  
+[Pylance: The best Python extension for VS Code](https://towardsdatascience.com/pylance-the-best-python-extension-for-vs-code-ae299f35548c)
+
+
+### 기타
+> [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)  
+> [TODO Highlight](https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight)  
+> [HTML CSS Support](https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css) : html 에서 css 자동 완성 이용  
+> [HTML to CSS autocompletion](https://marketplace.visualstudio.com/items?itemName=solnurkarim.html-to-css-autocompletion)
+> [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+> [TypeScript Extension Pack](https://marketplace.visualstudio.com/items?itemName=loiane.ts-extension-pack)  
+> [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)  
+> [Rainbow Brackets](https://marketplace.visualstudio.com/items?itemName=2gua.rainbow-brackets)  
+> [Base16 Themes](https://marketplace.visualstudio.com/items?itemName=AndrsDC.base16-themes)  
+> [Code Runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)  
+> [CSS Peek](https://marketplace.visualstudio.com/items?itemName=pranaygp.vscode-css-peek) : Ctrl 키로 누른 상태에서 클릭시 정의된 CSS 로 이동  
 
 
 ## 단축키  
