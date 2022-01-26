@@ -1,4 +1,4 @@
-bbrbbbrbbb# Azure Basic
+bbbrbbbrbbb# Azure Basic
 
 > [Microsoft Azure 설명서](https://github.com/MicrosoftDocs/azure-docs.ko-kr)
 
@@ -13,7 +13,7 @@ bbrbbbrbbb# Azure Basic
 | 월 | 화 | 수 | 목 | 금 |
 |:---:|:---:|:---:|:---:|:---:|
 | 2022.01.24 | 2022.01.25 |2022.01.26 | 2022.01.27</br> [Azure1](./0.ENV/Azure1.md) </br> [Azure2](./0.ENV/Azure2.md) | 2022.01.28 |
-| 2022.01.31 | 2022.02.01 | 2022.02.02 | 2022.02.03 | 2022.02.04 |
+| 2022.01.31 </br> 설날 연휴 | 2022.02.01 </br> 설날 | 2022.02.02 </br> 설날 연휴 | 2022.02.03 | 2022.02.04 |
 | 2022.02.07 | 2022.02.08 | 2022.02.09 | 2022.02.10</br>[Azure3](./1.IaaS/Azure3.md)</br>[Azure4](./1.IaaS/Azure4.md) | 2022.02.11 |
 |  |  | | 2022.02.17 </br> [Azure5](./1.IaaS/Azure5.md)  | 2022.02.18 </br> [Azure6](./1.IaaS/Azure6.md)</br>[Azure7](./1.IaaS/Azure7.md) |  
 |  |  | |2022-02-24 </br> [Azure8](./2.AKS/Azure8.md) </br> [Azure9](./2.AKS/Azure9.md) | 2022-02-25 </br> [Azure10](./2.AKS/Azure10.md) | 
