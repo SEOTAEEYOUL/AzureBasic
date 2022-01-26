@@ -2,14 +2,18 @@
 - azure portal, azure cli, visual studio code, powershell, git cli, github, md, devops 환경 구성
 
 ## Azure Portal
+명령줄 도구의 대안을 제공하는 웹 기반의 통합 콘솔
 - https://portal.azure.com
 - https://devops.azure.com
 
-## [Azure CLI](CLI.md)
+## [Azure CLI](CLI.md)  
+Azure에 연결하고 Azure 리소스에서 관리 명령을 실행하는 플랫폼 간 명령줄 도구
 
-## [Visual Studio Code](./vscode.md)
+## [Visual Studio Code](./vscode.md) 
+마이크로소프트Microsoft에서 오픈소스로 개발하고 거의 모든 언어로 작동되고 모든 OS에서 실행되는 강력한 코드 편집기
 
 ## [PowerShell](./PowerShell.md)
+시스템 관리 및 자동화 등을 목적으로 설계된 명령줄 셸 및 스트립팅 언어
 
 ## [Git](./git.md)
 컴퓨터 파일의 변경사항을 추적하고 여려 명의 사용자들 간에 해당 파일들의 작업을 조율하기 위한 분산 버전 관리 시스템
