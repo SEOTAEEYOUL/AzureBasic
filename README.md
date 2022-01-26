@@ -1,4 +1,4 @@
-bbbrbbbrbbb# Azure Basic
+# Azure Basic
 
 > [Microsoft Azure 설명서](https://github.com/MicrosoftDocs/azure-docs.ko-kr)
 
