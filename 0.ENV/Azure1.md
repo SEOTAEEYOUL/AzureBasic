@@ -248,7 +248,9 @@
 
 ## [Tag](./tag.md)
 
-## [가격 계산기](https://azure.microsoft.com/ko-kr/pricing/calculator/?&ef_id=Cj0KCQiA_c-OBhDFARIsAIFg3ex9uVTd9I0CK5W9UdEcXpgWYrF0yk8dorig7Q11egVjZf4C0nFc3doaArGCEALw_wcB:G:s&OCID=AID2200210_SEM_Cj0KCQiA_c-OBhDFARIsAIFg3ex9uVTd9I0CK5W9UdEcXpgWYrF0yk8dorig7Q11egVjZf4C0nFc3doaArGCEALw_wcB:G:s&gclid=Cj0KCQiA_c-OBhDFARIsAIFg3ex9uVTd9I0CK5W9UdEcXpgWYrF0yk8dorig7Q11egVjZf4C0nFc3doaArGCEALw_wcB)  
+## [가격 계산기](https://azure.microsoft.com/ko-kr/pricing/calculator/)  
+
+## [TCO(총 소유 비용) 계산기](https://azure.microsoft.com/ko-kr/pricing/tco/calculator/)  
 
 
 ## Network 설계서 및 Infra Hybrid Cloud 자료 참조
