@@ -31,17 +31,17 @@ bbbrbbbrbbb# Azure Basic
 ### IaaS
 || 항목 | 날짜 | 내용 | 
 |:---|:---|:---|:---|  
-| Azure3 | 3-tier 기본 환경 구성 | 2022.02.08 | Vnet, subnet, NSG, apache, tomcat, mysql 구성 </br> - VM, disk, Storage Account, Internal L4, VMSS, AppGateway 구성 |
+| Azure3 | 3-tier 기본 환경 구성 | 2022.02.10 | Vnet, subnet, NSG, apache, tomcat, mysql 구성 </br> - VM, disk, Storage Account, Internal L4, VMSS, AppGateway 구성 |
 | Azure4 | 3-tier 기본 환경 외부 접근 구성 | 2022.02.10 | 3-tier 기본 환경에 CDN 적용, Azure DNS 설정, AppGateway 구성 변경 </br> - Application Gateway 구성 </br> - Azure DNS 구성 </br> |
-| Azure5 | CDN 적용을 통한 고도화 | 2022.02.14 | 3-tier 기본 환경에 CDN 적용, Azure DNS 설정, AppGateway 구성 변경 </br> - Storage Account Blob 배포 및 Storage Exploror/SAS 를 이용한 Static 문서 Upload </br> - Azure CDN 배포 및 구성 </br> - 정상 동작 테스트 </br> - apache 서버 삭제  | 
-| Azure6 | Azure Cli 를 통한 자원 배포(IaC - 1) | 2022.02.15 | azure cli, powershell, ARMTemplate 사용한 배포 테스트 |    
+| Azure5 | CDN 적용을 통한 고도화 | 2022.02.17 | 3-tier 기본 환경에 CDN 적용, Azure DNS 설정, AppGateway 구성 변경 </br> - Storage Account Blob 배포 및 Storage Exploror/SAS 를 이용한 Static 문서 Upload </br> - Azure CDN 배포 및 구성 </br> - 정상 동작 테스트 </br> - apache 서버 삭제  | 
+| Azure6 | Azure Cli 를 통한 자원 배포(IaC - 1) | 2022.02.27 | azure cli, powershell, ARMTemplate 사용한 배포 테스트 |    
 | Azure7 | Azure DevOps 를 통한 자원 배포(IaC - 2) | 2022.02.18 | azure devops 에 저장소 설정 및 Pipeline 을 만들어 배포 하기 |  
 
 ### AKS
 || 항목 | 날짜 | 내용 | 
 |:---|:---|:---|:---|  
-| Azure8 | Docker/Kubernetes | 2022.02.21 | Container 란 ? </br> - 설치 및 간단한 Docker Image 만들기 </br> Kubernetes 란 ? </br> - Minikube 설치 및 사용 |
-| Azure9 | Azure Kubernetes Service 구성 | 2022.02.22 | AKS Cluster 설계 및 생성, 로깅, 모니터링 하기 </br> - 3 tier 를 Pod 롤 배포하기 </br> - CDN, mysql(Managed, DaemonSet) 구성 </br> - Ingress Controller 구성 </br>- DNS 에 등록 외부에서 접근하기 |
+| Azure8 | Docker/Kubernetes | 2022.02.24 | Container 란 ? </br> - 설치 및 간단한 Docker Image 만들기 </br> Kubernetes 란 ? </br> - Minikube 설치 및 사용 |
+| Azure9 | Azure Kubernetes Service 구성 | 2022.02.24 | AKS Cluster 설계 및 생성, 로깅, 모니터링 하기 </br> - 3 tier 를 Pod 롤 배포하기 </br> - CDN, mysql(Managed, DaemonSet) 구성 </br> - Ingress Controller 구성 </br>- DNS 에 등록 외부에서 접근하기 |
 | Azure10 | AutoScaler 구성 | 2022.02.25 | Pod, Node AutoScaler 구성 및 모니터링 하기 </br> - deployment </br> - Storage Class </br> - Prometheus/AlertManager, Grafana |
 | Azure11 | Azure DevOps 를 통한 Pod 배포 | 2022.03.03 | Repos 구성, Pipeline 구성, Pod 배포 </br> - blue/green 배포 |  
 | Azure12 | OSS 를 통한 Pod 배포 | 2022.03.03 | Gitea, Jenkins, Harbor, ArgoCD 를 통한 GitOps 구성 </br> - webhook, Jenkinsflies 구성/작성 </br> - blue/green 배포 |
