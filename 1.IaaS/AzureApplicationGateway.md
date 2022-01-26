@@ -1,5 +1,6 @@
 # [Azure Application Gateway란?](https://docs.microsoft.com/ko-kr/azure/application-gateway/overview)
 - [빠른 시작: Azure PowerShell을 사용하여 Azure Application Gateway를 통해 웹 트래픽 보내기](https://docs.microsoft.com/ko-kr/azure/application-gateway/quick-create-powershell)
+- [Azure Application Gateway 및 Web Application Firewall의 가격 책정 이해](https://docs.microsoft.com/ko-kr/azure/application-gateway/understanding-pricing)
 
 ![application-gateway-qs-resources.png](./img/application-gateway-qs-resources.png)
 
@@ -7,6 +8,10 @@
 ```powershell
 $resourceGroup = "rg-skcc-ag"
 $location = "koreacentral"
+
+$agName = "Standard_v2"
+$agTier = "Standard_v2"
+$agCapacity = 2
 
 $agSubnetName = "snet-skcc-ag"
 $agSubnetPrefix = "10.21.0.0/24"
@@ -142,8 +147,12 @@ $frontendRule = New-AzApplicationGatewayRequestRoutingRule `
 ## Application Gateway 만들기
 | No | 명령 | 설명 |
 |:---|:---|:---|
-| 1 | New-AzApplicationGatewaySku | 애플리케이션 게이트웨이에 대한 매개 변수를 지정 |
+| 1 | [New-AzApplicationGatewaySku](https://docs.microsoft.com/en-us/powershell/module/az.network/new-azapplicationgatewaysku?view=azps-7.1.0) | 애플리케이션 게이트웨이에 대한 매개 변수를 지정 </b> Capacity : Instance 수 |
 | 2 | New-AzApplicationGateway | 애플리케이션 게이트웨이 생성 | 
+- v1: 
+  - "Standard_Small" : Standard
+- v2 : 자동 크기 조정, 고가용성 보장
+  - Standard_v2
 
 ```powershell
 $sku = New-AzApplicationGatewaySku `
