@@ -45,3 +45,21 @@ Slack 이나 Microsoft Teams 등과 같은 채팅 플랫폼이 필요
    3. Deliver  
    4. Operate  
 3. Products
+
+## 지속적인 통합(Continuos Integration, CI) 
+![CI.png](./img/CI.png)
+- 소프트웨어 개발 품질과 속도를 향상
+- Azure Pipelines 또는 Jenkins 를 사용하여 클라우드에서 앱을 빌드하고 Azure 에 배포하면 코드를 커밋할 때마낟 자동으로 빌드 및 테스트되며 버그가 더 빠르게 감지됨
+
+  
+![CD.png](./img/CD.png)
+## 지속적인 제공(Continuos Delivery, CD) 
+- 공유 레포지토리로 자동으로 Release 하는 것
+## 지속적인 배포 (Continuos Deployment, CD)
+- 코드를 빌드, 테스트하고 하나 이상의 테스트와 운영환경에 배포하는 프로세스
+- 지속적인 통합(CI)과 IaC(Infrastructure as Code) 를 결합하여 언제든지 동일하게 배포하고, 안정하게 운영 환경에 배포할 수 있음
+- 지속적 배포(CD) 를 사용하면 CI/CD 테스트가 성공한 경우 코드 커밋에서 프로덕션까지 전체 프로세스를 자동화 할 수 있음
+
+## DevOps 엔지니어의 역할
+CI/CD를 위한 파이프라인을 구성하고, 이를 자동화 단계까지 끌어 올림
+![DevOps.png](./img/DevOps.png)
