@@ -62,7 +62,7 @@ Get-Host | Select-Object Version
 
 
 ## 모듈
-- Get-InstalledModule -Name "Az"
+- Get-InstalledModule -Name "Az.*"
 - Install-Module -Name Az.Accounts -AllowClobber 
 - Install-Module -Name Az.Compute
 - Install-Module -Name Az.Network

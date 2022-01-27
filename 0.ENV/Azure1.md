@@ -1,7 +1,7 @@
 # Azure01 아키텍처 구성을 위한 기본
 
 3-tier 구성의 웹 전환을 대상으로 할 때 Azure 구독 획득 후 해야 할 일에 대한 설명
-구독, RBAC, 자원그룹, Vnet, subnet, VM, disk, Storage Account, PaaS, SaaS 구성 및 배포 방법
+구독, RBAC, 자원그룹, VNet, subnet, VM, disk, Storage Account, PaaS, SaaS 구성 및 배포 방법
 
 - Naming Rule 및 필수 Label 포함
 아키텍처 작성, Azure 계산기 를 사용하여 비용 산출하기
@@ -45,7 +45,7 @@ Private한 네트워크 제공 방식
 ![Cloud-Service-Model.jpg](./img/Cloud-Service-Model.jpg)
 
 ## [Naming Rule](./NamingRule.md)  
-- [명명 규칙 정의](https://docs.microsoft.com/ko-kr/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming)
+
 
 ## [Tag](./tag.md) 
 키/값 문자열 쌍이며, 범위는 Azure 구독임

@@ -16,9 +16,6 @@ Git, Pipeline 를 통합 CICD 도구
 ## [Azure CLI](CLI.md)  
 Azure에 연결하고 Azure 리소스에서 관리 명령을 실행하는 플랫폼 간 명령줄 도구
 
-## [PowerShell](./PowerShell.md)
-시스템 관리 및 자동화 등을 목적으로 설계된 명령줄 셸 및 스트립팅 언어
-
 ## [Visual Studio Code](./vscode.md) 
 마이크로소프트Microsoft에서 오픈소스로 개발하고 거의 모든 언어로 작동되고 모든 OS에서 실행되는 강력한 코드 편집기
 
@@ -26,8 +23,11 @@ Azure에 연결하고 Azure 리소스에서 관리 명령을 실행하는 플랫
 ## [MD(MarkDown language)](./markdown.md)  
  웹상에서 글을 쓰는 모든 사람들을 위한 글쓰기 도구
 
-## [yaml](./yaml.md)
+## [YAML](./yaml.md)
 타 시스템 간에 데이터를 주고 받을 때, 데이터 포맷에 대한 약속으로 사람이 쉽게 읽을 수 있는 형태로 표현하는데 사용되는 데이터 직렬화 양식
+
+## [PowerShell](./PowerShell.md)
+시스템 관리 및 자동화 등을 목적으로 설계된 명령줄 셸 및 스트립팅 언어
 
 ## [ARMTemplate](./ARMTemplate.md)  
 코드 구축을 위한 통합 솔루션  
