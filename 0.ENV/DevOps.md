@@ -62,4 +62,24 @@ Slack 이나 Microsoft Teams 등과 같은 채팅 플랫폼이 필요
 
 ## DevOps 엔지니어의 역할
 CI/CD를 위한 파이프라인을 구성하고, 이를 자동화 단계까지 끌어 올림
-![DevOps.png](./img/DevOps.png)
+![DevOps.png](./img/DevOps.png)  
+
+
+## VM 배포
+### Packer 빌더를 사용한 Application 이미지 생성
+|단계| azure-arm 빌드 | azure-chroot 빌더 |
+|:---|:---|:---|
+||어플리케이션 VM 이미지 | 어플리케이션 VM 이미지 |
+|| Packer | Packer |
+|| 표준 OS VM | 표준 OS 이미지 |
+
+| azure-arm 빌드 | azure-chroot 빌더 |
+|:---|:---|
+| 표준 OS VM 를 시작하여 어플리케이션 VM 이미지 생성 | Packer 빌드시 표준 OS 이미지에 어플리케이션 패키지를 더해서 배포 |
+- 
+
+### 블루/그린 배포 전략
+- 격리된 Blue 와 Green 2개의 환경에 애플리케이션을 배포해서, Blue 와 Green 리소스 간에 서로 영향을 주지 않도록 하여  배포 위험을 줄이고 가용성을 높일 수 있음  
+- VMSS 단위 배포
+  - Blue VMSS
+  - Green VMSS
