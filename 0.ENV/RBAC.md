@@ -3,8 +3,8 @@
 
 ![rbac-least-privilege.png](./img/rbac-least-privilege.png)
 
-## EA 계약 관련
-0. EA 구독 계약(LSP)을 할 때 "Account"로 하며 "Tenent" 가 생성됨
+## EA(기업계약) 계약 관련
+0. EA 구독 계약을 할 때 "Account"로 하며 "Tenent" 가 생성됨
 1. Account 소유자가 구독을 만들수 있음
 2. Tenent 는 Account 밑에 있음
 3. Tenent 는 Active Directory 임  
