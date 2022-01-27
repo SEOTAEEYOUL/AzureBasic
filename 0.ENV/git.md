@@ -1,4 +1,4 @@
-# git
+# git-Test
 
 ## 사용자 정보 입력
 ### git config -global : 특정 사용자(즉 현재 사용자)에게만 적용되는 설정
