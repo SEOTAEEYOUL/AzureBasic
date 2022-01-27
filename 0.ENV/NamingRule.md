@@ -1,5 +1,6 @@
-# 명명 규칙(Naming Rule)
-* [Azure 리소스에 대한 명명 규칙 및 제한 사항](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/management/resource-name-rules)
+# 명명 규칙(Naming Rule)  
+> [명명 규칙 정의](https://docs.microsoft.com/ko-kr/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming)  
+> [Azure 리소스에 대한 명명 규칙 및 제한 사항](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/management/resource-name-rules)
 
 
 1. 명명은 모두 기본 소문자로 합니다. (단 윈도우 VM의 경우 대문자 사용)
