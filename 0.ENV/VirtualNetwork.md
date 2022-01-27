@@ -1,5 +1,7 @@
 # 가상 네트워크(Virtual Network, VNet)
 
+> [Azure Virtual Network FAQ(질문과 대답)](https://docs.microsoft.com/ko-kr/azure/virtual-network/virtual-networks-faq)  
+
 ## 구현 목적
 - 리소스간 안전한 통신
 - 온프레미스 인프라 리소스와의 안전한 통신
@@ -10,10 +12,10 @@
 
 ### IP 사용 제한
 SUBNET 당 5개 IP 주소
-- X.X.0: 네트워크 주소
-- X.X.1: 기본 게이트웨이
-- X.X.2, X.X.3: Azure 에 예약된 Azure DNS Ip 를 VNet 공간에 매핑
-- X.X.255: 네트워크 브로드캐스트 주소
+- x.x.x.0: 네트워크 주소
+- x.x.x.1: 기본 게이트웨이
+- x.x.x.2, x.x.x.3: Azure 에 예약된 Azure DNS IP 를 VNet 공간에 매핑
+- x.x.x.255: /25 이상 크기의 서브넷에 대한 네트워크 브로드캐스트 주소, 더 작은 서브넷에서 다른 주소가 됨
 
 ### 최대/최소 크기(IPv4)
 - 최대 '/8', 최소 '/29' 의 대역을 여러개 추가 가능

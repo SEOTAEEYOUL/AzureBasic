@@ -4,13 +4,14 @@
 ![rbac-least-privilege.png](./img/rbac-least-privilege.png)
 
 ### EA(기업계약) 계약 관련(확인 필요)
-0. EA 구독 계약을 할 때 "Account"로 하며 "Tenent" 가 생성됨
-1. Account 소유자가 구독을 만들수 있음
-2. Tenent 는 Account 밑에 있음
-3. Tenent 는 Active Directory 임  
+1. EA 구독 계약을 할 때 "Account"로 하며 "Tenant" 가 생성됨
+2. Account 소유자가 구독(subscription)을 만들수 있음
+3. Tenant 는 Account 밑에 있음
+4. Tenant 는 Active Directory 임
+   - AD:Tenant : 1:1, 1:N, N:1(X)  
 
 ## AD 권한 
-- tenent 권한 부여
+- tenant 권한 부여
 - AD > 역활 및 관리자  
 
 | 기본 제공 역활 | 설명 | 한글명 |
@@ -21,7 +22,7 @@
 
 ## 자원 권한
 - 자원 권한 부여
-- 구독 > 역세스 제어(IAM)
+- 구독 > 액세스 제어(IAM)
 - RBAC
 
 | 기본 제공 역활 | 설명 | 한글명 |

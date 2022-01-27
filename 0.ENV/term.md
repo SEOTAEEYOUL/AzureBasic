@@ -44,4 +44,5 @@
 - 리소스를 제공하는 서비스
 - MicroSoft.Compute, Microsoft.Network, Microsoft.Storage ...
 
-### [RBAC](./RBAC.md)
+### [RBAC(역할 기반 액세스 제어)](./RBAC.md)  
+Azure 리소스에 대한 액세스를 관리하는 데 사용
