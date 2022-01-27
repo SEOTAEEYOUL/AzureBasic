@@ -30,7 +30,8 @@
 
 
 ### Azure  
-> [Docs Authoring Pack](https://marketplace.visualstudio.com/items?itemName=docsmsft.docs-authoring-pack)
+> [Docs Authoring Pack](https://marketplace.visualstudio.com/items?itemName=docsmsft.docs-authoring-pack)  
+> [Azure Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack)  
 > [Azure CLI Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azurecli)  
 > [Azure Account](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account)  
 > [Azure Resources](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups)  
@@ -38,7 +39,9 @@
 > [Azure Terraform](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform)  
 > [Kubernetes](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)  
 > [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)  
-> [Azure Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-node-azure-pack)  
+
+### AWS
+[AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-toolkit-vscode)
 
 ### Draw.io
 [MarketPlace:Draw.io Integration](https://marketplace.visualstudio.com/items?itemName=hediet.vscode-drawio)
