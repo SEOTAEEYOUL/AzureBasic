@@ -29,5 +29,5 @@ Azure에 연결하고 Azure 리소스에서 관리 명령을 실행하는 플랫
 ## [yaml](./yaml.md)
 타 시스템 간에 데이터를 주고 받을 때, 데이터 포맷에 대한 약속으로 사람이 쉽게 읽을 수 있는 형태로 표현하는데 사용되는 데이터 직렬화 양식
 
-## [DevOps](./DevOps.md)  
+## [ARMTemplate](./ARMTemplate.md)  
 코드 구축을 위한 통합 솔루션  
