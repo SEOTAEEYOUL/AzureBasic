@@ -48,21 +48,16 @@
 | Resource Group | rg-skcc-homepage-dev | Home Page 자원 그룹 | | | | koreacentral | 
 | Vnet | vnet-skcc-dev | 홈페이지 VNet | 10.0.0.0/16 | | rg-skcc-network-dev | koreacentral |  
 | Vnet | vnet-skcc-dev | 공통영역 VNet | 10.21.0.0/16 | | rg-skcc-network-dev | koreacentral |  
-| subnet | snet-skcc-networt-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| 10.0.0.0/28 | | rg-skcc-network-dev | koreacentral |  
-| subnet | snet-skcc-networt-backend  | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | 10.0.1.0/28 | |  rg-skcc-network-dev | koreacentral |  
+| subnet | snet-skcc-network-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| 10.21.0.0/24 | | rg-skcc-network-dev | koreacentral |  
+| subnet | snet-skcc-network-backend  | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | 10.21.1.0/28 | |  
+| subnet | snet-skcc-dev-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| 10.0.0.0/24 | | rg-skcc-network-dev | koreacentral |  
+| subnet | snet-skcc-dev-backend  | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | 10.0.1.0/28 | |  
+rg-skcc-homepage-dev | koreacentral |  
 | Storage Account | skccprdhomepagefiles1 | | | PE-skccprdhompagefiles1 | rg-skcc-homepage-dev | koreacentral |
 | VM | SKCC-COMDPT1 | Web 서버 | Standard D8s v3 | - | rg-skcc-homepage-dev | koreacentral |  
 | VM | SKCC-COMDAP1 | WAS 서버 | Standard D8s v3 | 
 - |rg-skcc-homepage-dev | koreacentral |
 | DB | mysql-homepage-dev | MySQL 5.7 | GP_Gen5_8(범용, vCore 8개, 5GB) | PE-skcchomepageprdmysql | rg-skcc-homepage-dev | koreacentral |
-
-
-### subnet
-| AddressPrefix | Name | ResourceGroup | Purpose |
-|:---|:---|:---|:---|
-| 10.234.4.128/27 | snet-skcc-prd-10.234.4.128-159-dmz | rg-skcc-network-prd | 외부에서 접근 시 사용되는 자원 배포 영역 | 
-| 10.234.4.0/25 | snet-skcc-prd-10.234.4.0-127-frontend | rg-skcc-network-prd | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 |
-| 10.234.5.0/24 | snet-skcc-prd-10.234.5.0-255-backend | rg-skcc-network-prd | PrivateEndpoints | |
 
 
 ## MariaDB
