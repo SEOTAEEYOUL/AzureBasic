@@ -35,7 +35,7 @@
 - VM, Container 수준에서 작동하지 않음으로 Application Gateway 를 사용 연결  
 > [Azure 전면 도어 표준/프리미엄 (미리 보기)에 대 한 질문과 대답](https://github.com/MicrosoftDocs/azure-docs.ko-kr/blob/master/articles/frontdoor/standard-premium/faq.md)
 
-### 프로젝트 때 사용한 VM 생성 스크립트  
+### 프로젝트 때 사용된 VM 생성 스크립트  
 | 파일명 | 설명 | 
 |:---|:---|  
 | vm_deployscript_template.ps1 | VM 생성 파워셀 스크립트 |  
@@ -53,7 +53,7 @@
 | subnet | snet-skcc-dev-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| 10.0.0.0/24 | | rg-skcc-network-dev | koreacentral |  
 | subnet | snet-skcc-dev-backend  | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | 10.0.1.0/28 | | rg-skcc-homepage-dev | koreacentral |  
 | Storage Account | skccprdhomepagefiles1 | | | PE-skccprdhompagefiles1 | rg-skcc-homepage-dev | koreacentral |
-| VM | SKCC-COMDPT1 | Web 서버 | Standard D8s v3 | pip-skcc-homepage- | rg-skcc-homepage-dev | koreacentral |  
+| VM | SKCC-COMDPT1 | Web 서버 | Standard D8s v3 | pip-skcc-comdpt1 | rg-skcc-homepage-dev | koreacentral |  
 | VM | SKCC-COMDAP1 | WAS 서버 | Standard D8s v3 |  | rg-skcc-homepage-dev | koreacentral |  
 | DB | mysql-homepage-dev | MySQL 5.7 | GP_Gen5_8(범용, vCore 8개, 5GB) | PE-skcchomepageprdmysql | rg-skcc-homepage-dev | koreacentral |
 
