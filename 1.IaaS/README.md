@@ -48,7 +48,7 @@
 | Resource Group | rg-skcc-homepage-dev | Home Page 자원 그룹 | | | | koreacentral | 
 | Vnet | vnet-skcc-dev | 홈페이지 VNet | 10.0.0.0/16 | | rg-skcc-network-dev | koreacentral |  
 | Vnet | vnet-skcc-dev | 공통영역 VNet | 10.21.0.0/16 | | rg-skcc-network-dev | koreacentral |  
-| subnet | snet-skcc-networt-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| 10.0.0.0/28 | rg-skcc-network-dev | koreacentral |  
+| subnet | snet-skcc-networt-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| | 10.0.0.0/28 | rg-skcc-network-dev | koreacentral |  
 | subnet | snet-skcc-networt-backend  | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | | 10.0.1.0/28 | rg-skcc-network-dev | koreacentral |  
 | Storage Account | skccprdhomepagefiles1 | | | PE-skccprdhompagefiles1 | rg-skcc-homepage-dev | koreacentral |
 | VM | SKCC-COMDPT1 | Web 서버 | Standard D8s v3 | - | rg-skcc-homepage-dev | koreacentral |  
