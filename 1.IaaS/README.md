@@ -53,8 +53,8 @@
 | subnet | snet-skcc-dev-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| 10.0.0.0/24 | | rg-skcc-network-dev | koreacentral |  
 | subnet | snet-skcc-dev-backend  | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | 10.0.1.0/28 | | rg-skcc-homepage-dev | koreacentral |  
 | Storage Account | skccprdhomepagefiles1 | | | PE-skccprdhompagefiles1 | rg-skcc-homepage-dev | koreacentral |
-| VM | SKCC-COMDPT1 | Web 서버 | Standard D8s v3 | - | rg-skcc-homepage-dev | koreacentral |  
-| VM | SKCC-COMDAP1 | WAS 서버 | Standard D8s v3 | - | rg-skcc-homepage-dev | koreacentral |  
+| VM | SKCC-COMDPT1 | Web 서버 | Standard D8s v3 | pip-skcc-homepage- | rg-skcc-homepage-dev | koreacentral |  
+| VM | SKCC-COMDAP1 | WAS 서버 | Standard D8s v3 |  | rg-skcc-homepage-dev | koreacentral |  
 | DB | mysql-homepage-dev | MySQL 5.7 | GP_Gen5_8(범용, vCore 8개, 5GB) | PE-skcchomepageprdmysql | rg-skcc-homepage-dev | koreacentral |
 
 
