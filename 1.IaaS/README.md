@@ -55,8 +55,7 @@
 rg-skcc-homepage-dev | koreacentral |  
 | Storage Account | skccprdhomepagefiles1 | | | PE-skccprdhompagefiles1 | rg-skcc-homepage-dev | koreacentral |
 | VM | SKCC-COMDPT1 | Web 서버 | Standard D8s v3 | - | rg-skcc-homepage-dev | koreacentral |  
-| VM | SKCC-COMDAP1 | WAS 서버 | Standard D8s v3 | 
-- |rg-skcc-homepage-dev | koreacentral |
+| VM | SKCC-COMDAP1 | WAS 서버 | Standard D8s v3 | - | rg-skcc-homepage-dev | koreacentral |  
 | DB | mysql-homepage-dev | MySQL 5.7 | GP_Gen5_8(범용, vCore 8개, 5GB) | PE-skcchomepageprdmysql | rg-skcc-homepage-dev | koreacentral |
 
 
