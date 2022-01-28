@@ -1,5 +1,6 @@
 $groupName = "rg-skcc-homepage-dev"
 $locationName = "koreacentral"
+$zone=1
 
 $vnetName = "vnet-skcc-dev"
 $vnetAddressPrefix = '10.0.0.0/16'
@@ -27,6 +28,9 @@ $osDiskSizeInGB = 64
 $vmDataDisk = $vmName + "-DataDisk01"
 $osDataDiskSizeInGB = 64
 $StorageAccountType = 'StandardSSD_LRS'
+$storageAccountName = "skccdevhomepagedev"
+
+$openPorts = '10080,7500'
 
 $tags = @{
   owner='SeoTaeYeol'
@@ -34,5 +38,3 @@ $tags = @{
   serviceTitle='homepage'
   personalInformation='no'
 }
-
-

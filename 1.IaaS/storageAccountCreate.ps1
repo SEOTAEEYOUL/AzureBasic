@@ -17,4 +17,6 @@ New-AzStorageAccount -ResourceGroupName $resourceGroup `
   -Kind StorageV2
 
 
-  Remove-AzStorageAccount -Name <storage-account> -ResourceGroupName <resource-group>
+  Remove-AzStorageAccount `
+    -Name <storage-account> `
+    -ResourceGroupName <resource-group>

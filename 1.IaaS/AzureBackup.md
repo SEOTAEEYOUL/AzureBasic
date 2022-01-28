@@ -1,10 +1,12 @@
 # Azure Backup
-* [PowerShell을 사용하여 Azure에서 가상 머신 백업](https://docs.microsoft.com/ko-kr/azure/backup/quick-backup-vm-powershell)
+데이터를 백업하고 Microsoft Azure 클라우드에서 복구할 수 있는 간단하고, 안전하며, 비용 효율적인 솔루션을 제공
+
+> [PowerShell을 사용하여 Azure에서 가상 머신 백업](https://docs.microsoft.com/ko-kr/azure/backup/quick-backup-vm-powershell)
 ![Azure-Backup.png](./img/Azure-Backup.png)  
 ![AzureVMBackupRestoreUsingSnapshot_thumb.png](./img/AzureVMBackupRestoreUsingSnapshot_thumb.png)  
-* [Azure VM에서 SQL Server 데이터베이스 백업](https://docs.microsoft.com/ko-kr/azure/backup/tutorial-sql-backup)  
-* [자습서: Azure VM에서 SAP HANA 데이터베이스 백업](https://docs.microsoft.com/ko-kr/azure/backup/tutorial-backup-sap-hana-db)  
-* [PowerShell을 사용하여 Azure Database for MySQL 서버를 백업 및 복원하는 방법](https://docs.microsoft.com/ko-kr/azure/mysql/howto-restore-server-powershell)
+> [Azure VM에서 SQL Server 데이터베이스 백업](https://docs.microsoft.com/ko-kr/azure/backup/tutorial-sql-backup)  
+> [자습서: Azure VM에서 SAP HANA 데이터베이스 백업](https://docs.microsoft.com/ko-kr/azure/backup/tutorial-backup-sap-hana-db)  
+> [PowerShell을 사용하여 Azure Database for MySQL 서버를 백업 및 복원하는 방법](https://docs.microsoft.com/ko-kr/azure/mysql/howto-restore-server-powershell)
 
 ## Backup 정책
 | 구분 | 주기 | 방법 |

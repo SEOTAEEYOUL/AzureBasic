@@ -244,7 +244,7 @@ $pip = New-AzPublicIpAddress `
 $virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq $vnetName }
 ```
 
-#### 
+#### subnet 정보 가져오기
 ```powershell
 $frontEnd = $virtualNetwork.Subnets|?{$_.Name -eq $subnetFrontendName }
 $nic = New-AzNetworkInterface `
@@ -651,6 +651,19 @@ Get:8 http://security.ubuntu.com/ubuntu bionic-security/main Translation-en [361
 Fetched 6796 kB in 3s (2237 kB/s)
 Reading package lists... Done
 
+azureuser@vm-skcc-comdpt1:~$ cat ~/.vimrc
+set autoindent
+set ts=4
+set sts=4
+set softtabstop=4
+set showmatch
+set tabstop=4
+set shiftwidth=4
+set sw=1
+set cindent
+set paste
+syntax off sh
+azureuser@vm-skcc-comdpt1:~$
 azureuser@vm-skcc-comdpt1:~$ exit
 logout
 Connection to 11.111.111.111 closed.
