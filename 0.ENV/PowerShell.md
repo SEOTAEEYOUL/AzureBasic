@@ -606,7 +606,7 @@ The key's randomart image is:
 PS C:\workspace\AzureBasic\0.ENV>
 ```
 ```powershell
-$sshPublicKey = cat ./.ssh/id_rsa.pub
+$sshPublicKey = cat ~/.ssh/id_rsa.pub
 Add-AzVMSshPublicKey `
   -VM $vmConfig `
   -KeyData $sshPublicKey `
@@ -712,8 +712,8 @@ Remove-AzResourceGroup -Name 'rg-skcc-homepage-dev' -Force
 
 | 명령어(cmdlet) | 설명 | 예시 | 
 |:---|:---|:---|  
-| Import-CSV | CSV 파일 읽기 | Import-CSV -Path ./vm_parameter_template.csv |
-| ForEach-Object | 파이프라인에서 항목을 반복 | | 
+| [Import-CSV](https://docs.microsoft.com/ko-kr/powershell/module/Microsoft.PowerShell.Utility/Import-Csv?view=powershell-7) | CSV 파일 읽기 | Import-CSV -Path ./vm_parameter_template.csv |
+| [ForEach-Object](https://docs.microsoft.com/ko-kr/powershell/module/Microsoft.PowerShell.Core/ForEach-Object?view=powershell-7) | 파이프라인에서 항목을 반복 | | 
 | ConvertTo-SecureString | SecureString 타입으로 만듬 | | 
 | New-Object | 개체를 만듬 | |  
 | New-AzResourceGroup | 리소스 그룹 만들기 | -Name myResourceGroup -Location EastUS | 

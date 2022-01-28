@@ -23,6 +23,9 @@
    > [관리 디스크의 스토리지 형식 업데이트](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/convert-disk-storage) 
 
 ## Apache, Tomcat 설치 및 구성
+### [Apache 서버 설치 및 구성](./Apache.md)
+
+### [Tomcat 서버 설치 및 구성](./Tomcat.md)
 
 ## Application Gateway
 - NET (가상 네트워크) 내에서 트래픽 부하를 분산

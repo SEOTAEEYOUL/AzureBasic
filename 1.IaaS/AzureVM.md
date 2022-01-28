@@ -512,4 +512,148 @@ Remove-AzResourceGroup -Name 'rg-skcc-homepage-dev' -Force
 
 [PowerShell-Script-Sample.md](./PowerShell-Script-Sample.md)
 
-## [Azure Storage 방화벽 및 가상 네트워크 구성](https://github.com/MicrosoftDocs/azure-docs.ko-kr/blob/master/articles/storage/common/storage-network-security.md)
+## [Azure Storage 방화벽 및 가상 네트워크 구성](https://github.com/MicrosoftDocs/azure-docs.ko-kr/blob/master/articles/storage/common/storage-network-security.md)  
+
+## Azure VM SSH 공개 키 생성 및 교체
+### 1. 공개키 생성
+```powershell
+PS C:\Users\taeey\.ssh> ssh-keygen -m PEM -t rsa -b 4096
+Generating public/private rsa key pair.
+Enter file in which to save the key (C:\Users\taeey/.ssh/id_rsa):
+C:\Users\taeey/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in C:\Users\taeey/.ssh/id_rsa
+Your public key has been saved in C:\Users\taeey/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:3tkrAkJeXpBiqBACgVZiHmL7jArvOni3CReO38TzYMQ taeey@DESKTOP-QR555PR
+The key's randomart image is:
++---[RSA 4096]----+
+|OB.o   .         |
+|O.= o o          |
+|o+ . . .         |
+|. + ... .        |
+|.. =.oE.S        |
+|o. oo+o. . o     |
+|o + o.*.. o .    |
+|o..+.= +. .  .   |
+|.+..+.. .. ..    |
++----[SHA256]-----+
+PS C:\Users\taeey\.ssh> dir
+
+    Directory: C:\Users\taeey\.ssh
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---        2022-01-28  오후 3:10           3243 id_rsa
+-a---        2022-01-28  오후 3:10            748 id_rsa.pub
+-a---        2022-01-17  오전 1:37             97 known_hosts
+
+PS C:\Users\taeey\.ssh> cat id_rsa.pub
+nb9FSDXH+plmakmzRSArjSSYBcz9t5lX5V9MHF9YRNaPhieSB7ZgsLE7QDnTJuPUZHm3eC+tTLKCLjsKyDC13/...+BJjcA3rfiURKkdnzJd5LBG8U+BP/aQKBjzyn12lTt8MyHHnLQ0y2yxk9GHhF5SqzYI1M8xQgi/zudK19EyMYt4GjrjlyH4a6KMHBKZz+PuQ== ....@DESKTOP-.......
+```
+
+### Azure Portal 에서 공개키 교체
+교체하고자 하는 VM 을 선택 > 암호 다시 설정 > SSH 공개 키 재설정
+- 모드 : SSH 공개 키 재 설정
+- 사용자 이름 : azureuser
+- SSH 공개 키 : 위에서 재생성한 공개키값 복사 붙여넣기
+- 상단의 업데이트 버튼을 눌려 재설정함
+![VM-암호다시설정-SSH공개키재설정.png](./img/VM-암호다시설정-SSH공개키재설정.png)  
+
+### ssh 로 접속
+1. 접속시도 시 기존 RSA 공유키 충돌 문제 발생
+```powershell
+PS C:\Users\taeey\.ssh> ssh azureuser@11.111.111.111
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ED25519 key sent by the remote host is
+SHA256:vvb4GQ9e101Tb/JgVQ73EUa4ie975NYu8/GWvzUyqKs.
+Please contact your system administrator.
+Add correct host key in C:\\Users\\taeey/.ssh/known_hosts to get rid of this message.
+Offending ED25519 key in C:\\Users\\taeey/.ssh/known_hosts:1
+Host key for 11.111.111.111 has changed and you have requested strict checking.
+Host key verification failed.
+```
+2. ~/.ssh/known_hosts 를 삭제
+```powershell
+PS C:\Users\taeey\.ssh> rm known_hosts
+```
+
+3. 재접속
+```powershell
+PS C:\Users\taeey\.ssh> ssh azureuser@11.111.111.111
+The authenticity of host '11.111.111.111 (11.111.111.111)' can't be established.
+ED25519 key fingerprint is SHA256:vvb4GQ9e101Tb/JgVQ73EUa4ie975NYu8/GWvzUyqKs.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? ye
+Please type 'yes', 'no' or the fingerprint: yes
+Warning: Permanently added '11.111.111.111' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 18.04.6 LTS (GNU/Linux 5.4.0-1065-azure x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Fri Jan 28 06:11:43 UTC 2022
+
+  System load:  0.0               Processes:           122
+  Usage of /:   2.8% of 61.86GB   Users logged in:     0
+  Memory usage: 8%                IP address for eth0: 10.0.0.4
+  Swap usage:   0%
+
+
+1 update can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+
+*** System restart required ***
+Last login: Mon Jan 17 09:21:25 2022 from 211.45.60.5
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+azureuser@vm-skcc-comdpt1:~$ grep . /etc/*-release
+/etc/lsb-release:DISTRIB_ID=Ubuntu
+/etc/lsb-release:DISTRIB_RELEASE=18.04
+/etc/lsb-release:DISTRIB_CODENAME=bionic
+/etc/lsb-release:DISTRIB_DESCRIPTION="Ubuntu 18.04.6 LTS"
+/etc/os-release:NAME="Ubuntu"
+/etc/os-release:VERSION="18.04.6 LTS (Bionic Beaver)"
+/etc/os-release:ID=ubuntu
+/etc/os-release:ID_LIKE=debian
+/etc/os-release:PRETTY_NAME="Ubuntu 18.04.6 LTS"
+/etc/os-release:VERSION_ID="18.04"
+/etc/os-release:HOME_URL="https://www.ubuntu.com/"
+/etc/os-release:SUPPORT_URL="https://help.ubuntu.com/"
+/etc/os-release:BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+/etc/os-release:PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+/etc/os-release:VERSION_CODENAME=bionic
+/etc/os-release:UBUNTU_CODENAME=bionic
+
+azureuser@vm-skcc-comdpt1:~$ grep . /etc/issue*
+/etc/issue:Ubuntu 18.04.6 LTS \n \l
+/etc/issue.net:Ubuntu 18.04.6 LTS
+
+azureuser@vm-skcc-comdpt1:~$ sudo apt-get update
+Hit:1 http://azure.archive.ubuntu.com/ubuntu bionic InRelease
+Get:2 http://azure.archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]
+Get:3 http://azure.archive.ubuntu.com/ubuntu bionic-backports InRelease [74.6 kB]
+Get:4 http://azure.archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages [2374 kB]
+Get:5 http://azure.archive.ubuntu.com/ubuntu bionic-updates/universe amd64 Packages [1781 kB]
+Get:6 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]
+Get:7 http://security.ubuntu.com/ubuntu bionic-security/main amd64 Packages [2029 kB]
+Get:8 http://security.ubuntu.com/ubuntu bionic-security/main Translation-en [361 kB]
+Fetched 6796 kB in 3s (2237 kB/s)
+Reading package lists... Done
+
+azureuser@vm-skcc-comdpt1:~$ exit
+logout
+Connection to 11.111.111.111 closed.
+
+PS C:\Users\taeey\.ssh>
+```
