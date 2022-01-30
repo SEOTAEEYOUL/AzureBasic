@@ -190,10 +190,7 @@ Server version: Apache/2.4.29 (Ubuntu)
 Server built:   2022-01-05T14:50:41
 ```
 4. Listen Port 변경
-
-
-![apache24-conf.png](./img/apache24-conf.png)  
-
+- /etc/apache2/ports.conf
 ## apache2 설정
 ```
 #   /etc/apache2/

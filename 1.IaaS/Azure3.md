@@ -4,11 +4,13 @@ Vnet, subnet, NSG, apache, tomcat, mysql 구성
 
 * [빠른 시작: PowerShell을 사용하여 Azure Database for MySQL 서버 만들기](https://docs.microsoft.com/ko-kr/azure/mysql/quickstart-create-mysql-server-database-using-azure-powershell)
 
-## VNet 만들기
+## [VNet 만들기](./AzureVirtualNetwork.md)
 ### NSG
 ### subnet
 ## [VM 만들기](./AzureVM.md)
-### Apache 구성
-### Tomcat 구성
+### [Apache 구성](./Apache.md)
+### [Tomcat 구성](./Tomcat.md)
 ### [MySQL 구성](./AzureMySQL.md)
+
+## [AppGateway](./AzureApplicationGateway.md)
 

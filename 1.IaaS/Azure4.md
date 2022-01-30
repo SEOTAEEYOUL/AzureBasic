@@ -3,8 +3,7 @@
 - Application Gateway 구성
 - Azure DNS 구성
 
-## Application G/W 구성
+## [App Service Domain](./AzureAppServiceDomain.md)
 
-## Azure DNS 구성
 
  

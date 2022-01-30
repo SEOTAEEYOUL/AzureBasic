@@ -1,11 +1,19 @@
-# [Azure Application Gateway란?](https://docs.microsoft.com/ko-kr/azure/application-gateway/overview)
-- [빠른 시작: Azure PowerShell을 사용하여 Azure Application Gateway를 통해 웹 트래픽 보내기](https://docs.microsoft.com/ko-kr/azure/application-gateway/quick-create-powershell)
-- [Azure Application Gateway 및 Web Application Firewall의 가격 책정 이해](https://docs.microsoft.com/ko-kr/azure/application-gateway/understanding-pricing)
+# [Azure Application Gateway란?](https://docs.microsoft.com/ko-kr/azure/application-gateway/overview)  
+웹 애플리케이션에 대한 트래픽을 관리할 수 있도록 하는 웹 트래픽 부하 분산 장치  
+
+![../0.ENV/azure/application-gateway.png](../0.ENV/azure/application-gateway.png)  
+
+
+> [빠른 시작: Azure PowerShell을 사용하여 Azure Application Gateway를 통해 웹 트래픽 보내기](https://docs.microsoft.com/ko-kr/azure/application-gateway/quick-create-powershell)  
+> [Azure Application Gateway 및 Web Application Firewall의 가격 책정 이해](https://docs.microsoft.com/ko-kr/azure/application-gateway/understanding-pricing)  
 
 ![application-gateway-qs-resources.png](./img/application-gateway-qs-resources.png)
 
 
-## 변수 설정
+## Portal
+
+## PowerShell
+### 변수 설정
 ```powershell
 $resourceGroup = "rg-skcc-ag"
 $location = "koreacentral"
@@ -40,14 +48,14 @@ $agFrontendRule1Name = "ag-fe-rule1"
 $appGatewayName = "ag-skcc"
 ```
 
-## 리소스 그룹 만들기
+### 리소스 그룹 만들기
 ```
 New-AzResourceGroup -Name $resourceGroup -Location $location
 ```
 
-## 네트워크 리소스 만들기
+### 네트워크 리소스 만들기
 
-### 1. subnet 만들기
+#### 1. subnet 만들기
 ```powershell
 $agSubnetConfig = New-AzVirtualNetworkSubnetConfig `
   -Name $agSubnetName `
@@ -57,7 +65,7 @@ $backendSubnetConfig = New-AzVirtualNetworkSubnetConfig `
   -AddressPrefix $bacendSubnetPrefix
 ```
 
-### 2. subnet 구성이 포함된 가상 네트워크 만들기
+#### 2. subnet 구성이 포함된 가상 네트워크 만들기
 ```powershell
 New-AzVirtualNetwork `
   -ResourceGroupName $resourceGroup `
@@ -67,7 +75,7 @@ New-AzVirtualNetwork `
   -Subnet $agSubnetConfig, $backendSubnetConfig
 ```
 
-### 3. 공용 IP 주소 만들기
+#### 3. 공용 IP 주소 만들기
 ```
 New-AzPublicIpAddress `
   -ResourceGroupName $resourceGroup `
@@ -79,8 +87,8 @@ New-AzPublicIpAddress `
 
 ---
 
-## 애플리케이션 게이트웨이 만들기
-### 1. IP 구성 및 frontend port 만들기
+### 애플리케이션 게이트웨이 만들기
+#### 1. IP 구성 및 frontend port 만들기
 
 | No | 명령 | 설명 |
 |:---|:---|:---|
@@ -110,7 +118,7 @@ $frontendport = New-AzApplicationGatewayFrontendPort `
   -Port 80
 ```
 
-### 2. 백 엔드 풀 만들기
+#### 2. 백 엔드 풀 만들기
 | No | 명령 | 설명 |
 |:---|:---|:---|
 | 1 | New-AzApplicationGatewayBackendAddressPool | 애플리케이션 게이트웨이에 대한 백 엔드 풀을 만듬 |
@@ -127,7 +135,7 @@ $poolSettings = New-AzApplicationGatewayBackendHttpSetting `
   -RequestTimeout 30
 ```
 
-### 3. 수신기를 만들고 규칙을 추가
+#### 3. 수신기를 만들고 규칙을 추가
 
 | No | 명령 | 설명 |
 |:---|:---|:---|
@@ -148,7 +156,7 @@ $frontendRule = New-AzApplicationGatewayRequestRoutingRule `
   -BackendHttpSettings $poolSettings
 ```
 
-## Application Gateway 만들기
+### Application Gateway 만들기
 | No | 명령 | 설명 |
 |:---|:---|:---|
 | 1 | [New-AzApplicationGatewaySku](https://docs.microsoft.com/en-us/powershell/module/az.network/new-azapplicationgatewaysku?view=azps-7.1.0) | 애플리케이션 게이트웨이에 대한 매개 변수를 지정 </b> Capacity : Instance 수 |
@@ -177,7 +185,7 @@ New-AzApplicationGateway `
   -Sku $sku
 ```
 
-## [수행결과](./application-gateway-수행결과.md)  
+### [수행결과](./application-gateway-수행결과.md)  
 * 소스 [abnormal-dns-record.ps1](./abnormal-dns-record.ps1)
 ![rg-skcc-ag.png](./img/rg-skcc-ag.png)
 ![vnet-skcc-ag.png](./img/vnet-skcc-ag.png)  

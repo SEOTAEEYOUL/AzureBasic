@@ -1,5 +1,5 @@
 # Azure Virtual Network
-
+Private Network 로 Azure VM(Virtual Machines)과 같은 다양한 형식의 Azure 리소스가 서로, 인터넷 및 특정 온-프레미스 네트워크와 안전하게 통신
 ## 가격 정책
 ### 가상 네트워크 피어링
 - 동일 지역 : GB당 $0.01
