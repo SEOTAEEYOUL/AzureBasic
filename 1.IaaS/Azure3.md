@@ -12,5 +12,5 @@ Vnet, subnet, NSG, apache, tomcat, mysql 구성
 ### [Tomcat 구성](./Tomcat.md)
 ### [MySQL 구성](./AzureMySQL.md)
 
-## [AppGateway](./AzureApplicationGateway.md)
+
 
