@@ -36,6 +36,8 @@ $pipName = 'pip-skcc-comdpt1'
 $nicName = 'nic-skcc-comdpt1'
 
 $vmName = "vm-skcc-comdpt1"
+$vmApacheName = "vm-skcc-comdpt1"
+$vmTomcatName = "vm-skcc-comdap1"
 $vmSize = "Standard_B2s"
 
 $vmOSDisk = $vmName + "-OSDisk01"
@@ -58,62 +60,17 @@ $tags = @{
 ```
 
 
-## NSG Rule 만들기
-### Create an inbound network security group rule for port 22
-```powershell
-$nsgRuleSSH = New-AzNetworkSecurityRuleConfig `
-  -Name "nsg-rule-ssh"  `
-  -Protocol "Tcp" `
-  -Direction "Inbound" `
-  -Priority 1000 `
-  -SourceAddressPrefix * `
-  -SourcePortRange * `
-  -DestinationAddressPrefix * `
-  -DestinationPortRange 22 `
-  -Access "Allow"
-```
-
-### Create an inbound network security group rule for port 80
-```powershell
-$nsgRuleWeb = New-AzNetworkSecurityRuleConfig `
-  -Name "nsg-rule-www"  `
-  -Protocol "Tcp" `
-  -Direction "Inbound" `
-  -Priority 1001 `
-  -SourceAddressPrefix * `
-  -SourcePortRange * `
-  -DestinationAddressPrefix * `
-  -DestinationPortRange 10080 `
-  -Access "Allow"
-```
-
-### Create a network security group
-```powershell
-$nsg = New-AzNetworkSecurityGroup `
-  -ResourceGroupName $groupName `
-  -Location $locationName `
-  -Name $nsgName `
-  -SecurityRules $nsgRuleSSH,$nsgRuleWeb
-
-# Update the NSG.
-### Get the NSG resource
-$nsg = Get-AzNetworkSecurityGroup `
-  -Name $nsgName `
-  -ResourceGroupName $groupName 
-### Update the NSG.
-$nsg | Set-AzNetworkSecurityGroup
-```
-![nsg-skcc-homepage.png](./img/nsg-skcc-homepage.png)
-
 ### public-ip 만들기
 ```powershell
-$vnet = $virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq 'vnet-skcc-dev'}
+# $vnet = Get-AzVirtualNetwork |?{$_.Name -eq $vnetName}
+$vnet = Get-AzVirtualNetwork -Name $vnetName
 $pip = New-AzPublicIpAddress `
   -Name $pipName `
   -ResourceGroupName $groupName `
   -Location $locationName `
   -AllocationMethod Static `
-  -IdleTimeoutInMinutes 4
+  -IdleTimeoutInMinutes 4 `
+  -Tag $tags
 ```
 ![pip-skcc-comdpt1.png](./img/pip-skcc-comdpt1.png)
 
@@ -127,12 +84,13 @@ $pip = New-AzPublicIpAddress `
 
 #### vnet 정보 가져오기
 ```powershell
-$virtualNetwork = Get-AzVirtualNetwork |?{$_.Name -eq $vnetName }
+# $vnet = Get-AzVirtualNetwork |?{$_.Name -eq $vnetName }
+$vnet = Get-AzVirtualNetwork -Name $vnetName
 ```
 
 #### subnet 정보 가져오기
 ```powershell
-$frontEnd = $virtualNetwork.Subnets|?{$_.Name -eq $subnetFrontendName }
+$frontEnd = $vnet.Subnets|?{$_.Name -eq $subnetFrontendName }
 $nic = New-AzNetworkInterface `
   -ResourceGroupName $groupName `
   -Name $nicName `
@@ -150,7 +108,7 @@ $cred = New-Object System.Management.Automation.PSCredential ("azureuser", $secu
 ```
 
 ### VM 크기 설정
-```
+```powershell
 $vmConfig = New-AzVMConfig `
   -VMName $vmName `
   -VMSize $vmSize
@@ -195,13 +153,28 @@ $vmConfig = Set-AzVMSourceImage -VM $vmConfig `
 - APACHE : vm-skcc-comdpt1
 - TOMCAT : vm-skcc-comdap1
 ```powershell
-$vmConfig = Set-AzVMOperatingSystem `
+# $vmApacheName = "vm-skcc-comdpt1"
+# $vmTomcatName = "vm-skcc-comdap1"
+$vmApacheConfig = Set-AzVMOperatingSystem `
   -VM $vmConfig `
   -Linux `
-  -ComputerName $vmName `
+  -ComputerName $vmApacheName `
   -Credential $cred `
   -DisablePasswordAuthentication
-$vmConfig = Set-AzVMSourceImage `
+$vmApacheConfig = Set-AzVMSourceImage `
+  -VM $vmConfig `
+  -PublisherName "Canonical" `
+  -Offer "UbuntuServer" `
+  -Skus "18.04-LTS" `
+  -Version "latest"
+
+$vmTomcatConfig = Set-AzVMOperatingSystem `
+  -VM $vmConfig `
+  -Linux `
+  -ComputerName $vmTomcatName `
+  -Credential $cred `
+  -DisablePasswordAuthentication
+$vmTomcatConfig = Set-AzVMSourceImage `
   -VM $vmConfig `
   -PublisherName "Canonical" `
   -Offer "UbuntuServer" `
@@ -210,9 +183,10 @@ $vmConfig = Set-AzVMSourceImage `
 ```
 
 ### 인터페이스 추가
-```
-$vmConfig = Add-AzVMNetworkInterface `
-  -VM $vmConfig `
+- APACHE
+```powershell
+$vmApacheConfig = Add-AzVMNetworkInterface `
+  -VM $vmApacheConfig `
   -Id $nic.Id
 ```
 
@@ -248,14 +222,14 @@ PS C:\workspace\AzureBasic\0.ENV>
 ```powershell
 $sshPublicKey = cat ./.ssh/id_rsa.pub
 Add-AzVMSshPublicKey `
-  -VM $vmConfig `
+  -VM $vmApacheConfig `
   -KeyData $sshPublicKey `
   -Path "/home/azureuser/.ssh/authorized_keys"
 ```
 
 ### OS Disk 설정
 ```powershell
-$resourceGroup = Get-AzResourceGroup -Name 'rg-skcc-homepage-dev'
+$resourceGroup = Get-AzResourceGroup -Name $groupName
 $location = $resourceGroup.Location
 $osDiskType = (Get-AzDisk -ResourceGroupName $resourceGroup.ResourceGroupName)[0].Sku.Name
 
@@ -284,19 +258,19 @@ $vmConfig = Add-AzVMDataDisk `
 
 
 ### boot diagnotics
-```
+```powershell
 $vmConfig = Set-AzVMBootDiagnostic `
   -VM $vmConfig `
   -Enable `
-  -resourceGroup "rg-skcc-homepage-dev" `
-  -StorageAccountName "skccdevhomepagedev"
+  -resourceGroup $groupName `
+  -StorageAccountName $storageAccountName
 ```
 
 ### VM 만들기
 ```powershell
 New-AzVM -VM $vmConfig `
-  -ResourceGroupName "rg-skcc-homepage-dev" `
-  -Location "koreacentral"
+  -ResourceGroupName $groupName `
+  -Location $locationName
 ```
 ![rg-skcc-homepage-dev.png](./img/rg-skcc-homepage-dev.png)  
 ![vm-skcc-comdpt1.png](./img/vm-skcc-comdpt1.png)  
@@ -323,35 +297,42 @@ New-AzVM -VM $vmConfig `
 - VM 자격 증명을 설정 : Get-Credential
 - -AsJob : 백그라운드 옵션
 ```powershell
+$vmApacheName = "vm-skcc-comdpt1"
+$vmTomcatName = "vm-skcc-comdap1"
+$subnetFrontendName = 'snet-skcc-dev-frontend'
+$subnetBackendName = 'snet-skcc-dev-backend'
+$vmSize = "Standard_B2s" # 'Standard_DS3_v2'
 $cred = Get-Credential
 $apache-vm1 = @{
-    ResourceGroupName = 'rg-skcc-homepage-dev'
-    Location = 'koreacentral'
-    Name = 'vm-skcc-homept1'
-    VMSize = 'Standard_DS3_v2'
-    SecurityGroupName = ''
-    PublicIpAddressName = ''
-    VirtualNetworkName = 'vnet-skcc-dev'
-    SubnetName = 'vnet-skcc-dev-frontend'
-    OpenPorts = '10080,7500'
+    ResourceGroupName = $groupName
+    Location = $locationName
+    Name = $vmApacheName
+    VMSize = $vmSize
+    SecurityGroupName = $nsgName
+    PublicIpAddressName = $pipName
+    VirtualNetworkName = $vnetName
+    SubnetName = $subnetFrontendName
+    OpenPorts = '22,10080,8009'
     Credential = $cred
 }
-New-AzVM @apache-vm -AsJob
+New-AzVM @apache-vm1 -AsJob
 ```
 
 ### tomcat vm 만들기
 ```powershell
 $cred = Get-Credential
-New-AzVm `
-    -ResourceGroupName "myResourceGroupVM" `
-    -Name "myVM" `
-    -Location "koreacentral" `
-    -VirtualNetworkName "myVnet" `
-    -SubnetName "mySubnet" `
-    -SecurityGroupName "myNetworkSecurityGroup" `
-    -PublicIpAddressName "myPublicIpAddress" `
-    -OpenPorts 80,3389 `
-    -Credential $cred
+$tomcat-vm1 = @{
+    ResourceGroupName = $groupName
+    Location = $locationName
+    Name = $vmTomcatName
+    VMSize = $vmSize
+    SecurityGroupName = $nsgName    
+    VirtualNetworkName = $vnetName
+    SubnetName = $subnetBackendName
+    OpenPorts = '22,18080,8009'
+    Credential = $cred
+}
+New-AzVM @tomcat-vm1 -AsJob
 ```
 
 ## 리소스 정리
@@ -559,6 +540,8 @@ PS C:\Users\taeey\.ssh>
 
 ## CLI
 ```bash
+groupName="rg-skcc-homepage-dev"
+
 az vm create \
   --resource-group myResourceGroup \
   --name myVM \
@@ -566,7 +549,7 @@ az vm create \
   --admin-username azureuser \
   --generate-ssh-keys
 az vm open-port --port 80 \
-  --resource-group "rg-skcc-homepage-dev" \
+  --resource-group $groupName \
   --name myVM
 ```
 

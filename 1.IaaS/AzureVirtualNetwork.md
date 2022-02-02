@@ -277,7 +277,7 @@ az network nsg delete -g $groupName -n $nsgName
 az network nsg list -o table -g $groupName 
 
 ## NSG rule 보기
-az network nsg rule list -o table -g $groupName --nsg-name $nsgName
+az network nsg rule list -o table -g $groupName --name $nsgName
 
 ## 지역 'koreacentral'에 생성된 NSG 보기
 az network nsg list \
