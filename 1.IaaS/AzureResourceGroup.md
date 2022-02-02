@@ -24,6 +24,7 @@ $tags = @{
   serviceTitle='homepage'
   personalInformation='no'
 }
+
 $rg = @{
     Name = $groupName
     Location = $locationName

@@ -3,7 +3,7 @@
 ## Storage 계정 유형
 | 스토리지 계정의 유형 | 지원되는 스토리지 서비스 | 중복 옵션 | 사용 |   
 |:---|:---|:---|:---|  
-| 표준 범용 v2 | Blob(Data Lake Storage 1 포함), 큐 및 Table Storage, Azure Files | LRS/GRS/RA-GRS </br> ZRS/GZRS/RA-GZRS2 | Blob, 파일 공유, 큐 및 테이블 </br> Azure Files NFS 파일 공유에 대한 지원을 원하는 경우 프리미엄 파일 공유 계정 유형을 사용 | 
+| 표준 범용 v2 | Blob(Data Lake Storage 포함) </br> 큐 및 Table Storage </br> Azure Files | LRS/GRS/RA-GRS </br> ZRS/GZRS/RA-GZRS2 | Blob, 파일 공유, 큐 및 테이블 </br> Azure Files NFS 파일 공유에 대한 지원을 원하는 경우 프리미엄 파일 공유 계정 유형을 사용 | 
 | 프리미엄 블록 Blob | Blob 스토리지(Data Lake Storage 포함) | LRS </br> ZRS2 | 블록 Blob 및 추가 Blob </br> 트랜잭션 속도가 높은 시나리오 또는 더 작은 개체를 사용하거나 지속적으로 짧은 스토리지 대기 시간이 필요한 경우 |  
 | 프리미엄 파일 공유 | Azure 파일 | LRS </br> ZRS2 | 파일 공유 전용 프리미엄 스토리지 계정 유형 </br> 엔터프라이즈 또는 고성능 규모의 애플리케이션에 추천 </br> SMB 및 NFS 파일 공유를 모두 지원하는 스토리지 계정을 원하는 경우 |  
 | 프리미엄 페이지 Blob | 페이지 Blob만 해당 | LRS | 페이지 Blob에 대한 프리미엄 스토리지 계정 유형 |  
@@ -25,21 +25,52 @@
 | Table Storage | https://<storage-account>.table.core.windows.net |  
 
 
-## Portal
+## Storage Account 설정
+- Name : "skccdevhomepagedev"
+- SKU : "Standard_LRS" (가장 저렴한 중복성 옵션) # Standard_RAGRS
+- 생성시 시간이 1 ~ 2 분 걸림
+- 이름이 구독내에서 유일해야 함(범위 추가 확인 필요)
+- Azure Storage 방화벽 정책 확인 필요
+> [Azure Storage 방화벽 및 가상 네트워크 구성](https://docs.microsoft.com/ko-kr/azure/storage/common/storage-network-security?tabs=azure-powershell)
 
+## Portal
+"스토리지 계정" > "+ 만들기"
+![StorageAccount+만들기.png](./img/StorageAccount+만들기.png)  
+![StorageAccount-만들기.png](./img/StorageAccount-만들기.png)  
 
 ## PowerShell
-## Storage Account
-- SKU : "Standard_LRS" (가장 저렴한 중복성 옵션)
-- 생성시 시간이 1 ~ 2 분 걸림
+
+### 기능등록
+```
+Install-Module Az.Storage -Repository PsGallery -RequiredVersion 3.0.1-preview -AllowClobber -AllowPrerelease -Force
+
+Register-AzProviderFeature -ProviderNamespace Microsoft.Network -FeatureName AllowGlobalTagsForStorage
+Get-AzProviderFeature -ProviderNamespace Microsoft.Network -FeatureName AllowGlobalTagsForStorage
+```
 ### Stroage Account 만들기
+```powershell
+$groupName='rg-skcc1-homepage-dev'
+$locationName='koreacentral'
+
+$storageAccountName = 'skccdevhomepagedev01'
+$storageAccountSkuName ='Standard_LRS'
+
+$tags = @{
+  owner='SeoTaeYeol'
+  environment='dev'
+  serviceTitle='homepage'
+  personalInformation='no'
+}
+```
+
 ```powershell
 New-AzStorageAccount `
   -ResourceGroupName $groupName `
   -Name $storageAccountName `
   -Location $locationName `
   -SkuName $storageAccountSkuName `
-  -Kind StorageV2
+  -Kind StorageV2 `
+  -Tag $tags
 ```
 
 ```powershell
@@ -49,9 +80,11 @@ $storage_account = @{
     Location = $locationName
     SkuName = $storageAccountSkuName
     Kind = 'StorageV2'
+    Tag = $tags
 }
 New-AzStorageAccount @storage_account
 ```
+
 ![skccdevhomepagedev.png](./img/skccdevhomepagedev.png)
 ### 컨테이너 만들기(예시)
 ```powershell
@@ -79,4 +112,36 @@ for ($i = 1; $i -le 3; $i++) {
 Remove-AzStorageAccount `
   -Name $storageAccountName `
   -ResourceGroupName $groupName
+```
+
+## Azure CLI
+```
+#!/bin/bash
+
+groupName="rg-skcc1-homepage-dev"
+locationName="koreacentral"
+
+storageAccountName='skccdevhomepagedev01'
+storageAccountSkuName='Standard_LRS'
+
+tags='owner=SeoTaeYeol environment=dev serviceTitle=homepage personalInformation=no'
+
+## 해당 구독에 대해 지원되는 지역 검색
+az account list-locations \
+  --query "[].{Region:name}" \
+  --out table
+
+## 생성하기
+az storage account create \
+  --name $storageAccountName \
+  --resource-group $groupName \
+  --location $locationName \
+  --sku $storageAccountSkuName \
+  --kind StorageV2 \
+  --tag $tags
+
+## 삭제하기
+az storage account delete \
+  --name $storageAccountName \
+  --resource-group $groupName
 ```
