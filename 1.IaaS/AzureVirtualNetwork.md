@@ -83,7 +83,7 @@ $virtualNetwork | Set-AzVirtualNetwork
 ```
 
 
-## CLI
+## Azure CLI
 ### 생성하기
 ```bash
 #!/bin/bash
@@ -119,4 +119,167 @@ az network vnet subnet create \
 ### 삭제하기
 ```bash
 az group delete -n $groupName
+```
+
+## NSG
+### NSG Rule 만들기
+| 명령 | 메모 |  
+|:---|:---|  
+| New-AzNetworkSecurityRuleConfig | 보안 규칙 구성을 생성 |  
+| Set-AzNetworkSecurityRuleConfig | 보안 규칙 변경 | 
+| New-AzNetworkSecurityGroup | 네트워크 보안 그룹 생성 |  
+| Get-AzNetworkSecurityGroup | 이름으로 보안 그룹을 가져옴 |  
+| Add-AzNetworkSecurityRuleConfig | 네트워크 보안 그룹에 보안 규칙 구성을 추가 |  
+| Set-AzNetworkSecurityGroup | 네트워크 보안 그룹에 대한 목표 상태를 설정 |  
+
+```powershell
+## 기존 설정
+$groupName = "rg-skcc-homepage-dev"
+$locationName = "koreacentral"
+$zone=1
+
+$vnetName = "vnet-skcc-dev"
+
+$nsgName = 'nsg-skcc-homepage' 
+
+### Create an inbound network security group rule for port 22
+$nsgRuleSSH = New-AzNetworkSecurityRuleConfig `
+  -Name "nsg-rule-ssh"  `
+  -Protocol "Tcp" `
+  -Direction "Inbound" `
+  -Priority 1000 `
+  -SourceAddressPrefix * `
+  -SourcePortRange * `
+  -DestinationAddressPrefix * `
+  -DestinationPortRange 22 `
+  -Access "Allow"
+
+### Create an inbound network security group rule for port 80
+$nsgRuleWeb = New-AzNetworkSecurityRuleConfig `
+  -Name "nsg-rule-www"  `
+  -Protocol "Tcp" `
+  -Direction "Inbound" `
+  -Priority 1001 `
+  -SourceAddressPrefix * `
+  -SourcePortRange * `
+  -DestinationAddressPrefix * `
+  -DestinationPortRange 10080 `
+  -Access "Allow"
+
+### Create a network security group
+$nsg = New-AzNetworkSecurityGroup `
+  -ResourceGroupName $groupName `
+  -Location $locationName `
+  -Name $nsgName `
+  -SecurityRules $nsgRuleSSH,$nsgRuleWeb
+
+# Update the NSG.
+### Get the NSG resource
+$nsg = Get-AzNetworkSecurityGroup `
+  -Name $nsgName `
+  -ResourceGroupName $groupName 
+
+### Add the inbound security rule.
+$nsg | `
+  Add-AzNetworkSecurityRuleConfig `
+    -Name nsg-rule-tomcat  `
+    -Description "Allow app port" `
+    -Access Allow `
+    -Protocol Tcp `
+    -Direction Inbound `
+    -Priority 1002 `
+    -SourceAddressPrefix "*" `
+    -SourcePortRange * `
+    -DestinationAddressPrefix * `
+    -DestinationPortRange 18080
+
+### Update the NSG.
+$nsg | Set-AzNetworkSecurityGroup
+```
+![nsg-skcc-homepage.png](./img/nsg-skcc-homepage.png)  
+![nsg-skcc-homepage-add-tomcat.png](./img/nsg-skcc-homepage-add-tomcat.png)  
+
+### Azure CLI
+| 명령 | 메모 |  
+|:---|:---|  
+| az network nsg rule create | 보안 규칙 만들기 |  
+| az network nsg rule update | 보안 규칙 변경 | 
+| az network nsg create| 네트워크 보안 그룹 생성 |  
+| az network nsg delete | 네트워크 보안 그룹 삭제 |  
+| az network nsg show | 이름으로 보안 그룹을 가져옴 |  
+구성을 추가 |  
+| az network nsg update | 네트워크 보안 그룹 변경 |  
+```bash
+#!/bin/bash
+
+## 기존 설정
+groupName="rg-skcc1-homepage-dev"
+locationName="koreacentral"
+
+vnetName="vnet-skcc1-dev"
+
+nsgName='nsg-skcc1-homepage' 
+
+tags='owner=SeoTaeYeol environment=dev serviceTitle=homepage personalInformation=no'
+
+az network nsg create \
+  -g $groupName \
+  -n $nsgName \
+  --tags $tags
+
+az network nsg rule create \
+  -g $groupName \
+  -n "nsg-rule-ssh"  \
+  --priority 1000 \
+  --nsg-name $nsgName \
+  --protocol "Tcp" \
+  --direction "Inbound" \
+  --source-address-prefixes '*' \
+  --source-port-ranges '*' \
+  --destination-address-prefixes '*' \
+  --destination-port-ranges 22 \
+  --access "Allow"
+  
+az network nsg rule create \
+  --name "nsg-rule-www"  \
+  --resource-group $groupName \
+  --nsg-name $nsgName \
+  --protocol "Tcp" \
+  --direction "Inbound" \
+  --priority 1001 \
+  --source-address-prefixes '*' \
+  --source-port-ranges '*' \
+  --destination-address-prefixes '*' \
+  --destination-port-ranges 10080 \
+  --access "Allow"
+
+az network nsg rule create \
+  --name "nsg-rule-tomcat"  \
+  --nsg-name $nsgName \
+  --resource-group $groupName \
+  --protocol "Tcp" \
+  --direction "Inbound" \
+  --priority 1002 \
+  --source-address-prefixes '*' \
+  --source-port-ranges '*' \
+  --destination-address-prefixes '*' \
+  --destination-port-ranges 18080 \
+  --access "Allow"
+```
+
+![nsg-skcc1-homepage-nsg-rules.png](./img/nsg-skcc1-homepage-nsg-rules.png)  
+
+```bash
+## NSG 삭제
+az network nsg delete -g $groupName -n $nsgName
+
+## NSG 목록 보기
+az network nsg list -o table -g $groupName 
+
+## NSG rule 보기
+az network nsg rule list -o table -g $groupName --nsg-name $nsgName
+
+## 지역 'koreacentral'에 생성된 NSG 보기
+az network nsg list \
+--query "[?location=='koreacentral']" -o table
 ```

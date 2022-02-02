@@ -94,6 +94,14 @@ $nsg = New-AzNetworkSecurityGroup `
   -Location $locationName `
   -Name $nsgName `
   -SecurityRules $nsgRuleSSH,$nsgRuleWeb
+
+# Update the NSG.
+### Get the NSG resource
+$nsg = Get-AzNetworkSecurityGroup `
+  -Name $nsgName `
+  -ResourceGroupName $groupName 
+### Update the NSG.
+$nsg | Set-AzNetworkSecurityGroup
 ```
 ![nsg-skcc-homepage.png](./img/nsg-skcc-homepage.png)
 
