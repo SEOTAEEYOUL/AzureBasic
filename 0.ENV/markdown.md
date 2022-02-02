@@ -333,19 +333,19 @@ __double underscores__
 ![Alt text](/path/to/img.jpg)
 ![Alt text](/path/to/img.jpg "Optional title")
 ```
-![석촌호수 러버덕](http://cfile6.uf.tistory.com/image/2426E646543C9B4532C7B0)
-![석촌호수 러버덕](http://cfile6.uf.tistory.com/image/2426E646543C9B4532C7B0 "RubberDuck")
+![Azure](./img/Azure.jpg)
+![Azure](./img/Azure.jpg "Azure")
 
 사이즈 조절 기능은 없기 때문에 ```<img width="" height=""></img>```를 이용한다.
 
 예
 ```
-<img src="/path/to/img.jpg" width="450px" height="300px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
-<img src="/path/to/img.jpg" width="40%" height="30%" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+<img src="./img/Azure.jpg" width="450px" height="300px" title="px(픽셀) 크기 설정" alt="Azure"></img><br/>
+<img src="./img/Azure.jpg" width="40%" height="30%" title="px(픽셀) 크기 설정" alt="Azure"></img>
 ```
 
-<img src="http://cfile6.uf.tistory.com/image/2426E646543C9B4532C7B0" width="450px" height="300px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img><br/>
-<img src="http://cfile6.uf.tistory.com/image/2426E646543C9B4532C7B0" width="40%" height="30%" title="%(비율) 크기 설정" alt="RubberDuck"></img>
+<img src="./img/Azure.jpg" width="450px" height="300px" title="px(픽셀) 크기 설정" alt="Azure"></img><br/>
+<img src="./img/Azure.jpg" width="40%" height="30%" title="%(비율) 크기 설정" alt="Azure"></img>
 
 ## 줄바꿈
 3칸 이상 띄어쓰기(` `)를 하면 줄이 바뀐다.

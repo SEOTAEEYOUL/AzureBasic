@@ -45,12 +45,8 @@ parameters:
   storageAccount : skchatops001
 ```
 #### azure-file-sc.yaml
+- 1.21 이상
 ```yaml
-<<<<<<< HEAD
-kkkapiVersion: storage.k8s.io/v1
-=======
----
->>>>>>> c085da979cc8f1cc90b54b22071c6a8ecde2884e
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
@@ -60,22 +56,17 @@ metadata:
   labels:
     addonmanager.kubernetes.io/mode: EnsureExists
     kubernetes.io/cluster-service: "true"
-provisioner: kubernetes.io/azure-file
+# provisioner: kubernetes.io/azure-file
+# replace with "kubernetes.io/azure-file" if aks version is less provisioner: file.csi.azure.com
+than 1.21
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
 allowVolumeExpansion: true
 mountOptions:
-<<<<<<< HEAD
 - dir_mode=0777
 - file_mode=0777
 - uid=0
 - gid=0
-=======
-- dir_mode=0750
-- file_mode=0750
-- uid=999
-- gid=999
->>>>>>> c085da979cc8f1cc90b54b22071c6a8ecde2884e
 - mfsymlinks
 - cache=strict
 # - cache=none

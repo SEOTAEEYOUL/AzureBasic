@@ -4,9 +4,7 @@
 - Azure DNS 구성
 
 
-## [AppGateway](./AzureApplicationGateway.md)
-
-## [App Service Domain](./AzureAppServiceDomain.md)
+## [Azure Application Gateway](./AzureApplicationGateway.md)
 - rule 설정  
 
- 
+## [App Service Domain](./AzureAppServiceDomain.md)

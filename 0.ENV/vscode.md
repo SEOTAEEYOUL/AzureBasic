@@ -55,6 +55,7 @@
 
 
 ### 기타
+> [Print](https://marketplace.visualstudio.com/items?itemName=pdconsec.vscode-print)  
 > [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)  
 > [TODO Highlight](https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight)  
 > [HTML CSS Support](https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css) : html 에서 css 자동 완성 이용  

@@ -12,26 +12,12 @@
 
 
 
-## CLI
-```bash
-az group create --name "rg-skcc-homepage-dev" \
-  -location "koreacentral"
-az vm create \
-  --resource-group myResourceGroup \
-  --name myVM \
-  --image UbuntuLTS \
-  --admin-username azureuser \
-  --generate-ssh-keys
-az vm open-port --port 80 \
-  --resource-group "rg-skcc-homepage-dev" \
-  --name myVM
-```
-
 ## PowerShell
 ### 환경 설정
 ```powershell
 $groupName = "rg-skcc-homepage-dev"
 $locationName = "koreacentral"
+$zone=1
 
 $vnetName = "vnet-skcc-dev"
 $vnetAddressPrefix = '10.0.0.0/16'
@@ -59,126 +45,18 @@ $osDiskSizeInGB = 64
 $vmDataDisk = $vmName + "-DataDisk01"
 $osDataDiskSizeInGB = 64
 $StorageAccountType = 'StandardSSD_LRS'
-```
+$storageAccountName = "skccdevhomepagedev"
 
+$openPorts = '10080,7500'
 
-### Resource Group 만들기
-```powershell
-New-AzResourceGroup `
-   -ResourceGroupName $groupName `
-   -Location $locationName 
-```
-```powershell
-$rg = @{
-    Name = $groupName
-    Location = $locationName 
+$tags = @{
+  owner='SeoTaeYeol'
+  environment='dev'
+  serviceTitle='homepage'
+  personalInformation='no'
 }
-New-AzResourceGroup @rg
-```
-### 리소스 그룹 잠금
-```powershell
-New-AzResourceLock `
-  -LockName LockGroup `
-  -LockLevel CanNotDelete `
-  -ResourceGroupName $groupName
-```
-- 확인
-```
-Get-AzResourceLock \
-  -ResourceGroupName $groupName
 ```
 
-## VNet 만들기
-- vnet : vnet-skcc-dev
-```powershell
-$vnet = @{
-    Name = $vnetName
-    ResourceGroupName = $groupName
-    Location = $locationName
-    AddressPrefix = $vnetAddressPrefix    
-}
-$virtualNetwork = New-AzVirtualNetwork @vnet
-```
-
-## NSG 만들기
-```powershell
-```
-
-## subnet 만들기
-- frontend subnet : snet-skcc-dev-frontend
-- backend subnet : snet-skcc-dev-backend
-```powershell
-$subnet_frontend = @{
-    Name = $subnetFrontendName
-    VirtualNetwork = $virtualNetwork
-    AddressPrefix = $subnetFronendAddressPrefix
-}
-$subnetConfig_frontend = Add-AzVirtualNetworkSubnetConfig @subnet_frontend
-$subnet_backend = @{
-    Name = $subnetBackendName
-    VirtualNetwork = $virtualNetwork
-    AddressPrefix = $subnetAddressPrefix
-}
-$subnetConfig_backend = Add-AzVirtualNetworkSubnetConfig @subnet_backend
-```
-
-## 가상 네트워크에 subnet 연결
-```powershell
-$virtualNetwork | Set-AzVirtualNetwork
-```
-
-
-## Storage Account
-- SKU : "Standard_LRS" (가장 저렴한 중복성 옵션)
-- 생성시 시간이 1 ~ 2 분 걸림
-### Stroage Account 만들기
-```powershell
-New-AzStorageAccount `
-  -ResourceGroupName $groupName `
-  -Name $storageAccountName `
-  -Location $locationName `
-  -SkuName $storageAccountSkuName `
-  -Kind StorageV2
-```
-
-```powershell
-$storage_account = @{
-    Name = $storageAccountName
-    ResourceGroupName = $groupName
-    Location = $locationName
-    SkuName = $storageAccountSkuName
-    Kind = 'StorageV2'
-}
-New-AzStorageAccount @storage_account
-```
-![skccdevhomepagedev.png](./img/skccdevhomepagedev.png)
-### 컨테이너 만들기(예시)
-```powershell
-# Create variables
-$containerName  = "individual-container"
-$prefixName     = "loop"
-
-# Approach 1: Create a container
-New-AzStorageContainer -Name $containerName -Context $ctx
-
-# Approach 2: Create containers with a PowerShell loop
-for ($i = 1; $i -le 3; $i++) { 
-    New-AzStorageContainer -Name (-join($prefixName, $i)) -Context $ctx
-   } 
-
-# Approach 3: Create containers using the PowerShell Split method
-"$($prefixName)4 $($prefixName)5 $($prefixName)6".split() | New-AzStorageContainer -Context $ctx
-```
-
-- boot diagnostics 컨테이너  
-![skccdevhomepagedev-diagnostics.png](./img/skccdevhomepagedev-diagnostics.png)
-
-### 제거
-```
-Remove-AzStorageAccount `
-  -Name $storageAccountName `
-  -ResourceGroupName $groupName
-```
 
 ## NSG Rule 만들기
 ### Create an inbound network security group rule for port 22
@@ -407,7 +285,7 @@ $vmConfig = Set-AzVMBootDiagnostic `
 ```
 
 ### VM 만들기
-```
+```powershell
 New-AzVM -VM $vmConfig `
   -ResourceGroupName "rg-skcc-homepage-dev" `
   -Location "koreacentral"
@@ -670,3 +548,18 @@ Connection to 11.111.111.111 closed.
 
 PS C:\Users\taeey\.ssh>
 ```
+
+## CLI
+```bash
+az vm create \
+  --resource-group myResourceGroup \
+  --name myVM \
+  --image UbuntuLTS \
+  --admin-username azureuser \
+  --generate-ssh-keys
+az vm open-port --port 80 \
+  --resource-group "rg-skcc-homepage-dev" \
+  --name myVM
+```
+
+
