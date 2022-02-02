@@ -8,10 +8,14 @@ Vnet, subnet, NSG, apache, tomcat, mysql 구성
 
 ## [Virtual Network 만들기](./AzureVirtualNetwork.md)
 ### NSG
+- ssh, www, tomcat
 ### subnet
+- frontend subnet : snet-skcc-dev-frontend
+- backend subnet : snet-skcc-dev-backend
 
 ## [Storage Account 만들기(부트진단용 & Backup)](./AzureStorageAccount.md)
 ## [Virtaul Machine 만들기](./AzureVirtualMachine.md)
 ### [Apache 구성](./Apache.md)
 ### [Tomcat 구성](./Tomcat.md)
 ### [MySQL 구성](./AzureMySQL.md)
+
