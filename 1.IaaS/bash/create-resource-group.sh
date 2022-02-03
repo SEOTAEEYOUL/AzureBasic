@@ -17,3 +17,8 @@ az group lock create \
 az group lock delete \
   --name $lockName \
   -g $groupName
+
+groupName="rg-skcc1-network-dev"
+az group create --name "$groupName" \
+  --location "$locationName" \
+  --tags $tags

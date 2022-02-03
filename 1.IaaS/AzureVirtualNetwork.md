@@ -120,6 +120,31 @@ az network vnet subnet create \
   --vnet-name $vnetName \
   -g $groupName \
   --address-prefixes $subnetBackendAddressPrefix
+
+# network 그룹 생성 
+groupName="rg-skcc1-network-dev"
+vnetName="vnet-network-dev"
+vnetAddressPrefix='10.21.0.0/16'
+
+subnetFrontendName='snet-skcc1-network-frontend'
+subnetFrontendAddressPrefix='10.21.0.0/28'
+subnetBackendName='snet-skcc1-network-backend'
+subnetBackendAddressPrefix='10.21.1.0/28'
+
+az network vnet create \
+  --resource-group $groupName \
+  --location $locationName \
+  --name $vnetName \
+  --address-prefix $vnetAddressPrefix \
+  --subnet-name $subnetFrontendName \
+  --subnet-prefix $subnetFrontendAddressPrefix \
+  --tags $tags
+
+az network vnet subnet create \
+  -n $subnetBackendName  \
+  --vnet-name $vnetName \
+  -g $groupName \
+  --address-prefixes $subnetBackendAddressPrefix
 ```
 ### 삭제하기
 ```bash
@@ -270,6 +295,23 @@ az network nsg rule create \
   --destination-address-prefixes '*' \
   --destination-port-ranges 18080 \
   --access "Allow"
+
+az network nsg rule create \
+  --name "nsg-rule-mysql"  \
+  --nsg-name $nsgName \
+  --resource-group $groupName \
+  --protocol "Tcp" \
+  --direction "Inbound" \
+  --priority 1003 \
+  --source-address-prefixes '*' \
+  --source-port-ranges '*' \
+  --destination-address-prefixes '*' \
+  --destination-port-ranges 3306 \
+  --access "Allow"
+
+az network nsg show \
+  --resource-group $groupName \
+  --name $nsgName
 ```
 
 ![nsg-skcc1-homepage-nsg-rules.png](./img/nsg-skcc1-homepage-nsg-rules.png)  

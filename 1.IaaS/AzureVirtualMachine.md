@@ -7,9 +7,60 @@
 > [빠른 시작: PowerShell을 사용하여 Azure에서 Linux 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/quick-create-powershell)  
 > [빠른 시작: Azure CLI를 사용하여 Linux 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/quick-create-cli)  
 > [빠른 시작: ARM 템플릿을 사용하여 Ubuntu Linux 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/quick-create-template)  
-> [빠른 시작: Azure Portal에서 Linux 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/quick-create-portal)
-> [랩: 가상 머신 배포 및 관리.](https://github.com/MicrosoftLearning/AZ-103KO-MicrosoftAzureAdministrator/blob/master/Instructions/Labs/02a%20-%20Deploy%20and%20Manage%20Virtual%20Machines%20(az-100-03).md)
+> [빠른 시작: Azure Portal에서 Linux 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/quick-create-portal)  
+> [랩: 가상 머신 배포 및 관리.](https://github.com/MicrosoftLearning/AZ-103KO-MicrosoftAzureAdministrator/blob/master/Instructions/Labs/02a%20-%20Deploy%20and%20Manage%20Virtual%20Machines%20(az-100-03).md)  
+> [Ubuntu::Long term support and interim releases](https://ubuntu.com/about/release-cycle)  
+> [Microsoft and Canonical Increase Velocity with Azure Tailored Kernel](https://ubuntu.com/blog/microsoft-and-canonical-increase-velocity-with-azure-tailored-kernel)  
 
+
+## Portal
+### 홈 > 가상 머신 > 가상 머신 만들기 
+
+> [이미지 선택](https://portal.azure.com/#create/Microsoft.VirtualMachine)  
+#### 기본사항
+- 프로젝트 정보
+  - 리소스 그룹 : rg-skcc1-homepage-dev
+- 인스턴스 정보
+  - 가상 머신 이름 : vm-skcc1-comdap1
+  - 지역 : (Asia Pacific) Korea Central
+  - 가용성 옵션 : 가용성 집합
+  - 가용성 집합 : az-skcc1-homepage-tomcat
+  - 보안 유형 : 표준
+  - 이미지 : Ubuntu Server 20.04 LTS - Gen2
+  - 크기 : Standard_B1|s - 1 vcpu, 0.5 GiB 메모리 (US$4.75/월)  
+- 관리자 계정
+  - 인증형식 : 암호
+- 인바운드 포트 규칙
+  - 공용 인바운드 포트 : 선택한 포트 허용
+  - 인바운드 포트 선택 : SSH(22)
+####  디스크
+- 디스크 옵션  
+  - OS 디스크 유형 :  표준 SSD(로컬 중복 스토리지)
+#### 네트워크
+- 네트워크 인터페이스
+  - 가상 네트워크 : vnet-skcc1-dev
+  - 서브넷 : snet-skc1-dev-backend(10.0.1.0/28)
+  - 공용 IP : 없음
+  - NIC 네트워크 보안 그룹 : 고급
+  - 네트워크 보안 그룹 구성 : nsg-skcc1-homepage
+#### 관리
+- Azure Security Center
+- 모니터링
+  - 부트 진단 : 사용자 지정 스토리지 계정으로 사용하도록 설정
+  - 진단 스토리지 계정 : skcc1devhomepagedev01
+- 백업
+  - 백업 사용 : 체크
+  - Recovery Services 자격 증명 모음 : skcc1-rsv-VMbackup-dev
+  - 백업 정책 : DefaultPolicy
+#### 고급
+#### 태그
+- owner : 'SeoTaeYeol'
+- environment:'dev'
+- serviceTitle:'homepage'
+- personalInformation:'no'
+
+#### 검토 + 만들기
+![vm-skcc1-comdap2-가상머신만들기-검토+만들기.png](./img/vm-skcc1-comdap2-가상머신만들기-검토+만들기.png)  
 
 
 ## [PowerShell](https://shell.azure.com)
@@ -19,29 +70,29 @@
 
 ### 환경 설정
 ```powershell
-$groupName = "rg-skcc-homepage-dev"
+$groupName = "rg-skcc1-homepage-dev"
 $locationName = "koreacentral"
 $zone=1
 
-$vnetName = "vnet-skcc-dev"
+$vnetName = "vnet-skcc1-dev"
 $vnetAddressPrefix = '10.0.0.0/16'
 
-$subnetFrontendName = 'snet-skcc-dev-frontend'
+$subnetFrontendName = 'snet-skcc1-dev-frontend'
 $subnetFronendAddressPrefix = '10.0.0.0/28'
-$subnetBackendName = 'snet-skcc-dev-backend'
+$subnetBackendName = 'snet-skcc1-dev-backend'
 $subnetAddressPrefix = '10.0.1.0/28'
 
-$storageAccountName = 'skccdevhomepagedev'
+$storageAccountName = 'skcc1devhomepagedev'
 $storageAccountSkuName ='Standard_LRS'
 
-$nsgName = 'nsg-skcc-homepage' 
+$nsgName = 'nsg-skcc1-homepage' 
 
-$pipName = 'pip-skcc-comdpt1'
-$nicName = 'nic-skcc-comdpt1'
+$pipName = 'pip-skcc1-comdpt1'
+$nicName = 'nic-skcc1-comdpt1'
 
-$vmName = "vm-skcc-comdpt1"
-$vmApacheName = "vm-skcc-comdpt1"
-$vmTomcatName = "vm-skcc-comdap1"
+$vmApacheName = "vm-skcc1-comdpt1"
+$vmTomcatName = "vm-skcc1-comdap1"
+$vmName = $vmApacheName
 $vmSize = "Standard_B2s"
 
 $vmOSDisk = $vmName + "-OSDisk01"
@@ -50,10 +101,11 @@ $osDiskSizeInGB = 64
 
 $vmDataDisk = $vmName + "-DataDisk01"
 $osDataDiskSizeInGB = 64
-$StorageAccountType = 'StandardSSD_LRS'
-$storageAccountName = "skccdevhomepagedev"
+$storageAccountType = 'StandardSSD_LRS'
+# $storageAccountName = "skcc1devhomepagedev"
 
-$openPorts = '10080,7500'
+$apacheOpenPorts = '22,10080'
+$tomcatOpenPorts = '22,18080,8009'
 
 $tags = @{
   owner='SeoTaeYeol'
@@ -64,10 +116,11 @@ $tags = @{
 ```
 
 
-### public-ip 만들기
+### public-ip 가져오기
 ```powershell
 # $vnet = Get-AzVirtualNetwork |?{$_.Name -eq $vnetName}
 $vnet = Get-AzVirtualNetwork -Name $vnetName
+<# 
 $pip = New-AzPublicIpAddress `
   -Name $pipName `
   -ResourceGroupName $groupName `
@@ -75,6 +128,10 @@ $pip = New-AzPublicIpAddress `
   -AllocationMethod Static `
   -IdleTimeoutInMinutes 4 `
   -Tag $tags
+#>
+$pip = Get-AzPublicIpAddress `
+  -Name $pipName `
+  -ResourceGroupName $groupName
 ```
 ![pip-skcc-comdpt1.png](./img/pip-skcc-comdpt1.png)
 
@@ -94,6 +151,7 @@ $vnet = Get-AzVirtualNetwork -Name $vnetName
 
 #### subnet 정보 가져오기
 ```powershell
+<# 
 $frontEnd = $vnet.Subnets|?{$_.Name -eq $subnetFrontendName }
 $nic = New-AzNetworkInterface `
   -ResourceGroupName $groupName `
@@ -102,6 +160,12 @@ $nic = New-AzNetworkInterface `
   -SubnetId $frontEnd.Id `
   -PublicIpAddressId $pip.Id `
   -NetworkSecurityGroupId $nsg.Id
+#>
+$nic = Get-AzNetworkInterface `
+  -ResourceGroupName $groupName `
+  -Name $nicName
+$nic.id
+$nic.name
 ```
 ![nic-skcc-comdpt1.png](./img/nic-skcc-comdpt1.png)
 
@@ -159,30 +223,26 @@ $vmConfig = Set-AzVMSourceImage -VM $vmConfig `
 ```powershell
 # $vmApacheName = "vm-skcc-comdpt1"
 # $vmTomcatName = "vm-skcc-comdap1"
+# $vmName = $vmApacheName
 $vmApacheConfig = Set-AzVMOperatingSystem `
   -VM $vmConfig `
   -Linux `
-  -ComputerName $vmApacheName `
+  -ComputerName $vmName `
   -Credential $cred `
   -DisablePasswordAuthentication
+<#
 $vmApacheConfig = Set-AzVMSourceImage `
   -VM $vmConfig `
   -PublisherName "Canonical" `
   -Offer "UbuntuServer" `
   -Skus "18.04-LTS" `
   -Version "latest"
-
-$vmTomcatConfig = Set-AzVMOperatingSystem `
-  -VM $vmConfig `
-  -Linux `
-  -ComputerName $vmTomcatName `
-  -Credential $cred `
-  -DisablePasswordAuthentication
-$vmTomcatConfig = Set-AzVMSourceImage `
+#>
+$vmApacheConfig = Set-AzVMSourceImage `
   -VM $vmConfig `
   -PublisherName "Canonical" `
   -Offer "UbuntuServer" `
-  -Skus "18.04-LTS" `
+  -Skus "20.04-LTS" ` # 22.04-lTS, 20.04-LTS, 18.04-LTS
   -Version "latest"
 ```
 
@@ -190,7 +250,7 @@ $vmTomcatConfig = Set-AzVMSourceImage `
 - APACHE
 ```powershell
 $vmApacheConfig = Add-AzVMNetworkInterface `
-  -VM $vmApacheConfig `
+  -VM $vmConfig `
   -Id $nic.Id
 ```
 
@@ -199,34 +259,35 @@ $vmApacheConfig = Add-AzVMNetworkInterface `
 - [ssh-keygen](https://www.ssh.com/academy/ssh/keygen) 사용
 - 옵션 -t rsa : 모든 SSH 클라이언트는 이 알고리즘을 지원
 ```
-PS C:\workspace\AzureBasic\0.ENV> ssh-keygen -t rsa -b 4096
-
+PS C:\workspace\AzureBasic> ssh-keygen -t rsa -b 4096
 Generating public/private rsa key pair.
-Enter file in which to save the key (C:\Users\taeey/.ssh/id_rsa): 
+Enter file in which to save the key (C:\Users\taeey/.ssh/id_rsa):  
+C:\Users\taeey/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
 Enter passphrase (empty for no passphrase): 
 Enter same passphrase again: 
-Your identification has been saved in ./.ssh/id_rsa
-Your public key has been saved in ./.ssh/id_rsa.pub
+Your identification has been saved in C:\Users\taeey/.ssh/id_rsa
+Your public key has been saved in C:\Users\taeey/.ssh/id_rsa.pub
 The key fingerprint is:
-SHA256:gEfKu1joY11R+waG51xWMs2roEHi/qgirTDdcn5j4OU taeey@DESKTOP-QR555PR
+SHA256:0PYGXZPZGojLr8y+oHopS2mlgqR6nFG/c1MARXUmK8w taeey@DESKTOP-QR555PR
 The key's randomart image is:
 +---[RSA 4096]----+
-|      . . oo.    |
-|   ..+.o . +o    |
-|   .+o= = o  .   |
-|   ..o.B.=  .    |
-|  ..o .oS.o.     |
-| o =ooo  ..      |
-|o.B.=*           |
-|+o.=o E          |
-|oo...o .         |
+|       oooo.=+   |
+|      .+...*+..  |
+|      .oE.o  o   |
+|    .  o++  .    |
+| . ...  Soo      |
+|+ .+  .  .o      |
+|+.=o ..+ o       |
+|.+= o.o.*        |
+|..o=.  +oo       |
 +----[SHA256]-----+
-PS C:\workspace\AzureBasic\0.ENV>
+PS C:\workspace\AzureBasic>
 ```
 ```powershell
-$sshPublicKey = cat ./.ssh/id_rsa.pub
+$sshPublicKey = cat ~/.ssh/id_rsa.pub
 Add-AzVMSshPublicKey `
-  -VM $vmApacheConfig `
+  -VM $vmConfig `
   -KeyData $sshPublicKey `
   -Path "/home/azureuser/.ssh/authorized_keys"
 ```
@@ -255,11 +316,10 @@ $vmConfig = Add-AzVMDataDisk `
   -Name $vmDataDisk `
   -DiskSizeinGB $osDataDiskSizeInGB `
   -CreateOption Empty `
-  -StorageAccountType $StorageAccountType `
+  -StorageAccountType $storageAccountType `
   -Caching ReadWrite `
   -Lun 1
 ```
-
 
 ### boot diagnotics
 ```powershell
@@ -288,10 +348,10 @@ New-AzVM -VM $vmConfig `
 
 - VM 백업을 사용하도록 설정
   ```powershell
-  $vm='vm-skcc-comdpt1';
+  $vm='vm-skcc1-comdpt1';
   Enable-AzRecoveryServicesBackupProtection `
-      -ResourceGroupName "rg-skcc-homepage-dev" `
-      -Name "$vm" `
+      -ResourceGroupName $groupName `
+      -Name $vmName `
       -Policy $policy
   ```
 ![rsv-skcc-VMBackup-dev.png](./img/rsv-skcc-VMBackup-dev.png)  
@@ -543,18 +603,164 @@ PS C:\Users\taeey\.ssh>
 ```
 
 ## Azure CLI
+
+> [자습서: Azure CLI를 사용하여 Azure VM의 사용자 지정 이미지 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/tutorial-custom-images)  
+> [Azure CLI를 사용하여 가용성 집합에서 가상 머신 만들기 및 배포](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/tutorial-availability-sets)  
+> [확장 집합 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/tutorial-create-vmss)  
+> [자습서: 고가용성을 위한 VM 부하 분산](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/tutorial-load-balancer)  
+> [자습서: Azure CLI를 사용하여 Linux 가상 머신을 위한 Azure 가상 네트워크 만들기 및 관리](https://docs.microsoft.com/ko-kr/azure/virtual-machines/linux/tutorial-virtual-network)  
+
 ```bash
-groupName="rg-skcc-homepage-dev"
+#!/bin/bash
 
-az vm create \
-  --resource-group myResourceGroup \
-  --name myVM \
-  --image UbuntuLTS \
-  --admin-username azureuser \
-  --generate-ssh-keys
-az vm open-port --port 80 \
+### 환경 설정
+groupName="rg-skcc1-homepage-dev"
+locationName="koreacentral"
+zone=1
+
+vnetName="vnet-skcc1-dev"
+vnetAddressPrefix='10.0.0.0/16'
+
+subnetFrontendName='snet-skcc1-dev-frontend'
+subnetFronendAddressPrefix='10.0.0.0/28'
+subnetBackendName='snet-skcc1-dev-backend'
+subnetAddressPrefix='10.0.1.0/28'
+
+storageAccountName='skcc1devhomepagedev'
+storageAccountSkuName='Standard_LRS'
+
+nsgName='nsg-skcc1-homepage' 
+
+pipName='pip-skcc1-comdap1'
+nicName='nic-skcc1-comdap1'
+
+vmApacheName="vm-skcc1-comdpt1"
+vmTomcatName="vm-skcc1-comdap1"
+vmName=$vmTomcatName
+vmSize="Standard_B2s"
+
+vmOSDisk="${vmName}-OSDisk01"
+osDiskType="StandardSSD_LRS"
+osDiskSizeInGB=64
+
+vmDataDisk="${vmName}-DataDisk01"
+dataDiskSizeInGB=64
+dataDiskSku='StandardSSD_LRS'
+# $storageAccountName = "skcc1devhomepagedev"  
+
+azName="az-skcc1-homepage-tomcat"
+vmssName="vmss-skcc1-homepage-tomcat"
+
+apacheOpenPorts='22,10080'
+tomcatOpenPorts='22,18080,8009'
+
+tags='owner=SeoTaeYeol environment=dev serviceTitle=homepage personalInformation=no'
+
+## NIC 생성
+az network nic create \
   --resource-group $groupName \
-  --name myVM
-```
+  --name $nicName \
+  --vnet-name $vnetName \
+  --subnet $subnetBackendName \
+  --network-security-group $nsgName \
+  --tags $tags
 
+az network nic list -o table -g $groupName -o table
+
+## 가용성 집합 민들기
+## 장애 도메인 : 서버 + 네트워크 + 스토리지 리소스의 격리된 컬렉션
+##              2개의 장애 도메인으로 분산
+## 업데이트 도메인 : Azure 소프트웨어 업데이트를 수행할 때 VM 리소스가 격리, 동시에 모든 소프트웨어가 업데이트되지 않도록 함
+##                 2개의 업데이트 도메인으로 분산
+az vm availability-set create \
+  --resource-group $groupName \
+  --name $azName \
+  --platform-fault-domain-count 2 \
+  --platform-update-domain-count 2 \
+  --tags $tags
+
+az vm availability-set list \
+  --resource-group $groupName \
+  -o table
+
+## 가용성 집합에 포함된 VM 만들기
+## NIC 를 명시할 경우, NSG, public IP, ASGs, VNet or subnet 를 설정하지 않음
+# image : "Publisher:Offer:Sku:Version"
+# https://docs.microsoft.com/azure/virtual-machines/linux/cli-ps-findimage
+# az vm image list --output table
+# - PublisherName "Canonical" `
+# - Offer "UbuntuServer" `
+# - Skus "18.04-LTS" ` # 22.04-lTS, 20.04-LTS, 18.04-LTS
+# - Version "latest"
+# The password length must be between 12 and 72. Password must have the 3 of the following: 1 lower case character, 1 upper case character, 1 number and 1 special character.
+az vm create \
+  --resource-group $groupName \
+  --name $vmName \
+  --availability-set $azName \
+  --image "Canonical:UbuntuServer:18.04-LTS:latest" \
+  --size $vmSize \
+  --authentication-type 'Password' \
+  --admin-username azureuser \
+  --admin-password 'dlatl!00Imsi' \
+  --os-disk-name $vmOSDisk \
+  --os-disk-size-gb $osDiskSizeInGB \
+  --nics $nicName \
+  --public-ip-address "" \
+  --public-ip-sku Standard \
+  --tags $tags
+
+## Data Disk 붙이기
+az vm disk attach \
+    --resource-group $groupName \
+    --vm-name $vmName \
+    --name $vmDataDisk \
+    --size-gb $dataDiskSizeInGB \
+    --sku $dataDiskSku \
+    --new
+```
+![vm-skcc1-comdap1.png](./img/vm-skcc1-comdap1.png)  
+### az vm open-port 명령은 vm 의 기본 NSG 에 rule 을 생성
+- NSG 를 별도로 만들 경우 사용하지 않아도 됨
+```bash
+## 포트 오픈
+## open-port-22
+az vm open-port \
+  --port 22 \
+  --resource-group $groupName \
+  --name $vmName
+
+# Tomcat 포트
+az vm open-port \
+  --port 18080 \
+  --resource-group $groupName \
+  --name $vmName \
+  --priority 1010
+
+## AJP/1.3 Connector on port 8009
+az vm open-port \
+  --port 8009 \
+  --resource-group $groupName \
+  --name $vmName \
+  --priority 1011
+```
+![nsg-skcc1-homepage.png](./img/nsg-skcc1-homepage.png)
+
+```bash
+ca07456@Azure:~$ az vm image list --output table
+You are viewing an offline list of images, use --all to retrieve an up-to-date list
+Offer                         Publisher               Sku                 Urn                                                             UrnAlias             Version
+----------------------------  ----------------------  ------------------  --------------------------------------------------------------  -------------------  ---------
+CentOS                        OpenLogic               7.5                 OpenLogic:CentOS:7.5:latest                                     CentOS               latest
+debian-10                     Debian                  10                  Debian:debian-10:10:latest                                      Debian               latest
+flatcar-container-linux-free  kinvolk                 stable              kinvolk:flatcar-container-linux-free:stable:latest              Flatcar              latest
+openSUSE-Leap                 SUSE                    42.3                SUSE:openSUSE-Leap:42.3:latest                                  openSUSE-Leap        latest
+RHEL                          RedHat                  7-LVM               RedHat:RHEL:7-LVM:latest                                        RHEL                 latest
+SLES                          SUSE                    15                  SUSE:SLES:15:latest                                             SLES                 latest
+UbuntuServer                  Canonical               18.04-LTS           Canonical:UbuntuServer:18.04-LTS:latest                         UbuntuLTS            latest
+WindowsServer                 MicrosoftWindowsServer  2019-Datacenter     MicrosoftWindowsServer:WindowsServer:2019-Datacenter:latest     Win2019Datacenter    latest
+WindowsServer                 MicrosoftWindowsServer  2016-Datacenter     MicrosoftWindowsServer:WindowsServer:2016-Datacenter:latest     Win2016Datacenter    latest
+WindowsServer                 MicrosoftWindowsServer  2012-R2-Datacenter  MicrosoftWindowsServer:WindowsServer:2012-R2-Datacenter:latest  Win2012R2Datacenter  latest
+WindowsServer                 MicrosoftWindowsServer  2012-Datacenter     MicrosoftWindowsServer:WindowsServer:2012-Datacenter:latest     Win2012Datacenter    latest
+WindowsServer                 MicrosoftWindowsServer  2008-R2-SP1         MicrosoftWindowsServer:WindowsServer:2008-R2-SP1:latest         Win2008R2SP1         latest
+```
 

@@ -54,6 +54,19 @@ az network nsg rule create \
   --destination-port-ranges 18080 \
   --access "Allow"
 
+az network nsg rule create \
+  --name "nsg-rule-mysql"  \
+  --nsg-name $nsgName \
+  --resource-group $groupName \
+  --protocol "Tcp" \
+  --direction "Inbound" \
+  --priority 1003 \
+  --source-address-prefixes '*' \
+  --source-port-ranges '*' \
+  --destination-address-prefixes '*' \
+  --destination-port-ranges 3306 \
+  --access "Allow"
+
 ## NSG 목록 보기
 az network nsg list -o table -g $groupName 
 

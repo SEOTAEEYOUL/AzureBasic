@@ -3,7 +3,7 @@
 groupName="rg-skcc1-homepage-dev"
 locationName="koreacentral"
 
-storageAccountName='skccdevhomepagedev01'
+storageAccountName='skcc1devhomepagedev01'
 storageAccountSkuName='Standard_LRS'
 
 tags='owner=SeoTaeYeol environment=dev serviceTitle=homepage personalInformation=no'
@@ -26,3 +26,7 @@ az storage account create \
 # az storage account delete \
 #   --name $storageAccountName \
 #   --resource-group $groupName
+
+az storage account list \
+  --resource-group $groupName \
+  -o table

@@ -57,7 +57,7 @@ Get-AzProviderFeature -ProviderNamespace Microsoft.Network -FeatureName AllowGlo
 $groupName='rg-skcc1-homepage-dev'
 $locationName='koreacentral'
 
-$storageAccountName = 'skccdevhomepagedev01'
+$storageAccountName = 'skcc1devhomepagedev01'
 $storageAccountSkuName ='Standard_LRS'
 
 $tags = @{

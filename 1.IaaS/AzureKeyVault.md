@@ -44,7 +44,7 @@ Get-AzKeyVault `
   -ResourceGroupName $resoruceGroupName
 ```
 
-### 이증서 생성 및 Key Value 에 저장  
+### 인증서 생성 및 Key Value 에 저장  
 ```powershell
 $policy = New-AzKeyVaultCertificatePolicy `
     -SubjectName "CN=$domainName" `
@@ -63,4 +63,109 @@ Add-AzKeyVaultCertificate `
 Remove-AzKeyVault `
   -Name $keyvaultName `
   -ResourceGroupName $resoruceGroupName
+```
+
+## Azure CLI
+
+### Azure Key Vault 만들기
+```bash
+locationName="koreacentral"
+groupName="rg-skcc-homepage-dev"
+keyvaultName="skcc-kv-sslcert-homepage" 
+keyvaultSku="Standard"
+domainName="www.springnode.net"
+
+$certName="sslcert-springnode-net"
+
+az keyvault create \
+  --resource-group $groupName \
+  --name $keyvaultName \
+  --enabled-for-deployment
+```
+
+### 인증성 생성 및 Key Vault 에 저장
+```bash
+az keyvault certificate create \
+    --vault-name $keyvaultName \
+    --name $certName \
+    --policy "$(az keyvault certificate get-default-policy --output json)"
+```
+
+### VM에 사용할 인증서 준비
+```bash
+secret=$(az keyvault secret list-versions \
+          --vault-name $keyvaultName \
+          --name $certName \
+          --query "[?attributes.enabled].id" --output tsv)
+vm_secret=$(az vm secret format --secret "$secret" --output json)
+```
+
+### 보안 VM 만들기
+#### nginx cloud-init 구성 만들기
+- cloud-init-secured.txt
+```yaml
+#cloud-config
+package_upgrade: true
+packages:
+  - nginx
+  - nodejs
+  - npm
+write_files:
+  - owner: www-data:www-data
+    path: /etc/nginx/sites-available/default
+    content: |
+      server {
+        listen 80;
+        listen 443 ssl;
+        ssl_certificate /etc/nginx/ssl/mycert.cert;
+        ssl_certificate_key /etc/nginx/ssl/mycert.prv;
+        location / {
+          proxy_pass http://localhost:3000;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection keep-alive;
+          proxy_set_header Host $host;
+          proxy_cache_bypass $http_upgrade;
+        }
+      }
+  - owner: azureuser:azureuser
+    path: /home/azureuser/myapp/index.js
+    content: |
+      var express = require('express')
+      var app = express()
+      var os = require('os');
+      app.get('/', function (req, res) {
+        res.send('Hello World from host ' + os.hostname() + '!')
+      })
+      app.listen(3000, function () {
+        console.log('Hello world app listening on port 3000!')
+      })
+runcmd:
+  - secretsname=$(find /var/lib/waagent/ -name "*.prv" | cut -c -57)
+  - mkdir /etc/nginx/ssl
+  - cp $secretsname.crt /etc/nginx/ssl/mycert.cert
+  - cp $secretsname.prv /etc/nginx/ssl/mycert.prv
+  - service nginx restart
+  - cd "/home/azureuser/myapp"
+  - npm init
+  - npm install express -y
+  - nodejs index.js
+```
+```bash
+az vm create \
+  --resource-group $groupName \
+  --name $vmName \
+  --image UbuntuLTS \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --custom-data cloud-init-secured.txt \
+  --secrets "$vm_secret"
+```
+
+### 포트 열기
+```bash
+az vm open-port \
+  --resource-group $groupName \
+  --name $vmName \
+  --port 443
 ```

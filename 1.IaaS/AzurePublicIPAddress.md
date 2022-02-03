@@ -10,6 +10,10 @@
   - Azure Firewall
   - Bastion Host
 
+
+### 홈 > "공용 IP 주소" > "+ 만들기"
+![pip-skcc-comdpt1-portal.png](./img/pip-skcc-comdpt1-portal.png)
+
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
   <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
@@ -24,10 +28,10 @@
 ```powershell
 
 ## 변수 선언
-$resourceGroup = "rg-skcc-ag"
-$location = "koreacentral"
+$groupName = "rg-skcc1-network"
+$locationName = "koreacentral"
 
-$agVnetName = "vnet-skcc-ag"
+$agVnetName = "vnet-skcc1-network"
 $agVnetPrefix = "10.21.0.0/16"
 
 $agPulicIPName = "pip-ag"
@@ -43,25 +47,33 @@ $ipTag = New-AzPublicIpTag @tag
 
 ## Create IP. ##
 New-AzPublicIpAddress `
-  -ResourceGroupName $resourceGroup `
-  -Location $location `
+  -ResourceGroupName $groupName `
+  -Location $locationName `
   -Name $agPulicIPName `
   -AllocationMethod Static `
   -Sku Standard
 
-$agPulicIPName = "pip-ag"
+$pipName = "pip-ag"
 $agDomainNameLabel = "skcchomepage"
 $customFqdn = "skcchomepage.koreacentral.cloudapp.azure.com"
 
+$tags = @{
+  owner='SeoTaeYeol'
+  environment='dev'
+  serviceTitle='homepage'
+  personalInformation='no'
+}
+
 $ip = @{
-    Name = $agPulicIPName
-    ResourceGroupName = $resourceGroup
-    Location = $location
+    Name = $pipName
+    ResourceGroupName = $groupName
+    Location = $locationName
     Sku = 'Standard'
     AllocationMethod = 'Static'
     IpAddressVersion = 'IPv4'
     IpTag = $ipTag
     Zone = 1,2,3   
+    Tag = $tags
 }
 New-AzPublicIpAddress @ip
 
@@ -72,6 +84,34 @@ $publicIp = Get-AzPublicIpAddress `
 $publicIp.DnsSettings = @{"DomainNameLabel" = $agDomainNameLabel}
 Set-AzPublicIpAddress -PublicIpAddress $publicIp
 $publicIp = Get-AzPublicIpAddress `
-  -Name $agPulicIPName `
-  -ResourceGroupName $resourceGroup
+  -Name $pipName `
+  -ResourceGroupName $groupName
+```
+
+![pip-skcc-comdpt1.png](./img/pip-skcc-comdpt1.png)
+
+## Azure CLI
+```bash
+#!/bin/bash
+
+groupName="rg-skcc1-homepage-dev"
+pipName='pip-skcc1-comdpt1'
+
+tags='owner=SeoTaeYeol environment=dev serviceTitle=homepage personalInformation=no'
+
+az network public-ip create \
+  --resource-group $groupName \
+  --name $pipName \
+  --version IPv4 \
+  --sku Standard \
+  --zone 1 2 3 \
+  --tags
+
+az network public-ip delete \
+  --resource-group $groupName \
+  --name $pipName
+
+az network public-ip list \
+  --resource-group $groupName \
+  -o table
 ```

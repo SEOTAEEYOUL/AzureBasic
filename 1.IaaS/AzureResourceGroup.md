@@ -46,6 +46,15 @@ Write-Host "리소스 그룹 잠금 확인"
 Get-AzResourceLock `
   -ResourceGroupName $groupName
 ```
+```powershell
+$groupName='rg-skcc-network-dev'
+$rg = @{
+    Name = $groupName
+    Location = $locationName
+    Tag=$tags
+}
+New-AzResourceGroup @rg
+```
 
 ## CLI
 ```bash
@@ -68,4 +77,9 @@ az group lock create \
 az group lock delete \
   --name $lockName \
   -g $groupName
+
+groupName="rg-skcc1-network-dev"
+az group create --name "$groupName" \
+  --location "$locationName" \
+  --tags $tags
 ```
