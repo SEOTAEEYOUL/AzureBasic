@@ -6,7 +6,10 @@
 > [자습서: Azure App Service 웹앱에 Azure CDN 추가](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-add-to-web-app)  
 > (코드 샘플 찾아보기)[https://docs.microsoft.com/ko-kr/samples/browse/?products=azure]
 
-![AzurePortal-MenuBar.png](./img/AzurePortal-MenuBar.png)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
+
 ## 기본 원칙
 - 구독 당 하나의 VNet 생성
 
