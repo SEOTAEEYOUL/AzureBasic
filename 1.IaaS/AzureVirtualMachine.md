@@ -24,7 +24,7 @@
   - 가상 머신 이름 : vm-skcc1-comdap1
   - 지역 : (Asia Pacific) Korea Central
   - 가용성 옵션 : 가용성 집합
-  - 가용성 집합 : az-skcc1-homepage-tomcat
+  - 가용성 집합 : avset-skcc1-homepage
   - 보안 유형 : 표준
   - 이미지 : Ubuntu Server 20.04 LTS - Gen2
   - 크기 : Standard_B1|s - 1 vcpu, 0.5 GiB 메모리 (US$4.75/월)  
@@ -104,6 +104,9 @@ $osDataDiskSizeInGB = 64
 $storageAccountType = 'StandardSSD_LRS'
 # $storageAccountName = "skcc1devhomepagedev"
 
+$avsetName = "avset-skcc1-homepage"
+$vmssName = "vmss-skcc1-homepage-apache"
+
 $apacheOpenPorts = '22,10080'
 $tomcatOpenPorts = '22,18080,8009'
 
@@ -175,11 +178,26 @@ $securePassword = ConvertTo-SecureString 'dlatl!00' -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential ("azureuser", $securePassword)
 ```
 
+### 가용 영역 만들기
+```powershell
+$avset = New-AzAvailabilitySet `
+   -Location $locationName `
+   -Name $avsetName `
+   -ResourceGroupName $groupName `
+   -Sku aligned `
+   -PlatformFaultDomainCount 2 `
+   -PlatformUpdateDomainCount 2
+$avset = Get-AzAvailabilitySet `
+  -ResourceGroupName $groupName `
+  -Name $availablitySetName
+```
+
 ### VM 크기 설정
 ```powershell
 $vmConfig = New-AzVMConfig `
   -VMName $vmName `
-  -VMSize $vmSize
+  -VMSize $vmSize `
+  -AvailabilitySetID $avset.Id
 ```
 
 ### VM 크기 예시
@@ -648,7 +666,7 @@ dataDiskSizeInGB=64
 dataDiskSku='StandardSSD_LRS'
 # $storageAccountName = "skcc1devhomepagedev"  
 
-azName="az-skcc1-homepage-tomcat"
+avsName="az-skcc1-homepage"
 vmssName="vmss-skcc1-homepage-tomcat"
 
 apacheOpenPorts='22,10080'
@@ -674,7 +692,7 @@ az network nic list -o table -g $groupName -o table
 ##                 2개의 업데이트 도메인으로 분산
 az vm availability-set create \
   --resource-group $groupName \
-  --name $azName \
+  --name $avsName \
   --platform-fault-domain-count 2 \
   --platform-update-domain-count 2 \
   --tags $tags

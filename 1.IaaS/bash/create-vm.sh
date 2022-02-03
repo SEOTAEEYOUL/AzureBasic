@@ -35,7 +35,7 @@ dataDiskSizeInGB=64
 dataDiskSku='StandardSSD_LRS'
 # $storageAccountName = "skcc1devhomepagedev"  
 
-azName="az-skcc1-homepage-tomcat"
+avsName="avset-skcc1-homepage"
 vmssName="vmss-skcc1-homepage-tomcat"
 
 apacheOpenPorts='22,10080'
@@ -61,7 +61,7 @@ az network nic list -o table -g $groupName -o table
 ##                 2개의 업데이트 도메인으로 분산
 az vm availability-set create \
   --resource-group $groupName \
-  --name $azName \
+  --name $avsName \
   --platform-fault-domain-count 2 \
   --platform-update-domain-count 2 \
   --tags $tags
@@ -83,7 +83,7 @@ az vm availability-set list \
 az vm create \
   --resource-group $groupName \
   --name $vmName \
-  --availability-set $azName \
+  --availability-set $avsName \
   --image "Canonical:UbuntuServer:18.04-LTS:latest" \
   --size $vmSize \
   --authentication-type 'Password' \
