@@ -4,7 +4,7 @@
 > [스토리지 계정 만들기](https://docs.microsoft.com/ko-kr/azure/storage/common/storage-account-create?tabs=azure-powershell)  
 > [빠른 시작: Azure CDN 프로필 및 엔드포인트 만들기](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-create-new-endpoint)  
 > [자습서: Azure App Service 웹앱에 Azure CDN 추가](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-add-to-web-app)  
-> (코드 샘플 찾아보기)[https://docs.microsoft.com/ko-kr/samples/browse/?products=azure]
+> [코드 샘플 찾아보기](https://docs.microsoft.com/ko-kr/samples/browse/?products=azure)  
 
 <a href="https://shell.azure.com">
   <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
