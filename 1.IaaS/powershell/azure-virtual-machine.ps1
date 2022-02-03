@@ -149,4 +149,4 @@ Write-Host "- VM ($groupName:$vmName:$policy) 백업을 사용하도록 설정"
 Enable-AzRecoveryServicesBackupProtection `
   -ResourceGroupName $groupName `
   -Name $vmName `
-  -Policy $policy$v
+  -Policy $policy
