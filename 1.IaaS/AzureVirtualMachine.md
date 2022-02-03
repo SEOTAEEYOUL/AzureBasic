@@ -119,6 +119,7 @@ $tags = @{
 ```
 
 
+### [Public IP 만들기](./AzurePublicIPAddress.md)
 ### public-ip 가져오기
 ```powershell
 # $vnet = Get-AzVirtualNetwork |?{$_.Name -eq $vnetName}
@@ -139,7 +140,7 @@ $pip = Get-AzPublicIpAddress `
 ![pip-skcc-comdpt1.png](./img/pip-skcc-comdpt1.png)
 
 
-### [nic 만들기](./AzureNIC.md)
+### [NIC 만들기](./AzureNIC.md)
 [가상 머신에 네트워크 인터페이스 추가 또는 제거](https://docs.microsoft.com/ko-kr/azure/virtual-network/virtual-network-network-interface-vm)
 | 도구 | 명령 |  
 |:---|:---|
@@ -361,21 +362,20 @@ New-AzVM -VM $vmConfig `
 ![rg-skcc-homepage-dev.png](./img/rg-skcc-homepage-dev.png)  
 ![vm-skcc-comdpt1.png](./img/vm-skcc-comdpt1.png)  
 
-### Backup 적용
-- 기본 정책을 설정
-  ```powershell
-  $policy = Get-AzRecoveryServicesBackupProtectionPolicy `
-    -Name "DefaultPolicy"
-  ```
+### Backup 적용(RecoverySerivces)
+```powershell
+## 기본 정책을 설정
+$policy = Get-AzRecoveryServicesBackupProtectionPolicy `
+  -Name "DefaultPolicy"
 
-- VM 백업을 사용하도록 설정
-  ```powershell
-  $vm='vm-skcc1-comdpt1';
-  Enable-AzRecoveryServicesBackupProtection `
-      -ResourceGroupName $groupName `
-      -Name $vmName `
-      -Policy $policy
-  ```
+## VM 백업을 사용하도록 설정
+$vm='vm-skcc1-comdpt1';
+Enable-AzRecoveryServicesBackupProtection `
+  -ResourceGroupName $groupName `
+  -Name $vmName `
+  -Policy $policy
+```
+
 ![rsv-skcc-VMBackup-dev.png](./img/rsv-skcc-VMBackup-dev.png)  
 ![rsv-skcc-VMBackup-dev-backup-items.png](./img/rsv-skcc-VMBackup-dev-backup-items.png)  
 
@@ -767,6 +767,26 @@ az vm open-port \
 ```
 ![nsg-skcc1-homepage.png](./img/nsg-skcc1-homepage.png)
 
+### Azure VM 에 백업 사용
+```bash
+# VM에 대한 백업 보호 사용을 설정
+az backup protection enable-for-vm \
+    --resource-group $groupName \
+    --vault-name $rsvName \
+    --vm $vmName \
+    --policy-name DefaultPolicy
+```
+### 바로 백업
+```bash
+az backup protection backup-now \
+  --resource-group $groupName \
+  --vault-name $rsvName \
+  --container-name $vmName \
+  --item-name $vmName \
+  --backup-management-type AzureIaaSVM \
+  --retain-until 15-02-2022
+```
+
 ```bash
 ca07456@Azure:~$ az vm image list --output table
 You are viewing an offline list of images, use --all to retrieve an up-to-date list
@@ -787,8 +807,10 @@ WindowsServer                 MicrosoftWindowsServer  2008-R2-SP1         Micros
 ```
 
 ## VM 중지
-### 홈 > 가상 머신 > vm-skcc1-comdap1 > 중지
+### Portal
+#### 홈 > 가상 머신 > vm-skcc1-comdap1 > 중지
 
+### PowerShell
 ```powershell
 $groupName='rg-skcc1-homepage-dev'
 $vmName='vm-skcc1-comdap1'
@@ -797,6 +819,8 @@ Stop-AzVM `
   -ResourceGroupName $groupName `
   -Name $vmName
 ```
+
+### Azure CLI
 ```bash
 groupName='rg-skcc1-homepage-dev'
 vmName='vm-skcc1-comdap1'
