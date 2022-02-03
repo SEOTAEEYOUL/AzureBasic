@@ -23,7 +23,11 @@
 * [CLI를 사용하여 Azure Database for MySQL의 프라이빗 링크 만들기 및 관리](https://docs.microsoft.com/ko-kr/azure/mysql/howto-configure-privatelink-cli)
 
 
-## Sample
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
+
 ```powershell
 $location = "koreacentral"
 $vnetName = "vnet-skcc-dev"
@@ -82,8 +86,8 @@ New-AzPrivateEndpoint `
   -Tag $tags
 ```
 
-## 실행결과
-### Basic 서버에서 Private Endpoint 가 안됨
+### 실행결과
+#### Basic 서버에서 Private Endpoint 가 안됨
 ```powershell
 PS D:\workspace\AzureBasic> New-AzPrivateEndpoint `
 >>   -Name $privateEndPointName `
@@ -99,7 +103,7 @@ ErrorCode: UnsupportedServerSku
 ErrorMessage: Call to Microsoft.DBforMySQL/servers failed. Error message: Private endpoint is not supported for Basic Servers  
 ```
 
-### Private Endpoint 생성 로그
+#### Private Endpoint 생성 로그
 ```powershell
 PS D:\workspace\AzureBasic> Write-Host "## Create private endpoint"
 
@@ -166,7 +170,7 @@ ExtendedLocation                    : null
 
 ```
 
-### Private Endpoint 삭제 로그
+#### Private Endpoint 삭제 로그
 ```
 PS D:\workspace\AzureBasic> Remove-AzPrivateEndpoint -Name $privateEndPointName -ResourceGroup $resourceGroupName
 

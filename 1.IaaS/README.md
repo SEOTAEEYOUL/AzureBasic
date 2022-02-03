@@ -46,12 +46,14 @@
 | 항목 | 자원명 | 설명 | 사이징 | end point | Resource Group | Location |  
 |:---|:---|:---|:---|:---|:---|:---| 
 | Resource Group | rg-skcc-network-dev | Network 자원 그룹 | | | | koreacentral | 
-| Resource Group | rg-skcc-homepage-dev | Home Page 자원 그룹 | | | | koreacentral | 
-| Vnet | vnet-skcc-dev | 홈페이지 VNet | 10.0.0.0/16 | | rg-skcc-network-dev | koreacentral |  
-| Vnet | vnet-skcc-dev | 공통영역 VNet | 10.21.0.0/16 | | rg-skcc-network-dev | koreacentral |  
+| VNet | vnet-network-dev | 공통영역 VNet | 10.21.0.0/16 | | rg-skcc-network-dev | koreacentral |  
 | subnet | snet-skcc-network-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| 10.21.0.0/24 | | rg-skcc-network-dev | koreacentral |  
-| subnet | snet-skcc-network-backend  | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | 10.21.1.0/28 |  | rg-skcc-network-dev | koreacentral |  
-| subnet | snet-skcc-dev-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| 10.0.0.0/24 | | rg-skcc-network-dev | koreacentral |  
+| subnet | snet-skcc-network-backend  | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | 10.21.1.0/24 |  | | Resource Group | rg-skcc-homepage-dev | Home Page 자원 그룹 | | | | koreacentral | 
+
+| 항목 | 자원명 | 설명 | 사이징 | end point | Resource Group | Location |  
+|:---|:---|:---|:---|:---|:---|:---| 
+| VNet | vnet-skcc-dev | 홈페이지 VNet | 10.0.0.0/16 | |rg-skcc-network-dev | koreacentral |  
+| subnet | snet-skcc-dev-frontend | 외부에서 접근 시 사용되는 자원 배포 영역| 10.0.0.0/28 | | rg-skcc-network-dev | koreacentral |  
 | subnet | snet-skcc-dev-backend  | 내부에서 API 형태로 접근시 사용되는 자원 배포 영역 | 10.0.1.0/28 | | rg-skcc-homepage-dev | koreacentral |  
 | Storage Account | skccprdhomepagefiles1 | | | PE-skccprdhompagefiles1 | rg-skcc-homepage-dev | koreacentral |
 | VM | SKCC-COMDPT1 | Web 서버 | Standard D8s v3 | pip-skcc-comdpt1 | rg-skcc-homepage-dev | koreacentral |  

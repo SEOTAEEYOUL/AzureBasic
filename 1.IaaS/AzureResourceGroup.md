@@ -13,7 +13,11 @@
 ![ResourceGroup-검토+만들기.png](./img/ResourceGroup-검토+만들기.png  )  
 ![ResourceGroup-잠금.png](./img/ResourceGroup-잠금.png)  
 
-## PowerShell
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>  
+
 [New-AzResourceGroup](https://docs.microsoft.com/ko-kr/powershell/module/az.resources/new-azresourcegroup?view=azps-7.1.0)  
 ```powershell
 $groupName='rg-skcc-homepage-dev'

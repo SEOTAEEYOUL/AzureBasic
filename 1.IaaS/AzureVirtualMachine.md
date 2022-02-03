@@ -12,7 +12,11 @@
 
 
 
-## PowerShell
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>  
+
 ### 환경 설정
 ```powershell
 $groupName = "rg-skcc-homepage-dev"
@@ -538,7 +542,7 @@ Connection to 11.111.111.111 closed.
 PS C:\Users\taeey\.ssh>
 ```
 
-## CLI
+## Azure CLI
 ```bash
 groupName="rg-skcc-homepage-dev"
 

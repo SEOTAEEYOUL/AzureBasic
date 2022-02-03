@@ -17,44 +17,86 @@
 | 가상 네트워크 피어링 | 동일한 Azure 지역 내에서 가상 네트워크를 연결 |
 | 글로벌 가상 네트워크 피어링 | Azure 지역에서 가상 네트워크를 연결 |
 
-### 1. 상 네트워크의 ID를 가져오고 ID를 변수에 저장
+
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
+
+### Peering
+myVirtualNetwork2에서 myVirtualNetwork1으로 피어링을 만들 때까지 해당 피어링은 Initiated 상태를 유지
+
 ```powershell
+Add-AzVirtualNetworkPeering `
+  -Name myVirtualNetwork1-myVirtualNetwork2 `
+  -VirtualNetwork $virtualNetwork1 `
+  -RemoteVirtualNetworkId $virtualNetwork2.Id
+# PeeringState : Initiated
+
+Add-AzVirtualNetworkPeering `
+  -Name myVirtualNetwork2-myVirtualNetwork1 `
+  -VirtualNetwork $virtualNetwork2 `
+  -RemoteVirtualNetworkId $virtualNetwork1.Id
+```
+
+### 상태 확인
+- PeeringState : Connected
+```powershell
+Get-AzVirtualNetworkPeering `
+  -ResourceGroupName myResourceGroup `
+  -VirtualNetworkName myVirtualNetwork1 `
+  | Select PeeringState
+```
+
+
+## Azure CLI
+
+### 0. 변수 설정
+```bash
+groupAGName="rg-skcc-ag"
+vnetAGName="vnet-skcc-ag"
+groupHomePageName="rg-skcc-homepage-dev"
+vnetHomePageName="vnet-skcc-dev"
+```
+
+### 1. 네트워크의 ID를 가져오고 ID를 변수에 저장
+```bash
 # Get the id for myVirtualNetwork1.
-$vNet1Id=$(az network vnet show `
-  --resource-group rg-skcc-ag `
-  --name vnet-skcc-ag `
+$vNet1Id=$(az network vnet show \
+  --resource-group rg-skcc-ag \
+  --name vnet-skcc-ag \
   --query id --out tsv)
 
 # Get the id for myVirtualNetwork2.
-$vNet2Id=$(az network vnet show `
+$vNet2Id=$(az network vnet show \
   --resource-group rg-skcc-homepage-dev `
-  --name vnet-skcc-dev `
-  --query id `
+  --name vnet-skcc-dev \
+  --query id \
   --out tsv)
 ```
 
 ### 2. "vnet-skcc-ag" 에서 "vnet-skcc-dev" 로 피어링을 만듬
-```powershell
-az network vnet peering create `
-  --name peering-vnet-skcc-ag-vnet-skcc-dev `
-  --resource-group rg-skcc-ag `
-  --vnet-name vnet-skcc-ag `
-  --remote-vnet $vNet2Id `
+```bash
+az network vnet peering create \
+  --name peering-vnet-skcc-ag-vnet-skcc-dev \
+  --resource-group rg-skcc-ag \
+  --vnet-name vnet-skcc-ag \
+  --remote-vnet $vNet2Id \
   --allow-vnet-access
-az network vnet peering create `
-  --name peering-vnet-skcc-dev-vnet-skcc-ag `
-  --resource-group rg-skcc-homepage-dev `
-  --vnet-name vnet-skcc-dev `
-  --remote-vnet $vNet1Id `
+az network vnet peering create \
+  --name peering-vnet-skcc-dev-vnet-skcc-ag \
+  --resource-group rg-skcc-homepage-dev \
+  --vnet-name vnet-skcc-dev \
+  --remote-vnet $vNet1Id \
   --allow-vnet-access
 ```
 
 ### 3. peeringState 가 Connected 로 변경되었는지 확인
-```powershell
-az network vnet peering show `
-  --name peering-vnet-skcc-ag-vnet-skcc-dev `
-  --resource-group rg-skcc-ag `
-  --vnet-name vnet-skcc-ag `
+```bash
+az network vnet peering show \
+  --name peering-vnet-skcc-ag-vnet-skcc-dev \
+  --resource-group rg-skcc-ag \
+  --vnet-name vnet-skcc-ag \
   --query peeringState
 ```
 - 두 가상 네트워크의 피어링에 대한 peeringState가 Connected가 될 때까지, 한 가상 네트워크의 리소스는 다른 가상 네트워크의 리소스와 통신할 수 없습니다.
@@ -63,11 +105,14 @@ az network vnet peering show `
 ![peering-vnet-skcc-ag-vnet-skcc-dev.png](./img/peering-vnet-skcc-ag-vnet-skcc-dev.png)
 
 ### 4. 생성 조회
-```powershell
-az network vnet peering list -o table -g rg-skcc-ag --vnet-name vnet-skcc-ag
+```bash
+az network vnet peering list \
+  -o table \
+  -g rg-skcc-ag \
+  --vnet-name vnet-skcc-ag
 ```
 
-## 수행 결과
+## 수행 결과(Azure CLI, Windows)
 ```powershell
 PS C:\workspace\AzureBasic\1.IaaS> az network vnet list -o table    
                                                 

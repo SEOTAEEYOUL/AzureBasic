@@ -21,8 +21,12 @@ Connect-AzAccount
 Get-AzSubscription
 ```
 
-## Recovery Services 자격 증명 모음 만들기
-### 자격 증명 모음 생성
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
+
+### Recovery Services 자격 증명 모음 생성
 
 ```powershell
 New-AzRecoveryServicesVault `

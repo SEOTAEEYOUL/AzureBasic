@@ -38,7 +38,12 @@
 ![StorageAccount+만들기.png](./img/StorageAccount+만들기.png)  
 ![StorageAccount-만들기.png](./img/StorageAccount-만들기.png)  
 
-## PowerShell
+
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
+
 
 ### 기능등록
 ```

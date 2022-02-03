@@ -2,7 +2,12 @@
 Microsoft Azure 인프라를 사용하여 이름 확인을 제공하는 DNS 도메인에 대한 호스팅 서비스
 
 
-## DNS 영역 만들기
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
+
+### DNS 영역 만들기
 ```powershell
 New-AzDnsZone -Name nodespringboot.org `
   -ResourceGroupName rg-skcc-homepage-dev
@@ -13,7 +18,7 @@ az network dns zone create `
   -n nodespringboot.org
 ```
 
-## DNS 레코드 만들기
+### DNS 레코드 만들기
 - 레코드 : www
 - domain : nodespringboot.org
 - TTL : 300
@@ -94,7 +99,7 @@ www     rg-skcc-homepage-dev  3600   CNAME
 ![www.nodespringboot-org.png](./img/www.nodespringboot-org.png)
 
 
-## 레코드 보기
+### 레코드 보기
 ```powershell
 Get-AzDnsRecordSet -ZoneName nodespringboot.org `
   -ResourceGroupName rg-skcc-homepage-dev `
@@ -139,5 +144,5 @@ www.nodespringboot.org.  www     Succeeded            rg-skcc-homepage-dev  3600
 
 PS C:\workspace\AzureBasic\1.IaaS>
 ```
-## 샘플
+### 샘플
 - [비정상 DNS 레코드 찾기](abnormal-dns-record.ps1)

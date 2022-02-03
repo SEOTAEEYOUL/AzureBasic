@@ -11,7 +11,10 @@
    - 기존 엔드포인트에 사용자 지정 도메인 이름을 추가
 5. Rule 작성
 
-## PowerShell
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
 
 ### cmdlet 목록
 ```powershell

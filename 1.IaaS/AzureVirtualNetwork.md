@@ -31,7 +31,12 @@ Private Network 로 Azure VM(Virtual Machines)과 같은 다양한 형식의 Azu
 - personalInformation='no'
 ![AzVNet-Create.png](./img/AzVNet-Create.png)
 
-## PowerShell
+
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
+
 ```powershell
 
 $groupName = "rg-skcc-homepage-dev"

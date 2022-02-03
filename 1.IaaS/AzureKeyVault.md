@@ -6,7 +6,11 @@
 > [빠른 시작: PowerShell을 사용하여 키 자격 증명 모음 만들기](https://docs.microsoft.com/ko-kr/azure/key-vault/general/quick-create-powershell)  
 > [자습서: Key Vault에 저장된 TLS/SSL 인증서로 Azure에서 Windows 가상 머신의 웹 서버 보호](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/tutorial-secure-web-server)  
 
-## Key Valut 생성
+
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
 
 ### 구성
 - 사용자 지정 도메인 HTTPS : 설정

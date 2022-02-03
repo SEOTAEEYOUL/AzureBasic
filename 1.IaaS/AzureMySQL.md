@@ -30,7 +30,12 @@ Register-AzResourceProvider -ProviderNamespace Microsoft.DBforMySQL
 | MO_Gen5_4 | 메모리 최적화 | 5세대, 4 vCore | US$414.06 | |
 
 
-## PowerShell Sample
+## [PowerShell](https://shell.azure.com)
+<a href="https://shell.azure.com">
+  <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
+</a>
+
+### Sample
 ```powershell
 Write-Host "구독 선택"
 Set-AzContext -SubscriptionId '9ebb0d63-8327-402a-bdd4-e222b01329a1'
@@ -113,7 +118,7 @@ Remove-AzMySqlServer `
   -Name mysql-homepage
 ```
 
-## CLI
+## Azure CLI
 ### 확장 설치
 ```
 az extension add --name db-up

@@ -6,7 +6,7 @@ DNS 을 만들고 "DNS" 영역를 생성하여 줌
 ## 가격 확인하기
 [App Service 가격](https://azure.microsoft.com/ko-kr/pricing/details/app-service/linux/#pricing)
 
-## [App Service 도메인 만들기](https://portal.azure.com/#create/Microsoft.Domain)
+## [Azure Portal 에서 App Service 도메인 만들기](https://portal.azure.com/#create/Microsoft.Domain)
 - Domain 명 : nodespringboot.org 
 ![Microsoft.Domain.png](./img/Microsoft.Domain.png)  
 ![app-service-domain.png](./img/app-service-domain.png)  
