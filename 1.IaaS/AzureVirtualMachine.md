@@ -139,7 +139,7 @@ $pip = Get-AzPublicIpAddress `
 ![pip-skcc-comdpt1.png](./img/pip-skcc-comdpt1.png)
 
 
-### nic 만들기
+### [nic 만들기](./AzureNIC.md)
 [가상 머신에 네트워크 인터페이스 추가 또는 제거](https://docs.microsoft.com/ko-kr/azure/virtual-network/virtual-network-network-interface-vm)
 | 도구 | 명령 |  
 |:---|:---|
@@ -164,6 +164,10 @@ $nic = New-AzNetworkInterface `
   -PublicIpAddressId $pip.Id `
   -NetworkSecurityGroupId $nsg.Id
 #>
+```
+
+#### NIC 정보 가져오기
+```powershell
 $nic = Get-AzNetworkInterface `
   -ResourceGroupName $groupName `
   -Name $nicName
@@ -174,7 +178,7 @@ $nic.name
 
 ### credential object 정의
 ```powershell
-$securePassword = ConvertTo-SecureString 'dlatl!00' -AsPlainText -Force
+$securePassword = ConvertTo-SecureString 'dlatl!00Imsi' -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential ("azureuser", $securePassword)
 ```
 
