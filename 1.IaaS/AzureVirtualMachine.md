@@ -764,3 +764,25 @@ WindowsServer                 MicrosoftWindowsServer  2012-Datacenter     Micros
 WindowsServer                 MicrosoftWindowsServer  2008-R2-SP1         MicrosoftWindowsServer:WindowsServer:2008-R2-SP1:latest         Win2008R2SP1         latest
 ```
 
+## VM 중지
+### 홈 > 가상 머신 > vm-skcc1-comdap1 > 중지
+
+```powershell
+$groupName='rg-skcc1-homepage-dev'
+$vmName='vm-skcc1-comdap1'
+
+Stop-AzVM `
+  -ResourceGroupName $groupName `
+  -Name $vmName
+```
+```bash
+groupName='rg-skcc1-homepage-dev'
+vmName='vm-skcc1-comdap1'
+
+az vm deallocate \
+  --resource-group $groupName \
+  --name $vmName
+```
+
+![vm-skcc1-comdap1-중지화면.png](./img/vm-skcc1-comdap1-중지화면.png)
+
