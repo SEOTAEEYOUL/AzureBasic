@@ -77,24 +77,23 @@
 ## 예시
 | Azure 서비스 혹은 개체 | 패턴 | 예시 |
 |:---|:---|:---|
-| Subscription | SK Square-<환경> | SK Square-LandingZone |  
-| Resource Group | rg-sksq-<서비스 구분>-<환경> | rg-sksq-lz-network-prd | 
-| Virtual Machine	[리눅스/윈도우 공통] | SKSQ-<업무명><환경><서버 용도><숫자> </br> 상세) 고객사명(SKSQ)-업무명(ERP)개발(D)/운영(P)서버용도(DB)번호(#) | SKSQ-WSUSPAP1 |
-| Storage account name (general) | <sksq><환경><서비스 고유 명칭><숫자> | sksqprddbafiles1 |
-| Storage account name (diagnostics) |<sksq><환경>stdiag | sksqlzprdstdiag |  
-| Managed Disk name | <VM 명>-ssd<##> </br> <VM 명>-<디스크용도><##> | SKSQ-WSUSPAP1-ssd01 </br> SKSQ-ERPPDB1-log01 | 
-| Virtual Network (VNet) | vnet-sksq-<환경> | vnet-sksq-lz-prd |
-| Subnet | snet-sksq-<환경>-<Subnet 용도(대역정보)>-<추가 구분 정보> | snet-sksq-prd-10.234.0.32-63-lz-shared-svc |
+| Subscription | SK CNC-<환경> | SK CNC-LandingZone |  
+| Resource Group | rg-skcc-<서비스 구분>-<환경> | rg-skcc-lz-network-prd | 
+| Virtual Machine	[리눅스/윈도우 공통] | SKCC-<업무명><환경><서버 용도><숫자> </br> 상세) 고객사명(SKCC)-업무명(ERP)개발(D)/운영(P)서버용도(DB)번호(#) | SKCC-WSUSPAP1 |
+| Storage account name (general) | <skcc><환경><서비스 고유 명칭><숫자> | skccprddbafiles1 |
+| Storage account name (diagnostics) |<skcc><환경>stdiag | skcclzprdstdiag |  
+| Managed Disk name | <VM 명>-ssd<##> </br> <VM 명>-<디스크용도><##> | SKCC-WSUSPAP1-ssd01 </br> SKCC-ERPPDB1-log01 | 
+| Virtual Network (VNet) | vnet-skcc-<환경> | vnet-skcc-lz-prd |
+| Subnet | snet-skcc-<환경>-<Subnet 용도(대역정보)>-<추가 구분 정보> | snet-skcc-prd-10.234.0.32-63-lz-shared-svc |
 | Route Table	| udr-<환경>-<Route Table 구분> | udr-lz-prd-shared |
 | Network Virtual Gateway | vngw-<VNet 용도 구분>-<환경>-<추가 구분 정보> | vngw-sharednw-prd-expressroute | 
-| Network Interface	<VM명>-nic<##> | SKSQ-WSUSPAP1-nic01 |
-| Network Security Group | snet-sksq-<환경>-<서비스 구분>-nsg | snet-sksq-lz-prd-shared-svc-nsg | 
+| Network Interface	<VM명>-nic<##> | SKCC-WSUSPAP1-nic01 |
 | Network Security Group Rule | <"allow"/"deny">-<인바운드/아웃바운드>-<내부/외부>-<포트 또는 트래픽 타입> | allow-inbound-internal-http | 
-| Public IP Address | <리소스명>-pip | SKSQ-ERPDDB1-pi </br> sksq-lz-prd-azfw-pip |  
+| Public IP Address | <리소스명>-pip | SKCC-ERPDDB1-pi </br> skcc-lz-prd-azfw-pip |  
 | Load Balancer | plb/ilb-<SKU Type>-<서비스 구분>-<LB 용도 구분> | ilb-std-shared-prd1 | 
 | Connection | conn-<VNET 용도 구분>-<환경>-<연결 사이트 구분> | conn-shared-service-prd-ergw |  
 | VNet Peering Connection | vnetpeering-<Source VNET 환경>-<Destination VNET 환경>-<숫자> | vnetpeering-lz-dev-1 </br> vnetpeering-prd-lz-1 |  
 | Load Balanced Rules Config | plb/ilb-<SKU Type>-<서비스 용도 구분>-<LB Rule 구분>-<LB 용도 구분>-rule<#> | ilb-std-erp-internal-ERPPAP-ASCS-prd1-rule1 |  
-| Azure Application Gateway | sksq-<환경>-agw | sksq-lz-prd-appgw | 
-| Recovery Services | sksq-rsv-<서비스 또는 애플리케이션 명>backup-<환경> | sksq-rsv-VMbackup-lz | 
-| Shared Image Gallery | sksq_<환경>_image_gallery | sksq_dev_image_gallery |
+| Azure Application Gateway | skcc-<환경>-agw | skcc-lz-prd-appgw | 
+| Recovery Services | skcc-rsv-<서비스 또는 애플리케이션 명>backup-<환경> | skcc-rsv-VMbackup-lz | 
+| Shared Image Gallery | skcc_<환경>_image_gallery | skcc_dev_image_gallery |
