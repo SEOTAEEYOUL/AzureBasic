@@ -82,7 +82,7 @@ $subnetFronendAddressPrefix = '10.0.0.0/28'
 $subnetBackendName = 'snet-skcc1-dev-backend'
 $subnetAddressPrefix = '10.0.1.0/28'
 
-$storageAccountName = 'skcc1devhomepagedev'
+$storageAccountName = 'skcc1devhomepagedev01'
 $storageAccountSkuName ='Standard_LRS'
 
 $nsgName = 'nsg-skcc1-homepage' 
@@ -655,6 +655,7 @@ nsgName='nsg-skcc1-homepage'
 
 pipName='pip-skcc1-comdap1'
 nicName='nic-skcc1-comdap1'
+privateIP='10.0.1.4'
 
 vmApacheName="vm-skcc1-comdpt1"
 vmTomcatName="vm-skcc1-comdap1"
@@ -687,11 +688,12 @@ az network nic create \
   --vnet-name $vnetName \
   --subnet $subnetBackendName \
   --network-security-group $nsgName \
+  --private-ip-address $privateIP \
   --tags $tags
 
 az network nic list -o table -g $groupName -o table
 
-## 가용성 집합 민들기
+## 가용성 집합 만들기
 ## 장애 도메인 : 서버 + 네트워크 + 스토리지 리소스의 격리된 컬렉션
 ##              2개의 장애 도메인으로 분산
 ## 업데이트 도메인 : Azure 소프트웨어 업데이트를 수행할 때 VM 리소스가 격리, 동시에 모든 소프트웨어가 업데이트되지 않도록 함
@@ -741,6 +743,25 @@ az vm disk attach \
     --size-gb $dataDiskSizeInGB \
     --sku $dataDiskSku \
     --new
+
+## VM 에 대해서 부팅 진단 사용
+## --storage : .스토리지 계정 OR URI
+az vm boot-diagnostics enable \
+  --name $vmName \
+  --resource-group $groupName \  
+  --storage $storageAccountName
+
+## 그룹 내 모든 vm 에 대해서 부팅 진단 사용
+az vm boot-diagnostics enable \
+  --storage https://mystor.blob.core.windows.net/ \
+  --ids $(az vm list -g $groupName --query "[].id" -o tsv)
+
+## Change private IP address to static
+az network nic ip-config update \
+  --name $vmName \
+  --resource-group $groupName \
+  --nic-name $nicName \
+  --private-ip-address $privateIP
 ```
 ![vm-skcc1-comdap1.png](./img/vm-skcc1-comdap1.png)  
 ### az vm open-port 명령은 vm 의 기본 NSG 에 rule 을 생성
@@ -773,10 +794,10 @@ az vm open-port \
 ```bash
 # VM에 대한 백업 보호 사용을 설정
 az backup protection enable-for-vm \
-    --resource-group $groupName \
-    --vault-name $rsvName \
-    --vm $vmName \
-    --policy-name DefaultPolicy
+  --resource-group $groupName \
+  --vault-name $rsvName \
+  --vm $vmName \
+  --policy-name DefaultPolicy
 ```
 ### 바로 백업
 ```bash
@@ -787,6 +808,32 @@ az backup protection backup-now \
   --item-name $vmName \
   --backup-management-type AzureIaaSVM \
   --retain-until 15-02-2022
+```
+
+### VM 크기 확인 및 변경
+#### VM 크기 확인
+```bash
+az vm show \
+  --resource-group $groupName \
+  --name $vmName \
+  --query hardwareProfile.vmSize
+```
+
+#### 변경 가능한 VM 크기 확인
+```bash
+az vm list-vm-resize-options \
+  --resource-group $groupName \
+  --name $vmName \
+  --query [].name
+```
+
+#### VM 크기 변경
+- Standard_B1ms : 1개 vcpu, 2GiB 메모리
+```bash
+az vm resize \
+  --resource-group $groupName \
+  --name $vmName \
+  --size Standard_B1ms
 ```
 
 ```bash
@@ -830,6 +877,15 @@ vmName='vm-skcc1-comdap1'
 az vm deallocate \
   --resource-group $groupName \
   --name $vmName
+```
+
+### Power State 확인하기
+```bash
+az vm get-instance-view \
+  --name $vmName \
+  --resource-group $groupName \
+  --query instanceView.statuses[1] \
+  --output table
 ```
 
 ![vm-skcc1-comdap1-중지화면.png](./img/vm-skcc1-comdap1-중지화면.png)

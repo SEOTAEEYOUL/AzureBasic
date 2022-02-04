@@ -216,6 +216,9 @@ Server built:   2022-01-05T14:50:41
   - workers.properties 설정
   - uri.properties 설정
 
+5. Azure Portal 홈 > Network Watcher | NSG 진단
+   - 원하는 포트가 열려 있는지 확인
+   ![network-watcher-nsg진단.png](./img/network-watcher-nsg진단.png)
 ### Document Root 지정
 #### http.conf
   ```

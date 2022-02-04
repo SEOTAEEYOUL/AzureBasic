@@ -169,32 +169,36 @@ az backup vault create \
 
 ### 2. 스토리지 중복 설정 수정
 - default : 지역 중복 스토리지("LocallyRedundant/GeoRedundant")
+  - 주 지역에서 수백 마일 떨어져 있는 보조 Azure 지역에 백업 데이터가 복제 보장
 - 변경값 : LocallyRedundant
 ```bash
+# 로컬 중복으로 설정
 az backup vault backup-properties set \
-    --name $rsvName  \
-    --resource-group $groupName \
-    --backup-storage-redundancy "LocallyRedundant"
+  --name $rsvName  \
+  --resource-group $groupName \
+  --backup-storage-redundancy "LocallyRedundant"
 ```
 
 ### 3. Azure VM 에 백업 사용
 ```bash
 # VM에 대한 백업 보호 사용을 설정
 az backup protection enable-for-vm \
-    --resource-group $groupName \
-    --vault-name $rsvName \
-    --vm $vmName \
-    --policy-name DefaultPolicy
+  --resource-group $groupName \
+  --vault-name $rsvName \
+  --vm $vmName \
+  --policy-name DefaultPolicy
 ```
 ```bash
 az backup protection enable-for-vm \
-    --resource-group myResourceGroup \
-    --vault-name myRecoveryServicesVault \
-    --vm $(az vm show -g $groupName -n $vmName --query id | tr -d '"') \
-    --policy-name DefaultPolicy
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --vm $(az vm show -g $groupName -n $vmName --query id | tr -d '"') \
+  --policy-name DefaultPolicy
 ```
 
 ### 4. 바로 백업
+- --container-name : "백업할 container 명" 으로 여기서는 vm 명으로 사용함
+- --
 ```bash
 az backup protection backup-now \
   --resource-group $groupName \

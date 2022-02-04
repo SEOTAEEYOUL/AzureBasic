@@ -153,7 +153,7 @@ az group delete -n $groupName
 
 ## NSG
 ### NSG Rule 만들기
-| 명령 | 메모 |  
+| 명령 | 설명 |  
 |:---|:---|  
 | New-AzNetworkSecurityRuleConfig | 보안 규칙 구성을 생성 |  
 | Set-AzNetworkSecurityRuleConfig | 보안 규칙 변경 | 

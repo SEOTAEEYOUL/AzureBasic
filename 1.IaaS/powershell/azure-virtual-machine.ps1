@@ -144,7 +144,7 @@ Write-Host "- 기본 정책을 설정"
 $policy = Get-AzRecoveryServicesBackupProtectionPolicy `
   -Name "DefaultPolicy"
 
-Write-Host "- VM ($groupName:$vmName:$policy) 백업을 사용하도록 설정"
+Write-Host "- VM ($groupName $vmName $policy) 백업을 사용하도록 설정"
 # $vmName='vm-skcc-comdpt1';
 Enable-AzRecoveryServicesBackupProtection `
   -ResourceGroupName $groupName `

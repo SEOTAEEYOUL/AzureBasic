@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 ## 기존 설정
 groupName="rg-skcc1-homepage-dev"

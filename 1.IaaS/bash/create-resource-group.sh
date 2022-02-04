@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 groupName="rg-skcc1-homepage-dev"
 locationName='koreacentral'

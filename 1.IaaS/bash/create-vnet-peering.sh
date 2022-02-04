@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 echo "### 0. 변수 설정"
 groupNWName="rg-skcc1-network-dev"
