@@ -87,7 +87,7 @@ Get-AzRecoveryServicesVault `
 
 ---
 
-## Azure VM에 백업 사용
+## Azure VM에 백업 사용(VM 생성 시 혹은 생성 후 작업)
 ### 기본 정책을 설정
 ```powershell
 $policy = Get-AzRecoveryServicesBackupProtectionPolicy `
@@ -125,7 +125,7 @@ Enable-AzRecoveryServicesBackupProtection `
 ```powershell
 $backupcontainer = Get-AzRecoveryServicesBackupContainer `
     -ContainerType "AzureVM" `
-    -FriendlyName "myVM"
+    -FriendlyName "$vmName"
 
 $item = Get-AzRecoveryServicesBackupItem `
     -Container $backupcontainer `
@@ -179,7 +179,10 @@ az backup vault backup-properties set \
   --backup-storage-redundancy "LocallyRedundant"
 ```
 
-### 3. Azure VM 에 백업 사용
+---
+
+## Azure VM에 백업 사용(VM 생성 시 혹은 생성 후 작업)
+### 3. Azure VM 에 백업 사용 
 ```bash
 # VM에 대한 백업 보호 사용을 설정
 az backup protection enable-for-vm \

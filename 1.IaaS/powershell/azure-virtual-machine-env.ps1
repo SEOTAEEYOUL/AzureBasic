@@ -10,7 +10,7 @@ $subnetFronendAddressPrefix = '10.0.0.0/28'
 $subnetBackendName = 'snet-skcc1-dev-backend'
 $subnetAddressPrefix = '10.0.1.0/28'
 
-$storageAccountName = 'skccdevhomepagedev'
+$storageAccountName = 'skcc1devhomepage1'
 $storageAccountSkuName ='Standard_LRS'
 
 $nsgName = 'nsg-skcc1-homepage' 
@@ -28,9 +28,8 @@ $osDiskSizeInGB = 64
 $vmDataDisk = $vmName + "-DataDisk01"
 $osDataDiskSizeInGB = 64
 $StorageAccountType = 'StandardSSD_LRS'
-$storageAccountName = "skcc1devhomepagedev01"
 
-$openPorts = '10080,22'
+$openPorts = '22,80,10080,9001,3306'
 
 $tags = @{
   owner='SeoTaeYeol'

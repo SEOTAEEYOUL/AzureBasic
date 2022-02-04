@@ -13,7 +13,7 @@ subnetFronendAddressPrefix='10.0.0.0/28'
 subnetBackendName='snet-skcc1-dev-backend'
 subnetAddressPrefix='10.0.1.0/28'
 
-storageAccountName='skcc1devhomepagedev01'
+storageAccountName='skcc1devhomepage1'
 storageAccountSkuName='Standard_LRS'
 
 nsgName='nsg-skcc1-homepage' 
@@ -41,7 +41,7 @@ vmssName="vmss-skcc1-homepage-tomcat"
 apacheOpenPorts='22,10080'
 tomcatOpenPorts='22,18080,8009'
 
-rsvName="skcc1-rsv-VMbackup-dev"
+rsvName="skcc1-rsv-VMbackup-homepage"
 
 tags='owner=SeoTaeYeol environment=dev serviceTitle=homepage personalInformation=no'
 

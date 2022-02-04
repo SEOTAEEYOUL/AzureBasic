@@ -41,7 +41,7 @@ $nic = Get-AzNetworkInterface -Name $nicName
 #>
 
 Write-Host "사용자 암호(credential object) 정의"
-$securePassword = ConvertTo-SecureString 'dlatl!00' -AsPlainText -Force
+$securePassword = ConvertTo-SecureString 'dlatl!00Imsi' -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential ("azureuser", $securePassword)
 
 Write-Host "VM $vmName 크기 설정 : $vmSize"
@@ -126,11 +126,12 @@ New-AzVM -VM $vmConfig `
   -Tag $tags
 #>
 
+Write-Host "  VM[$vmName] 생성중 ..."
 # Pause for 1 seconds per loop
 Do {
   # Do stuff
   # Sleep 5 seconds
-  Write-Host "  VM[$vmName] 생성중 ..."
+  Write-Host "."
   Start-Sleep -s 1
   $name =  Get-AzVM -Name $vmName | Select name | grep vm
 }

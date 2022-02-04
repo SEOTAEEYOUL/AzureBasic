@@ -12,6 +12,11 @@
 > [Ubuntu::Long term support and interim releases](https://ubuntu.com/about/release-cycle)  
 > [Microsoft and Canonical Increase Velocity with Azure Tailored Kernel](https://ubuntu.com/blog/microsoft-and-canonical-increase-velocity-with-azure-tailored-kernel)  
 
+## 사전 작업
+### [NSG 만들기](./bash/create-nsg.sh)
+
+### [Storage Account 만들기 (부트 진단 용)](./AzureStorageAccount.md)  
+### [Recovery Services 만들기 (VM 백업용)](./AzureBackup.md)  
 
 ## Portal
 ### 홈 > 가상 머신 > 가상 머신 만들기 
@@ -82,7 +87,7 @@ $subnetFronendAddressPrefix = '10.0.0.0/28'
 $subnetBackendName = 'snet-skcc1-dev-backend'
 $subnetAddressPrefix = '10.0.1.0/28'
 
-$storageAccountName = 'skcc1devhomepagedev01'
+$storageAccountName = 'skcc1devhomepage1'
 $storageAccountSkuName ='Standard_LRS'
 
 $nsgName = 'nsg-skcc1-homepage' 
@@ -648,7 +653,7 @@ subnetFronendAddressPrefix='10.0.0.0/28'
 subnetBackendName='snet-skcc1-dev-backend'
 subnetAddressPrefix='10.0.1.0/28'
 
-storageAccountName='skcc1devhomepagedev'
+storageAccountName='skcc1devhomepage1'
 storageAccountSkuName='Standard_LRS'
 
 nsgName='nsg-skcc1-homepage' 
@@ -677,7 +682,7 @@ vmssName="vmss-skcc1-homepage-tomcat"
 apacheOpenPorts='22,10080'
 tomcatOpenPorts='22,18080,8009'
 
-rsvName="skcc1-rsv-VMbackup-dev"
+rsvName="skcc1-rsv-VMbackup-homepage"
 
 tags='owner=SeoTaeYeol environment=dev serviceTitle=homepage personalInformation=no'
 

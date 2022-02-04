@@ -17,7 +17,7 @@ az network nsg create \
 
 az network nsg rule create \
   -g $groupName \
-  -n "nsg-rule-ssh"  \
+  -n "nsgr-ssh"  \
   --priority 1000 \
   --nsg-name $nsgName \
   --protocol "Tcp" \
@@ -29,7 +29,7 @@ az network nsg rule create \
   --access "Allow"
   
 az network nsg rule create \
-  --name "nsg-rule-www"  \
+  --name "nsgr-www"  \
   --resource-group $groupName \
   --nsg-name $nsgName \
   --protocol "Tcp" \
@@ -38,16 +38,29 @@ az network nsg rule create \
   --source-address-prefixes '*' \
   --source-port-ranges '*' \
   --destination-address-prefixes '*' \
+  --destination-port-ranges 80 \
+  --access "Allow"
+
+az network nsg rule create \
+  --name "nsgr-apache"  \
+  --resource-group $groupName \
+  --nsg-name $nsgName \
+  --protocol "Tcp" \
+  --direction "Inbound" \
+  --priority 1002 \
+  --source-address-prefixes '*' \
+  --source-port-ranges '*' \
+  --destination-address-prefixes '*' \
   --destination-port-ranges 10080 \
   --access "Allow"
 
 az network nsg rule create \
-  --name "nsg-rule-tomcat"  \
+  --name "nsgr-tomcat"  \
   --nsg-name $nsgName \
   --resource-group $groupName \
   --protocol "Tcp" \
   --direction "Inbound" \
-  --priority 1002 \
+  --priority 1003 \
   --source-address-prefixes '*' \
   --source-port-ranges '*' \
   --destination-address-prefixes '*' \
@@ -55,12 +68,12 @@ az network nsg rule create \
   --access "Allow"
 
 az network nsg rule create \
-  --name "nsg-rule-mysql"  \
+  --name "nsgr-mysql"  \
   --nsg-name $nsgName \
   --resource-group $groupName \
   --protocol "Tcp" \
   --direction "Inbound" \
-  --priority 1003 \
+  --priority 1004 \
   --source-address-prefixes '*' \
   --source-port-ranges '*' \
   --destination-address-prefixes '*' \
