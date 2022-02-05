@@ -41,7 +41,7 @@ vmssName="vmss-skcc1-homepage-tomcat"
 apacheOpenPorts='22,10080'
 tomcatOpenPorts='22,18080,8009'
 
-rsvName="skcc1-rsv-VMbackup-homepage"
+rsvName="skcc1-rsv-VMbackup-dev"
 
 tags='owner=SeoTaeYeol environment=dev serviceTitle=homepage personalInformation=no'
 

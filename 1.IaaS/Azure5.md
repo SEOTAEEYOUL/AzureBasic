@@ -6,8 +6,14 @@
 - apache 서버 삭제  
 
 ## [Azure CDN 구성](./AzureCDN.md)  
-- CDN 생성
+- CDN 프로필 : skcc1-homepage-prd-cdn
 - endpoint 생성
+  - 호스트 이름 : skcc1-homepage-dev-cdn.azureedge.net
+    - 프로토콜 : HTTP,HTTPS
+    - 원본형식 : 사용자 지정 원본
+    - www.domain.com
+
+## [DNS 영역 변경](./AzureDNS.md)
 
 ## Browser 를 통한 정상 동작 확인  
 - Cache 적용됨을 확인 : X-Cache: TCP_HIT 

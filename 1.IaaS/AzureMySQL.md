@@ -189,7 +189,7 @@ PS D:\workspace\AzureBasic> $tags = @{
 >> }
 
 PS D:\workspace\AzureBasic> New-AzMySqlServer `
->>   -Name mysql-homepage `
+>>   -Name mysql-homepage-dev `
 >>   -ResourceGroupName rg-skcc-homepage-dev `
 >>   -Sku GP_Gen5_2 `
 >>   -BackupRetentionDay 14 `
