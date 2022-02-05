@@ -10,7 +10,8 @@ Windows, macOS, Linux, Docker, Azure Cloud Shell 에서 작동함
 
 > [Install Azure CLI on Windows](https://docs.microsoft.com/ko-kr/cli/azure/install-azure-cli-windows?tabs=azure-cli)  
 > [Azure Command-Line Interface (CLI) documentation](https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest)  
-> [az Commands Refernce - 명령어 참조](https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest)
+> [az Commands Refernce - 명령어 참조](https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest)  
+> [Azure CLI를 사용하여 확장 사용 및 관리](https://docs.microsoft.com/ko-kr/cli/azure/azure-cli-extensions-overview)  
 
 ## login
 ```
@@ -82,13 +83,31 @@ Please let us know how we are doing: https://aka.ms/azureclihats
 and let us know if you're interested in trying out our newest features: https://aka.ms/CLIUXstudy
 ```
 
-## Upgrade
-```
+## Azure CLI Upgrade
+```powershell
 PS D:\workspace\Azure> az upgrade
 This command is experimental and not covered by customer support. Please use with discretion.
 Your current Azure CLI version is 2.14.0. Latest version available is 2.19.1.
 Please check the release notes first: https://docs.microsoft.com/cli/azure/release-notes-azure-cli
 Do you want to continue? (Y/n): Y
+```
+
+## Azure CLI 확장
+### 확장 자동 설치
+```powershell
+az config set extension.use_dynamic_install=yes_prompt
+az config set extension.use_dynamic_install=yes_without_prompt
+```
+
+### 확장 Update
+```
+az extension update --name account
+az extension update --name aks-preview
+```
+
+### 확장 보기
+```
+ az extension list-available -o table
 ```
 
 ## 명령예

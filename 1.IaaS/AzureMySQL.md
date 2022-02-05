@@ -59,7 +59,7 @@ $tags = @{
 Write-Host "- 최소 스토리지 : 5120"
 Write-Host "- 서버백업 지역 중복 사용 여부 : Disabled"
 New-AzMySqlServer `
-  -Name mysql-homepage `
+  -Name mysql-homepage-dev `
   -ResourceGroupName rg-skcc-homepage-dev `
   -Sku GP_Gen5_2 `
   -BackupRetentionDay 14 `
@@ -128,8 +128,8 @@ az extension add --name db-up
 ```powershell
 az account set --subscription <subscription id>
 az group create `
-  --name myresourcegroup `
-  --location westus
+  --name rg-skcc1-homepage-dev `
+  --location koreacentral
 az mysql server create `
   --resource-group myresourcegroup `
   --name mydemoserver `
@@ -152,7 +152,7 @@ az mysql server show `
   --name mydemoserver
 ```
 ### private endpoint 만들기
-```
+```bash
 az network private-endpoint create \  
     --name pe-mysql-homepage \  
     --resource-group rg-skcc-homepage-dev \  

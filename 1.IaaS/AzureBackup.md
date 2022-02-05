@@ -25,12 +25,6 @@
 | VM | 일 Backup | Incremental | 
 | DB | 일 Backup | Full | 
 
-## Login
-- az login 과 Connect-AzAccount 는 각각의 영영을 가지는 것으로 보임
-```powershell
-Connect-AzAccount
-Get-AzSubscription
-```
 
 ## Portal
 ### 홈 > 가상 머신 > vm-skcc1-comdpt1 > 백업
@@ -50,6 +44,14 @@ Get-AzSubscription
 <a href="https://shell.azure.com">
   <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
 </a>
+
+
+### 0. 로그인 및 등록
+```powershell
+Connect-AzAccount
+
+Register-AzResourceProvider -ProviderNamespace "Microsoft.RecoveryServices"
+```
 
 ### 1. Recovery Services 자격 증명 모음 생성
 

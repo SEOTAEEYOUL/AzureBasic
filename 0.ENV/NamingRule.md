@@ -95,5 +95,5 @@
 | VNet Peering Connection | vnetpeering-<Source VNET 환경>-<Destination VNET 환경>-<숫자> | vnetpeering-lz-dev-1 </br> vnetpeering-prd-lz-1 |  
 | Load Balanced Rules Config | plb/ilb-<SKU Type>-<서비스 용도 구분>-<LB Rule 구분>-<LB 용도 구분>-rule<#> | ilb-std-erp-internal-ERPPAP-ASCS-prd1-rule1 |  
 | Azure Application Gateway | skcc-<환경>-agw | skcc-lz-prd-appgw | 
-| Recovery Services | skcc-rsv-<서비스 또는 애플리케이션 명>backup-<환경> | skcc-rsv-VMbackup-lz | 
+| Recovery Services | skcc-rsv-<서비스 또는 애플리케이션 명>backup-<환경> | skcc-rsv-VMbackup-dev | 
 | Shared Image Gallery | skcc_<환경>_image_gallery | skcc_dev_image_gallery |
