@@ -3,7 +3,7 @@
 
 <img src=./img/apache-http.png width=200 height=100 />
 
-## Ubuntu 서버 방화볔 끄기
+## Ubuntu 서버 방화벽 끄기
 ```bash
 azureuser@vm-skcc-comdpt1:/etc/apache2$ sudo ufw disable
 Firewall stopped and disabled on system startup

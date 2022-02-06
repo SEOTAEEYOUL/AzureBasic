@@ -5,7 +5,7 @@
 - .do 구성
 
 
-> [Tomcat Version](https://tomcat.apache.org/) : "9.0.27", "10.0.14"
+> [Tomcat Version](https://tomcat.apache.org/) : "9.0.58", "10.0.14"
 
 ## 설치
 ```
@@ -81,9 +81,21 @@ sudo systemctl status tomcat
 sudo systemctl enable tomcat
 ```
 
-## 방화벽 설정
+## 방화벽
+### 8080 허용 설정
 ```
 sudo ufw allow 8080/tcp
+```
+
+### 방화벽 disable
+```
+sudo ufw disable
+```
+
+## 도구 설치
+### netsta 등 도구 설치
+```
+apt-get install net-tools
 ```
 
 ## tomcat webapps 디렉토리에 war 를 배포한 화면
