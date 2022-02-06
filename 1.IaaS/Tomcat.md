@@ -18,9 +18,9 @@ sudo apt-get install default-jdk
 sudo useradd -r -m -U -d /opt/tomcat -s /bin/false tomcat
 
 # Tomcat 설치
-wget http://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.tar.gz -P /tmp
+wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.58.tar.gz -P /tmp
 sudo tar xf /tmp/apache-tomcat-9*.tar.gz -C /opt/tomcat
-sudo ln -s /opt/tomcat/apache-tomcat-9.0.27 /opt/tomcat/latest
+sudo ln -sf /opt/tomcat/apache-tomcat-9.0.58 /opt/tomcat/latest
 sudo chown -RH tomcat: /opt/tomcat/latest
 sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
 ```
@@ -30,7 +30,7 @@ sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
 - 서비스 파일 만들기
 ```
 # Systemd Unit File 생성
-sudo nano /etc/systemd/system/tomcat.service
+sudo vi /etc/systemd/system/tomcat.service
 ```
 
 

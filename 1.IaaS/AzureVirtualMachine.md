@@ -60,11 +60,11 @@
 
 #### 검토 + 만들기
 
-- vm-skcc-comdpt1  
+##### vm-skcc-comdpt1  
 ![vm-skcc1-comdpt1-가상머신만들기.png](./img/vm-skcc1-comdpt1-가상머신만들기.png)  
 
-- vm-skcc1-comdap2
-![vm-skcc1-comdap2-가상머신만들기-검토+만들기.png](./img/vm-skcc1-comdap2-가상머신만들기-검토+만들기.png)  
+##### vm-skcc1-comdap2
+![vm-skcc1-comdap1-가상머신만들기.png](./img/vm-skcc1-comdap1-가상머신만들기.png)  
 
 ## Script 로 VM 생성시 사전 작업
 ### [NSG 만들기](./bash/create-nsg.sh)
