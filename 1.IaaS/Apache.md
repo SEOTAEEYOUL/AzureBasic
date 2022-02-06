@@ -14,10 +14,15 @@ azureuser@vm-skcc-comdpt1:/etc/apache2$
 
 
 ## Ubuntu 에서 아파치 웹서버 설치하기
+
+## 도구 설치
+```bash
+sudo apt install net-tools -y
+```
 ## Apache 설치
-1. sudo apt-get install apache2
+1. sudo apt install apache2
 ```powershell
-azureuser@vm-skcc-comdpt1:~$ sudo apt-get install apache2
+azureuser@vm-skcc-comdpt1:~$ sudo apt install apache2
 Reading package lists... Done
 Building dependency tree
 Reading state information... Done
@@ -239,27 +244,31 @@ Server built:   2022-01-05T14:50:41
   ```
 
 ### Tomcat 연동 설정(AJP 1.3)
-#### module/mod_jk.so 설치
-- "mod_jk-1.2.48-win64-VS16.zip"를 풀어 mod_jk.so 를 module 디렉토리 밑에 위치한다.
-  ![apache24-modules-mod_jk.so.png](./img/apache24-modules-mod_jk.so.png)  
+#### proxy 와 proxy_ajp 활성화
+```
+sudo a2enmod proxy
+sudo a2enmod proxy_ajp
+```
 
-#### conf/workers.properties
-- tomcat 하나만 연동하므로 worker list 는 하나("jvm1") 만 등록
+#### site-avaiable conf 설정
+- 위치 : /etc/apache2/sites-available
+- nodespringboot.conf 파일 생성
   ```
-  # worker.list=jvm1,jvm2
-  worker.list=jvm1
-
-  worker.jvm1.type=ajp13
-  worker.jvm1.host=localhost
-  worker.jvm1.port=8009
-  worker.jvm1.lbfactor=1 # 서버 밸런스 비율
-
-
-  # worker.jvm2.port=8109
-  # worker.jvm2.host=localhost
-  # worker.jvm2.type=ajp13
-  # worker.jvm2.lbfactor=1
+  <VirtualHost *:80>
+    ServerName nodespringboot.org
+    ServerAdmin admin@nodespringboot.org
+    DocumentRoot /var/www
+    <Directory /var/www>
+      Require all granted
+    </Directory>
+    <Location / >
+      ProxyPass ajp://10.0.1.5:8009/
+      Require all granted
+    </Location>
+  </VirtualHost>
   ```
+- sudo a2ensite nodespringboot.conf
+- sudo service apache2 reload
 
 #### mod_jk 설정으로 *.do 파일의 경우 Tomcat 에서 처리하게 설정하기
 - httpd.conf 와 workers.properties, uri.properties 를 통해 설정

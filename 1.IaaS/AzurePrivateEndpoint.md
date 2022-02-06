@@ -22,6 +22,32 @@
 * [빠른 시작: Azure PowerShell을 사용하여 Azure Private Endpoint 만들기](https://docs.microsoft.com/ko-kr/azure/private-link/create-private-endpoint-powershell)   
 * [CLI를 사용하여 Azure Database for MySQL의 프라이빗 링크 만들기 및 관리](https://docs.microsoft.com/ko-kr/azure/mysql/howto-configure-privatelink-cli)
 
+## Portal
+### 홈 > Private Link 센터 : 프라이빗 엔트포이트 > 프라이빗 엔드포인트 만들기
+#### 기본사항
+- 프로젝트 정보
+  - 리소스 그룹 : rg-skcc1-homepage-dev
+- 인스턴스 정보
+  - PE-skcchomepagedevmysql
+  - 지역 : Korea Central
+
+#### 리소스
+- 연결 방법 : 내 디렉토리에서 Azure 리소스에 연결합니다.
+- 리소스 종류 : Microsoft.DBforMySQL/servers
+- 리소스 : mysql-homepage
+- 대상 하위 리소스 : mysqlServer
+
+#### 가상 네트워크
+- 네트워킹
+  - 가상 네트워크 : vnet-skcc1-dev
+  - 서브넷 : vnet-network-dev/snet-skcc1-dev-backend(10.0.1.0/28)
+- 프라이빗 DNS 통합
+  - 프라이빗 DNS 영역과 통합 : 예
+  - 구성이름 : privatelink-mysql-database-azure-com
+  - 리소스 그룹 : rg-skcc1-homepage-dev
+#### 검토 + 만들기  
+
+![PE-skcc1homepagedevmysql-검토-만들기.png](./img/PE-skcc1homepagedevmysql-검토-만들기.png)  
 
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
@@ -32,8 +58,8 @@
 $location = "koreacentral"
 $vnetName = "vnet-skcc-dev"
 $resourceGroupName = "rg-skcc-homepage-dev"
-$subnetName = "snet-skcc-dev-frontend"
-$privateEndPointName = "pe-skccdevhomepagemysql"
+$subnetName = "snet-skcc-dev-backend"
+$privateEndPointName = "pe-skcc1homepagedevmysql"
 $subscriptionId = "9ebb0d63-8327-402a-bdd4-e222b01329a1"
 
 

@@ -27,6 +27,7 @@
   - 보안 유형 : 표준
   - 이미지 : Ubuntu Server 20.04 LTS - Gen2
   - 크기 : Standard_B1|s - 1 vcpu, 0.5 GiB 메모리 (US$4.75/월)  
+  - 크기 : Standard_B2s - 2 vcpu, 4GiB 메모리(US$37.96월)
 - 관리자 계정
   - 인증형식 : 암호
 - 인바운드 포트 규칙

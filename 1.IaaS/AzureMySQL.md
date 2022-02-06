@@ -23,11 +23,88 @@ Register-AzResourceProvider -ProviderNamespace Microsoft.DBforMySQL
 ## SKU
 | SKU | 분류 | 스펙 | 가격/월 | 비고 |  
 |:---|:---|:---|:---|:---|
-| B_Gen5_1 | 기본 | 5세대, 1 vCore | US$37.96 |사용 가능한 가장 작은 SKU, 단일 서버, Private Endpoint 생성 불가 | 
+| B_Gen5_1 | 기본 | 5세대, 1 vCore | US$37.96 |사용 가능한 가장 작은 SKU, 단일 서버 </br> **Private Endpoint 생성 불가** | 
 | GP_Gen5_2 | 범용 | 5세대, 2 vCore | US$176.37 | |
 | GP_Gen5_32 | 범용 | 5세대, 32 vCore | US$2,821.89 | |
 | MO_Gen5_2 | 메모리 최적화 | 5세대, 2 vCore | US$207.03 | |
 | MO_Gen5_4 | 메모리 최적화 | 5세대, 4 vCore | US$414.06 | |
+
+## Portal 
+### 홈 > MySQL 서버 만들기
+#### 기본
+- 프로젝트 세부 정보
+  - 리소스 그룹 : rg-skcc1-homepage-dev
+- 서버정보
+  - 서버 이름 : mysql-homepage
+  - 위치 : Korea Central
+  - 버전 : 5.7
+- 관리자 계정
+  - 관리자 사용자 이름 : mysql
+  - 암호 : *******
+![mysql-homepage-dev-검토+만들기.png](./img/mysql-homepage-dev-검토+만들기.png)
+
+### 홈 > Private Link 센터 : 프라이빗 엔트포이트 > 프라이빗 엔드포인트 만들기
+#### 기본사항
+- 프로젝트 정보
+  - 리소스 그룹 : rg-skcc1-homepage-dev
+- 인스턴스 정보
+  - PE-skcchomepagedevmysql
+  - 지역 : Korea Central
+
+#### 리소스
+- 연결 방법 : 내 디렉토리에서 Azure 리소스에 연결합니다.
+- 리소스 종류 : Microsoft.DBforMySQL/servers
+- 리소스 : mysql-homepage
+- 대상 하위 리소스 : mysqlServer
+
+#### 가상 네트워크
+- 네트워킹
+  - 가상 네트워크 : vnet-skcc1-dev
+  - 서브넷 : vnet-network-dev/snet-skcc1-dev-backend(10.0.1.0/28)
+- 프라이빗 DNS 통합
+  - 프라이빗 DNS 영역과 통합 : 예
+  - 구성이름 : privatelink-mysql-database-azure-com
+  - 리소스 그룹 : rg-skcc1-homepage-dev
+#### 검토 + 만들기  
+
+![PE-skcc1homepagedevmysql-검토-만들기.png](./img/PE-skcc1homepagedevmysql-검토-만들기.png)  
+
+- 연결 문자열 : jdbc:mysql://mysql-homepage.mysql.database.azure.com:3306/tutorial
+- applicaton.properties
+```
+server.port 8080
+
+
+# MariaDB
+spring.datasource.driverClassName=org.mariadb.jdbc.Driver
+spring.datasource.url=jdbc:mysql://mysql-homepage.mysql.database.azure.com:3306/tutorial
+spring.datasource.username=tutorial
+spring.datasource.password=tutorial
+
+# JSP
+# JSP 수정시 서버 재시작없이 바로 적용될 수 있게 설정(개발, 테스트 용)
+# server.servlet.jsp.init-parameters.development=true
+devtools.livereload.enabled=true
+
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
+
+```
+
+
+# MariaDB
+spring.datasource.driverClassName=org.mariadb.jdbc.Driver
+spring.datasource.url=jdbc:mysql://mysql-homepage.mysql.database.azure.com:3306/tutorial
+spring.datasource.username=tutorial
+spring.datasource.password=tutorial
+
+# JSP
+# JSP 수정시 서버 재시작없이 바로 적용될 수 있게 설정(개발, 테스트 용)
+# server.servlet.jsp.init-parameters.development=true
+devtools.livereload.enabled=true
+
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
 
 
 ## [PowerShell](https://shell.azure.com)

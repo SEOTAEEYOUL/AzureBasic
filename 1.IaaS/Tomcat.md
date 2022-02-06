@@ -9,15 +9,25 @@
 
 ## 설치
 ```
-sudo apt-get update
+sudo apt update
 
 # OpenJDK 설치
-sudo apt-get install default-jdk
+sudo apt install default-jdk
 
 # Tomcat 사용자 생성
 sudo useradd -r -m -U -d /opt/tomcat -s /bin/false tomcat
 
 # Tomcat 설치
+sudo apt install tomcat9
+
+# tomcat 시작
+sudo service tomcat9 start
+
+# tomcat 상태 보기
+sudo service tomcat9 status
+```
+### 수동 설치
+```
 wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.58.tar.gz -P /tmp
 sudo tar xf /tmp/apache-tomcat-9*.tar.gz -C /opt/tomcat
 sudo ln -sf /opt/tomcat/apache-tomcat-9.0.58 /opt/tomcat/latest
@@ -108,6 +118,19 @@ apt-get install net-tools
 ![tomcat-9-browser.png](./img/tomcat9-browser.png)
 
 ## Apache 와 연동 (mod_jk 연동) 설정
+
+### mod_jk 설치
+```bash
+sudo apt install libapache2-mod-jk
+```
+
+### Connector port="8080" 주석(안해도 됨)
+```xml
+    <!-- Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" / -->
+ 
+```
 ### AJP 설정의 주석 해제
 - address 를 삭제하거나 address를 localhost 로 설정
 - 아래 설정에서는 제거
@@ -203,7 +226,7 @@ apt-get install net-tools
           APR (HTTP/AJP) Connector: /docs/apr.html
           Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
       -->
-      <Connector port="18080" protocol="HTTP/1.1"
+      <Connector port="8080" protocol="HTTP/1.1"
                 connectionTimeout="20000"
                 redirectPort="8443" />
       <!-- A "Connector" using the shared thread pool-->
