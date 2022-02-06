@@ -1,6 +1,8 @@
 # [Apache](https://httpd.apache.org/) [2.4.29](https://www.apachelounge.com/download/) 
 - 정적인 데이터를 처리하는 웹서버
 
+![apache-http.png](./img/apache-http.png)
+
 ## Ubuntu 서버 방화볔 끄기
 ```bash
 azureuser@vm-skcc-comdpt1:/etc/apache2$ sudo ufw disable
@@ -189,6 +191,10 @@ azureuser@vm-skcc-comdpt1:~$ apache2 -v
 Server version: Apache/2.4.29 (Ubuntu)
 Server built:   2022-01-05T14:50:41
 ```
+
+![apache-초기화면.png](./img/apache-초기화면.png)  
+
+
 4. Listen Port 변경
 - /etc/apache2/ports.conf
 ## apache2 설정
@@ -218,6 +224,7 @@ Server built:   2022-01-05T14:50:41
 
 5. Azure Portal 홈 > Network Watcher | NSG 진단
    - 원하는 포트가 열려 있는지 확인
+   - "10080" 과 포트의 경우 브라우저에서 막음으로 아래의 테스트로 열려 있어도 브라우저에서 별도의 조치를 해야 사용할 수 있음으로 피하는 것이 좋음
    ![network-watcher-nsg진단.png](./img/network-watcher-nsg진단.png)
 ### Document Root 지정
 #### http.conf
