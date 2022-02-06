@@ -1,6 +1,8 @@
 # [Apache http](https://httpd.apache.org/) [2.4.29](https://www.apachelounge.com/download/) 
 - 정적인 데이터를 처리하는 웹서버
 
+* [우분투 Apache+Tomcat 연동](https://goyunji.tistory.com/93)
+
 <img src=./img/apache-http.png width=200 height=100 />
 
 ## Ubuntu 서버 방화벽 끄기
@@ -244,6 +246,11 @@ Server built:   2022-01-05T14:50:41
   ```
 
 ### Tomcat 연동 설정(AJP 1.3)
+
+#### mod-jk 설치
+```
+sudo apt install libapache2-mod-jk
+```
 #### proxy 와 proxy_ajp 활성화
 ```
 sudo a2enmod proxy

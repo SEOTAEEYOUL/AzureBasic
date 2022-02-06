@@ -103,7 +103,7 @@ sudo ufw disable
 ```
 
 ## 도구 설치
-### netsta 등 도구 설치
+### netstat 등 도구 설치
 ```
 apt-get install net-tools
 ```
@@ -117,12 +117,7 @@ apt-get install net-tools
 ## WAR 배포 후 "localhost:8080" 접속 초기 화면
 ![tomcat-9-browser.png](./img/tomcat9-browser.png)
 
-## Apache 와 연동 (mod_jk 연동) 설정
-
-### mod_jk 설치
-```bash
-sudo apt install libapache2-mod-jk
-```
+## AJP 설정
 
 ### Connector port="8080" 주석(안해도 됨)
 ```xml
