@@ -1,7 +1,7 @@
-# [Apache](https://httpd.apache.org/) [2.4.29](https://www.apachelounge.com/download/) 
+# [Apache http](https://httpd.apache.org/) [2.4.29](https://www.apachelounge.com/download/) 
 - 정적인 데이터를 처리하는 웹서버
 
-![apache-http.png](./img/apache-http.png)
+<img src=./img/apache-http.png width=200 height=100 />
 
 ## Ubuntu 서버 방화볔 끄기
 ```bash
