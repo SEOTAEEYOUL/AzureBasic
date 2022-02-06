@@ -8,6 +8,10 @@ target/
 **/*.un~
 **/*.*~
 
+## ignor cert.
+**/*.pem
+**/*.ppk
+
 ### VS Code ###
 .vscode/
 1.IaaS/자료

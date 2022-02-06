@@ -12,12 +12,6 @@
 > [Ubuntu::Long term support and interim releases](https://ubuntu.com/about/release-cycle)  
 > [Microsoft and Canonical Increase Velocity with Azure Tailored Kernel](https://ubuntu.com/blog/microsoft-and-canonical-increase-velocity-with-azure-tailored-kernel)  
 
-## 사전 작업
-### [NSG 만들기](./bash/create-nsg.sh)
-
-### [Storage Account 만들기 (부트 진단 용)](./AzureStorageAccount.md)  
-### [Recovery Services 만들기 (VM 백업용)](./AzureBackup.md)  
-
 ## Portal
 ### 홈 > 가상 머신 > 가상 머신 만들기 
 
@@ -65,7 +59,19 @@
 - personalInformation:'no'
 
 #### 검토 + 만들기
+
+- vm-skcc-comdpt1  
+![vm-skcc1-comdpt1-가상머신만들기.png](./img/vm-skcc1-comdpt1-가상머신만들기.png)  
+
+- vm-skcc1-comdap2
 ![vm-skcc1-comdap2-가상머신만들기-검토+만들기.png](./img/vm-skcc1-comdap2-가상머신만들기-검토+만들기.png)  
+
+## Script 로 VM 생성시 사전 작업
+### [NSG 만들기](./bash/create-nsg.sh)
+
+### [Storage Account 만들기 (부트 진단 용)](./AzureStorageAccount.md)  
+### [Recovery Services 만들기 (VM 백업용)](./AzureBackup.md)  
+
 
 
 ## [PowerShell](https://shell.azure.com)
