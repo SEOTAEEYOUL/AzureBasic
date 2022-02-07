@@ -2,23 +2,8 @@
 
 - [Azure Database for MySQL에 대한 Private Link](https://docs.microsoft.com/ko-kr/azure/mysql/concepts-data-access-security-private-link)
 
+<img src=./img/mysql_logo.png width=500 height=270>
 
-## PowerShell
-* [New-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/new-azmysqlserver?view=azps-7.1.0#examples)  
-* [Get-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/get-azmysqlserver?view=azps-7.1.0)
-* [Update-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/update-azmysqlserver?view=azps-7.1.0)
-* [Remove-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/remove-azmysqlserver?view=azps-7.1.0)
-
-## 모듈
-```powershell
-Install-Module -Name Az.MySql -AllowClobber
-```
-
-### 공급자 등록
-- Azure Database for MySQL 서비스를 처음 사용하는 경우 Microsoft.DBforMySQL 리소스 공급자를 등록해야 함
-```
-Register-AzResourceProvider -ProviderNamespace Microsoft.DBforMySQL
-```
 
 ## SKU
 | SKU | 분류 | 스펙 | 가격/월 | 비고 |  
@@ -95,6 +80,26 @@ spring.mvc.view.suffix=.jsp
 <a href="https://shell.azure.com">
   <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
 </a>
+
+### Az PowerShell
+| Database for MySQL | 설명 |
+|:---|:---|  
+| [New-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/new-azmysqlserver?view=azps-7.1.0#examples) | 신규 서버 생성 |    
+| [Get-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/get-azmysqlserver?view=azps-7.1.0) | 서버 정보 가져오기 |   
+| [Update-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/update-azmysqlserver?view=azps-7.1.0) | 기존 서버를 업데이트 |
+| [Remove-AzMySqlServer](https://docs.microsoft.com/en-us/powershell/module/az.mysql/remove-azmysqlserver?view=azps-7.1.0) | 서버 삭제 | 
+
+## 모듈
+```powershell
+Install-Module -Name Az.MySql -AllowClobber
+```
+
+### 공급자 등록
+- Azure Database for MySQL 서비스를 처음 사용하는 경우 Microsoft.DBforMySQL 리소스 공급자를 등록해야 함
+```
+Register-AzResourceProvider -ProviderNamespace Microsoft.DBforMySQL
+```
+
 
 ### Sample
 ```powershell
