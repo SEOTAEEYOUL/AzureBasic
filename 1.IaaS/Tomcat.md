@@ -58,18 +58,32 @@ azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restar
 #### server.xml 위치로 이동
 ```bash
 cd /etc/tomcat9
-vi server.xml
+sudo vi /etc/tomcat9/server.xml
 ```
-- 확장자(.war)를 제외한 부분을 아래와 같이 기술
-  ```xml
+##### 확장자(.war)를 제외한 부분을 아래와 같이 기술
+```xml
   <Host name="localhost"  appBase="webapps" unpackWARs="true" autoDeploy="true">
         <Context path="" docBase="SpringBootSample-0.0.1-SNAPSHOT" reloadable="false" />
-  ```
+```
+
 #### WAR 파일 배포 후 초기 화면
 ##### http://vm-skcc-comdap1:8080/home.do
 ![vm-skcc1-comdap1-home.do.png](./img/vm-skcc1-comdap1-home.do.png)
 
-### /etc/tomcat9/server.xml 전문
+
+#### AJP/1.3 설정(Apache 연계)
+- 주석 처리 삭제하여 활성화
+  ```xml
+    <!-- Define an AJP 1.3 Connector on port 8009 -->
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+  ```
+
+##### Service 재 시작
+```bash
+sudo service tomcat9 restart
+```
+
+##### /etc/tomcat9/server.xml 전문
 - server.xml
   ```xml
   <?xml version="1.0" encoding="UTF-8"?>

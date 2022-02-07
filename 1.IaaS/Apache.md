@@ -251,200 +251,172 @@ Server built:   2022-01-05T14:50:41
 ```
 sudo apt install libapache2-mod-jk
 ```
-#### proxy 와 proxy_ajp 활성화
+
+#### worker.properties 설정
 ```
-sudo a2enmod proxy
-sudo a2enmod proxy_ajp
+//mod-jk 설정파일 열기
+sudo vi /etc/libapache2-mod-jk/workers.properties
 ```
+##### /etc/libapache2-mod-jk/workers.properties
+```conf
+# workers.properties -
+#
+# This file is a simplified version of the workers.properties supplied
+# with the upstream sources. The jni inprocess worker (not build in the
+# debian package) section and the ajp12 (deprecated) section are removed.
+#
+# As a general note, the characters $( and ) are used internally to define
+# macros. Do not use them in your own configuration!!!
+#
+# Whenever you see a set of lines such as:
+# x=value
+# y=$(x)\something
+#
+# the final value for y will be value\something
+#
+# Normaly all you will need to do is un-comment and modify the first three
+# properties, i.e. workers.tomcat_home, workers.java_home and ps.
+# Most of the configuration is derived from these.
+#
+# When you are done updating workers.tomcat_home, workers.java_home and ps
+# you should have 3 workers configured:
+#
+# - An ajp13 worker that connects to localhost:8009
+# - A load balancer worker
+#
+#
 
-#### site-avaiable conf 설정
-- 위치 : /etc/apache2/sites-available
-- nodespringboot.conf 파일 생성
-  ```
-  <VirtualHost *:80>
-    ServerName nodespringboot.org
-    ServerAdmin admin@nodespringboot.org
-    DocumentRoot /var/www
-    <Directory /var/www>
-      Require all granted
-    </Directory>
-    <Location / >
-      ProxyPass ajp://10.0.1.5:8009/
-      Require all granted
-    </Location>
-  </VirtualHost>
-  ```
-- sudo a2ensite nodespringboot.conf
-- sudo service apache2 reload
+# OPTIONS ( very important for jni mode )
 
-#### mod_jk 설정으로 *.do 파일의 경우 Tomcat 에서 처리하게 설정하기
-- httpd.conf 와 workers.properties, uri.properties 를 통해 설정
-- conf/httpd.conf
-  ```
-  .
-  .
-  .
-  # mod_jk .모듈 설정
-  LoadModule jk_module modules/mod_jk.so
-  # include conf/mod_jk.conf
+#
+# workers.tomcat_home should point to the location where you
+# installed tomcat. This is where you have your conf, webapps and lib
+# directories.
+# tomcat 설치 경로
+workers.tomcat_home=/usr/share/tomcat9
 
-  # 설정 파일
-  JkWorkersFile conf/workers.properties
+#
+# workers.java_home should point to your Java installation. Normally
+# you should have a bin and lib directories beneath it.
+# java 설치 경로
+workers.java_home=/usr/lib/jvm/default-java
 
-  JkShmFile logs/mod_jk.shm
+#
+# You should configure your environment slash... ps=\ on NT and / on UNIX
+# and maybe something different elsewhere.
+#
+ps=/
 
-  # 로그 설정
-  JkLogFile logs/mod_jk.log
-  JkLogLevel info
-  JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
+#
+#------ ADVANCED MODE ------------------------------------------------
+#---------------------------------------------------------------------
+#
 
-  # JkMount /.jsp jvm1
-  JKmount /*.do jvm1
-  # JkMount /*/servlet/* jvm1
-  JkRequestLogFormat "%w %V %T"
+#
+#------ worker list ------------------------------------------
+#---------------------------------------------------------------------
+#
+#
+# The workers that your plugins should create and work with
+# 연동할 tomcat 이름 설정
+worker.list=ajp13_worker
 
-  # JkMountFile conf/uri.properties
-  .
-  .
-  .
-  ```
+#
+#------ ajp13_worker WORKER DEFINITION ------------------------------
+#---------------------------------------------------------------------
+#
 
-- workers.properties
-  ```
-  # worker.list=jvm1,jvm2
-  worker.list=jvm1
+#
+# Defining a worker named ajp13_worker and of type ajp13
+# Note that the name and the type do not have to match.
+# 기본 ajp통신 포트 설정
+# 기본 ajp 통신 포트는 8009이다. 여러개 톰캣을 연동하는 경우 이 포트는 각각 다르게 설정해줘야한다.
+worker.ajp13_worker.port=8009
 
-  worker.jvm1.type=ajp13
-  worker.jvm1.host=localhost
-  worker.jvm1.port=8009
-  worker.jvm1.lbfactor=1 # 서버 밸런스 비율
+# 같은 서버내에서 구성할 때는 localhost 로도 가능
+# 각 다른 서버에서 연동할 때는 tomcat server ip를 입력
+worker.ajp13_worker.host=10.0.1.4
 
+# apache + tomcat 연동프로토콜로 고정
+worker.ajp13_worker.type=ajp13
+#
+# Specifies the load balance factor when used with
+# a load balancing worker.
+# Note:
+#  ----> lbfactor must be > 0
+#  ----> Low lbfactor means less work done by the worker.
+worker.ajp13_worker.lbfactor=1
 
-  # worker.jvm2.port=8109
-  # worker.jvm2.host=localhost
-  # worker.jvm2.type=ajp13
-  # worker.jvm2.lbfactor=1
-  ```
+#
+# Specify the size of the open connection cache.
+#worker.ajp13_worker.cachesize
 
-### uri.properties
-  ```
-  /*=jvm1
-  /*.do=jvm1
-  /*.jsp=jvm1
-  /home.*=jvm1
-  /books.*=jvm1
+#
+#------ DEFAULT LOAD BALANCER WORKER DEFINITION ----------------------
+#---------------------------------------------------------------------
+#
 
-  !/=jvm1
-  !/*.html=jvm1
-  !/*.htm=jvm1
-  !/*.Htm=jvm1
-  !/*.hTm=jvm1
-  !/*.htM=jvm1
-  !/*.HTM=jvm1
-  !/*.hTM=jvm1
-  !/*.HtM=jvm1
-  !/*.HTm=jvm1
-
-  !/*.html=jvm1
-  !/*.htmL=jvm1
-  !/*.htMl=jvm1
-  !/*.htML=jvm1
-  !/*.hTml=jvm1
-  !/*.hTmL=jvm1
-  !/*.hTMl=jvm1
-  !/*.hTML=jvm1
-
-  !/*.Html=jvm1
-  !/*.HtmL=jvm1
-  !/*.HtMl=jvm1
-  !/*.HtML=jvm1
-  !/*.HTml=jvm1
-  !/*.HTmL=jvm1
-  !/*.HTMl=jvm1
-  !/*.HTML=jvm1
-
-  !/*.ico=jvm1
-  !/*.icO=jvm1
-  !/*.iCo=jvm1
-  !/*.iCO=jvm1
-  !/*.Ico=jvm1
-  !/*.IcO=jvm1
-  !/*.ICo=jvm1
-  !/*.ICO=jvm1
-
-  !/*.jpg=jvm1
-  !/*.Jpg=jvm1
-  !/*.jPg=jvm1
-  !/*.jpG=jvm1
-  !/*.JPG=jvm1
-  !/*.jPG=jvm1
-  !/*.JpG=jvm1
-  !/*.JPg=jvm1
-
-  !/*.png=jvm1
-  !/*.Png=jvm1
-  !/*.pNg=jvm1
-  !/*.pnG=jvm1
-  !/*.PNG=jvm1
-  !/*.pNG=jvm1
-  !/*.PnG=jvm1
-  !/*.PNg=jvm1
-
-  !/*.gif=jvm1
-  !/*.Gif=jvm1
-  !/*.gIf=jvm1
-  !/*.giF=jvm1
-  !/*.GIF=jvm1
-  !/*.gIF=jvm1
-  !/*.GiF=jvm1
-  !/*.GIf=jvm1
-
-  !/*.js=jvm1
-  !/*.Js=jvm1
-  !/*.jS=jvm1
-  !/*.JS=jvm1
-
-  !/*.css=jvm1
-  !/*.Css=jvm1
-  !/*.cSs=jvm1
-  !/*.csS=jvm1
-  !/*.CSS=jvm1
-  !/*.cSS=jvm1
-  !/*.CsS=jvm1
-  !/*.CSs=jvm1
-
-  !/*.txt=jvm1
-
-  !/*.json=jvm1
-  ```
-
-
-## 서버 설치
-```PowerShell
-PS C:\Apache24\bin> ./httpd -k install
-Installing the 'Apache2.4' service
-The 'Apache2.4' service is successfully installed.
-Testing httpd.conf....
-Errors reported here must be corrected before the service can be started.
-PS C:\Apache24\bin>                                                       
+#
+# The loadbalancer (type lb) workers perform wighted round-robin
+# load balancing with sticky sessions.
+# Note:
+#  ----> If a worker dies, the load balancer will check its state
+#        once in a while. Until then all work is redirected to peer
+#        workers.
+worker.loadbalancer.type=lb
+worker.loadbalancer.balance_workers=ajp13_worker
 ```
 
-## 서버 제거
-```PowerShell
-PS C:\Apache24\bin>  ./httpd -k uninstall
-Removing the 'Apache2.4' service
-The 'Apache2.4' service has been removed successfully.
+#### 000-default.conf 설정
+```
+sudo vi /etc/apache2/sites-available/000-default.conf
 ```
 
-## 실행하기
-- bin\ApacheMonitor.exe 를 관리자 권한으로 실행  
+##### /etc/apache2/sites-available/000-default.conf
+- JkMount : *.do 를 Tomcat에 분기
+```conf
+<VirtualHost *:80>
+    # The ServerName directive sets the request scheme, hostname and port that
+    # the server uses to identify itself. This is used when creating
+    # redirection URLs. In the context of virtual hosts, the ServerName
+    # specifies what hostname must appear in the request's Host: header to
+    # match this virtual host. For the default virtual host (this file) this
+    # value is not decisive as it is used as a last resort host regardless.
+    # However, you must set it for any further virtual host explicitly.
+    #ServerName www.example.com
 
-![ApacheMonitor.png](./img/ApacheMonitor.png)
-![apache-초기화면.png](./img/apache-초기화면.png)
-![services-apache-tomcat.png](./img/services-apache-tomcat.png)
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html
+
+    JkMount /*.do ajp13_worker
+
+    # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+    # error, crit, alert, emerg.
+    # It is also possible to configure the loglevel for particular
+    # modules, e.g.
+    #LogLevel info ssl:warn
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    # For most configuration files from conf-available/, which are
+    # enabled or disabled at a global level, it is possible to
+    # include a line for only one particular virtual host. For example the
+    # following line enables the CGI configuration for this host only
+    # after it has been globally disabled with "a2disconf".
+    #Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+
+#### service 재시작
+```bash
+sudo service apache2 restart
+```
 
 ## .do 실행
-### index.html 내용
+### /var/www/html/index.html 내용
 - "location.href" 를 사용 home.do 로 바로 연계(홈에 접속시 tomat 의 /home.do 호출)
 - index.html
   ```html
@@ -460,9 +432,26 @@ The 'Apache2.4' service has been removed successfully.
   </head>
   </html>
   ```
-### 처리결과
-- [http://localhost:8080/](http://localhost:8080/)
-  ![apache-home.do.png](./img/apache-home.do.png)
-- [http://localhost:8080/](http://localhost:8080/)
-  ![apache-books.do.png](./img/apache-books.do.png)
 
+### Trouble Shooting
+위의 순서대로 설치시 접속 문제 발생
+> [Could not find worker with name 'ajp13_worker'](https://stackoverflow.com/questions/59035732/could-not-find-worker-with-name-ajp13-worker)
+#### 오류 발생
+```
+[Mon Feb 07 12:20:28.145 2022] [7830:140100789249792] [error] jk_handler::mod_jk.c (2999): Could not find a worker for worker name=ajp13_worker
+```
+#### 조치 사항
+```
+sudo a2dismod jk
+sudo mv /etc/apache2/mods-available/httpd-jk.conf /etc/apache2/mods-available/jk.conf
+cd /etc/libapache2-mod-jk/
+sudo ln -f -s ../apache2/mods-available/jk.conf httpd-jk.conf
+sudo a2enmod jk
+sudo apache2ctl configtest
+sudo systemctl restart apache2
+```
+### 처리결과
+#### http://vm-skcc1-comdpt1/
+#### http://vm-skcc1-comdpt1/home.do
+![apache-home.do.png](./img/apache-home.do.png)  
+#### http://vm-skcc1-comdpt1/books.do
