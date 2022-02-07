@@ -27,6 +27,9 @@ sudo service tomcat9 start
 
 # tomcat 상태 보기
 sudo service tomcat9 status
+
+# tomcat 서비스 로그 보기
+journalctl -u tomcat9
 ```
 ### 설치된 초기 화면
 ![vm-skcc1-comdap1-tomcat9-초기화면.png](./img/vm-skcc1-comdap1-tomcat9-초기화면.png)  
@@ -259,8 +262,6 @@ sudo service tomcat9 restart
     </Service>
   </Server>
   ```
-## WAR 배포 후 "localhost:8080" 접속 초기 화면
-![tomcat-9-browser.png](./img/tomcat9-browser.png)
 
 ## AJP 설정
 
@@ -288,3 +289,17 @@ sudo service tomcat9 restart
   ```xml
   <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
   ```
+
+### TroubleShooting(?)
+> [EAP 7.3: java.lang.ClassNotFoundException: # Licensed to the Apache Software Foundation (ASF) under one or more - only in standalone mode](https://stackoverflow.com/questions/66802142/eap-7-3-java-lang-classnotfoundexception-licensed-to-the-apache-software-fou)
+
+```
+apt install p7zip p7zip-full
+```
+```
+mkdir -p META-INF/services/
+echo org.apache.el.ExpressionFactoryImpl > META-INF/services/javax.el.ExpressionFactory
+7z d ./jasper-el.jar META-INF/services/javax.el.ExpressionFactory
+jar uf ./jasper-el.jar META-INF/services/javax.el.ExpressionFactory
+```
+
