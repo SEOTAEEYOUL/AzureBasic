@@ -56,3 +56,5 @@ az login
 ### [Azure MySQL](./AzureMySQL.md)
 - mysql-homepage
 - 예시로 사용하기 위한 MySQL 배포 및 구성
+
+- [예시 샘플 넣기](./SpringbootMySQLSample.md)
