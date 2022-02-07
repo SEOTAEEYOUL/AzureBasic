@@ -26,70 +26,6 @@ sudo service tomcat9 start
 # tomcat 상태 보기
 sudo service tomcat9 status
 ```
-### 수동 설치
-```
-wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.58.tar.gz -P /tmp
-sudo tar xf /tmp/apache-tomcat-9*.tar.gz -C /opt/tomcat
-sudo ln -sf /opt/tomcat/apache-tomcat-9.0.58 /opt/tomcat/latest
-sudo chown -RH tomcat: /opt/tomcat/latest
-sudo sh -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
-```
-
-
-## 서비스 구성
-- 서비스 파일 만들기
-```
-# Systemd Unit File 생성
-sudo vi /etc/systemd/system/tomcat.service
-```
-
-
-- tomcat.service
-```
-[Unit]
-Description=Tomcat 9 servlet container
-After=network.target
-
-[Service]
-Type=forking
-
-User=tomcat
-Group=tomcat
-
-Environment="JAVA_HOME=/usr/lib/jvm/default-java"
-Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom -Djava.awt.headless=true"
-
-Environment="CATALINA_BASE=/opt/tomcat/latest"
-Environment="CATALINA_HOME=/opt/tomcat/latest"
-Environment="CATALINA_PID=/opt/tomcat/latest/temp/tomcat.pid"
-Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
-
-ExecStart=/opt/tomcat/latest/bin/startup.sh
-ExecStop=/opt/tomcat/latest/bin/shutdown.sh
-
-[Install]
-WantedBy=multi-user.target
-```
-
-### tomcat 서비스 생성 알림
-```
-sudo systemctl daemon-reload
-```
-
-### tomcat 서비스 실행
-```
-sudo systemctl start tomcat
-```
-
-### tomcat 서비스 상태 확인
-```
-sudo systemctl status tomcat
-```
-
-### tomcat 서비스 자동 시작 설정
-```
-sudo systemctl enable tomcat
-```
 
 ## 방화벽
 ### 8080 허용 설정
@@ -108,7 +44,14 @@ sudo ufw disable
 apt-get install net-tools
 ```
 
-## tomcat webapps 디렉토리에 war 를 배포한 화면
+## tomcat webapps 디렉토리에 war 를 배포
+```
+azureuser@vm-skcc1-comdap1:~$ cd /var/lib/tomcat9/webapps
+azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo cp ~/SpringBootSample-0.0.1-SNAPSHOT.war .
+azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restart
+
+```
+### war 배포한 후 초기 화면
 ![tomcat9-webapps.png](./img/tomcat9-webapps.png)
 
 ## tomcat 기동
@@ -149,6 +92,9 @@ apt-get install net-tools
   <Host name="localhost"  appBase="webapps" unpackWARs="true" autoDeploy="true">
         <Context path="" docBase="SpringBootSample-0.0.1-SNAPSHOT" reloadable="false" />
   ```
+#### WAR 파일 배포 후 초기 화면
+##### http://vm-skcc-comdap1:8080/home.do
+![vm-skcc1-comdap1-home.do.png](./img/vm-skcc1-comdap1-home.do.png)
 
 ### tomcat/conf/server.xml 전문
 - server.xml

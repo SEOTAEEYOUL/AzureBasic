@@ -64,6 +64,43 @@
 ##### vm-skcc-comdpt1  
 ![vm-skcc1-comdpt1-가상머신만들기.png](./img/vm-skcc1-comdpt1-가상머신만들기.png)  
 
+### 생성 후 초기 작업
+#### Timezone 확인 및 변경(UTC -> Asia/Seoul)
+```
+timedatectl list-timezones | grep Seoul
+sudo timedatectl set-timezone Asia/Seoul
+```
+
+#### vi 설정(.vimrc)
+- root, azureuser 두군에 해 줌
+##### .vimrc
+편집시 색 표현되는 부분 제거
+```
+set autoindent
+set ts=4
+set sts=4
+set softtabstop=4
+set showmatch
+set tabstop=4
+set shiftwidth=4
+set sw=1
+set cindent
+set paste
+syntax off sh
+```
+
+##### .profile or .bashrc
+편집기를 vi 로 설정
+```
+set -o vi
+EDITOR=vi ; export EDITOR
+
+alias ls="ls -xF"
+alais rm="rm -i"
+```
+
+
+
 ##### vm-skcc1-comdap2
 ![vm-skcc1-comdap1-가상머신만들기.png](./img/vm-skcc1-comdap1-가상머신만들기.png)  
 
