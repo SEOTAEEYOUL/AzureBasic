@@ -70,7 +70,7 @@ Register-AzResourceProvider -ProviderNamespace Microsoft.DBforMySQL
 ![PE-skcc1homepagedevmysql-검토-만들기.png](./img/PE-skcc1homepagedevmysql-검토-만들기.png)  
 
 - 연결 문자열 : jdbc:mysql://mysql-homepage.mysql.database.azure.com:3306/tutorial
-- applicaton.properties
+- applicaton.properties 에 커넥션 정보 설정(# MySQL)
 ```
 server.port 8080
 
