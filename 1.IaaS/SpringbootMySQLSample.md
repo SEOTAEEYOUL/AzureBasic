@@ -1,5 +1,7 @@
 # Springboot MySQL Sample
 
+> [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
+
 ## Azure MySQL 접속 
 - 서버 이름 : mysql-homepage.mysql.database.azure.com
 - 서버 관리자 로그인 이름 : mysql@mysql-homepage
@@ -17,13 +19,30 @@ create database tutorial default character set utf8;
 ```
 
 ### 사용자 만들기
+#### tutorial database 의 로컬 접속 사용자 만들기
 ```
 create user 'tutorial'@'localhost' identified by 'tutorial';
 ```
 
+#### tutorial database 의 로컬 및 리모트 접속 사용자 만들기
+```
+create user 'tutorial'@'%' identified by 'tutorial';
+```
+
 ### 권한 주기
+
+#### tutorial database 를 로컬 접속 가능하도록 tutorial user 에게 권한 주기
 ```
 grant all privileges on tutorial.* to 'tutorial'@'localhost';
+```
+
+#### tutorial database 를 로컬 및 리모트에서도 접속 가능하도록 설정
+```
+grant all privileges on tutorial.* to 'tutorial'@'%' identified by 'tutorial';
+```
+#### 권한 변경 사항 저장
+```
+flush privileges;
 ```
 
 ### Table 만들기
@@ -115,6 +134,13 @@ Query OK, 0 rows affected (0.02 sec)
 mysql> grant all privileges on tutorial.* to 'tutorial'@'localhost';
 Query OK, 0 rows affected, 1 warning (0.02 sec)
 
+mysql> grant all privileges on tutorial.* to 'tutorial'@'%';
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+mysql> flush privileges
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
 mysql> use tutorial
 Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
@@ -148,4 +174,44 @@ mysql> select * from books ;
 mysql> exit
 Bye
 azureuser@vm-skcc1-comdap1:~$
+```
+
+```
+PS C:\Program Files\MariaDB 10.8\data> mysql -u root -p
+Enter password: *******
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Program Files\MariaDB 10.8\data> mysql -u root -p
+Enter password: ********
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 6
+Server version: 5.7.36-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> create user 'tutorial'@'%' identified by 'tutorial';
+ERROR 1396 (HY000): Operation CREATE USER failed for 'tutorial'@'%'
+MySQL [(none)]>  show grants for 'tutorial'@'%';
++-----------------------------------------------------------------+
+| Grants for tutorial@%                                           |
++-----------------------------------------------------------------+
+| GRANT ALL PRIVILEGES ON *.* TO 'tutorial'@'%' WITH GRANT OPTION |
+| GRANT ALL PRIVILEGES ON `tutorial`.* TO 'tutorial'@'%'          |
++-----------------------------------------------------------------+
+2 rows in set (0.000 sec)
+
+MySQL [(none)]> drop user 'tutorial';
+Query OK, 0 rows affected (0.001 sec)
+
+MySQL [(none)]> create user 'tutorial'@'%' identified by 'tutorial';
+Query OK, 0 rows affected (0.000 sec)
+
+MySQL [(none)]> grant all privileges on tutorial.* to 'tutorial'@'%' identified by 'tutorial';
+Query OK, 0 rows affected, 1 warning (0.000 sec)
+
+MySQL [(none)]> flush privileges;
+Query OK, 0 rows affected (0.002 sec)
+
+MySQL [(none)]>
 ```

@@ -5,15 +5,6 @@
 <img src=./img/mysql_logo.png width=500 height=270>
 
 
-## SKU
-| SKU | 분류 | 스펙 | 가격/월 | 비고 |  
-|:---|:---|:---|:---|:---|
-| B_Gen5_1 | 기본 | 5세대, 1 vCore | US$37.96 |사용 가능한 가장 작은 SKU, 단일 서버 </br> **Private Endpoint 생성 불가** | 
-| GP_Gen5_2 | 범용 | 5세대, 2 vCore | US$176.37 | |
-| GP_Gen5_32 | 범용 | 5세대, 32 vCore | US$2,821.89 | |
-| MO_Gen5_2 | 메모리 최적화 | 5세대, 2 vCore | US$207.03 | |
-| MO_Gen5_4 | 메모리 최적화 | 5세대, 4 vCore | US$414.06 | |
-
 ## Portal 
 ### 홈 > MySQL 서버 만들기
 #### 기본
@@ -27,6 +18,15 @@
   - 관리자 사용자 이름 : mysql
   - 암호 : *******
 ![mysql-homepage-dev-검토+만들기.png](./img/mysql-homepage-dev-검토+만들기.png)
+
+##### SKU
+| SKU | 분류 | 스펙 | 가격/월 | 비고 |  
+|:---|:---|:---|:---|:---|
+| B_Gen5_1 | 기본 | 5세대, 1 vCore | US$37.96 |사용 가능한 가장 작은 SKU, 단일 서버 </br> **Private Endpoint 생성 불가** | 
+| GP_Gen5_2 | 범용 | 5세대, 2 vCore | US$176.37 | |
+| GP_Gen5_32 | 범용 | 5세대, 32 vCore | US$2,821.89 | |
+| MO_Gen5_2 | 메모리 최적화 | 5세대, 2 vCore | US$207.03 | |
+| MO_Gen5_4 | 메모리 최적화 | 5세대, 4 vCore | US$414.06 | |
 
 ### 홈 > Private Link 센터 : 프라이빗 엔트포이트 > 프라이빗 엔드포인트 만들기
 #### 기본사항
