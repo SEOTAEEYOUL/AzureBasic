@@ -122,6 +122,8 @@ $tags = @{
   personalInformation='no'
 }
 
+Write-Host "- SKU : B_Gen5_1"
+Write-Host "- SKU : GP_Gen5_2"
 Write-Host "- 최소 스토리지 : 5120"
 Write-Host "- 서버백업 지역 중복 사용 여부 : Disabled"
 New-AzMySqlServer `
@@ -191,31 +193,41 @@ az extension add --name db-up
 ```
 
 ### 생성
-```powershell
-az account set --subscription <subscription id>
-az group create `
-  --name rg-skcc1-homepage-dev `
-  --location koreacentral
-az mysql server create `
-  --resource-group myresourcegroup `
-  --name mydemoserver `
-  --location westus `
-  --admin-user myadmin `
-  --admin-password <server_admin_password> `
-  --sku-name GP_Gen5_2
+```bash
+groupName='rg-skcc1-homepage-dev'
+locationName='koreacentral'
+mysqlName='mysql-homepage'
+mysqlSKU='GP_Gen5_2'
+# mysqlSKU='B_Gen5_1'
+mysqlStorageSize=5120
+mysqlAdminUser='mysql'
+mysqlAdminPassword='dlatl!00'
+
+startIpAddress='10.0.1.4'
+endIpAddress='10.0.1.15'
+
+az mysql server create \
+  --resource-group $groupName \
+  --name $mysqlName \
+  --location $locationName \
+  --sku-name GP_Gen5_2 \
+  --storage-size $mysqlStorageSize \
+  --admin-user $mysqlAdminUser \
+  --admin-password $mysqlAdminPassword \
+  | jq
 
 ## 방화벽
-az mysql server firewall-rule create `
-  --resource-group myresourcegroup `
-  --server mydemoserver `
-  --name AllowMyIP `
-  --start-ip-address 192.168.0.1 `
-  --end-ip-address 192.168.0.1
+az mysql server firewall-rule create \
+  --resource-group $groupName \
+  --server $mysqlName \
+  --name AllowMyIP \
+  --start-ip-address $startIpAddress \
+  --end-ip-address $endIpAddress
 
 ## 연결정보 가져오기
-az mysql server show `
-  --resource-group myresourcegroup `
-  --name mydemoserver
+az mysql server show \
+  --resource-group $groupName \
+  --name $mysqlName
 ```
 ### private endpoint 만들기
 ```bash
