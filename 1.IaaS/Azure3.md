@@ -54,5 +54,5 @@ az login
 #### [Tomcat 구성](./Tomcat.md)
 - 예시로 사용하기 위한 Tomcat 설치 및 구성
 ### [Azure MySQL](./AzureMySQL.md)
-- mysql-homepage-dev
+- mysql-homepage
 - 예시로 사용하기 위한 MySQL 배포 및 구성

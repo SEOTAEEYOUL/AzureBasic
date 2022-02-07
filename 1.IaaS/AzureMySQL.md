@@ -75,8 +75,8 @@ Register-AzResourceProvider -ProviderNamespace Microsoft.DBforMySQL
 server.port 8080
 
 
-# MariaDB
-spring.datasource.driverClassName=org.mariadb.jdbc.Driver
+# MySQL
+spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://mysql-homepage.mysql.database.azure.com:3306/tutorial
 spring.datasource.username=tutorial
 spring.datasource.password=tutorial
@@ -90,22 +90,6 @@ spring.mvc.view.prefix=/WEB-INF/jsp/
 spring.mvc.view.suffix=.jsp
 
 ```
-
-
-# MariaDB
-spring.datasource.driverClassName=org.mariadb.jdbc.Driver
-spring.datasource.url=jdbc:mysql://mysql-homepage.mysql.database.azure.com:3306/tutorial
-spring.datasource.username=tutorial
-spring.datasource.password=tutorial
-
-# JSP
-# JSP 수정시 서버 재시작없이 바로 적용될 수 있게 설정(개발, 테스트 용)
-# server.servlet.jsp.init-parameters.development=true
-devtools.livereload.enabled=true
-
-spring.mvc.view.prefix=/WEB-INF/jsp/
-spring.mvc.view.suffix=.jsp
-
 
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
