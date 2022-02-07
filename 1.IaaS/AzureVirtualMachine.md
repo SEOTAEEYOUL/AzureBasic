@@ -96,13 +96,22 @@ set -o vi
 EDITOR=vi ; export EDITOR
 
 alias ls="ls -xF"
-alais rm="rm -i"
+alias rm="rm -i"
+```
+
+##### mysql client 설치하기(5.7 은 ubuntu 18.04 에 설치 가능, 20.04(x))
+```
+sudo apt-cache policy mysql-server
+sudo apt install mysql-client-core-5.7
+sudo apt install -s mysql-client=5.7.37-0ubuntu0.18.04.
 ```
 
 
 
 ##### vm-skcc1-comdap2
 ![vm-skcc1-comdap1-가상머신만들기.png](./img/vm-skcc1-comdap1-가상머신만들기.png)  
+
+---
 
 ## Script 로 VM 생성시 사전 작업
 ### [NSG 만들기](./bash/create-nsg.sh)

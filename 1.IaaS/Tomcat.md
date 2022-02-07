@@ -12,13 +12,13 @@
 sudo apt update
 
 # OpenJDK 설치
-sudo apt install default-jdk
+sudo apt install default-jdk -y
 
 # Tomcat 사용자 생성
 sudo useradd -r -m -U -d /opt/tomcat -s /bin/false tomcat
 
 # Tomcat 설치
-sudo apt install tomcat9
+sudo apt install tomcat9 -y
 
 # tomcat 시작
 sudo service tomcat9 start
@@ -26,6 +26,8 @@ sudo service tomcat9 start
 # tomcat 상태 보기
 sudo service tomcat9 status
 ```
+### 설치된 초기 화면
+![vm-skcc1-comdap1-tomcat9-초기화면.png](./img/vm-skcc1-comdap1-tomcat9-초기화면.png)  
 
 ## 방화벽
 ### 8080 허용 설정
@@ -41,52 +43,23 @@ sudo ufw disable
 ## 도구 설치
 ### netstat 등 도구 설치
 ```
-apt-get install net-tools
+sudo apt install net-tools
 ```
 
 ## tomcat webapps 디렉토리에 war 를 배포
+### WAR 파일 복사
 ```
 azureuser@vm-skcc1-comdap1:~$ cd /var/lib/tomcat9/webapps
 azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo cp ~/SpringBootSample-0.0.1-SNAPSHOT.war .
 azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restart
 
 ```
-### war 배포한 후 초기 화면
-![tomcat9-webapps.png](./img/tomcat9-webapps.png)
-
-## tomcat 기동
-![tomcat-9.png](./img/tomcat9.png)
-
-## WAR 배포 후 "localhost:8080" 접속 초기 화면
-![tomcat-9-browser.png](./img/tomcat9-browser.png)
-
-## AJP 설정
-
-### Connector port="8080" 주석(안해도 됨)
-```xml
-    <!-- Connector port="8080" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               redirectPort="8443" / -->
- 
+### WAR 사용 설정 (Spring Boot Application)
+#### server.xml 위치로 이동
+```bash
+cd /etc/tomcat9
+vi server.xml
 ```
-### AJP 설정의 주석 해제
-- address 를 삭제하거나 address를 localhost 로 설정
-- 아래 설정에서는 제거
-- address="localhost"
-- server.xml
-  ```xml
-      <Connector protocol="AJP/1.3"              
-               secretRequired="false"
-               port="8009"               
-               redirectPort="8443" />
-  ```
-### localhost 에 대해서 jvmRoute 옵션 추가
-- apache 의 workers.properties 와 동일명 기술
-- server.xml
-  ```xml
-  <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
-  ```
-### WAR 배포 설정 (Spring Boot Application)
 - 확장자(.war)를 제외한 부분을 아래와 같이 기술
   ```xml
   <Host name="localhost"  appBase="webapps" unpackWARs="true" autoDeploy="true">
@@ -96,7 +69,7 @@ azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restar
 ##### http://vm-skcc-comdap1:8080/home.do
 ![vm-skcc1-comdap1-home.do.png](./img/vm-skcc1-comdap1-home.do.png)
 
-### tomcat/conf/server.xml 전문
+### /etc/tomcat9/server.xml 전문
 - server.xml
   ```xml
   <?xml version="1.0" encoding="UTF-8"?>
@@ -125,7 +98,7 @@ azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restar
     <!-- Security listener. Documentation at /docs/config/listeners.html
     <Listener className="org.apache.catalina.security.SecurityListener" />
     -->
-    <!-- APR library loader. Documentation at /docs/apr.html -->
+    <!--APR library loader. Documentation at /docs/apr.html -->
     <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
     <!-- Prevent memory leaks due to use of particular java/javax APIs-->
     <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
@@ -177,10 +150,11 @@ azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restar
                 connectionTimeout="20000"
                 redirectPort="8443" />
       -->
-      <!-- Define an SSL/TLS HTTP/1.1 Connector on port 8443
+      <!-- Define a SSL/TLS HTTP/1.1 Connector on port 8443
           This connector uses the NIO implementation. The default
           SSLImplementation will depend on the presence of the APR/native
-          library and the useOpenSSL attribute of the AprLifecycleListener.
+          library and the useOpenSSL attribute of the
+          AprLifecycleListener.
           Either JSSE or OpenSSL style configuration may be used regardless of
           the SSLImplementation selected. JSSE style configuration is used below.
       -->
@@ -193,7 +167,7 @@ azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restar
           </SSLHostConfig>
       </Connector>
       -->
-      <!-- Define an SSL/TLS HTTP/1.1 Connector on port 8443 with HTTP/2
+      <!-- Define a SSL/TLS HTTP/1.1 Connector on port 8443 with HTTP/2
           This connector uses the APR/native implementation which always uses
           OpenSSL for TLS.
           Either JSSE or OpenSSL style configuration may be used. OpenSSL style
@@ -213,10 +187,10 @@ azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restar
       -->
 
       <!-- Define an AJP 1.3 Connector on port 8009 -->
-      <Connector protocol="AJP/1.3"              
-                secretRequired="false"
-                port="8009"               
-                redirectPort="8443" />
+      <!--
+      <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+      -->
+
 
       <!-- An Engine represents the entry point (within Catalina) that processes
           every request.  The Engine implementation for Tomcat stand alone
@@ -227,10 +201,7 @@ azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restar
       <!-- You should set jvmRoute to support load-balancing via AJP ie :
       <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
       -->
-      <!--
-      <Engine name="Catalina" defaultHost="localhost">     
-      -->
-      <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
+      <Engine name="Catalina" defaultHost="localhost">
 
         <!--For clustering, please take a look at documentation at:
             /docs/cluster-howto.html  (simple how to)
@@ -250,8 +221,10 @@ azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restar
                 resourceName="UserDatabase"/>
         </Realm>
 
-        <Host name="localhost"  appBase="webapps" unpackWARs="true" autoDeploy="true">
+        <Host name="localhost"  appBase="webapps"
+              unpackWARs="true" autoDeploy="true">
           <Context path="" docBase="SpringBootSample-0.0.1-SNAPSHOT" reloadable="false" />
+
           <!-- SingleSignOn valve, share authentication between web applications
               Documentation at: /docs/config/valve.html -->
           <!--
@@ -269,4 +242,33 @@ azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo service tomcat9 restar
       </Engine>
     </Service>
   </Server>
+  ```
+## WAR 배포 후 "localhost:8080" 접속 초기 화면
+![tomcat-9-browser.png](./img/tomcat9-browser.png)
+
+## AJP 설정
+
+### Connector port="8080" 주석(안해도 됨)
+```xml
+    <!-- Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" / -->
+ 
+```
+### AJP 설정의 주석 해제
+- address 를 삭제하거나 address를 localhost 로 설정
+- 아래 설정에서는 제거
+- address="localhost"
+- server.xml
+  ```xml
+      <Connector protocol="AJP/1.3"              
+               secretRequired="false"
+               port="8009"               
+               redirectPort="8443" />
+  ```
+### localhost 에 대해서 jvmRoute 옵션 추가
+- apache 의 workers.properties 와 동일명 기술
+- server.xml
+  ```xml
+  <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
   ```
