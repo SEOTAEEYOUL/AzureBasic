@@ -1,7 +1,7 @@
 # [Azure Application Gateway란?](https://docs.microsoft.com/ko-kr/azure/application-gateway/overview)  
 웹 애플리케이션에 대한 트래픽을 관리할 수 있도록 하는 웹 트래픽 부하 분산 장치  
 
-![../0.ENV/azure/application-gateway.png](../0.ENV/azure/application-gateway.png)  
+<img src=../0.ENV/azure/application-gateway.png width=200 height=300>
 
 
 > [빠른 시작: Azure PowerShell을 사용하여 Azure Application Gateway를 통해 웹 트래픽 보내기](https://docs.microsoft.com/ko-kr/azure/application-gateway/quick-create-powershell)  
@@ -10,7 +10,82 @@
 ![application-gateway-qs-resources.png](./img/application-gateway-qs-resources.png)
 
 
-## Portal
+## Portal | 홈 > 애플리케이션 게이트웨이 만들기
+### 1. 기본 사항
+#### 프로젝트 정보
+- 리소스 그룹: rg-skcc1-network-dev
+
+#### 인스턴스 정보
+- 게이트웨이 이름 : skcc1-homepage-dev-appgw
+- 지역 : Korea Central
+- 자동 크기 조정 : 예
+- 최소 인스턴스 수 : 0
+- 최대 인스턴스 수 : 10
+- 가용성 영역 : 없음
+- HTTP2 : 사용 않 함
+#### 가상 네트워크 구성
+- 가상 네트워크 : vnet-network-dev
+- 서브넷 : snet-skcc1-network-frontend(10.21.0.0./27)
+![skcc-homepage-dev-appgw-기본사항.png](./img/skcc-homepage-dev-appgw-기본사항.png)  
+
+### 2. 프런트 엔드
+#### 프런트 엔드 IP 형식 : 공용
+#### 공용 IP 주소 : (신규)skcc1-homepage-appgw-pip
+
+![./img/skcc-homepage-dev-appgw-프런트엔드.png](./img/skcc-homepage-dev-appgw-프런트엔드.png)
+
+### 3. 백 엔드
+#### 백엔드 풀 추가
+- 이름 : appgw-homepage-ap1-network-bepool
+- 대상 없이 백 엔드 풀 추가 : 아니오
+- 백 엔드 대상
+  - 대상 유형 : IP 주소 또는 FQDN
+  - 대상 : 10.0.1.6
+![skcc-homepage-dev-appgw-백엔드-백엔드풀추가.png](./img/skcc-homepage-dev-appgw-백엔드-백엔드풀추가.png)  
+![skcc-homepage-dev-appgw-백엔드.png](./img/skcc-homepage-dev-appgw-백엔드.png)  
+
+
+### 4. 구성  
+프런트 엔드 및 백 엔드 풀을 연결  
+#### 회람 규칙 추가
+- 규칙 이름 : appgw-homepage-pt-lz-prd-rule1-http  
+- 수신기
+  - 수신기 이름 : www.nodespringboot.org
+  - 프런트 엔드 IP : 공용
+  - 프로토콜 : HTTP
+  - 포트 : 80
+- 추가 설정
+  - 수신기 유형 : 기본
+  - 오류 페이지 URL : 아니오
+![appgw-homepage-pt-lz-prd-rule1-http-회람규칙추가-수신기.png](./img/appgw-homepage-pt-lz-prd-rule1-http-회람규칙추가-수신기.png)
+
+#### 백 엔드 대상 
+- 대상 유형 : 백 엔드 풀
+- 백 엔드 대상 : 
+- HTTP 설정 > 새로 추가 : 
+![appgw-homepage-pt-lz-prd-rule1-http-회람규칙추가-백엔드대상.png](./img/appgw-homepage-pt-lz-prd-rule1-http-회람규칙추가-백엔드대상.png)  
+##### HTTP 설정 추가
+- HTTP 설정 이름 : www.nodespringboot.org
+![appgw-homepage-pt-lz-prd-rule1-http-회람규칙추가-백엔드대상-HTTP 설정 추가.png](./img/appgw-homepage-pt-lz-prd-rule1-http-회람규칙추가-백엔드대상-HTTP 설정 추가.png)
+#### 회람 규칙 추가 결과
+![appgw-homepage-pt-lz-prd-rule1-http-회람규칙추가.png](./img/appgw-homepage-pt-lz-prd-rule1-http-회람규칙추가.png) 
+
+![skcc-homepage-dev-appgw-구성.png](./img/skcc-homepage-dev-appgw-구성.png)
+
+
+### 태그
+### 검토 + 만들기
+만드는데 수 분이 소요됨
+![skcc-homepage-dev-appgw-검토+만들기.png](./img/skcc-homepage-dev-appgw-검토+만들기.png)  
+
+### 배포된 Application Gateway 확인 및 접속
+#### 배포 결과 조회
+![skcc1-homepage-dev-appgw.png](./img/skcc1-homepage-dev-appgw.png)  
+
+#### 백엔드 서비스 연결 확인
+![skcc1-homepage-appgw-접속화면.png](./img/skcc1-homepage-appgw-접속화면.png)
+
+
 
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
@@ -19,8 +94,8 @@
 
 ### 변수 설정
 ```powershell
-$resourceGroup = "rg-skcc-ag"
-$location = "koreacentral"
+$groupName = "rg-skcc1-network-dev"
+$locationName = "koreacentral"
 
 # $agName = "Standard_v2" 
 # $agTier = "Standard_v2"
@@ -29,7 +104,7 @@ $agName = "Standard"
 $agTier = "Standard"
 $agCapacity = 1 
 
-$agSubnetName = "snet-skcc-ag"
+$agSubnetName = "snet-skcc1-network-frontend"
 $agSubnetPrefix = "10.21.0.0/24"
 $bacendSubnetName = "snet-skcc-backend"
 $bacendSubnetPrefix = "10.21.1.0/24"
@@ -37,7 +112,7 @@ $bacendSubnetPrefix = "10.21.1.0/24"
 $agVnetName = "vnet-skcc-ag"
 $agVnetPrefix = "10.21.0.0/16"
 
-$agPulicIPName = "pip-ag"
+$agPulicIPName = "skcc1-homepage-appgw-pip"
 
 $agIPConfigName = "ag-ip-cfg"
 $agFrontendIPConfigName = "ag-fe-cfg"

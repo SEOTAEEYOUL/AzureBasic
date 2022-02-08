@@ -46,7 +46,7 @@ az login
 - vm-skcc1-comdpt1
 - vm-skcc1-comdap1
 #### [VM접속](./VM접속.md)  
-- 서버 생성시 만든 pem 파일로 window, linux 에서 접속 하는 방법 속개
+- 서버 생성시 만든 pem 파일로 window, linux 에서 접속 하는 방법 소개
 
 #### [Apache 구성](./Apache.md)
 - 예시로 사용하기 위한 Apache 설치 및 구성

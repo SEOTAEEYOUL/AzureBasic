@@ -18,7 +18,13 @@
 - frontend subnet : snet-skcc1-network-frontend
 
 ## [Azure Application Gateway](./AzureApplicationGateway.md)
-- skcc-homepage-prd-appgw
+웹 애플리케이션 앞단에서 Traffic 을 관리하는 Web Traffic 부하 분산 장치  
+URL 기반으로 Backend Pool 로 부하 분산 가능  
+WAF, SSL Termination (SSL Offload) 요건이 있는 경우 사용  
+- skcc1-homepage-dev-appgw
 - rule 설정  
 
 ## [App Service Domain](./AzureAppServiceDomain.md)  
+Azure에서 직접 관리하는 사용자 지정 도메인 생성  
+Azure DNS 
+- nodespringboot.net
