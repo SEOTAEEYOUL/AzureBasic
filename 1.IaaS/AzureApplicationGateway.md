@@ -120,7 +120,7 @@ $agFrontendIPConfigName = "ag-fe-cfg"
 $agFrontendPortName = "ag-fe-port"
 
 $agBackendPoolName = "appgw-homepage-ap1-network-bepool"
-$agBackendPoolSettingsName = "www.nodespringboot.org" 
+$agBackendHttpPoolSettingsName = "www.nodespringboot.org" 
 
 $agListenerName = "www.nodespringboot.org"
 $agFrontendRule1Name = "appgw-homepage-pt-lz-prd-rule1-http"
@@ -208,7 +208,7 @@ $frontendport = New-AzApplicationGatewayFrontendPort `
 $backendPool = New-AzApplicationGatewayBackendAddressPool `
   -Name $agBackendPoolName
 $poolSettings = New-AzApplicationGatewayBackendHttpSetting `
-  -Name $agBackendPoolSettingsName `
+  -Name $agBackendHttpPoolSettingsName `
   -Port 80 `
   -Protocol Http `
   -CookieBasedAffinity Enabled `
