@@ -4,6 +4,7 @@
 <img src=../0.ENV/azure/application-gateway.png width=200 height=300>
 
 
+> [빠른 시작: Azure Application Gateway를 통해 웹 트래픽 보내기 - Azure Portal](https://docs.microsoft.com/ko-kr/azure/application-gateway/quick-create-portal)
 > [빠른 시작: Azure PowerShell을 사용하여 Azure Application Gateway를 통해 웹 트래픽 보내기](https://docs.microsoft.com/ko-kr/azure/application-gateway/quick-create-powershell)  
 > [Azure Application Gateway 및 Web Application Firewall의 가격 책정 이해](https://docs.microsoft.com/ko-kr/azure/application-gateway/understanding-pricing)  
 
