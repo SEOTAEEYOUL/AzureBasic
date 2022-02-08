@@ -234,15 +234,23 @@ Server built:   2022-01-05T14:50:41
    - "10080" 과 포트의 경우 브라우저에서 막음으로 아래의 테스트로 열려 있어도 브라우저에서 별도의 조치를 해야 사용할 수 있음으로 피하는 것이 좋음
    ![network-watcher-nsg진단.png](./img/network-watcher-nsg진단.png)
 ### Document Root 지정
-#### http.conf
-  ```
-  Define SRVROOT "/var/"
-  
-  ServerRoot "${SRVROOT}"
-  .
-  .
-  .
-  Listen 8080
+#### /etc/apache2/ports.conf
+  ```conf
+  # If you just change the port or add more ports here, you will likely also
+  # have to change the VirtualHost statement in
+  # /etc/apache2/sites-enabled/000-default.conf
+
+  Listen 80
+
+  <IfModule ssl_module>
+          Listen 443
+  </IfModule>
+
+  <IfModule mod_gnutls.c>
+          Listen 443
+  </IfModule>
+
+  # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
   ```
 
 ### Tomcat 연동 설정(AJP 1.3)
