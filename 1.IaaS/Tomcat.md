@@ -283,12 +283,6 @@ sudo service tomcat9 restart
                port="8009"               
                redirectPort="8443" />
   ```
-### localhost 에 대해서 jvmRoute 옵션 추가
-- apache 의 workers.properties 와 동일명 기술
-- server.xml
-  ```xml
-  <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
-  ```
 
 ### TroubleShooting
 
@@ -315,6 +309,29 @@ root@vm-skcc1-comdap1:/var/lib/tomcat9/webapps/SpringBootSample-0.0.1-SNAPSHOT/W
 root@vm-skcc1-comdap1:/var/lib/tomcat9/webapps/SpringBootSample-0.0.1-SNAPSHOT/WEB-INF/lib# ls -lt mysql*
 -rw-r----- 1 tomcat tomcat 2475087 Feb  6 23:29 mysql-connector-java-8.0.26.jar
 ```
+
+#### .war 패키지를 새로 빌드
+1. pom.xml 에서 mysql 버전 지정(8.0.26)
+  ```xml
+		<!--  for mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+			<version>8.0.26</version>
+		</dependency>
+  ```
+2. pom.xml 에서 tomcat embed 제거
+  ```xml
+		<!-- 
+		# java.lang.ClassNotFoundException # Licensed to the Apache Software Foundateion (ASF) under one or more : 임시 조치 
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+		</dependency>
+		-->
+  ```
+
 #### (???)
 ```
 apt install p7zip p7zip-full
