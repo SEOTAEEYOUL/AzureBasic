@@ -3,7 +3,7 @@
 
 * [우분투 Apache+Tomcat 연동](https://goyunji.tistory.com/93)
 
-<img src=./img/apache-http.png width=200 height=100 />
+<img src=./img/apache-http.png width=300 height=100 />
 
 ## Ubuntu 서버 방화벽 끄기
 ```bash

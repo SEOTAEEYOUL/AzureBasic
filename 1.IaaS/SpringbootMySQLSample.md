@@ -3,6 +3,8 @@
 > [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)  
 > [Azure Database for MySQL에서 Spring Data JDBC 사용](https://docs.microsoft.com/ko-kr/azure/developer/java/spring-framework/configure-spring-data-jdbc-with-azure-mysql)  
 
+<img src=./img/springboot-log.png width=300>
+
 ## Azure MySQL 접속 
 - 서버 이름 : mysql-homepage.mysql.database.azure.com
 - 서버 관리자 로그인 이름 : mysql@mysql-homepage

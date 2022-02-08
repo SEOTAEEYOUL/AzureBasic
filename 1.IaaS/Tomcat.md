@@ -7,7 +7,7 @@
 
 > [Tomcat Version](https://tomcat.apache.org/) : "9.0.58", "10.0.14"
 
-<img src=./img/Apache_Tomcat_Logo.png width=500 heigth=270>
+<img src=./img/Apache_Tomcat_Logo.png width=350>
 
 ## 설치
 ```

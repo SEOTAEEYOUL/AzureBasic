@@ -3,7 +3,7 @@
 > [Azure Database for MySQL에서 Spring Data JDBC 사용](https://docs.microsoft.com/ko-kr/azure/developer/java/spring-framework/configure-spring-data-jdbc-with-azure-mysql?toc=/azure/mysql/toc.json&bc=/azure/bread/toc.json)  
 > [Azure Database for MySQL에 대한 Private Link](https://docs.microsoft.com/ko-kr/azure/mysql/concepts-data-access-security-private-link)  
 
-<img src=./img/mysql_logo.png width=500 height=270>
+<img src=./img/mysql_logo.png width=300>
 
 
 ## Portal 
