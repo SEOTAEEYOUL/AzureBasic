@@ -290,9 +290,32 @@ sudo service tomcat9 restart
   <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
   ```
 
-### TroubleShooting(?)
+### TroubleShooting
+
+> [스프링부트 mysql, JSP 의존성 관련 cafe24 웹호스팅 500 에러](https://velog.io/@ino5/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-mysql-JSP-%EC%9D%98%EC%A1%B4%EC%84%B1-%EA%B4%80%EB%A0%A8-cafe24-%EC%9B%B9%ED%98%B8%EC%8A%A4%ED%8C%85-500-%EC%97%90%EB%9F%AC)
 > [EAP 7.3: java.lang.ClassNotFoundException: # Licensed to the Apache Software Foundation (ASF) under one or more - only in standalone mode](https://stackoverflow.com/questions/66802142/eap-7-3-java-lang-classnotfoundexception-licensed-to-the-apache-software-fou)
 
+#### 배포된 파일에 대한 작업
+##### tomcat embed 제거
+```
+root@vm-skcc1-comdap1:/var/lib/tomcat9/webapps/SpringBootSample-0.0.1-SNAPSHOT/WEB-INF/lib# ls -lt tomcat*
+-rw-r----- 1 tomcat tomcat  651779 Dec 28 20:41 tomcat-embed-jasper-9.0.56.jar
+-rw-r----- 1 tomcat tomcat 3435648 Dec 28 20:41 tomcat-embed-core-9.0.56.jar
+-rw-r----- 1 tomcat tomcat  257042 Dec 28 20:41 tomcat-embed-el-9.0.56.jar
+root@vm-skcc1-comdap1:/var/lib/tomcat9/webapps/SpringBootSample-0.0.1-SNAPSHOT/WEB-INF/lib# rm tomcat*.jar
+root@vm-skcc1-comdap1:/var/lib/tomcat9/webapps/SpringBootSample-0.0.1-SNAPSHOT/WEB-INF/lib# 
+```
+
+##### jdbc library 추가
+- mysql 8.0.27 이하를 써야 하므로 기존 라이브러리 삭제
+- mysql 8.0.26 버전을 복사
+```
+root@vm-skcc1-comdap1:/var/lib/tomcat9/webapps/SpringBootSample-0.0.1-SNAPSHOT/WEB-INF/lib# rm -f mysql*.jar
+root@vm-skcc1-comdap1:/var/lib/tomcat9/webapps/SpringBootSample-0.0.1-SNAPSHOT/WEB-INF/lib# cp ~azureuser/mysql-connector-java-8.0.26.jar .
+root@vm-skcc1-comdap1:/var/lib/tomcat9/webapps/SpringBootSample-0.0.1-SNAPSHOT/WEB-INF/lib# ls -lt mysql*
+-rw-r----- 1 tomcat tomcat 2475087 Feb  6 23:29 mysql-connector-java-8.0.26.jar
+```
+#### (???)
 ```
 apt install p7zip p7zip-full
 ```

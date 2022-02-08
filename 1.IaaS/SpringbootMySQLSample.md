@@ -1,10 +1,12 @@
 # Springboot MySQL Sample
 
-> [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
+> [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)  
+> [Azure Database for MySQL에서 Spring Data JDBC 사용](https://docs.microsoft.com/ko-kr/azure/developer/java/spring-framework/configure-spring-data-jdbc-with-azure-mysql)  
 
 ## Azure MySQL 접속 
 - 서버 이름 : mysql-homepage.mysql.database.azure.com
 - 서버 관리자 로그인 이름 : mysql@mysql-homepage
+- Sample Database 로그인 이름 : tutorial@mysql-homepage
 - MySQL 버전 : 5.7
 
 ### 접속
@@ -215,3 +217,30 @@ Query OK, 0 rows affected (0.002 sec)
 
 MySQL [(none)]>
 ```
+
+## Spring
+```
+server.port=8080
+
+# MySQL
+
+logging.level.org.springframework.jdbc.core=DEBUG
+
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://mysql-homepage.mysql.database.azure.com:3306/tutorial
+spring.datasource.username=tutorial@mysql-homepage
+spring.datasource.password=tutorial
+
+ spring.datasource.initialization-mode=always
+
+# JSP
+# JSP 수정시 서버 재시작없이 바로 적용될 수 있게 설정(개발, 테스트 용)
+devtools.livereload.enabled=true
+
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
+# spring.mvc.view.suffix=.do
+```
+## Tomcat 화면
+![vm-skcc1-comdap1-home.do.png](./img/vm-skcc1-comdap1-home.do.png)
+![vm-skcc1-comdap1-books.do.png](./img/vm-skcc1-comdap1-books.do.png)

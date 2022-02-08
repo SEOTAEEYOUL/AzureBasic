@@ -64,7 +64,7 @@ server.port 8080
 # MySQL
 spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://mysql-homepage.mysql.database.azure.com:3306/tutorial
-spring.datasource.username=tutorial
+spring.datasource.username=tutorial@mysql-homepage
 spring.datasource.password=tutorial
 
 # JSP
