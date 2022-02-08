@@ -110,7 +110,7 @@ $agSubnetPrefix = "10.21.0.0/24"
 $bacendSubnetName = "snet-skcc-backend"
 $bacendSubnetPrefix = "10.21.1.0/24"
 
-$agVnetName = "vnet-skcc-ag"
+$agVnetName = "vnet-network-dev"
 $agVnetPrefix = "10.21.0.0/16"
 
 $agPulicIPName = "skcc1-homepage-appgw-pip"
@@ -119,13 +119,13 @@ $agIPConfigName = "ag-ip-cfg"
 $agFrontendIPConfigName = "ag-fe-cfg"
 $agFrontendPortName = "ag-fe-port"
 
-$agBackendPoolName = "ag-be-pool"
-$agBackendPoolSettingsName = "ag-be-http-setting" 
+$agBackendPoolName = "appgw-homepage-ap1-network-bepool"
+$agBackendPoolSettingsName = "www.nodespringboot.org" 
 
-$agListenerName = "ag-listener"
-$agFrontendRule1Name = "ag-fe-rule1"
+$agListenerName = "www.nodespringboot.org"
+$agFrontendRule1Name = "appgw-homepage-pt-lz-prd-rule1-http"
 
-$appGatewayName = "ag-skcc"
+$appGatewayName = "skcc1-homepage-dev-appgw"
 ```
 
 ### 리소스 그룹 만들기
