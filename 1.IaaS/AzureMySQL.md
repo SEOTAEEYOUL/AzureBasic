@@ -51,11 +51,14 @@
   - 프라이빗 DNS 영역과 통합 : 예
   - 구성이름 : privatelink-mysql-database-azure-com
   - 리소스 그룹 : rg-skcc1-homepage-dev
+
+#### 태그
 #### 검토 + 만들기  
 
 ![PE-skcc1homepagedevmysql-검토-만들기.png](./img/PE-skcc1homepagedevmysql-검토-만들기.png)  
 
 - 연결 문자열 : jdbc:mysql://mysql-homepage.mysql.database.azure.com:3306/tutorial
+- 접속 ID : tutorial@mysql-homepage
 - applicaton.properties 에 커넥션 정보 설정(# MySQL)
 ```
 server.port 8080
@@ -74,8 +77,53 @@ devtools.livereload.enabled=true
 
 spring.mvc.view.prefix=/WEB-INF/jsp/
 spring.mvc.view.suffix=.jsp
-
 ```
+
+- nslookup 결과
+```powershell
+PS C:\workspace\AzureBasic> nslookup mysql-homepage.mysql.database.azure.com
+서버:    dns.google
+Address:  8.8.8.8
+
+권한 없는 응답:
+이름:    cr3.koreacentral1-a.control.database.windows.net
+Address:  52.231.17.13
+Aliases:  mysql-homepage.mysql.database.azure.com
+          mysql-homepage.privatelink.mysql.database.azure.com
+
+PS C:\workspace\AzureBasic> nslookup mysql-homepage.privatelink.mysql.database.azure.com
+서버:    dns.google
+Address:  8.8.8.8
+
+권한 없는 응답:
+이름:    cr3.koreacentral1-a.control.database.windows.net
+Address:  52.231.17.13
+Aliases:  mysql-homepage.privatelink.mysql.database.azure.com
+
+PS C:\workspace\AzureBasic> 
+```
+```bash
+azureuser@vm-skcc1-comdap1:~$ nslookup mysql-homepage.mysql.database.azure.com
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+
+Non-authoritative answer:
+mysql-homepage.mysql.database.azure.com canonical name = mysql-homepage.privatelink.mysql.database.azure.com.
+Name:   mysql-homepage.privatelink.mysql.database.azure.com
+Address: 10.0.1.5
+
+azureuser@vm-skcc1-comdap1:~$ nslookup mysql-homepage.privatelink.mysql.database.azure.com
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+
+Non-authoritative answer:
+Name:   mysql-homepage.privatelink.mysql.database.azure.com
+Address: 10.0.1.5
+
+azureuser@vm-skcc1-comdap1:~$
+```
+
+
 
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
