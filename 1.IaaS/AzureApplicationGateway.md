@@ -120,10 +120,10 @@ $agFrontendIPConfigName = "ag-fe-cfg"
 $agFrontendPortName = "ag-fe-port"
 
 $agBackendPoolName = "appgw-homepage-ap1-network-bepool"
-$agBackendHttpPoolSettingsName = "www.nodespringboot.org" 
+$agBackendHttpPoolSettingsName = "HTTP_Settings_homepage_01" 
 
 $agListenerName = "www.nodespringboot.org"
-$agFrontendRule1Name = "appgw-homepage-pt-lz-prd-rule1-http"
+$agFrontendRule1Name = "appgw-homepage-pt-homepage-dev-rule1-http"
 
 $appGatewayName = "skcc1-homepage-dev-appgw"
 ```

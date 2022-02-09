@@ -54,14 +54,15 @@
   <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
 </a>
 
+### 1. Private Endpoint 만들기
 ```powershell
 $location = "koreacentral"
-$vnetName = "vnet-skcc-dev"
-$resourceGroupName = "rg-skcc-homepage-dev"
+$vnetName = "vnet-skcc1-dev"
+$resourceGroupName = "rg-skcc1-homepage-dev"
 $subnetName = "snet-skcc-dev-backend"
-$privateEndPointName = "pe-skcc1homepagedevmysql"
+$mysqlName = "mysql-homepage"
+$privateEndPointName = "PE-skcc1homepagedevmysql"
 $subscriptionId = "9ebb0d63-8327-402a-bdd4-e222b01329a1"
-
 
 $virtualNetwork = Get-AzVirtualNetwork `
   -ResourceName $vnetName `
@@ -71,13 +72,13 @@ $subnet = $virtualNetwork | `
   Select-Object -ExpandProperty subnets | `
     Where-Object Name -eq $subnetName
 
-Write-Host "## "
+Write-Host "##  Place SQL server into variable. Replace <sql-server-name> with your server name ##"
 $mysql = Get-AzMySqlServer `
-  -Name mysql-homepage `
-  -ResourceGroupName rg-skcc-homepage-dev
+  -Name $mysqlName `
+  -ResourceGroupName $resourceGroupName
 $mysql.id
 
-Write-Host "## Create private endpoint connection##"
+Write-Host "## Create private endpoint connection ##"
 $parameters1 = @{
     Name = $privateEndPointName
     PrivateLinkServiceId = $mysql.ID
@@ -110,6 +111,56 @@ New-AzPrivateEndpoint `
   -PrivateLinkServiceConnection $privateEndpointConnection  `
   -Subnet $subnet `
   -Tag $tags
+## Create private endpoint
+$parameters2 = @{
+    ResourceGroupName = $resourceGroupName
+    Name = $privateEndPointName
+    Location = $location
+    Subnet = $vnet.Subnets[0]
+    PrivateLinkServiceConnection = $privateEndpointConnection
+    Tag $tags
+}
+New-AzPrivateEndpoint @parameters2
+```
+
+### 2. Private DNS 영역 구성
+```powershell
+## Place virtual network into variable. ##
+$vnet = Get-AzVirtualNetwork `
+  -ResourceGroupName $resourceGroupName `
+  -Name $vnetName
+
+## Create private dns zone. ##
+$parameters1 = @{
+    ResourceGroupName = $resourceGroupName
+    Name = 'privatelink.mysql.database.azure.com'
+}
+$zone = New-AzPrivateDnsZone @parameters1
+
+## Create dns network link. ##
+$parameters2 = @{
+    ResourceGroupName = $resourceGroupName
+    ZoneName = 'privatelink.mysql.database.azure.com'
+    Name = 'myLink'
+    VirtualNetworkId = $vnet.Id
+}
+$link = New-AzPrivateDnsVirtualNetworkLink @parameters2
+
+## Create DNS configuration ##
+$parameters3 = @{
+    Name = 'privatelink.mysql.database.azure.com'
+    PrivateDnsZoneId = $zone.ResourceId
+}
+$config = New-AzPrivateDnsZoneConfig @parameters3
+
+## Create DNS zone group. ##
+$parameters4 = @{
+    ResourceGroupName = $resourceGroupName
+    PrivateEndpointName = $privateEndPointName
+    Name = 'myZoneGroup'
+    PrivateDnsZoneConfig = $config
+}
+New-AzPrivateDnsZoneGroup @parameters4
 ```
 
 ### 실행결과

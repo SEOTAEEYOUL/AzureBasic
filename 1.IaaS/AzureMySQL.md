@@ -123,6 +123,25 @@ Address: 10.0.1.5
 azureuser@vm-skcc1-comdap1:~$
 ```
 
+### PC 에서 접속시 IP 확인 후 MySQL IP 등록을 해 주어야 함
+#### curl ip.memozee.com/?ipv4
+```
+PS C:\workspace\AzureBasic> curl ip.memozee.com/?ipv4
+220.72.88.52
+```
+#### http://www.iplocation.net/
+![iplocation.png](./img/iplocation.png)
+#### MySQL 방화벽 등록(mysql-homepage|연결보안)  
+"Azure 서비스 방문 허용"  에 추가
+![mysql-homepage-연결보안.png](./img/mysql-homepage-연결보안.png)  
+
+#### pc 에서 접속 화면
+##### DB 접속 오류 화면
+![vm-skcc1-comdap1-localhost-books.do-DB접속오류.png](./img/vm-skcc1-comdap1-localhost-books.do-DB접속오류.png)
+##### DB 접속 정상 화면
+![vm-skcc1-comdap1-localhost-books.do.png](./img/vm-skcc1-comdap1-localhost-books.do.png)  
+
+
 
 
 ## [PowerShell](https://shell.azure.com)
