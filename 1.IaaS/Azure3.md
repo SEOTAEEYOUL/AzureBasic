@@ -1,6 +1,6 @@
 # 3-tier 기본 환경 구성
-Vnet, subnet, NSG, apache, tomcat, mysql 구성
-- VM, disk, Storage Account, Internal L4, VMSS, AppGateway 구성
+Vnet, subnet, NSG, Apache, Tomcat, MySql 구성
+- VM, disk, Storage Account, Application Gateway 구성
 
 * [빠른 시작: PowerShell을 사용하여 Azure Database for MySQL 서버 만들기](https://docs.microsoft.com/ko-kr/azure/mysql/quickstart-create-mysql-server-database-using-azure-powershell)  
 
@@ -49,6 +49,7 @@ az login
 
 #### [Public IP 만들기](./AzurePublicIPAddress.md)  
 #### [NIC 만들기](./AzureNIC.md)  
+- IP 를 정적으로 만들면 재기동시 같은 IP 를 사용할 수 있음
 
 ### [Virtaul Machine 만들기](./AzureVirtualMachine.md)
 - vm-skcc1-comdpt1
