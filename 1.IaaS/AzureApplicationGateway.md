@@ -41,7 +41,8 @@
 - 대상 없이 백 엔드 풀 추가 : 아니오
 - 백 엔드 대상
   - 대상 유형 : IP 주소 또는 FQDN
-  - 대상 : 10.0.1.6
+  - 대상 : 10.0.1.6 
+  - 대상 : vm-skcc1-comdpt1.koreacentral.cloudapp.azure.com
 ![skcc-homepage-dev-appgw-백엔드-백엔드풀추가.png](./img/skcc-homepage-dev-appgw-백엔드-백엔드풀추가.png)  
 ![skcc-homepage-dev-appgw-백엔드.png](./img/skcc-homepage-dev-appgw-백엔드.png)  
 
@@ -105,6 +106,8 @@ $agName = "Standard"
 $agTier = "Standard"
 $agCapacity = 1 
 
+$appGatewayName = "skcc1-homepage-dev-appgw"
+
 $agSubnetName = "snet-skcc1-network-frontend"
 $agSubnetPrefix = "10.21.0.0/24"
 $bacendSubnetName = "snet-skcc-backend"
@@ -115,17 +118,15 @@ $agVnetPrefix = "10.21.0.0/16"
 
 $agPulicIPName = "skcc1-homepage-appgw-pip"
 
-$agIPConfigName = "ag-ip-cfg"
-$agFrontendIPConfigName = "ag-fe-cfg"
-$agFrontendPortName = "ag-fe-port"
+$agIPConfigName = "appGwIPConfig"
+$agFrontendIPConfigName = "appGwPublicFrontendConfig"
+$agFrontendPortName = "appGwPublicFrontendPort"
 
 $agBackendPoolName = "appgw-homepage-ap1-network-bepool"
 $agBackendHttpPoolSettingsName = "HTTP_Settings_homepage_01" 
 
 $agListenerName = "www.nodespringboot.org"
 $agFrontendRule1Name = "appgw-homepage-pt-homepage-dev-rule1-http"
-
-$appGatewayName = "skcc1-homepage-dev-appgw"
 ```
 
 ### 리소스 그룹 만들기

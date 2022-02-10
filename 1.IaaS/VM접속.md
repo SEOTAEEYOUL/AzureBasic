@@ -97,6 +97,11 @@ chmod 400 vm-skcc1-comdpt1_key.pem
 ssh -i vm-skcc1-comdpt1_key.pem azureuser@1.1.1.1
 ```
 
+## 로컬 서버 주소 확인(무선 AP 사용시)
+```
+curl ip.memozee.com/?ipv4
+```
+
 
 ## 용어
 ### PEM(Privacy Enhanced Mail Certificate)

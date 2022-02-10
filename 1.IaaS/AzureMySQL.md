@@ -142,6 +142,7 @@ PS C:\workspace\AzureBasic> curl ip.memozee.com/?ipv4
 ![vm-skcc1-comdap1-localhost-books.do.png](./img/vm-skcc1-comdap1-localhost-books.do.png)  
 
 
+---
 
 
 ## [PowerShell](https://shell.azure.com)
