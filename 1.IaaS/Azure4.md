@@ -17,6 +17,9 @@
 ### subnet
 - frontend subnet : snet-skcc1-network-frontend
 
+## [Virtual Network Peering](./AzureVirtualNetworkPeering.md) 
+vnet 간의 통신을 위한 작업
+
 ## [Azure Application Gateway](./AzureApplicationGateway.md)
 웹 애플리케이션 앞단에서 Traffic 을 관리하는 Web Traffic 부하 분산 장치  
 URL 기반으로 Backend Pool 로 부하 분산 가능  
