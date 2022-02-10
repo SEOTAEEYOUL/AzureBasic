@@ -37,6 +37,13 @@ Azure Virtual Machine이 인터넷, Azure 및 온-프레미스 리소스와 통�
 ![skcc1-comdpt1-nic01-IP구성.png](./img/skcc1-comdpt1-nic01-IP구성.png)  
 ![skcc1-comdap1-nic01-IP구성.png](./img/skcc1-comdap1-nic01-IP구성.png)  
 
+### 3. VM 에 붙이기  
+#### 3.1 VM 중지  
+#### 3.2 VM 에 생성한(NIC) 붙이기  
+#### 3.3 VM 생성시 만든 NIC 제거 하기  
+##### 홈 > 가상 머신 > vm-skcc1-comdpt1 | 네트워킹
+![vm-skcc1-comdpt1-네트워킹.png](./img/vm-skcc1-comdpt1-네트워킹.png)  
+
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
   <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
