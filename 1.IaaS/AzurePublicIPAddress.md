@@ -10,9 +10,22 @@
   - Azure Firewall
   - Bastion Host
 
+### IPv4 IP 주소 구성
+#### PT(Apache)
+| 항목 | 내용 |  
+| 이름 | skcc1-homepage-dev-comdpt1-pip |  
+| 리소스 그룹 | rg-skcc1-homepage-dev |  
+| 위치 | korea Central |  
+
+#### AP(Tomcat)
+| 항목 | 내용 |  
+| 이름 | skcc1-homepage-dev-comdap1-pip |  
+| 리소스 그룹 | rg-skcc1-homepage-dev |  
+| 위치 | korea Central |  
 
 ### 홈 > "공용 IP 주소" > "+ 만들기"
-![pip-skcc-comdpt1-portal.png](./img/pip-skcc-comdpt1-portal.png)
+![pip-skcc-comdpt1-portal.png](./img/pip-skcc-comdpt1-portal.png)  
+![pip-skcc-comdap1-portal.png](./img/pip-skcc-comdap1-portal.png)  
 
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
