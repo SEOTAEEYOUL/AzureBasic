@@ -27,9 +27,16 @@ Azure Virtual Machine이 인터넷, Azure 및 온-프레미스 리소스와 통�
 | 네트워크 보안 그룹 | nsg-skcc1-homepage |  
 
 ## Portal
-### "홈" > "네트워크 인터페이스" > "+ 만들기"
+### 1. NIC 만들기
+#### "홈" > "네트워크 인터페이스" > "+ 만들기"
 ![nic-skcc-comdpt1-portal.png](./img/nic-skcc-comdpt1-portal.png)  
-![nic-skcc-comdap1-portal.png](./img/nic-skcc-comdap1-portal.png)  
+![nic-skcc-comdap1-portal.png](./img/nic-skcc-comdap1-portal.png) 
+
+### 2. Public IP Address 붙이기
+#### "홈" > "네트워크 인터페이스" > "skcc1-comdap1-nic01" | "IP 구성" > ipconfig1
+![skcc1-comdpt1-nic01-IP구성.png](./img/skcc1-comdpt1-nic01-IP구성.png)  
+![skcc1-comdap1-nic01-IP구성.png](./img/skcc1-comdap1-nic01-IP구성.png)  
+
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
   <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
