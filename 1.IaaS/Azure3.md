@@ -42,6 +42,10 @@ az login
 
 #### [VM Backup 용 Recovery Services 자격 증명 모음](./AzureBackup.md)
 - Recovery Services 자격 증명 모음 : skcc1-rsv-VMbackup-dev
+
+#### [Public IP 만들기](./AzurePublicIPAddress.md)  
+#### [NIC 만들기](./AzureNIC.md)  
+
 ### [Virtaul Machine 만들기](./AzureVirtualMachine.md)
 - vm-skcc1-comdpt1
 - vm-skcc1-comdap1
