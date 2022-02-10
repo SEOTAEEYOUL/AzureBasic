@@ -15,22 +15,24 @@ Private Network 로 Azure VM(Virtual Machines)과 같은 다양한 형식의 Azu
   - 이름 : vnet-test-dev
   - 지역 : Korea Central
 ### IP 주소
-- IPv4 주소공간 : 10.7.0.0/16
+- IPv4 주소공간 : 10.0.0.0/16
 - +서브넷 추가
   - 서브넷 이름: snet-test-dev-frontend
-  - 서브넷 주소 범위 : 10.7.0.0/28
+  - 서브넷 주소 범위 : 10.0.0.0/28
   - frontend subnet : snet-skcc-dev-frontend
   - backend subnet : snet-skcc-dev-backend
 ### 보안
 - BastionHost : 사용 안 함
 - DDoS Protection 표준 : 사용 안함
 - 방화벽 : 사용 안함
-### 태그
-- environment='dev'
-- serviceTitle='test'
-- personalInformation='no'
+### 태그  
+- environment='dev'  
+- serviceTitle='test'  
+- personalInformation='no'  
+
 ![AzVNet-Create.png](./img/AzVNet-Create.png)
 
+---
 
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">

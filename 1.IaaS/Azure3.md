@@ -32,8 +32,12 @@ az login
   - nsgr-www
   - nsgr-mysql
 ### subnet
-- frontend subnet : snet-skcc1-dev-frontend
-- backend subnet : snet-skcc1-dev-backend
+- frontend subnet  
+  - 이름 : snet-skcc1-dev-frontend
+  - 서브넷 주소 범위 : 10.0.0.0/28
+- backend subnet  
+  - 이름 : snet-skcc1-dev-backend  
+  - 서브넷 주소 범위 : 10.0.1.0/28  
 
 ### 서비스 VM 생성
 #### VM 생성 전 사전 작업(옵션)
