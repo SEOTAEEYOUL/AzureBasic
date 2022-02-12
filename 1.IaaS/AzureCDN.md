@@ -1,6 +1,8 @@
 # Azure CDN(Content Delivery Network)  
 사용자에게 웹 콘텐츠를 효율적으로 제공할 수 있는 서버의 분산 네트워크
 
+## [Azure CDN 제품 기능 간의 비교는 무엇인가요?](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-features)  
+
 * [New-AzResourceGroupDeployment](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment?view=azps-7.1.0)
 
 ## 생성절차
@@ -12,7 +14,23 @@
 5. Rule 작성
 
 ## Portal
+### 홈 > CDN 프로필 > "+만들기"
+#### 기본사항
+- 리소스그룹 : rg-skcc1-network-dev
+##### 프로필 세부 정보
+  - 이름: skcc-network-cdn
+  - 지역: 전역
+  - 가격 책정 정책: 표준 Microsoft
+##### 엔드포인트 설정
+  - 새 CDN 엔드포이트 만들기
+  - CDN 엔트포인트 이름 : skcc1-homepage-dev-cdn
+  - 원본 형식: 사용자 지정 원본
+  - 원본 호스트 이름 : skcc1web.koreacentral.cloudapp.azure.com
 
+#### 태그
+#### 검토+만들기
+- Azure CDN 생성시 10 분 걸림
+![skcc-network-cdn.png](./img/skcc-network-cdn.png)  
 
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">

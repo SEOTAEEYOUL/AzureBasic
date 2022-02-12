@@ -26,6 +26,8 @@
 ### 홈 > "공용 IP 주소" > "+ 만들기"
 ![pip-skcc-comdpt1-portal.png](./img/pip-skcc-comdpt1-portal.png)  
 ![pip-skcc-comdap1-portal.png](./img/pip-skcc-comdap1-portal.png)  
+![skcc1-homepage-appgw-pip-dns.png](./img/skcc1-homepage-appgw-pip-dns.png)  
+![skcc1-homepage-appgw-pip.png](./img/skcc1-homepage-appgw-pip.png)  
 
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
