@@ -226,6 +226,23 @@ If ($result.CustomDomainValidated) { `
 }
 ```
 
+**[사용자 지정 도메인을 CDN 엔드포인트에 매핑](https://github.com/MicrosoftDocs/azure-docs.ko-kr/blob/master/articles/cdn/cdn-map-content-to-custom-domain.md)**
+```
+myendpoint8675.azureedge.net 을 엔드포인트 url로 바꿉니다.
+myendpoint8675 를 CDN 엔드포인트 이름으로 바꿉니다.
+www.contoso.com 을 사용자 지정 도메인 이름으로 바꿉니다.
+myCDN 을 CDN 프로필 이름으로 바꿉니다.
+myResourceGroupCDN 을 리소스 그룹 이름으로 바꿉니다.
+    $parameters = @{
+        Hostname = 'myendpoint8675.azureedge.net'
+        EndPointName = 'myendpoint8675'
+        CustomDomainName = 'www.contoso.com'
+        ProfileName = 'myCDN'
+        ResourceGroupName = 'myResourceGroupCDN'
+    }
+    New-AzCdnCustomDomain @parameters
+```
+
 ## Endpoint 수정
 CDN 설정 메뉴의 "압축" 에 대한 설정
 ```powershell
