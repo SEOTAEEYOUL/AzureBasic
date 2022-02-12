@@ -2,6 +2,10 @@
 사용자에게 웹 콘텐츠를 효율적으로 제공할 수 있는 서버의 분산 네트워크
 
 ## [Azure CDN 제품 기능 간의 비교는 무엇인가요?](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-features)  
+> [빠른 시작: Azure CDN 프로필 및 엔드포인트 만들기](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-create-new-endpoint)  
+> [빠른 시작: Azure CDN 프로필 및 엔드포인트 만들기 - ARM 템플릿](https://docs.microsoft.com/ko-kr/azure/cdn/create-profile-endpoint-template)  
+> [Azure CLI를 사용하여 Azure CDN 프로필 및 엔드포인트 만들기](https://docs.microsoft.com/ko-kr/azure/cdn/scripts/cli/cdn-azure-cli-create-endpoint)  
+> [CDN 프로필 및 엔드포인트 만들기](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-manage-powershell#creating-cdn-profiles-and-endpoints)  
 
 * [New-AzResourceGroupDeployment](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment?view=azps-7.1.0)
 
@@ -26,6 +30,7 @@
   - CDN 엔트포인트 이름 : skcc1-homepage-dev-cdn
   - 원본 형식: 사용자 지정 원본
   - 원본 호스트 이름 : skcc1web.koreacentral.cloudapp.azure.com
+    - 원본 호스트 이름은 application gateway 의 public id 에 대한 dns 이름
 
 #### 태그
 #### 검토+만들기
@@ -86,7 +91,7 @@ $cdnProfileName="skcc-homepage-dev-cdn"
 $cdnSku="Standard_Microsoft" # Standard_Akamai
 $originName="origin-homepage-01"
 $originHostHeader="www.nodespringboot.org"
-$applicationEndPoint="skcchomepage.koreacentral.cloudapp.azure.com" # applicationGateway EndPoint
+$applicationEndPoint="skcc1web.koreacentral.cloudapp.azure.com" # applicationGateway EndPoint
 $originHostName=$applicationEndPoint
 
 $cdnEndPointName="skcc-homepage-dev-cdn" # "www"
@@ -148,7 +153,8 @@ New-AzCdnEndpoint `
   -EndpointName $cdnEndPointName `
   -OriginName $originName `
   -OriginHostHeader $originHostHeader `
-  -OriginHostName $originHostName
+  -OriginHostName $originHostName `
+  -IsHttpAllowd $false
 
 # Create a new profile and endpoint (same as above) in one line
 New-AzCdnProfile `
