@@ -37,13 +37,6 @@
 - Azure CDN 생성시 10 분 걸림
 ![skcc-network-cdn.png](./img/skcc-network-cdn.png)  
 
-## DNS 에 cdn 에 CDN endpoint 등록
-### 홍 > DNS 영역 > nodespringboot.org > " + 레코드 집합"
-- 이름 : www  
-- 유형 : CNAME - 하위 도메인을 다른 레코드에 연결  
-- 별칭 : skcc1web.koreacentral.cloudapp.azure.com  
-
-![DNS-nodesprintboot.org.png](./img/DNS-nodesprintboot.org.png)  
 
 ---
 
