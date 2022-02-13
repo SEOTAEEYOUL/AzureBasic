@@ -23,7 +23,7 @@
 - 최소 인스턴스 수 : 0
 - 최대 인스턴스 수 : 10
 - 가용성 영역 : 없음
-- HTTP2 : 사용 않 함
+- HTTP2 : 사용 
 #### 가상 네트워크 구성
 - 가상 네트워크 : vnet-network-dev
 - 서브넷 : snet-skcc1-network-frontend(10.21.0.0./27)
@@ -33,6 +33,10 @@
 #### 프런트 엔드 IP 형식 : 공용
 #### 공용 IP 주소 : (신규)skcc1-homepage-appgw-pip
 
+#### 개인 IP 주소
+- 개인 IP 주소 지정 : 예 (정적 할당)
+- 개인 IP 주소 : 10.21.0.7 ( 서브넷의 주소 공간에 프라이빗 IP 주소 입력)
+
 ![./img/skcc-homepage-dev-appgw-프런트엔드.png](./img/skcc-homepage-dev-appgw-프런트엔드.png)
 
 ### 3. 백 엔드
@@ -41,8 +45,8 @@
 - 대상 없이 백 엔드 풀 추가 : 아니오
 - 백 엔드 대상
   - 대상 유형 : IP 주소 또는 FQDN
-  - 대상 : 10.0.1.6 
-  - 대상 : vm-skcc1-comdpt1.koreacentral.cloudapp.azure.com
+  - 대상 : 10.0.1.6 (PT) or 10.0.1.4 (AP) 입력
+  - 대상 : vm-skcc1-comdpt1.koreacentral.cloudapp.azure.com (Public IP 구성시 설정한 DNS 이름)
 ![skcc-homepage-dev-appgw-백엔드-백엔드풀추가.png](./img/skcc-homepage-dev-appgw-백엔드-백엔드풀추가.png)  
 ![skcc-homepage-dev-appgw-백엔드.png](./img/skcc-homepage-dev-appgw-백엔드.png)  
 
