@@ -69,7 +69,7 @@
 | DB | mysql-homepage-dev | MySQL 5.7 | GP_Gen5_8(범용, vCore 8개, 5GB) | PE-skcchomepageprdmysql | rg-skcc-homepage-dev | koreacentral |
 
 
-## MariaDB
+## MySQL
 ### 생성 절차
 1. 자원 결정 (sku, data disk 크기)
 2. 생성 지역 결정(koreacentral)
@@ -88,7 +88,7 @@
 
 ## CDN 
 ### 생성 절차
-1. CDN 생성
+1. CDN Profile 생성
    - Profile 생성 : skcc-homepae-dev-cdn
    - endpoint 생성 : skcc-homepae-dev-cdn.azureedge.net
    - HomePage : https://skcc-homepage-dev-cdn.azureedge.net/
