@@ -17,7 +17,8 @@ Upload
 ## 3. Application Gateway 백 엔드 풀 변경
 #### 이름 : appgw-homepage-ap1-network-bepool
 #### 백 엔드 대상 IP : Apache 에서 Tomcat 으로 변경
-예) 10.0.0.7 (Apache Server IP) -> 10.1.0.4 (Tomcat Server IP)
+예) 10.0.0.7 (Apache Server Private IP) -> 10.1.0.4 (Tomcat Server Private IP)
+![appgw-homepage-ap1-network-bepool-백엔드대상편집.png](./img/appgw-homepage-ap1-network-bepool-백엔드대상편집.png)  
 
 ## 4. [DNS 영역 변경](./AzureDNS.md)
 ### DNS 에 cdn 에 CDN endpoint 등록
