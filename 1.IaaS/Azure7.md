@@ -1,5 +1,8 @@
 # Azure DevOps 를 통한 자원 배포(IaC - 2)
-azure devops 에 저장소 설정 및 Pipeline 을 만들어 배포 하기  
+azure devops 에 저장소 설정 및 Pipeline 을 만들어 배포 하기 
+
+
+> [여유 시간이 있는 Azure DevOps에 대 한 서비스 후크 만들기](https://docs.microsoft.com/ko-kr/azure/devops/service-hooks/services/slack?view=azure-devops) 
 
 ### [Azure DevOps](https://devops.azure.com)
 ![AzureDevOps-ProjectHome.png](./img/AzureDevOps-ProjectHome.png)
