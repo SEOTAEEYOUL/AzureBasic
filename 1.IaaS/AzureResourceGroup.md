@@ -13,6 +13,8 @@
 ![ResourceGroup-검토+만들기.png](./img/ResourceGroup-검토+만들기.png  )  
 ![ResourceGroup-잠금.png](./img/ResourceGroup-잠금.png)  
 
+---
+
 ## [PowerShell](https://shell.azure.com)
 <a href="https://shell.azure.com">
   <img class="cloudshell" src=./img/hdi-launch-cloud-shell.png>
@@ -56,27 +58,41 @@ $rg = @{
 New-AzResourceGroup @rg
 ```
 
-## CLI
+### Azure CLI
 ```bash
 #!/bin/bash
 
 groupName="rg-skcc1-homepage-dev"
 locationName='koreacentral'
+
 lockName="lock-homepage"
+lockType="CanNotDelete" # "ReadOnly"
+
 tags='owner=SeoTaeYeol environment=dev serviceTitle=homepage personalInformation=no'
 
-az group create --name "$groupName" \
+az group create \
+  --name "$groupName" \
   --location "$locationName" \
   --tags $tags
 
+## 잠금 생성
 az group lock create \
   --lock-type ReadOnly \
   -n $lockName \
   -g $groupName
 
+## 그룹 조회
+az group show \
+  --name $groupName
+
+## 그룹 삭제
+az group delete \
+  --name $groupName
+
+
 az group lock delete \
   --name $lockName \
-  -g $groupName
+  --resource-group $groupName
 
 groupName="rg-skcc1-network-dev"
 az group create --name "$groupName" \
