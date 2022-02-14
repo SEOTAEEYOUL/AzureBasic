@@ -68,4 +68,98 @@ PS C:\workspace\Create-VM>
 
   - Script Arguments : 
 
-6. 
+6. azure-pipelines.yaml 에서 "Settings" 를 눌려 설정함  
+   - Azure Subscription (pipeline 에서 자원 배포에 사용할 구독)  
+   - **Autorize** : 권한 주기 버튼으로 반듯이 눌려야 함
+   - Script Type : Inline Script (pipeline 안에 PowerShell or CLI 명령을 넣음)
+   - Inline Script : 실행하고자 하는 명령 설정 
+   - ErrorActionPreference : Stop
+   - **Azure PowerShell version options**
+     - Lastest installed version
+   - **Advanced** (설정하지 않아도 됨)  
+   - Add
+   ![AzureDevOps-Create-VM-Pipelines-Settings-Authorize.png](./img/AzureDevOps-Create-VM-Pipelines-Settings-Authorize.png)  
+
+7. Job 에서 Permssion 주기
+   ![AzureDevOps-Create-VM-Pipelines-Jobs-Permission.png](./img/AzureDevOps-Create-VM-Pipelines-Jobs-Permission.png)  
+8. 실행결과
+   8.1 Pipelines
+   ![AzureDevOps-Create-VM-Pipelines.png](./img/AzureDevOps-Create-VM-Pipelines.png)  
+   8.2 Pipelines > Create-VM  
+   ![AzureDevOps-Create-VM-Pipelines-Create-VM.png](./img/AzureDevOps-Create-VM-Pipelines-Create-VM.png)  
+   8.3 Pipelines > Recent > Create-VM  > runs
+   ![AzureDevOps-Create-VM-Pipelines-Create-VM-runs.png](./img/AzureDevOps-Create-VM-Pipelines-Create-VM-runs.png)  
+   8.4 Pipelines > Recent > Create-VM > Runs  
+   ![AzureDevOps-Create-VM-Pipelines-Create-VM-runs-job.png](./img/AzureDevOps-Create-VM-Pipelines-Create-VM-runs-job.png)  
+
+9. azure-pipelines.yml
+```yaml
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- bash: az --version
+  displayName: 'Show Azure CLI version'
+
+- bash: az devops configure --defaults organization=$(System.TeamFoundationCollectionUri) project=$(System.TeamProject) --use-git-aliases true
+  displayName: 'Set default Azure DevOps organization and project'
+
+- bash: |
+    az pipelines build list
+    git pr list
+  displayName: 'Show build list and PRs'
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'Azure subscription 1(4)(9ebb0d63-8327-402a-bdd4-e222b01329a1)'
+    ScriptType: 'InlineScript'
+    Inline: |
+      # You can write your azure powershell scripts inline here. 
+      # You can also pass predefined and custom variables to this script using arguments
+      <#
+      New-AzResourceGroup -Name myResourceGroup -Location 'KoreaCentral'
+      New-AzVm `
+          -ResourceGroupName 'myResourceGroup' `
+          -Name 'myVM' `
+          -Location 'East US' `
+          -VirtualNetworkName 'myVnet' `
+          -SubnetName 'mySubnet' `
+          -SecurityGroupName 'myNetworkSecurityGroup' `
+          -PublicIpAddressName 'myPublicIpAddress' `
+          -OpenPorts 80,3389
+      Get-AzPublicIpAddress -ResourceGroupName 'myResourceGroup' | Select-Object -Property  'IpAddress'
+      Install-WindowsFeature -Name Web-Server -IncludeManagementTools
+      #>
+      Get-AzPublicIpAddress -ResourceGroupName 'rg-skcc1-homepage-dev' | Select-Object -Property  'IpAddress'
+      
+     
+    azurePowerShellVersion: 'LatestVersion'
+
+- task: AzureCLI@2
+  displayName: Azure CLI
+  inputs:
+    azureSubscription: 'Azure subscription 1(9ebb0d63-8327-402a-bdd4-e222b01329a1)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az --version
+      az account show
+```   
