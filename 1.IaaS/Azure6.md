@@ -93,7 +93,31 @@ HW Layer 위에 Orchestration 과 Configuration, Bootstrap 기능이 필요
 > [ARM 템플릿의 리소스 함수](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/template-functions-resource#extensionresourceid)  
 > [ARM 템플릿 함수](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/template-functions)  
 > [ARM 템플릿 모범 사례](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/best-practices)  
+> [Resource Manager 템플릿을 사용하여 Windows 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/ps-template)  
 
+### [빠른 시작: ARM 템플릿을 사용하여 Azure Key Vault에서 비밀 설정 및 검색](https://docs.microsoft.com/ko-kr/azure/key-vault/secrets/quick-create-template?tabs=PowerShell)  
+![KeyVault-and-a-secret.png](./img/KeyVault-and-a-secret.png)  
+#### 배포된 리소스 검토
+```
+PS C:\workspace\AzureBasic> $KeyVaultName='kv-skcc7-homepage'
+PS C:\workspace\AzureBasic> Get-AzKeyVaultSecret -vaultName $keyVaultName
+
+Vault Name   : kv-skcc7-homepage
+Name         : adminPassword
+Version      : 
+Id           : https://kv-skcc7-homepage.vault.azure.net:443/secrets/adminPassword
+Enabled      : True
+Expires      : 
+Not Before   : 
+Created      : 2022-02-15 오후 6:06:10
+Updated      : 2022-02-15 오후 6:06:10
+Content Type : 
+Tags         : 
+
+
+PS C:\workspace\AzureBasic> 
+```
+#### [자습서: ARM 템플릿 배포에 Azure Key Vault 통합](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/template-tutorial-use-key-vault)
 #### Azure Resource
 - Microsoft.Network/ipGroups
 - Microsoft.Storage/storageAccounts
