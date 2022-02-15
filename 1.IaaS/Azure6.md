@@ -86,6 +86,27 @@ HW Layer 위에 Orchestration 과 Configuration, Bootstrap 기능이 필요
 - AWS CloudFormation
 - ARM(Azure Resource Manager) Template  
 
+---
+
+> [ARM 템플릿의 구조 및 구문 이해](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/syntax)  
+> [ARM 템플릿에서 리소스를 배포하는 순서 정의](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/resource-dependency)  
+> [ARM 템플릿의 리소스 함수](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/template-functions-resource#extensionresourceid)  
+> [ARM 템플릿 함수](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/template-functions)  
+> [ARM 템플릿 모범 사례](https://docs.microsoft.com/ko-kr/azure/azure-resource-manager/templates/best-practices)  
+
+#### Azure Resource
+- Microsoft.Network/ipGroups
+- Microsoft.Storage/storageAccounts
+- Microsoft.Network/routeTables
+- Microsoft.Network/networkSecurityGroups
+- Microsoft.Network/virtualNetworks
+- Microsoft.Network/publicIPPrefix
+- Microsoft.Network/publicIPAddresses
+- Microsoft.Network/networkInterfaces
+- Microsoft.Compute/virtualMachines
+- Microsoft.Network/azureFirewalls
+- Microsoft.Network/dnsZones
+- Microsoft.Sql/servers
 ## [Azure CLI](../0.ENV/CLI.md)  
 ### [Resource Group](./AzureResourceGroup.md)  
 ### [VNet](./AzureVirtualNetwork.md) 
