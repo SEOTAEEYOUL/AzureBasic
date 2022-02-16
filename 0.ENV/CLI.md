@@ -14,8 +14,8 @@ Windows, macOS, Linux, Docker, Azure Cloud Shell 에서 작동함
 > [Azure CLI를 사용하여 확장 사용 및 관리](https://docs.microsoft.com/ko-kr/cli/azure/azure-cli-extensions-overview)  
 
 ## login
-```
 az login
+```
 You have logged in. Now let us find all the subscriptions to which you have access...
 [
   {
@@ -36,7 +36,9 @@ You have logged in. Now let us find all the subscriptions to which you have acce
 ```
 
 
-## Azure CLI version 보기
+## Azure CLI version 보기  
+az --version  
+
 ### Upgrade 가 필요할 경우
 ```
 azure-cli                         2.18.0 *
@@ -60,7 +62,6 @@ and let us know if you're interested in trying out our newest features: https://
 
 ### 최신 버전일 경우
 ```
-az --version
 azure-cli                         2.19.1
 
 core                              2.19.1
@@ -83,7 +84,9 @@ Please let us know how we are doing: https://aka.ms/azureclihats
 and let us know if you're interested in trying out our newest features: https://aka.ms/CLIUXstudy
 ```
 
-## Azure CLI Upgrade
+## Azure CLI Upgrade  
+az upgrade
+
 ```powershell
 PS D:\workspace\Azure> az upgrade
 This command is experimental and not covered by customer support. Please use with discretion.

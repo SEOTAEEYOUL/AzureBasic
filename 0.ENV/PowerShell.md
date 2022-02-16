@@ -11,6 +11,50 @@
 > [Understanding Import-Csv and the ForEach Loop](https://adamtheautomator.com/import-csv-foreach/)  
 > [PowerShell을 사용하여 가상 네트워크 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-network/quick-create-powershell)
 
+## ?
+### 셸  
+다른 인기 있는 셸의 주요 기능을 포함하는 현대적인 명령 셸  
+- 강력한 명령줄 기록
+  ```
+  PS C:\workspace\AzureBasic> h 
+
+    Id     Duration CommandLine
+    --     -------- -----------
+    1        0.124 git add *
+    2        0.117 git commit -m "2022-02-16"
+    3        2.178 git push
+    4        0.072 git add *
+    5        0.130 git commit -m "2022-02-16"
+    6        2.184 git push
+    7        0.010 $PSVersionTable.PSVersion
+    8        0.009 Get-Host | Select-Object Version
+
+  PS C:\workspace\AzureBasic> r 7
+  $PSVersionTable.PSVersion
+
+  Major  Minor  Patch  PreReleaseLabel BuildLabel
+  -----  -----  -----  --------------- ----------
+  7      2      1
+  ```
+- 탭 완성, 명령 및 매개 변수 별칭 지원(Get-Alias)   
+- 명령 연결용 파이프라인 ( | )
+- Unix man 페이지와 유사한 콘솔 내 도움말 시스템 (Get-Help)
+
+### 스크립트 언어
+시스템 관리를 자동화하는 데 사용  
+CI/CD 환경에서 빌드, 테스트 및 솔루션 배포를 위해서도 사용  
+.NET CLR(공용 언어 런타임)을 기반  
+- 함수, 클래스, 스크립트 및 모듈을 통한 확장  
+- 간단한 출력을 위한 확장 가능 서식 지정 시스템  
+- 동적 형식 생성을 위한 확장 가능 형식 시스템  
+- CSV, JSON 및 XML 등 공통 데이터 형식에 대한 기본 지원
+
+
+### 구성관리
+PowerShell DSC(Desired State Configuration)는 구성을 코드로 사용하여 엔터프라이즈 인프라를 관리할 수 있도록 지원  
+- 반복 가능 배포를 위한 선언적 구성 및 사용자 지정 스크립트 만들기  
+- 구성 설정 및 구성 드리프트에 대한 보고서 적용  
+- 밀어넣기 또는 끌어오기 모델을 사용하여 구성 배포  
 
 ## PowerShell 설치
 ### Windows
