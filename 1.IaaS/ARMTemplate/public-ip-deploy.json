@@ -11,7 +11,7 @@
     "publicIPAddress": {
       "type": "string",
       "metadata": {
-        "description": "description"
+        "description": "public ip address"
       }
     }
   },
