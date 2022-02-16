@@ -151,3 +151,6 @@ PS C:\workspace\AzureBasic>
 - Microsoft.KeyVault/vaults/secrets
 - Microsoft.Network/dnsZones
 - Microsoft.Sql/servers
+- Microsoft.DBforMySQL/servers
+- Microsoft.DBforMySQL/servers/privateEndpointConnections
+- Microsoft.DBforMySQL/servers/securityAlertPolicies

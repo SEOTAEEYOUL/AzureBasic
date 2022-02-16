@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serverName": {
+            "value": "mysql-skcc7-homepage"
+        },
+        "administratorLogin": {
+            "value": "mysqladmin"
+        },
+        "administratorLoginPassword": {
+            "value": "dlatl!00"
+        },
+        "skuCapacity": {
+            "value": 2
+        },
+        "skuName": {
+            "value": "GP_Gen5_2"
+        },
+        "SkuSizeMB": {
+            "value": 5120
+        },
+        "SkuTier": {
+            "value": "GeneralPurpose"
+        },
+        "skuFamily": {
+            "value": "Gen5"
+        },
+        "mysqlVersion": {
+            "value": "5.7"
+        },
+        "location": {
+            "value": "koreacentral"
+        },
+        "backupRetentionDays": {
+            "value": 7
+        },
+        "geoRedundantBackup": {
+            "value": "Disabled"
+        },
+        "virtualNetworkName": {
+            "value": "vnet-skcc7-dev"
+        },
+        "subnetName": {
+            "value": "snet-skcc7-dev-backend"
+        },
+        "virtualNetworkRuleName": {
+            "value": "AllowSubnet"
+        },
+        "privateEndpointsName": {
+            "value": "PE-skcc7homepagedevmysql"
+        }
+    }
+}

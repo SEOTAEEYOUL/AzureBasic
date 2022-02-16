@@ -53,7 +53,7 @@ Upload
 
 
 
-## Browser 를 통한 정상 동작 확인  
+## 6. Browser 를 통한 정상 동작 확인  
 - Cache 적용됨을 확인 : X-Cache: TCP_HIT 
   > [Microsoft의 Azure CDN에 대한 HTTP 헤더 디버그](https://docs.microsoft.com/ko-kr/azure/cdn/cdn-msft-http-debug-headers) 
 

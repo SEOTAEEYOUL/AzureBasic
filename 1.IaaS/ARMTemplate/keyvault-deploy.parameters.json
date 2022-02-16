@@ -1,9 +1,91 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-      "vaults_kv_skcc7_homepage_name": {
-          "value": "kv-skcc7-homepage"
-      }
-  }
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyVaultName": {
+            "value": "kv-skcc7-homepage"
+        },
+        "location": {
+            "value": "koreacentral"
+        },
+        "enabledForDeployment": {
+            "value": true
+        },
+        "enabledForDiskEncryption": {
+            "value": true
+        },
+        "enabledForTemplateDeployment": {
+            "value": true
+        },
+        "tenantId": {
+            "value": "160bacea-7761-4c83-bfa0-354f9b047f5a"
+        },
+        "objectId": {
+            "value": "79e6e115-80b5-4feb-8554-8991ef1914ba"
+        },
+        "keysPermissions": {
+            "value": [
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Decrypt",
+                "Encrypt",
+                "UnwrapKey",
+                "WrapKey",
+                "Verify",
+                "Sign",
+                "Purge",
+                "Rotate",
+                "GetRotationPolicy",
+                "SetRotationPolicy"
+            ]
+        },
+        "secretsPermissions": {
+            "value": [
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Purge"
+            ]
+        },
+        "certificatesPermissions": {
+            "value": [
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "ManageContacts",
+                "ManageIssuers",
+                "GetIssuers",
+                "ListIssuers",
+                "SetIssuers",
+                "DeleteIssuers",
+                "Purge"
+            ]
+        },
+        "skuName": {
+            "value": "standard"
+        },
+        "secretName": {
+            "value": "adminPassword"
+        },
+        "secretValue": {
+            "value": "dlatl!00Imsi"
+        }
+    }
 }
