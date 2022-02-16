@@ -1,0 +1,164 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subscriptionId": {
+      "type": "string",
+      "metadata": {
+        "description": "description"
+      }
+    },
+    "groupName": {
+      "type": "string",
+      "metadata": {
+        "description": "description"
+      }
+    },
+    "vmName": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Machine"
+      }      
+    },
+    "imagePublisher": {
+      "type": "string",
+      "metadata": {
+        "description": "Linux OS Publisher"
+      }
+    },
+    "imageOffer": {
+      "type": "string",
+      "metadata": {
+        "description": "Linux OS Name"
+      }
+    },
+    "imageSKU": {
+      "type": "string",
+      "metadata": {
+        "description": "Linux OS LST Name"
+      }
+    },
+    "imageOSVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "OS Version"
+      }
+    },
+    "imageSize": {
+      "type": "string",
+      "metadata": {
+        "description": "Linux OS Image Size"
+      }
+    },
+    "adminUserName": {
+      "type": "string",
+      "metadata": {
+        "description": "Admin User Name"
+      }
+    },
+    "adminPassword": {   
+      "type": "securestring", 
+      "metadata": {
+        "description": "Admin User Password"
+      }  
+    },
+    "nicName": {
+      "type": "string",
+      "metadata": {
+        "description": "VM 에서 사용할 NIC 명"
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "boot digonostic 용 Stroage Account"
+      }
+    },
+    "osDiskExternalId": {
+      "type": "string",
+      "defaultValue": "/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-skcc7-homepage-dev/providers/Microsoft.Compute/disks/vm-skcc7-comdap1_disk1",
+      "metadata": {
+        "description": "OS Disk External Id"
+      }
+    }
+  },
+  "functions": [],
+  "variables": {
+    "osDisk": "[concat(parameters('vmName'), '-OSDisk')]",
+    "dataDisk": "[concat(parameters('vmName'), '-DataDisk')]",
+    "osDiskExternalId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('groupName'), '/providers/Microsoft.Compute/disks/', parameters('vmName'), '_OSDisk')]",
+    "storageAccountExternalId": "[concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('groupName'), '/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+  },
+  "resources": [{
+    "type": "Microsoft.Compute/virtualMachines",
+    "apiVersion": "2021-07-01",
+    "name": "[parameters('vmName')]",
+    "location": "[resourceGroup().location]",
+    "tags": {
+      "displayName": "[parameters('vmName')]",
+      "environment": "dev",
+      "personalInformation": "no",
+      "serviceTitle": "homepage",
+      "owner": "SeoTaeYeol"      
+    },
+    "zones": [
+      "1"
+    ],
+    "properties": {
+      "hardwareProfile": {
+        "vmSize": "[parameters('imageSize')]"
+      },
+      "storageProfile": {
+        "imageReference": {
+          "publisher": "[parameters('imagePublisher')]",
+          "offer": "[parameters('imageOffer')]",
+          "sku": "[parameters('imageSKU')]",
+          "version": "[parameters('imageOSVersion')]"
+        },
+        "osDisk": {
+          "osType": "Linux",
+          "name": "[variables('osDisk')]",
+          "createOption": "FromImage",
+          "caching": "ReadWrite",
+          "writeAcceleratorEnabled": false,
+          "managedDisk": {
+            "storageAccountType": "StandardSSD_LRS"
+          },
+          "deleteOption": "Detach"
+        },
+        "dataDisks": []
+      },
+      "osProfile": {
+        "computerName": "[parameters('vmName')]",
+        "adminUsername": "[parameters('adminUserName')]",
+        "adminPassword": "[parameters('adminPassword')]",
+        "linuxConfiguration": {
+          "disablePasswordAuthentication": false,
+          "provisionVMAgent": true,
+          "patchSettings": {
+            "patchMode": "ImageDefault",
+            "assessmentMode": "ImageDefault"
+          }
+        },
+        "secrets": [],
+        "allowExtensionOperations": true
+      },
+      "networkProfile": {
+        "networkInterfaces": [
+          {
+            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nicName'))]",
+            "properties": {
+                "primary": true
+            }
+          }
+        ]
+      },
+      "diagnosticsProfile": {
+        "bootDiagnostics": {
+          "enabled": true,
+          "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2019-06-01').primaryEndpoints.blob]"
+        }
+      }
+    }
+  }]
+}

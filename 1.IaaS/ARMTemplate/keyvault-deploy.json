@@ -1,0 +1,61 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaults_kv_skcc7_homepage_name": {
+            "defaultValue": "kv-skcc7-homepage",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[parameters('vaults_kv_skcc7_homepage_name')]",
+            "location": "koreacentral",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "standard"
+                },
+                "tenantId": "160bacea-7761-4c83-bfa0-354f9b047f5a",
+                "accessPolicies": [
+                    {
+                        "tenantId": "160bacea-7761-4c83-bfa0-354f9b047f5a",
+                        "objectId": "79e6e115-80b5-4feb-8554-8991ef1914ba",
+                        "permissions": {
+                            "keys": [
+                                "list"
+                            ],
+                            "secrets": [
+                                "list"
+                            ]
+                        }
+                    }
+                ],
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enableSoftDelete": true,
+                "vaultUri": "[concat('https://', parameters('vaults_kv_skcc7_homepage_name'), '.vault.azure.net/')]",
+                "provisioningState": "Succeeded",
+                "publicNetworkAccess": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[concat(parameters('vaults_kv_skcc7_homepage_name'), '/adminPassword')]",
+            "location": "koreacentral",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_kv_skcc7_homepage_name'))]"
+            ],
+            "properties": {
+                "attributes": {
+                    "enabled": true
+                }
+            }
+        }
+    ]
+}

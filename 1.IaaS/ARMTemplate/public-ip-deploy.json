@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "publicIPName": {
+      "type": "string",
+      "metadata": {
+        "description": "public ip address name"
+      } 
+    },
+    "publicIPAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "description"
+      }
+    }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [{
+    "name": "[parameters('publicIPName')]",
+    "type": "Microsoft.Network/publicIPAddresses",
+    "apiVersion": "2020-11-01",
+    "location": "[resourceGroup().location]",
+    "sku": {
+      "name": "Standard",
+      "tier": "Regional"
+    },
+    "tags": {
+      "displayName": "[parameters('publicIPName')]",
+      "environment": "dev",
+      "personalInformation": "no",
+      "serviceTitle": "homepage",
+      "owner": "SeoTaeYeol"
+    },
+    "properties": {
+      "ipAddress": "[parameters('publicIPAddress')]",
+      "publicIPAllocationMethod": "Static",
+      "publicIPAddressVersion": "IPv4",
+      "idleTimeoutInMinutes": 4,
+      "ipTags": []
+    }
+  }],
+  "outputs": {}
+}

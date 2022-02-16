@@ -1,0 +1,89 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "nicName": {
+      "type": "string",
+      "metadata": {
+        "description": "Network Interface Name"
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network Name"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet Name"
+      }
+    },
+    "publicIpName": {
+      "type": "string",
+      "metadata": {
+        "description": "Public IP Name"
+      }
+    },
+    "privateIPAddress": {
+      "type": "string",
+      "metadata": {
+        "description": "Private IP Address"
+      }
+    },
+    "nsgName": {
+      "type": "string",
+      "metadata": {
+        "description": "Network Security Group Name"
+      }
+    }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [{
+    "name": "[parameters('nicName')]",
+    "type": "Microsoft.Network/networkInterfaces",
+    "apiVersion": "2020-11-01",
+    "location": "[resourceGroup().location]",
+    "tags": {
+      "displayName": "[parameters('nicName')]",
+      "owner": "SeoTaeYeol",
+      "environment": "dev",
+      "serviceTitle": "homepage",
+      "personalInformation": "no"
+    },
+    "dependsOn": [
+      "[resourceId('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]",
+      "[resourceId('Microsoft.Network/publicIpAddresses', parameters('publicIpName'))]"
+    ],
+    "properties": {
+      "ipConfigurations": [
+        {
+          "name": "ipConfig1",
+          "properties": {
+            "privateIPAllocationMethod": "Static",
+            "privateIPAddress": "[parameters('privateIPAddress')]",
+            "publicIPAddress": {              
+              "id": "[resourceId('Microsoft.Network/publicIpAddresses', parameters('publicIpName'))]"
+            },
+            "subnet": {
+              "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('subnetName'))]"
+            },
+            "primary": true,
+            "privateIPAddressVersion": "IPv4"
+          }
+        }
+      ],
+      "dnsSettings": {
+        "dnsServers": []
+      },
+      "enableAcceleratedNetworking": false,
+      "enableIPForwarding": false,
+      "networkSecurityGroup": {
+        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+      }
+    } 
+  }],
+  "outputs": {}
+}

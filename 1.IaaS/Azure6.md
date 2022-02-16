@@ -17,9 +17,6 @@ azure cli, powershell, ARMTemplate 사용한 배포 테스트
 > [IaC(Infrastructure as Code) with Terraform](https://medium.com/humanscape-tech/iac-infrastructure-as-code-with-terraform-1fb0c6486fbc)  
 > [코드 제공 인프라(Infrastructure as code)](https://docs.microsoft.com/ko-kr/dotnet/architecture/cloud-native/infrastructure-as-code)  
 
-### 변경 가능한 IaC
-### 변경 불가능한 IaC
-
 ### IaC의 이점
 IaC는 자동화된 프로세스를 통해 기업이 다양한 방법으로 IT 인프라의 요구를 관리할 수 있도록 지원  
 #### 일관성
@@ -96,6 +93,7 @@ HW Layer 위에 Orchestration 과 Configuration, Bootstrap 기능이 필요
 > [Resource Manager 템플릿을 사용하여 Windows 가상 머신 만들기](https://docs.microsoft.com/ko-kr/azure/virtual-machines/windows/ps-template)  
 
 ### [빠른 시작: ARM 템플릿을 사용하여 Azure Key Vault에서 비밀 설정 및 검색](https://docs.microsoft.com/ko-kr/azure/key-vault/secrets/quick-create-template?tabs=PowerShell)  
+#### [Create an Azure Key Vault and a secret](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2Fquickstarts%2Fmicrosoft.keyvault%2Fkey-vault-create%2Fazuredeploy.json)  
 ![KeyVault-and-a-secret.png](./img/KeyVault-and-a-secret.png)  
 #### 배포된 리소스 검토
 ```
@@ -129,6 +127,8 @@ PS C:\workspace\AzureBasic>
 - Microsoft.Network/networkInterfaces
 - Microsoft.Compute/virtualMachines
 - Microsoft.Network/azureFirewalls
+- Microsoft.KeyVault/vaults
+- Microsoft.KeyVault/vaults/secrets
 - Microsoft.Network/dnsZones
 - Microsoft.Sql/servers
 ## [Azure CLI](../0.ENV/CLI.md)  

@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmName": {
+            "value": "vm-skcc7-comdap1" 
+        },
+        "imagePublisher": {
+            "value": "Canonical"
+        },
+        "imageOffer": {
+            "value": "UbuntuServer" 
+        },
+        "imageSKU": {
+            "value": "18_04-lts-gen2" 
+        },
+        "imageOSVersion": {
+            "value": "latest" 
+        },        
+        "imageSize": {
+            "value": "Standard_B1ls" 
+        },
+        "adminUserName": {
+            "value": "aureuser"
+        },
+        "adminPassword": {      
+            "reference": {
+              "keyVault": {
+                  "id": "/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-skcc7-homepage-dev/providers/Microsoft.KeyVault/vaults/kv-skcc7-homepage"
+              },
+              "secretName": "adminPassword"
+            }
+        },
+        "nicName": {
+            "value": "vm-skcc7-comdap1-nic"
+        },
+        "storageAccountName": {
+            "value": "skcc7devhomepage1"
+        },
+        "subscriptionId": {
+            "value": "9ebb0d63-8327-402a-bdd4-e222b01329a1"
+        },
+        "groupName": {
+            "value": "rg-skcc7-homepage-dev"
+        }
+    }
+}
