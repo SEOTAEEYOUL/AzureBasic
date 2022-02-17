@@ -29,8 +29,9 @@
   - 새 CDN 엔드포이트 만들기
   - CDN 엔트포인트 이름 : skcc1-homepage-dev-cdn
   - 원본 형식: 사용자 지정 원본
-  - 원본 호스트 이름 : skcc1web.koreacentral.cloudapp.azure.com
+  - 원본 호스트 이름 : appgw.nodespringboot.org
     - 원본 호스트 이름은 application gateway 의 public id 에 대한 dns 이름
+![cdn-skcc1-homepage-dev-cdn-원본 업데이트.png](./img/cdn-skcc1-homepage-dev-cdn-원본 업데이트.png)
 
 #### 태그
 #### 검토+만들기
