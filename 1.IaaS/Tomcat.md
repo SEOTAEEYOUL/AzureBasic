@@ -53,6 +53,7 @@ sudo apt install net-tools
 
 ## tomcat webapps 디렉토리에 war 를 배포
 ### WAR 파일 복사
+**설치위치: /var/lib/tomcat9/webapps**
 ```
 azureuser@vm-skcc1-comdap1:~$ cd /var/lib/tomcat9/webapps
 azureuser@vm-skcc1-comdap1:/var/lib/tomcat9/webapps$ sudo cp ~/SpringBootSample-0.0.1-SNAPSHOT.war .
