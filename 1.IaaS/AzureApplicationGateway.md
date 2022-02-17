@@ -1,7 +1,7 @@
 # [Azure Application Gateway란?](https://docs.microsoft.com/ko-kr/azure/application-gateway/overview)  
 웹 애플리케이션에 대한 트래픽을 관리할 수 있도록 하는 웹 트래픽 부하 분산 장치  
 
-<img src=../0.ENV/azure/application-gateway.png width=200 height=300>
+<img src=../0.ENV/azure/application-gateway.png width=200>
 
 
 > [빠른 시작: Azure Application Gateway를 통해 웹 트래픽 보내기 - Azure Portal](https://docs.microsoft.com/ko-kr/azure/application-gateway/quick-create-portal)
