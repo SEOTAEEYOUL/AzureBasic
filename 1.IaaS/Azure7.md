@@ -1,7 +1,7 @@
 # Azure DevOps 를 통한 자원 배포(IaC - 2)
 azure devops 에 저장소 설정 및 Pipeline 을 만들어 배포 하기 
 
-
+> [Azure Pipelines 사용](https://docs.microsoft.com/ko-kr/azure/devops/pipelines/get-started/pipelines-get-started?view=azure-devops#define-pipelines-using-the-classic-interface)  
 > [여유 시간이 있는 Azure DevOps에 대 한 서비스 후크 만들기](https://docs.microsoft.com/ko-kr/azure/devops/service-hooks/services/slack?view=azure-devops) 
 
 ### [Azure DevOps](https://devops.azure.com)
@@ -102,8 +102,12 @@ PS C:\workspace\Create-VM>
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+# commit 할 때 빌드 triggering
 trigger:
 - master
+
+# commit 시 빌드하지 않기
+# trigger: none
 
 pool:
   vmImage: ubuntu-latest
@@ -130,34 +134,8 @@ steps:
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
 
-- task: AzurePowerShell@5
-  inputs:
-    azureSubscription: 'Azure subscription 1(4)(9ebb0d63-8327-402a-bdd4-e222b01329a1)'
-    ScriptType: 'InlineScript'
-    Inline: |
-      # You can write your azure powershell scripts inline here. 
-      # You can also pass predefined and custom variables to this script using arguments
-      <#
-      New-AzResourceGroup -Name myResourceGroup -Location 'KoreaCentral'
-      New-AzVm `
-          -ResourceGroupName 'myResourceGroup' `
-          -Name 'myVM' `
-          -Location 'East US' `
-          -VirtualNetworkName 'myVnet' `
-          -SubnetName 'mySubnet' `
-          -SecurityGroupName 'myNetworkSecurityGroup' `
-          -PublicIpAddressName 'myPublicIpAddress' `
-          -OpenPorts 80,3389
-      Get-AzPublicIpAddress -ResourceGroupName 'myResourceGroup' | Select-Object -Property  'IpAddress'
-      Install-WindowsFeature -Name Web-Server -IncludeManagementTools
-      #>
-      Get-AzPublicIpAddress -ResourceGroupName 'rg-skcc1-homepage-dev' | Select-Object -Property  'IpAddress'
-      
-     
-    azurePowerShellVersion: 'LatestVersion'
-
 - task: AzureCLI@2
-  displayName: Azure CLI
+  displayName: Azure CLI Account 보기
   inputs:
     azureSubscription: 'Azure subscription 1(9ebb0d63-8327-402a-bdd4-e222b01329a1)'
     scriptType: 'bash'
@@ -165,4 +143,44 @@ steps:
     inlineScript: |
       az --version
       az account show
+
+- task: AzurePowerShell@5
+  displayName: VM 만들기
+  inputs:
+    azureSubscription: 'Azure subscription 1(9ebb0d63-8327-402a-bdd4-e222b01329a1)'
+    ScriptType: 'InlineScript'
+    azurePowerShellVersion: 'LatestVersion'
+    Inline: |
+      # You can write your azure powershell scripts inline here. 
+      # You can also pass predefined and custom variables to this script using arguments
+      $groupName = 'rg-skcc7-homepage-dev'
+      $locationName = 'koreacentral'
+
+      $jsonName = "vm-deploy"
+      
+      New-AzResourceGroupDeployment `
+          -ResourceGroupName $groupName `
+          -TemplateFile "${jsonName}.json" `
+          -TemplateParameterFile "${jsonName}.parameters.json"
+
+- task: AzurePowerShell@5
+  displayName: MySQL 만들기
+  inputs:
+    azureSubscription: 'Azure subscription 1(9ebb0d63-8327-402a-bdd4-e222b01329a1)'
+    ScriptType: 'InlineScript'
+    azurePowerShellVersion: 'LatestVersion'
+    Inline: |
+      # You can write your azure powershell scripts inline here. 
+      # You can also pass predefined and custom variables to this script using arguments
+      $groupName = 'rg-skcc7-homepage-dev'
+      $locationName = 'koreacentral'
+
+      $jsonName = "mysql-deploy"
+      
+      New-AzResourceGroupDeployment `
+          -ResourceGroupName $groupName `
+          -TemplateFile "${jsonName}.json" `
+          -TemplateParameterFile "${jsonName}.parameters.json"
 ```   
+
+![pipelines-image-yaml.png](./img/pipelines-image-yaml.png)  
