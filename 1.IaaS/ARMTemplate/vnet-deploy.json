@@ -44,6 +44,12 @@
       "metadata": {
         "description": "Location for all resources."
       }
+    },
+    "tags": {
+      "type": "object",
+      "metadata": {
+        "description": "tags"
+      }
     }
   },
   "functions": [],
@@ -53,13 +59,7 @@
     "type": "Microsoft.Network/virtualNetworks",
     "apiVersion": "2020-11-01",
     "location": "[parameters('location')]",
-    "tags": {
-      "displayName": "[parameters('vnetName')]",
-      "owner": "SeoTaeYeol",
-      "environment": "dev",
-      "serviceTitle": "homepage",
-      "personalInformation": "no"
-    },
+    "tags": "[parameters('tags')]", 
     "properties": {
       "addressSpace": {
         "addressPrefixes": [
@@ -70,13 +70,17 @@
         {
           "name": "[parameters('subnetName1')]",
           "properties": {
-            "addressPrefix": "[parameters('subnetAddressPrefix1')]"
+            "addressPrefix": "[parameters('subnetAddressPrefix1')]",
+            "privateEndpointNetworkPolicies": "Disabled",
+            "privateLinkServiceNetworkPolicies": "Enabled"
           }
         },
         {
           "name": "[parameters('subnetName2')]",
           "properties": {
-            "addressPrefix": "[parameters('subnetAddressPrefix2')]"
+            "addressPrefix": "[parameters('subnetAddressPrefix2')]",
+            "privateEndpointNetworkPolicies": "Disabled",
+            "privateLinkServiceNetworkPolicies": "Enabled"
           }
         }
       ]

@@ -62,6 +62,40 @@
   },
   "resources": [
     {
+      "name": "[variables('nicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2020-11-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "displayName": "[variables('nicName')]",
+        "environment": "dev",
+        "personalInformation": "no",
+        "serviceTitle": "homepage",
+        "owner": "SeoTaeYeol"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "[variables('ipConfigName')]",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[parameters('privateIpAddress')]",
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+              },
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "dnsSettings": {
+          "dnsServers": []
+        },
+        "enableAcceleratedNetworking": false,
+        "enableIPForwarding": false
+      }
+    },
+    {
       "type": "Microsoft.Network/privateEndpoints",
       "apiVersion": "2020-06-01",
       "name": "[parameters('privateEndpointName')]",
@@ -93,9 +127,6 @@
           }
         ],
         "manualPrivateLinkServiceConnections": [],
-        "subnet": {
-            "id": "[variables('subnetRef')]"
-        },
         "customDnsConfigs": []        
       }
     },

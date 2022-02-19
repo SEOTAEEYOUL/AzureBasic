@@ -46,9 +46,6 @@
         },
         "virtualNetworkRuleName": {
             "value": "AllowSubnet"
-        },
-        "privateEndpointsName": {
-            "value": "PE-skcc7homepagedevmysql"
         }
     }
 }

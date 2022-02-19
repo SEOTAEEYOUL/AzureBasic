@@ -4,6 +4,7 @@
 | 파일명 | 설명 |  
 |:---|:---|
 | vnet-deploy | Virtual Network 생성 |  
+| vnet-peering | Virtual Network Peering 생성 |
 | nsg-deploy | Network Security Group 생성 |  
 | storage-account-deploy | Stroage Account 생성 |  
 | public-ip-deploy | Public IP Address 만들기 |  
@@ -14,7 +15,7 @@
 | arm.ps1 | ARM Templat 배포 테스트 파일 |  
 
 ## ARM Templat 배포 테스트 파일
-arm.ps1
+### arm.ps1
 ```powershell
 $groupName = 'rg-skcc7-homepage-dev'
 $locationName = 'koreacentral'
@@ -30,4 +31,63 @@ foreach ($jsonName in $jsonNames)
       -TemplateFile "${jsonName}.json" `
       -TemplateParameterFile "${jsonName}.parameters.json"
 }
+```
+
+### 실행 로고
+```
+PS C:\Users\taeey\pipeline-exam1> ./arm.ps1
+deploy mysql-deploy
+
+DeploymentName          : mysql-deploy
+ResourceGroupName       : rg-skcc7-homepage-dev
+ProvisioningState       : Succeeded
+Timestamp               : 2022-02-19 오후 1:20:41
+Mode                    : Incremental
+TemplateLink            : 
+Parameters              : 
+                          Name                          Type                       Value
+                          ============================  =========================  ==========
+                          serverName                    String                     mysql-skcc7-homepage
+                          administratorLogin            String                     mysqladmin
+                          administratorLoginPassword    SecureString
+                          skuCapacity                   Int                        2
+                          skuName                       String                     GP_Gen5_2
+                          skuSizeMB                     Int                        5120
+                          skuTier                       String                     GeneralPurpose
+                          skuFamily                     String                     Gen5
+                          mysqlVersion                  String                     5.7
+                          location                      String                     koreacentral
+                          backupRetentionDays           Int                        7
+                          geoRedundantBackup            String                     Disabled
+                          virtualNetworkName            String                     vnet-skcc7-dev
+                          subnetName                    String                     snet-skcc7-dev-backend
+                          virtualNetworkRuleName        String                     AllowSubnet
+
+Outputs                 : 
+DeploymentDebugLogLevel : 
+
+deploy mysql-private-endpoint-deploy
+DeploymentName          : mysql-private-endpoint-deploy
+ResourceGroupName       : rg-skcc7-homepage-dev
+ProvisioningState       : Succeeded
+Timestamp               : 2022-02-19 오후 1:21:34
+Mode                    : Incremental
+TemplateLink            : 
+Parameters              : 
+                          Name                   Type                       Value
+                          =====================  =========================  ==========
+                          location               String                     koreacentral
+                          groupName              String                     rg-skcc7-homepage-dev
+                          privateEndpointName    String                     PE-skcc7homepagedevmysql
+                          mysqlServerName        String                     mysql-skcc7-homepage
+                          vnetName               String                     vnet-skcc7-dev
+                          vnetAddressPrefix      String                     10.0.0.0/16
+                          subnetName             String                     snet-skcc7-dev-backend
+                          privateIpAddress       String                     10.0.1.7
+
+Outputs                 : 
+DeploymentDebugLogLevel : 
+
+
+PS C:\Users\taeey\pipeline-exam1>
 ```

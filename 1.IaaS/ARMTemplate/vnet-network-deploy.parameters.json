@@ -3,22 +3,22 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vnetName": {
-            "value": "vnet-skcc7-dev"
+            "value": "vnet-skcc7-network"
         },
         "vnetAddressPrefixes": {
-            "value": "10.0.0.0/16" 
+            "value": "10.21.0.0/16" 
         },
         "subnetName1": {
-            "value": "snet-skcc7-dev-frontend"
+            "value": "snet-skcc7-network-frontend"
         },
         "subnetAddressPrefix1": {
-            "value": "10.0.0.0/24"
+            "value": "10.21.0.0/27"
         },
         "subnetName2": {
-            "value": "snet-skcc7-dev-backend"
+            "value": "snet-skcc7-network-backend"
         },
         "subnetAddressPrefix2": {
-            "value": "10.0.1.0/24"
+            "value": "10.21.1.0/28"
         },
         "location": {
             "value": "koreacentral"

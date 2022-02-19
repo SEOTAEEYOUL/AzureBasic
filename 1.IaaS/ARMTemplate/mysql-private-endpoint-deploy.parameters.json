@@ -3,10 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "koreacentral" // TODO: Fill in parameter value
+            "value": "koreacentral"
+        },
+        "groupName": {
+            "value": "rg-skcc7-homepage-dev"
+        },
+        "privateEndpointName": {
+            "value": "PE-skcc7homepagedevmysql"
         },
         "mysqlServerName": {
-            "value": "mysql-skcc7-homepage" // TODO: Fill in parameter value
+            "value": "mysql-skcc7-homepage"
         },
         "vnetName": {
             "value": "vnet-skcc7-dev"
