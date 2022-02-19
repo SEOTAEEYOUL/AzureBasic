@@ -91,3 +91,43 @@ DeploymentDebugLogLevel :
 
 PS C:\Users\taeey\pipeline-exam1>
 ```
+
+### Azure DevOps pipeline
+#### azure-pipelines.yaml
+```
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# triggrer:
+# - master
+
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- bash: az --version
+  displayName: 'Show Azure CLI version'
+
+- task: AzurePowerShell@5
+  displayName: MySQL 만들기
+  inputs:
+    azureSubscription: 'Azure subscription 1(9ebb0d63-8327-402a-bdd4-e222b01329a1)'
+    ScriptType: 'InlineScript'
+    azurePowerShellVersion: 'LatestVersion'
+    Inline: |
+      # You can write your azure powershell scripts inline here. 
+      # You can also pass predefined and custom variables to this script using arguments
+      $groupName = 'rg-skcc7-homepage-dev'
+      $locationName = 'koreacentral'
+
+      $jsonName = "mysql-deploy"
+      
+      New-AzResourceGroupDeployment `
+          -ResourceGroupName $groupName `
+          -TemplateFile "${jsonName}.json" `
+          -TemplateParameterFile "${jsonName}.parameters.json"
+```
