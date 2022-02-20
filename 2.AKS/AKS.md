@@ -632,12 +632,12 @@ Please add "C:\Users\Administrator\.azure-kubelogin" to your search PATH so the 
   ### Cluster 에 접속
   ```
   $ az aks get-credentials -g rg-aks-taeyeol -n aks-cluster-taeyeol
-The behavior of this command has been altered by the following extension: aks-preview
-A different object named aks-cluster-taeyeol already exists in your kubeconfig file.
-Overwrite? (y/n): y
-A different object named clusterUser_rg-aks-taeyeol_aks-cluster-taeyeol already exists in your kubeconfig file.
-Overwrite? (y/n): y
-Merged "aks-cluster-taeyeol" as current context in C:\Users\Administrator\.kube\config
+  The behavior of this command has been altered by the following extension: aks-preview
+  A different object named aks-cluster-taeyeol already exists in your kubeconfig file.
+  Overwrite? (y/n): y
+  A different object named clusterUser_rg-aks-taeyeol_aks-cluster-taeyeol already exists in your kubeconfig file.
+  Overwrite? (y/n): y
+  Merged "aks-cluster-taeyeol" as current context in C:\Users\Administrator\.kube\config
   ```
 
   - 이미 생성된 Cluster 에 AutoScale 기능 추가하기
@@ -677,141 +677,142 @@ Merged "aks-cluster-taeyeol" as current context in C:\Users\Administrator\.kube\
     --min-count 1 `
     --max-count 3
   ```
+
 - Cluster 생성 로그
-```
-PS D:\workspace\SKT Azure Landing Zone> az aks create --resource-group rg-aks --name aks-cluster-taeeyoul --node-count 1 --enable-addons http_application_routing,monitoring --generate-ssh-keys --attach-acr acrAKS01
+  ```
+  PS D:\workspace\SKT Azure Landing Zone> az aks create --resource-group rg-aks --name aks-cluster-taeeyoul --node-count 1 --enable-addons http_application_routing,monitoring --generate-ssh-keys --attach-acr acrAKS01
 
 
-SSH key files 'C:\Users\Administrator\.ssh\id_rsa' and 'C:\Users\Administrator\.ssh\id_rsa.pub' have been generated under ~/.ssh to allow SSH access to the VM. If using machines without permanent storage like Azure Cloud Shell without an attached file share, back up your keys to a safe location
-Finished service principal creation[##################################]  100.0000%
-- Running ..
--generate-ssh-keys
-AAD role propagation done[############################################]  100.0000%{
-  "aadProfile": null,
-  "addonProfiles": {
-    "KubeDashboard": {
-      "config": null,
-      "enabled": true,
-      "identity": null
+  SSH key files 'C:\Users\Administrator\.ssh\id_rsa' and 'C:\Users\Administrator\.ssh\id_rsa.pub' have been generated under ~/.ssh to allow SSH access to the VM. If using machines without permanent storage like Azure Cloud Shell without an attached file share, back up your keys to a safe location
+  Finished service principal creation[##################################]  100.0000%
+  - Running ..
+  -generate-ssh-keys
+  AAD role propagation done[############################################]  100.0000%{
+    "aadProfile": null,
+    "addonProfiles": {
+      "KubeDashboard": {
+        "config": null,
+        "enabled": true,
+        "identity": null
+      },
+      "httpApplicationRouting": {
+        "config": {
+          "HTTPApplicationRoutingZoneName": "739d488eed144acb8318.koreacentral.aksapp.io"
+        },
+        "enabled": true,
+        "identity": null
+      },
+      "omsagent": {
+        "config": {
+          "logAnalyticsWorkspaceResourceID": "/subscriptions/cafbe447-3ee0-4523-89e3-67c483a935c5/resourcegroups/defaultresourcegroup-se/providers/microsoft.operationalinsights/workspaces/defaultworkspace-cafbe447-3ee0-4523-89e3-67c483a935c5-se"
+        },
+        "enabled": true,
+        "identity": null
+      }
     },
-    "httpApplicationRouting": {
-      "config": {
-        "HTTPApplicationRoutingZoneName": "739d488eed144acb8318.koreacentral.aksapp.io"
-      },
-      "enabled": true,
-      "identity": null
+    "agentPoolProfiles": [
+      {
+        "availabilityZones": null,
+        "count": 3,
+        "enableAutoScaling": null,
+        "enableNodePublicIp": false,
+        "maxCount": null,
+        "maxPods": 110,
+        "minCount": null,
+        "mode": "System",
+        "name": "nodepool1",
+        "nodeImageVersion": "AKSUbuntu-1604-2020.10.28",
+        "nodeLabels": {},
+        "nodeTaints": null,
+        "orchestratorVersion": "1.17.13",
+        "osDiskSizeGb": 128,
+        "osDiskType": "Managed",
+        "osType": "Linux",
+        "powerState": {
+          "code": "Running"
+        },
+        "provisioningState": "Succeeded",
+        "proximityPlacementGroupId": null,
+        "scaleSetEvictionPolicy": null,
+        "scaleSetPriority": null,
+        "spotMaxPrice": null,
+        "tags": null,
+        "type": "VirtualMachineScaleSets",
+        "upgradeSettings": null,
+        "vmSize": "Standard_DS2_v2",
+        "vnetSubnetId": null
+      }
+    ],
+    "apiServerAccessProfile": null,
+    "autoScalerProfile": null,
+    "diskEncryptionSetId": null,
+    "dnsPrefix": "aks-cluste-rg-aks-cafbe4",
+    "enablePodSecurityPolicy": null,
+    "enableRbac": true,
+    "fqdn": "aks-cluste-rg-aks-cafbe4-acad8595.hcp.koreacentral.azmk8s.io",
+    "id": "/subscriptions/cafbe447-3ee0-4523-89e3-67c483a935c5/resourcegroups/rg-aks/providers/Microsoft.ContainerService/managedClusters/aks-cluster-taeeyoul",
+    "identity": null,
+    "identityProfile": null,
+    "kubernetesVersion": "1.17.13",
+    "linuxProfile": {
+      "adminUsername": "azureuser",
+      "ssh": {
+        "publicKeys": [
+          {
+            "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHmEru6BIlxI04XuBgQhD5+kv00+qJ3OK1gZ4Ai67DYY1oP4PXUNiqYfYcpx1JUatTBPxXs/tD8pdk2odIUYA1nvO/E+GNMo889nMrr08G82YZZ3/E8ntOZUkdZ1X0QNhRsE2ABvjluLmxcjaG1FEaaZZoo1DvvIfhVOLxNweVYd3YQhzajohTcgzsBNqwN/mjDd0+ZF0C9U9ZPZonYgdTzDZT5jf70PcJKpoMn0p5Ekj4mikkYU5BfHxXdKkUSpZBFCAfdBJPLELDn3KUAtFzbG0/rNMxMh0Hc6fE8qTxtQj5JbggUXEGDTiBQSywhStFA2xmDFf26aseYHV6HKwL"
+          }
+        ]
+      }
     },
-    "omsagent": {
-      "config": {
-        "logAnalyticsWorkspaceResourceID": "/subscriptions/cafbe447-3ee0-4523-89e3-67c483a935c5/resourcegroups/defaultresourcegroup-se/providers/microsoft.operationalinsights/workspaces/defaultworkspace-cafbe447-3ee0-4523-89e3-67c483a935c5-se"
+    "location": "koreacentral",
+    "maxAgentPools": 10,
+    "name": "aks-cluster-taeeyoul",
+    "networkProfile": {
+      "dnsServiceIp": "10.0.0.10",
+      "dockerBridgeCidr": "172.17.0.1/16",
+      "loadBalancerProfile": {
+        "allocatedOutboundPorts": null,
+        "effectiveOutboundIps": [
+          {
+            "id": "/subscriptions/cafbe447-3ee0-4523-89e3-67c483a935c5/resourceGroups/MC_rg-aks_aks-cluster-taeeyoul_koreacentral/providers/Microsoft.Network/publicIPAddresses/759d12cd-8f9a-4c8d-a0b1-f5300aafdfee",
+            "resourceGroup": "MC_rg-aks_aks-cluster-taeeyoul_koreacentral"
+          }
+        ],
+        "idleTimeoutInMinutes": null,
+        "managedOutboundIps": {
+          "count": 1
+        },
+        "outboundIpPrefixes": null,
+        "outboundIps": null
       },
-      "enabled": true,
-      "identity": null
-    }
-  },
-  "agentPoolProfiles": [
-    {
-      "availabilityZones": null,
-      "count": 3,
-      "enableAutoScaling": null,
-      "enableNodePublicIp": false,
-      "maxCount": null,
-      "maxPods": 110,
-      "minCount": null,
-      "mode": "System",
-      "name": "nodepool1",
-      "nodeImageVersion": "AKSUbuntu-1604-2020.10.28",
-      "nodeLabels": {},
-      "nodeTaints": null,
-      "orchestratorVersion": "1.17.13",
-      "osDiskSizeGb": 128,
-      "osDiskType": "Managed",
-      "osType": "Linux",
-      "powerState": {
-        "code": "Running"
-      },
-      "provisioningState": "Succeeded",
-      "proximityPlacementGroupId": null,
-      "scaleSetEvictionPolicy": null,
-      "scaleSetPriority": null,
-      "spotMaxPrice": null,
-      "tags": null,
-      "type": "VirtualMachineScaleSets",
-      "upgradeSettings": null,
-      "vmSize": "Standard_DS2_v2",
-      "vnetSubnetId": null
-    }
-  ],
-  "apiServerAccessProfile": null,
-  "autoScalerProfile": null,
-  "diskEncryptionSetId": null,
-  "dnsPrefix": "aks-cluste-rg-aks-cafbe4",
-  "enablePodSecurityPolicy": null,
-  "enableRbac": true,
-  "fqdn": "aks-cluste-rg-aks-cafbe4-acad8595.hcp.koreacentral.azmk8s.io",
-  "id": "/subscriptions/cafbe447-3ee0-4523-89e3-67c483a935c5/resourcegroups/rg-aks/providers/Microsoft.ContainerService/managedClusters/aks-cluster-taeeyoul",
-  "identity": null,
-  "identityProfile": null,
-  "kubernetesVersion": "1.17.13",
-  "linuxProfile": {
-    "adminUsername": "azureuser",
-    "ssh": {
-      "publicKeys": [
-        {
-          "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHmEru6BIlxI04XuBgQhD5+kv00+qJ3OK1gZ4Ai67DYY1oP4PXUNiqYfYcpx1JUatTBPxXs/tD8pdk2odIUYA1nvO/E+GNMo889nMrr08G82YZZ3/E8ntOZUkdZ1X0QNhRsE2ABvjluLmxcjaG1FEaaZZoo1DvvIfhVOLxNweVYd3YQhzajohTcgzsBNqwN/mjDd0+ZF0C9U9ZPZonYgdTzDZT5jf70PcJKpoMn0p5Ekj4mikkYU5BfHxXdKkUSpZBFCAfdBJPLELDn3KUAtFzbG0/rNMxMh0Hc6fE8qTxtQj5JbggUXEGDTiBQSywhStFA2xmDFf26aseYHV6HKwL"
-        }
-      ]
-    }
-  },
-  "location": "koreacentral",
-  "maxAgentPools": 10,
-  "name": "aks-cluster-taeeyoul",
-  "networkProfile": {
-    "dnsServiceIp": "10.0.0.10",
-    "dockerBridgeCidr": "172.17.0.1/16",
-    "loadBalancerProfile": {
-      "allocatedOutboundPorts": null,
-      "effectiveOutboundIps": [
-        {
-          "id": "/subscriptions/cafbe447-3ee0-4523-89e3-67c483a935c5/resourceGroups/MC_rg-aks_aks-cluster-taeeyoul_koreacentral/providers/Microsoft.Network/publicIPAddresses/759d12cd-8f9a-4c8d-a0b1-f5300aafdfee",
-          "resourceGroup": "MC_rg-aks_aks-cluster-taeeyoul_koreacentral"
-        }
-      ],
-      "idleTimeoutInMinutes": null,
-      "managedOutboundIps": {
-        "count": 1
-      },
-      "outboundIpPrefixes": null,
-      "outboundIps": null
+      "loadBalancerSku": "Standard",
+      "networkMode": null,
+      "networkPlugin": "kubenet",
+      "networkPolicy": null,
+      "outboundType": "loadBalancer",
+      "podCidr": "10.244.0.0/16",
+      "serviceCidr": "10.0.0.0/16"
     },
-    "loadBalancerSku": "Standard",
-    "networkMode": null,
-    "networkPlugin": "kubenet",
-    "networkPolicy": null,
-    "outboundType": "loadBalancer",
-    "podCidr": "10.244.0.0/16",
-    "serviceCidr": "10.0.0.0/16"
-  },
-  "nodeResourceGroup": "MC_rg-aks_aks-cluster-taeeyoul_koreacentral",
-  "powerState": {
-    "code": "Running"
-  },
-  "privateFqdn": null,
-  "provisioningState": "Succeeded",
-  "resourceGroup": "rg-aks",
-  "servicePrincipalProfile": {
-    "clientId": "744daeb9-ed97-45a6-889f-3fd1acf89262",
-    "secret": null
-  },
-  "sku": {
-    "name": "Basic",
-    "tier": "Free"
-  },
-  "tags": null,
-  "type": "Microsoft.ContainerService/ManagedClusters",
-  "windowsProfile": null
-}
-```
+    "nodeResourceGroup": "MC_rg-aks_aks-cluster-taeeyoul_koreacentral",
+    "powerState": {
+      "code": "Running"
+    },
+    "privateFqdn": null,
+    "provisioningState": "Succeeded",
+    "resourceGroup": "rg-aks",
+    "servicePrincipalProfile": {
+      "clientId": "744daeb9-ed97-45a6-889f-3fd1acf89262",
+      "secret": null
+    },
+    "sku": {
+      "name": "Basic",
+      "tier": "Free"
+    },
+    "tags": null,
+    "type": "Microsoft.ContainerService/ManagedClusters",
+    "windowsProfile": null
+  }
+  ```
 
 - OS Image 로 인한 생성 실패
 ```
@@ -1067,19 +1068,18 @@ AAD role propagation done[############################################]  100.000
 
 
 ### AKS client 설치  
+  ```
+  PS D:\workspace\SKT Azure Landing Zone> az aks install-cli
 
-```
-PS D:\workspace\SKT Azure Landing Zone> az aks install-cli
-
-Downloading client to "C:\Users\Administrator\.azure-kubectl\kubectl.exe" from "https://storage.googleapis.com/kubernetes-release/release/v1.19.4/bin/windows/amd64/kubectl.exe"
-Please add "C:\Users\Administrator\.azure-kubectl" to your search PATH so the `kubectl.exe` can be found. 2 options: 
-    1. Run "set PATH=%PATH%;C:\Users\Administrator\.azure-kubectl" or "$env:path += 'C:\Users\Administrator\.azure-kubectl'" for PowerShell. This is good for the current command session.
-    2. Update system PATH environment variable by following "Control Panel->System->Advanced->Environment Variables", and re-open the command window. You only need to do it once
-Downloading client to "C:\Users\ADMINI~1\AppData\Local\Temp\tmp8t4lx58q\kubelogin.zip" from "https://github.com/Azure/kubelogin/releases/download/v0.0.7/kubelogin.zip"
-Please add "C:\Users\Administrator\.azure-kubelogin" to your search PATH so the `kubelogin.exe` can be found. 2 options: 
-    1. Run "set PATH=%PATH%;C:\Users\Administrator\.azure-kubelogin" or "$env:path += 'C:\Users\Administrator\.azure-kubelogin'" for PowerShell. This is good for the current command session.
-    2. Update system PATH environment variable by following "Control Panel->System->Advanced->Environment Variables", and re-open the command window. You only need to do it once
-```  
+  Downloading client to "C:\Users\Administrator\.azure-kubectl\kubectl.exe" from "https://storage.googleapis.com/kubernetes-release/release/v1.19.4/bin/windows/amd64/kubectl.exe"
+  Please add "C:\Users\Administrator\.azure-kubectl" to your search PATH so the `kubectl.exe` can be found. 2 options: 
+      1. Run "set PATH=%PATH%;C:\Users\Administrator\.azure-kubectl" or "$env:path += 'C:\Users\Administrator\.azure-kubectl'" for PowerShell. This is good for the current command session.
+      2. Update system PATH environment variable by following "Control Panel->System->Advanced->Environment Variables", and re-open the command window. You only need to do it once
+  Downloading client to "C:\Users\ADMINI~1\AppData\Local\Temp\tmp8t4lx58q\kubelogin.zip" from "https://github.com/Azure/kubelogin/releases/download/v0.0.7/kubelogin.zip"
+  Please add "C:\Users\Administrator\.azure-kubelogin" to your search PATH so the `kubelogin.exe` can be found. 2 options: 
+      1. Run "set PATH=%PATH%;C:\Users\Administrator\.azure-kubelogin" or "$env:path += 'C:\Users\Administrator\.azure-kubelogin'" for PowerShell. This is good for the current command session.
+      2. Update system PATH environment variable by following "Control Panel->System->Advanced->Environment Variables", and re-open the command window. You only need to do it once
+  ```  
 
 
 ### AKS Cluster 연결

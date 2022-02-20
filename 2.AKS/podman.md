@@ -1,4 +1,8 @@
-# podman
+# podman  
+Linux 시스템에서 OCI 컨테이너를 개발, 관리 및 실행하기 위한 데몬이 없는 컨테이너 엔진  
+![podman.svg](./img/podman.svg)
+
+[Podman Installation Instructions](https://podman.io/getting-started/installation)  
 
 ## 설치(ubuntu 1.18)
 ```
@@ -21,27 +25,27 @@ podman info
     ```
 ### container tag 달기
     ```
-    podman tag nodejs-bot:1.1.0 acrchatops.azurecr.io/nodejs-bot:1.1.0
+    podman tag nodejs-bot:1.1.0 nodespringboot.azurecr.io/nodejs-bot:1.1.0
     ```
 ### docker push
   - acr token 얻기
     ```
-    az acr login -n acrChatOps --expose-token
+    az acr login -n nodespringboot --expose-token
     ```
   - acr login
     ```
-    podman login acrchatops.azurecr.io --username 00000000-0000-0000-0000-000000000000 -p "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjQ1NlA6WjNCRjpCQ0tPOkpUN0w6MlNLSTpVQUpZOkRCSU46VU5KWTpHWUZHOjdMQTI6WUpNSzpWUkVaIn0.eyJqdGkiOiJiNzE5Njk3MS05Mjk2LTQ3NTItYTRmYi1jNTdmMzgzOWM5ZWIiLCJzdWIiOiJsank2MTZAYW5hYmFyYWxzay5vbm1pY3Jvc29mdC5jb20iLCJuYmYiOjE2MjU0NTAwMDgsImV4cCI6MTYyNTQ2MTcwOCwiaWF0IjoxNjI1NDUwMDA4LCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhY3JjaGF0b3BzLmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiNzQzZTJkNjQ2YmFmNDdhYzliZTJlNzQ0ZTEyNjg1Y2MiLCJncmFudF90eXBlIjoicmVmcmVzaF90b2tlbiIsImFwcGlkIjoiMDRiMDc3OTUtOGRkYi00NjFhLWJiZWUtMDJmOWUxYmY3YjQ2IiwidGVuYW50IjoiZTJlZjgxMDQtN2VjMi00NDJmLWFlZTctN2Y4YzM4ZDNkODdkIiwicGVybWlzc2lvbnMiOnsiYWN0aW9ucyI6WyJyZWFkIiwid3JpdGUiLCJkZWxldGUiXSwibm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0.hBJBQHwHXXGoII_WDRHPFOnIt_Cj-1CiFK5AXV49oW2X3rQxtUg9yM4khFgNuLVDZO2ktTQOtgmaZb5sDkYB0yLYndetJBOKKpLCqLIhzjxYnSA8wp0K8LIn9_Yix4QsEdU7w1d8cew-Fl0k7-o4zsiyPbTQ2HdMpnKsfbXopNudTmmk3znGsh6ZTdrZhR9qKlZGBxX6tH_gesYSEVC0dM_PdVRrePtJGFmXgTa4ISsiqjwIm6oROkoqOVsrGbnCiprukAWRXI1pSz9mOFD1YXvhnyoFHtirIkQwrFvN9yQdMkNFDLnCBLKUF1qEQM17lGyozEyrKbYRMYwwdBjg0Q"
+    podman login nodespringboot.azurecr.io --username 00000000-0000-0000-0000-000000000000 -p "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjQ1NlA6WjNCRjpCQ0tPOkpUN0w6MlNLSTpVQUpZOkRCSU46VU5KWTpHWUZHOjdMQTI6WUpNSzpWUkVaIn0.eyJqdGkiOiJiNzE5Njk3MS05Mjk2LTQ3NTItYTRmYi1jNTdmMzgzOWM5ZWIiLCJzdWIiOiJsank2MTZAYW5hYmFyYWxzay5vbm1pY3Jvc29mdC5jb20iLCJuYmYiOjE2MjU0NTAwMDgsImV4cCI6MTYyNTQ2MTcwOCwiaWF0IjoxNjI1NDUwMDA4LCJpc3MiOiJBenVyZSBDb250YWluZXIgUmVnaXN0cnkiLCJhdWQiOiJhY3JjaGF0b3BzLmF6dXJlY3IuaW8iLCJ2ZXJzaW9uIjoiMS4wIiwicmlkIjoiNzQzZTJkNjQ2YmFmNDdhYzliZTJlNzQ0ZTEyNjg1Y2MiLCJncmFudF90eXBlIjoicmVmcmVzaF90b2tlbiIsImFwcGlkIjoiMDRiMDc3OTUtOGRkYi00NjFhLWJiZWUtMDJmOWUxYmY3YjQ2IiwidGVuYW50IjoiZTJlZjgxMDQtN2VjMi00NDJmLWFlZTctN2Y4YzM4ZDNkODdkIiwicGVybWlzc2lvbnMiOnsiYWN0aW9ucyI6WyJyZWFkIiwid3JpdGUiLCJkZWxldGUiXSwibm90QWN0aW9ucyI6bnVsbH0sInJvbGVzIjpbXX0.hBJBQHwHXXGoII_WDRHPFOnIt_Cj-1CiFK5AXV49oW2X3rQxtUg9yM4khFgNuLVDZO2ktTQOtgmaZb5sDkYB0yLYndetJBOKKpLCqLIhzjxYnSA8wp0K8LIn9_Yix4QsEdU7w1d8cew-Fl0k7-o4zsiyPbTQ2HdMpnKsfbXopNudTmmk3znGsh6ZTdrZhR9qKlZGBxX6tH_gesYSEVC0dM_PdVRrePtJGFmXgTa4ISsiqjwIm6oROkoqOVsrGbnCiprukAWRXI1pSz9mOFD1YXvhnyoFHtirIkQwrFvN9yQdMkNFDLnCBLKUF1qEQM17lGyozEyrKbYRMYwwdBjg0Q"
     ```
   - container image push
     ```
-    podman push acrchatops.azurecr.io/nodejs-bot:1.1.0
+    podman push nodespringboot.azurecr.io/nodejs-bot:1.1.0
     ```
 
 ## harbor
 ## login
 ### login
 ```
-$ podman login registry.chatops.ga
+$ podman login registry.nodespringboot.org
 Username: admin
 Password:
 Login Succeeded!
@@ -51,7 +55,7 @@ Login Succeeded!
 $ cat /run/user/`id -u`/containers/auth.json
 {
         "auths": {
-                "registry.chatops.ga": {
+                "registry.nodespringboot.org": {
                         "auth": "YWRtaW46Q2hhdE9wczAxIQ=="
                 }
         }
@@ -62,14 +66,14 @@ $ cat /run/user/`id -u`/containers/auth.json
 
 ### tag
 ```
-podman tag localhost/nodejs-bot:1.0.0 registry.chatops.ga/app/nodejs-bot:1.0.0
+podman tag localhost/nodejs-bot:1.0.0 registry.nodespringboot.org/app/nodejs-bot:1.0.0
 ### push
 - harbor 에 로그인해서 먼저 project 를 만들어 주어야 함
 ```
 ![harbor-project.png](./img/harbor-project.png)  
 
 ```
-$ podman push registry.chatops.ga/app/nodejs-bot:1.0.0
+$ podman push registry.nodespringboot.org/app/nodejs-bot:1.0.0
 ```
 ```
 Getting image source signatures
