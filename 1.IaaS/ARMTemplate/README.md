@@ -9,6 +9,7 @@
 | storage-account-deploy | Stroage Account 생성 |  
 | public-ip-deploy | Public IP Address 만들기 |  
 | nic-deploy | Azure Network Interface 만들기 | 
+| keyvalut-deploy | Azure Key Valut 비밀번호 만들기(VM 에서 admin password) |  
 | vm-deploy |  VM 만들기 |  
 | mysql-deploy | MySQL 만들기 |  
 | mysql-private-endpoint-deploy | MySQL private endpoint 만들기 |  
