@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaultName": {
+            "value": "skcc7-rsv-VMbackup-dev"
+        },
+        "enableCRR": {
+            "value": false
+        },
+        "vaultStorageType": {
+            "value": "LocallyRedundant"
+        },
+        "location": {
+            "value": "koreacentral"
+        },
+        "tags": {
+            "value": {
+                "owner": "SeoTaeYeol",
+                "environment": "dev",
+                "serviceTitle": "homepage",
+                "personalInformation": "no"
+            }
+        }
+    }
+}

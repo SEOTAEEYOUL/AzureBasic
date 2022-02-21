@@ -1,0 +1,81 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.613.9944",
+      "templateHash": "7944106905432231543"
+    }
+  },
+  "parameters": {
+    "vaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Vault"
+      }
+    },
+    "enableCRR": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Enable CRR (Works if vault has not registered any backup instance)"
+      }
+    },
+    "vaultStorageType": {
+      "type": "string",
+      "defaultValue": "GeoRedundant",
+      "allowedValues": [
+        "LocallyRedundant",
+        "GeoRedundant"
+      ],
+      "metadata": {
+        "description": "Change Vault Storage Type (Works if vault has not registered any backup instance)"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "metadata": {
+        "description": "tags"
+      }
+    }
+  },
+  "functions": [],
+  "variables": {
+    "skuName": "RS0",
+    "skuTier": "Standard"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.RecoveryServices/vaults",
+      "apiVersion": "2020-02-02",
+      "name": "[parameters('vaultName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "sku": {
+        "name": "[variables('skuName')]",
+        "tier": "[variables('skuTier')]"
+      },
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.RecoveryServices/vaults/backupstorageconfig",
+      "apiVersion": "2020-02-02",
+      "name": "[format('{0}/{1}', parameters('vaultName'), 'vaultstorageconfig')]",
+      "properties": {
+        "StorageModelType": "[parameters('vaultStorageType')]",
+        "CrossRegionRestoreFlag": "[parameters('enableCRR')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.RecoveryServices/vaults', parameters('vaultName'))]"
+      ]
+    }
+  ]
+}

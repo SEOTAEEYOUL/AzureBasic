@@ -1,4 +1,4 @@
-bbbbbbbㅠbBㅠ# ### CIDR(Classless Inter-Domain Routing)
+# CIDR(Classless Inter-Domain Routing)
 IPv4 주소를 할당할 때 유연성과 주소 사용의 효율성을 높이기 위해 네트워크 클래스를 사용하지 않고 할당하는 방식  
 
 > [Subnet Cheat Sheet – 24 Subnet Mask, 30, 26, 27, 29, and other IP Address CIDR Network References](https://www.freecodecamp.org/news/subnet-cheat-sheet-24-subnet-mask-30-26-27-29-and-other-ip-address-cidr-network-references/)

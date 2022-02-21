@@ -1,4 +1,5 @@
 # ARM Template 예제
+> [Azure Resource Manager QuickStart Templates](https://github.com/Azure/azure-quickstart-templates)
 
 ## ARM Template 목록
 | 파일명 | 설명 |  
@@ -10,16 +11,50 @@
 | public-ip-deploy | Public IP Address 만들기 |  
 | nic-deploy | Azure Network Interface 만들기 | 
 | keyvalut-deploy | Azure Key Valut 비밀번호 만들기(VM 에서 admin password) |  
+| recovery-service-vault-deploy | Recovery Service Vault 만들기(Azure Backup) |  
+| AzureVM-14days-rule | Recovry Service Vault - VM 백업 정책(03:00 백업, 14 일 보관) |  
 | vm-deploy |  VM 만들기 |  
 | mysql-deploy | MySQL 만들기 |  
 | mysql-private-endpoint-deploy | MySQL private endpoint 만들기 |  
 | arm.ps1 | ARM Templat 배포 테스트 파일 |  
 
 ## ARM Templat 배포 테스트 파일
+
+### 그룹 생성
+```
+$groupName = 'rg-skcc7-homepage-dev'
+$locationName = 'koreacentral'
+
+New-AzResourceGroup -Name $groupName -Location $locationName
+```
+
+### 그룹 잠금
+#### 조회
+```
+Get-AzResourceLock
+```
+#### 삭제
+```
+$lockId = (Get-AzResourceLock -ResourceGroupName $groupName).LockId
+Remove-AzResourceLock -LockId $lockId
+```
+
+#### 잠금
+```
+New-AzResourceLock `
+  -LockName LockGroup `
+  -LockLevel CanNotDelete `
+  -ResourceGroupName $groupName
+```
 ### arm.ps1
 ```powershell
 $groupName = 'rg-skcc7-homepage-dev'
 $locationName = 'koreacentral'
+
+$r = Get-AzResourceGroup -Name $groupName -Location $locationName
+if ($r -eq $null) {
+  New-AzResourceGroup -Name $groupName -Location $locationName  
+}
 
 $jsonNames = "mysql-deploy","mysql-private-endpoint-deploy"
 

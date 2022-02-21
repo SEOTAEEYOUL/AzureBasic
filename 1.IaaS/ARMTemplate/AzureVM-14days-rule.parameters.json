@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaultSubscriptionID": {
+            "value": "9ebb0d63-8327-402a-bdd4-e222b01329a1"
+        },
+        "vaultResourceGroup": {
+            "value": "rg-skcc7-homepage-dev"
+        },
+        "vaultName": {
+            "value": "skcc7-rsv-VMbackup-dev"
+        },
+        "backupManagementType": {
+            "value": "AzureIaasVM"
+        },
+        "policyName": {
+            "value": "AzureVM-14days-rule"
+        },
+        "policyType": {
+            "value": "V1"
+        },
+        "instantRpRetentionRangeInDays": {
+            "value": 2
+        },
+        "schedule": {
+            "value": {
+                "schedulePolicyType": "SimpleSchedulePolicy",
+                "scheduleRunFrequency": "Daily",
+                "scheduleRunDays": null,
+                "scheduleRunTimes": [
+                    "2022-02-21T03:00:00.000Z"
+                ]
+            }
+        },
+        "timeZone": {
+            "value": "Korea Standard Time"
+        },
+        "retention": {
+            "value": {
+                "retentionPolicyType": "LongTermRetentionPolicy",
+                "dailySchedule": {
+                    "retentionTimes": [
+                        "2022-02-21T03:00:00.000Z"
+                    ],
+                    "retentionDuration": {
+                        "count": 14,
+                        "durationType": "Days"
+                    }
+                },
+                "weeklySchedule": null,
+                "monthlySchedule": null,
+                "yearlySchedule": null
+            }
+        },
+        "instantRPDetails": {
+            "value": {}
+        }
+    }
+}
