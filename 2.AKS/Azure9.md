@@ -6,10 +6,10 @@ AKS Cluster 설계 및 생성, 로깅, 모니터링 하기
 - DNS 에 등록 외부에서 접근하기
 
 ## [AKS(Azure Kubernetes Service)](./AKS.md)  
-Azure에서 관리되는 Kubernetes 클러스터 배포를 단순화  
-Azure에서 Kubernetes Master 를 관리  
-상태 모니터링 및 유지 관리 같은 중요 작업을 처리  
-Worker Node(Agent(kubelet) Node) 에 대해서 비용 지불  
+- Azure에서 관리되는 Kubernetes 클러스터 배포를 단순화  
+- Azure에서 Kubernetes Master 를 관리  
+- 상태 모니터링 및 유지 관리 같은 중요 작업을 처리  
+- Worker Node(Agent(kubelet) Node) 에 대해서 비용 지불  
 ### [AKS Ingress Controller](./AKS-IngressController.md)  
 HTTP(S) 기반의 L7 로드밸런싱 기능을 제공하는 컴포넌트  
 

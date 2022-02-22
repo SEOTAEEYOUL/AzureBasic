@@ -55,3 +55,6 @@
 - 도메인 주도 설계(Domain Driven Design) : Domain 인들이 서로 상호작용하며, 설계하는 것
   - Domain : 실세계에서 사건이 발생하는 집합
 - 클린 코드(Clean Code) : 잘 짜인 코드
+
+> [Cloud Native Trail Map](https://github.com/cncf/landscape/blob/master/README.md#trail-map)  
+> [Cloud Native Landscape](https://landscape.cncf.io/)
