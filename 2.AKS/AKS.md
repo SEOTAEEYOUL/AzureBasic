@@ -1,7 +1,7 @@
 # ACR 및 AKS 클러스터 생성하기
 
 > [AKS 클러스터 구성](https://docs.microsoft.com/ko-kr/azure/aks/cluster-configuration)  
-> [AKS(Azure Kubernetes Service)에서 Azure CNI 네트워킹 구성](https://docs.microsoft.com/ko-kr/azure/aks/configure-azure-cni)
+> [AKS(Azure Kubernetes Service)에서 Azure CNI 네트워킹 구성](https://docs.microsoft.com/ko-kr/azure/aks/configure-azure-cni)  
 > [AKS(Azure Kubernetes Service) 노드 풀의 노드 구성 사용자 지정(미리 보기)](https://docs.microsoft.com/ko-kr/azure/aks/custom-node-configuration)  
 > [Azure Kubernetes Service의 Azure Container Registry를 사용하여 인증](https://docs.microsoft.com/ko-kr/azure/aks/cluster-container-registry-integration?tabs=azure-cli)  
 > [AKS(Azure Kubernetes Service)에서 애플리케이션 수요에 맞게 자동으로 클러스터 크기 조정](https://docs.microsoft.com/ko-kr/azure/aks/cluster-autoscaler)  
@@ -145,7 +145,7 @@ az aks update -n $clusterName -g $groupName --attach-acr $acrName
 ### AKS 업데이트
 ```
 az aks get-upgrades --resource-group $groupName --name $clusterName -o table
-az aks upgrade -g $groupName -n $clusterName --kubernetes-version 1.20.5
+az aks upgrade -g $groupName -n $clusterName --kubernetes-version 1.22.4
 ```
 
 ### Kubectrl과 AKS 클러스터와 다시 연결하기
