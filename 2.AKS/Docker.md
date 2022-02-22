@@ -53,7 +53,7 @@ podman build --tag nodespringboot:0.1.0 .
 
 ### Docker tag
 ```
-podman tag nodejs-bot:1.1.0 nodespringboot.azurecr.io/nodejs-bot:1.1.0
+podman tag nodespringboot:0.1.0 nodespringboot.azurecr.io/nodespringboot:0.1.0
 ```
 
 ### Docker push
