@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springmysql
+  namespace: homepage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springmysql
+  template:
+    metadata:
+      labels:
+        app: springmysql
+    spec:
+      containers:
+        - name: springmysql
+          image: acrhomepage.azurecr.io/springmysql:0.1.2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 250m
+            limits:
+              cpu: 500m
+          env:
+          - name: TITLE
+            value: "AKS Ingress Demo"

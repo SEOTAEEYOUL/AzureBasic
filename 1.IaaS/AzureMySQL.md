@@ -321,7 +321,7 @@ az mysql down
 
 ### MySQL 접속
 ```
- mysql -h mydemoserver.mysql.database.azure.com -u myadmin@mydemoserver -p
+mysql -h mydemoserver.mysql.database.azure.com -u myadmin@mydemoserver -p
 ```
 
 ## 생성로그

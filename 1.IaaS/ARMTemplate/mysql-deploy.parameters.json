@@ -8,8 +8,13 @@
         "administratorLogin": {
             "value": "mysqladmin"
         },
-        "administratorLoginPassword": {
-            "value": "dlatl!00"
+        "administratorLoginPassword": {      
+            "reference": {
+              "keyVault": {
+                  "id": "/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-skcc7-homepage-dev/providers/Microsoft.KeyVault/vaults/kv-skcc7-homepage01"
+              },
+              "secretName": "adminPassword"
+            }
         },
         "skuCapacity": {
             "value": 2

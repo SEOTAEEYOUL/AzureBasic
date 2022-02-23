@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: springmysql 
+  namespace: homepage 
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+  selector:
+    app: springmysql

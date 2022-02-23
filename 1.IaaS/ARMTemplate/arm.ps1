@@ -6,6 +6,8 @@ if ($r -eq $null) {
   New-AzResourceGroup -Name $groupName -Location $locationName  
 }
 
+# $jsonNames = "vnet-deploy","vnet-peering"
+# $jsonNames = "keyvault-deploy"
 $jsonNames = "mysql-deploy","mysql-private-endpoint-deploy"
 
 foreach ($jsonName in $jsonNames)

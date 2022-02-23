@@ -1,5 +1,8 @@
 # AKS(Azure Kubernetes Service) 컴퓨팅 비용 최적화
 
+> [AKS(Azure Kubernetes Service) 클러스터의 노드 수 조정](https://docs.microsoft.com/ko-kr/azure/aks/scale-cluster)  
+> [AKS(Azure Kubernetes Service)에서 애플리케이션 수요에 맞게 자동으로 클러스터 크기 조정](https://docs.microsoft.com/ko-kr/azure/aks/cluster-autoscaler) 
+
 ## Overview 
 1. 더 많은 Transaction 처리 필요
 2. 더 많은 Application 배포 필요
@@ -28,21 +31,21 @@ AKS Cluster 에서 동일한 구성으로 이루어진 노드 그룹으로 Syste
    100 개의 노드를 구성 가능  
   - "az aks node pool add" 의 **--node-vm-size** 로 Node Pool 크기 설정
   ```
-  az aks nodepool add \
-    --resource-group resourceGroup \
-    --cluster-name aksCluster \
-    --name gpunodepool \
-    --node-count 1 \
-    --node-vm-size Standard_NC6 \
+  az aks nodepool add `
+    --resource-group rg-skcc1-aks `
+    --cluster-name aks-cluster-Homepage `
+    --name homepage01 `
+    --node-count 1 `
+    --node-vm-size Standard_DS3_v2 `
     --no-wait
   ```
 
   - **az aks nodepool scale** 명령의 **--node-count**을 사용하여 Node Pool 크기 0으로 조정  
   ```
-  az aks nodepool scale \
-    --resource-group resourceGroup \
-    --cluster-name aksCluster \
-    --name gpunodepool \
+  az aks nodepool scale `
+    --resource-group rg-skcc1-aks `
+    --cluster-name aks-cluster-Homepage `
+    --name homepage01 `
     --node-count 0
   ```
 

@@ -75,6 +75,10 @@ insert into books (Title, Author, Price, published_date) values
  ('TCP/IP 완벽 가이드', '강유,김혁진,...', 45000, '2021-12-01'),
  ('NGINX Cookbook', '데릭 디용기', 20000, '2021-06-01'),
  ('Learning CoreDNS', '존 벨라마릭,크리켓 리우', 25000, '2021-08-31');
+insert into books (Title, Author, Price, published_date) values
+ ('마이크로 서비스 패턴', '크리스 리처드슨', 38000, '2020-01-30'),
+ ('따라하며 배우는 AWS 네트워크 입문', '김원일,서종호', 30900, '2020-10-06'),
+ ('테라폼 업 앤 러닝', '예브게니 브릭만', 23000, '2021-04-30');
 ```
 
 ### 실행 예

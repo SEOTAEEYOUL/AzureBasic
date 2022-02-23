@@ -9,12 +9,26 @@
         "description": "Name for vNet 1"
       }
     },
+    "vnet1GroupName": {
+      "type": "string",
+      "defaultValue": "rg-skcc7-homepage-dev",
+      "metadata": {
+        "description": "Group Name for vNet 1"
+      }     
+    },
     "vnet2Name": {
       "type": "string",
-      "defaultValue": "vnet-skcc7-network",
+      "defaultValue": "vnet-network-dev",
       "metadata": {
         "description": "Name for vNet 2"
       }
+    },
+    "vnet2GroupName": {
+      "type": "string",
+      "defaultValue": "rg-skcc1-network-dev",
+      "metadata": {
+        "description": "Group Name for vNet 2"
+      }     
     }
   },
   "functions": [],
@@ -30,21 +44,21 @@
         "allowGatewayTransit": false,
         "useRemoteGateways": false,
         "remoteVirtualNetwork": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet2Name'))]"
+          "id": "[resourceId(parameters('vnet2GroupName'), 'Microsoft.Network/virtualNetworks', parameters('vnet2Name'))]"
         }
       }
     },
     {
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2020-05-01",
-      "name": "[format('{0}/{1}', parameters('vnet2Name'), format('{0}-{1}', parameters('vnet2Name'), parameters('vnet1Name')))]",
+      "name": "[format('{0}/{1}', parameters('vnet1Name'), format('{0}-{1}', parameters('vnet2Name'), parameters('vnet1Name')))]",
       "properties": {
         "allowVirtualNetworkAccess": true,
         "allowForwardedTraffic": false,
         "allowGatewayTransit": false,
         "useRemoteGateways": false,
         "remoteVirtualNetwork": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet1Name'))]"
+          "id": "[resourceId(parameters('vnet1GroupName'), 'Microsoft.Network/virtualNetworks', parameters('vnet1Name'))]"
         }
       }
     }

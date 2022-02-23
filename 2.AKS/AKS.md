@@ -1,5 +1,7 @@
 # ACR 및 AKS 클러스터 생성하기
 
+> [Install and Set Up kubectl on Windows](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)  
+
 > [AKS 클러스터 구성](https://docs.microsoft.com/ko-kr/azure/aks/cluster-configuration)  
 > [AKS(Azure Kubernetes Service)에서 Azure CNI 네트워킹 구성](https://docs.microsoft.com/ko-kr/azure/aks/configure-azure-cni)  
 > [AKS(Azure Kubernetes Service) 노드 풀의 노드 구성 사용자 지정(미리 보기)](https://docs.microsoft.com/ko-kr/azure/aks/custom-node-configuration)  

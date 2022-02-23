@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "keyVaultName": {
-            "value": "kv-skcc7-homepage"
+            "value": "kv-skcc7-homepage01"
         },
         "location": {
             "value": "koreacentral"

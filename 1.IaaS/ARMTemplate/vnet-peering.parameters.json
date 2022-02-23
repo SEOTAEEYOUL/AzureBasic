@@ -5,8 +5,14 @@
         "vnet1Name": {
             "value": "vnet-skcc7-dev"
         },
+        "vnet1GroupName": {
+            "value": "rg-skcc7-homepage-dev"
+        },
         "vnet2Name": {
-            "value": "vnet-skcc7-network"
+            "value": "vnet-network-dev"
+        },
+        "vnet2GroupName": {
+            "value": "rg-skcc1-network-dev"
         }
     }
 }
