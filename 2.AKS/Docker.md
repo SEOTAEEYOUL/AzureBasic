@@ -1,17 +1,26 @@
 # Docker
 
 ## Dockerfile 형식
-| 항목 | 설명 |  
-|:---|:---|  
-| FROM | Base Image 지정(OS 및 버전 명시, Base Image에서 시작해서 커스텀 이미지를 추가) |  
-| RUN | shell command를 해당 docker image에 실행시킬 때 사용함 |  
-| WORKDIR | Docker File에 있는 RUN, CMD, ENTRYPOINT, COPY, ADD 등의 지시를 수행할 곳 |  
-| EXPOSE | 호스트와 연결할 포트 번호를 지정 |  
+| 항목 | 설명 | 예시 | 비고 |    
+|:---|:---|:---|:---|
+| FROM | Base Image 지정(OS 및 버전 명시, Base Image에서 시작해서 커스텀 이미지를 추가) | FROM alpine:3.10 | |  
+| ENV | 환경 변수 설정 | ENV ENVIRONMENT | |  
+| ARG | --build-arg 옵션을 통해 넘길 수 있는 인자 | ARG port </br> CMD start.sh -h 127.0.0.1 -p ${port} | docker build --build-arg port=8080 . |
+| RUN | 이미지 빌드 시 커맨드 실행 | RUN npm install --silent | |  
+| WORKDIR | Docker File에 있는 RUN, CMD, ENTRYPOINT, COPY, ADD 등의 지시를 수행할 곳 | WORKDIR app/ | |   
+| EXPOSE | 호스트와 연결할 포트 번호를 지정 | EXPOSE 80 |  |  
 | USER | 명령 실행할 사용자 권한 지정 |  
-| ADD | 파일 / 디렉토리 추가, URL 과 같은 원격에서 파일 다운로드 받을 수 있음 |  
-| COPY | 파일 복사, 순수 파일 복사 기능 |  
-| CMD | application을 실행하기 위한 명령어 |  
-| ENTRYPOINT | 컨테이너가 시작되었을 때 스크립트 실행 |  
+| ADD | 파일 / 디렉토리 추가, URL 과 같은 원격에서 파일 다운로드 받을 수 있음 | | |   
+| COPY | 파일 복사, 순수 파일 복사 기능 | COPY package.json package.json | |    
+| CMD | application을 실행하기 위한 명령어 | CMD ["echo", "Hi"] |  |  
+| ENTRYPOINT | 컨테이너가 실행 시 항상 실행되는 커맨드 설정 |  
+
+## .dockerignore 파일
+이미지 빌드 때 제외 파일 목록
+```
+.git
+*.md
+```
 
 ## Dockerfile 예
 - echo

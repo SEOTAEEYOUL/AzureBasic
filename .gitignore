@@ -1,5 +1,7 @@
 HELP.md
 target/
+.class
+bin/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
@@ -12,10 +14,11 @@ target/
 **/*.pem
 **/*.ppk
 
+## ignor test
+1.IaaS/.venv/
+
 ### VS Code ###
 .vscode/
-
-1.IaaS/.venv/
 
 ### STS ###
 .apt_generated
