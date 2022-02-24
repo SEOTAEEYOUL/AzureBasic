@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "Seo,TaeeYoul <taeeyoul@gmail.com>",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "JSON": "^1.0.0",
     "body-parser": "^1.19.0",
     "botkit": "^0.7.4",
