@@ -9,8 +9,11 @@
 > [nginx 수신 컨틀롤러(NGINX Ingress Controller)](https://github.com/kubernetes/ingress-nginx)  
 > [cert-manager](https://artifacthub.io/packages/helm/jetstack/cert-manager)  
 
+
+### Ingress Controller 사용전(VM)
 ![nodespringboot.org-dns-zone설정.png](./img/nodespringboot.org-dns-zone설정.png)  
 
+### Ingress Controller 사용후(Pod)
 ![nodespringboot.org-dns-zone설정-2.png](./img/nodespringboot.org-dns-zone설정-2.png)  
 ## namespace 생성
 ```
