@@ -58,7 +58,7 @@ PS C:\workspace\AzureBasic\2.AKS\yaml>
 ```
 
 ## Montoring 도구
-### [Prometheus](./Prometheus.md)  
+### [Prometheus](./prometheus/README.md)  
 오픈소스 시스템 모니터링 및 경고 툴킷  
 
 ### [Grafana](./Grafana.md) 

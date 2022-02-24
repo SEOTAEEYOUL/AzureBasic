@@ -231,7 +231,7 @@ alertmanager:
     ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
     ##   GKE, AWS & OpenStack)
     ##
-    storageClass: "-"
+    # storageClass: "-"
 
     ## alertmanager data Persistent Volume Binding Mode
     ## If defined, volumeBindingMode: <volumeBindingMode>
@@ -1299,7 +1299,7 @@ pushgateway:
   persistentVolume:
     ## If true, pushgateway will create/use a Persistent Volume Claim
     ##
-    enabled: false
+    enabled: true
 
     ## pushgateway data Persistent Volume access modes
     ## Must match those of existing PV or dynamic provisioner

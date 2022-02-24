@@ -1,139 +1,7 @@
-# Prometheus/AlertManager, Grafana
-- bitnami 와 prometheus-community 것이 존재
-- operator 패턴 사용
-- prometheus-community 설명이 좀더 친절  
-
-> ## [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)  
-> ## [kube-prometheus](https://artifacthub.io/packages/helm/bitnami/kube-prometheus)  
-> [JMX Exporter](https://github.com/prometheus/jmx_exporter)  
-
----   
-### Helm Chart 가져오기
-#### repo 추가 & 갱신
-```
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-```
-
-#### helm 조회 및 가져오기/Monitoring Folder 에 풀기
-```
-helm search repo prometheus 
-helm fetch prometheus-community/kube-prometheus-stack
-
-tar -xzvf prometheus-15.4.0.tgz
-mv prometheus prometheus-15.4.0
-cd prometheus-15.4.0
-cp values.yaml values.yaml.org
-```
-
-
-#### prometheus-values.yaml 설정
-```
-alertmanager:
-  persistentVolume:
-    storageClass: "default"
-server:
-  persistentVolume:
-    size: 4Gi
-    storageClass: "default"
-```
-#### namespace 생성 및 설치
-```
-kubectl create ns monitoring
-```
-
-#### 설치
-```
-helm install prometheus prometheus-community/prometheus -n monitoring -f prometheus-values.yaml
-```
-## Slack Incoming Webhook 설정  
-
-### [수신 웹후크 추가하기](https://a-tcl-da.slack.com/services/2308795797558?updated=1)  
-- 웹후크 URL
-  ```
-  https://hooks.slack.com/services/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
-  ```
-- 메시지 전송
-  ```
-  payload={"text": "채널에 있는 한 줄의 텍스트입니다.\n또 다른 한 줄의 텍스트입니다."}
-  ```
-- 링크 추가
-  ```
-  payload={"text": "매우 중요한 알림이 있습니다! 자세히 알아보려면 <https://alert-system.com/alerts/1234|여기를 클릭>하세요."}
-  ```
-- 사용자 지정된 모양
-  -  통합 앱 설정 섹션에서 수신 웹후크의 이름 및 아이콘을 사용자 지정
-  -  JSON 페이로드에서 재정의
-    - 표시된 이름 : "username": "new-bot-name"
-    - 봇 아이콘
-      - "icon_url": "https://slack.com/img/icons/app-57.png"
-      - "icon_emoji": ":ghost:"
-
-- 채널 재정의
-  -  JSON 페이로드에서 재정의할 수 있슴
-    - 공개채널 : "channel": "#other-channel"
-    - 다이렉트 메시지 : "channel": "@사용자 이름"
-
-- 예
-  - bash
-  ```bash
-  curl -X POST --data-urlencode "payload={\"channel\": \"#chatops\", \"username\": \"webhookbot\", \"text\": \"이 항목은 #개의 chatops에 포스트되며 webhookbot이라는 봇에서 제공됩니다.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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
-  ```
-
-  - powershell
-  ```posershell
-  curl -X POST --data-urlencode "payload={'channel': '#alert', 'username': 'webhookbot', 'text': '이 항목은 #개의 chatops에 포스트되며 webhookbot이라는  봇에서 제공됩니다.', 'icon_emoji': ':ghost:'}" https://hooks.slack.com/services/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 
-  ```
-
-- prometheus-alertmanager-cm.yaml
-```
-apiVersion: v1
-data:
-  alertmanager.yml: |
-    global:
-      slack_api_url: https://hooks.slack.com/services/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
-    receivers:
-    - name: 'slack-notification'
-      slack_configs:
-      - channel: '#alert'
-        username: 'prometheus'
-        send_resolved: true
-        icon_emoji: ":crocodile:"
-        icon_url: '{{ template "slack.default.iconurl" . }}'
-        title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] 모니터링 이벤트 알림'
-        text: "{{ range .Alerts }} *경고:* _{{ .Labels.alertname }}_\n*심각도:* `{{ .Labels.severity }}`\n*환경:* *ChatOps *\n*요약:* {{ .Annotations.summary }}\n*내용:* {{ .Annotations.description }}\n{{ end }}"
-    route:
-      group_interval: 5m
-      group_wait: 10s
-      receiver: 'slack-notification'
-      # repeat_interval: 3h
-      repeat_interval: 30s
-kind: ConfigMap
-metadata:
-  annotations:
-    meta.helm.sh/release-name: prometheus
-    meta.helm.sh/release-namespace: monitoring
-  labels:
-    app: prometheus
-    app.kubernetes.io/managed-by: Helm
-    chart: prometheus-14.1.1
-    component: alertmanager
-    heritage: Helm
-    release: prometheus
-  name: prometheus-alertmanager
-  namespace: monitoring
-```
-
-- prometheus-server-cm.yaml
-```
 apiVersion: v1
 data:
   # alerting_rules.yml: |
-  #   groups:
-  #   - name: cpu-node
-  #     rules:
-  #     - record: job_instance_mode:node_cpu_seconds:avg_rate5m
-  #       expr: avg by (job, instance, mode) (rate(node_cpu_seconds_total[5m]))
+  #   {}
   alerting_rules.yml: |
     groups:
     - name: container memory alert
@@ -211,13 +79,13 @@ data:
         annotations:
           summary: Targets are down
           description: '{{ $value }}% or more of job[*{{ $labels.job }}*] targets are down.'
-      # - alert: EKS-MonitoringHeartbeat
-      #   expr: vector(1)
-      #   labels:
-      #     severity: none
-      #   annotations:
-      #     summary: Alerting Heartbeat
-      #     description: This is a Hearbeat event meant to ensure that the entire Alerting pipeline is functional.
+      - alert: AKS-MonitoringHeartbeat
+        expr: vector(1)
+        labels:
+          severity: none
+        annotations:
+          summary: Alerting Heartbeat
+          description: This is a Hearbeat event meant to ensure that the entire Alerting pipeline is functional.  
   alerts: |
     {}
   prometheus.yml: |
@@ -294,6 +162,10 @@ data:
         regex: true
         source_labels:
         - __meta_kubernetes_service_annotation_prometheus_io_scrape
+      - action: drop
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scrape_slow
       - action: replace
         regex: (https?)
         source_labels:
@@ -312,19 +184,22 @@ data:
         - __meta_kubernetes_service_annotation_prometheus_io_port
         target_label: __address__
       - action: labelmap
+        regex: __meta_kubernetes_service_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
         regex: __meta_kubernetes_service_label_(.+)
       - action: replace
         source_labels:
         - __meta_kubernetes_namespace
-        target_label: kubernetes_namespace
+        target_label: namespace
       - action: replace
         source_labels:
         - __meta_kubernetes_service_name
-        target_label: kubernetes_name
+        target_label: service
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_node_name
-        target_label: kubernetes_node
+        target_label: node
     - job_name: kubernetes-service-endpoints-slow
       kubernetes_sd_configs:
       - role: endpoints
@@ -351,19 +226,22 @@ data:
         - __meta_kubernetes_service_annotation_prometheus_io_port
         target_label: __address__
       - action: labelmap
+        regex: __meta_kubernetes_service_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
         regex: __meta_kubernetes_service_label_(.+)
       - action: replace
         source_labels:
         - __meta_kubernetes_namespace
-        target_label: kubernetes_namespace
+        target_label: namespace
       - action: replace
         source_labels:
         - __meta_kubernetes_service_name
-        target_label: kubernetes_name
+        target_label: service
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_node_name
-        target_label: kubernetes_node
+        target_label: node
       scrape_interval: 5m
       scrape_timeout: 30s
     - honor_labels: true
@@ -399,10 +277,10 @@ data:
         regex: __meta_kubernetes_service_label_(.+)
       - source_labels:
         - __meta_kubernetes_namespace
-        target_label: kubernetes_namespace
+        target_label: namespace
       - source_labels:
         - __meta_kubernetes_service_name
-        target_label: kubernetes_name
+        target_label: service
     - job_name: kubernetes-pods
       kubernetes_sd_configs:
       - role: pod
@@ -411,6 +289,10 @@ data:
         regex: true
         source_labels:
         - __meta_kubernetes_pod_annotation_prometheus_io_scrape
+      - action: drop
+        regex: true
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scrape_slow
       - action: replace
         regex: (https?)
         source_labels:
@@ -429,17 +311,20 @@ data:
         - __meta_kubernetes_pod_annotation_prometheus_io_port
         target_label: __address__
       - action: labelmap
+        regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
         regex: __meta_kubernetes_pod_label_(.+)
       - action: replace
         source_labels:
         - __meta_kubernetes_namespace
-        target_label: kubernetes_namespace
+        target_label: namespace
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: kubernetes_pod_name
+        target_label: pod
       - action: drop
-        regex: Pending|Succeeded|Failed
+        regex: Pending|Succeeded|Failed|Completed
         source_labels:
         - __meta_kubernetes_pod_phase
     - job_name: kubernetes-pods-slow
@@ -468,17 +353,20 @@ data:
         - __meta_kubernetes_pod_annotation_prometheus_io_port
         target_label: __address__
       - action: labelmap
+        regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
         regex: __meta_kubernetes_pod_label_(.+)
       - action: replace
         source_labels:
         - __meta_kubernetes_namespace
-        target_label: kubernetes_namespace
+        target_label: namespace
       - action: replace
         source_labels:
         - __meta_kubernetes_pod_name
-        target_label: kubernetes_pod_name
+        target_label: pod
       - action: drop
-        regex: Pending|Succeeded|Failed
+        regex: Pending|Succeeded|Failed|Completed
         source_labels:
         - __meta_kubernetes_pod_phase
       scrape_interval: 5m
@@ -515,17 +403,12 @@ metadata:
   annotations:
     meta.helm.sh/release-name: prometheus
     meta.helm.sh/release-namespace: monitoring
-    # creationTimestamp: "2021-06-11T04:44:00Z"
   labels:
     app: prometheus
     app.kubernetes.io/managed-by: Helm
-    chart: prometheus-14.1.1
+    chart: prometheus-15.4.0
     component: server
     heritage: Helm
     release: prometheus
   name: prometheus-server
   namespace: monitoring
-  # resourceVersion: "344693"
-  # uid: a1295efb-6fe6-415c-9737-5db5379ea2ac
-```
-

@@ -3,9 +3,18 @@ kind: Service
 metadata:
   name: springmysql 
   namespace: homeeee 
+  annotations:
+   prometheus.io/scrape: 'true'
+   prometheus.io/port: "8090"
 spec:
   type: ClusterIP
   ports:
-  - port: 8080
+  - name: nodejs-exporter
+    port: 8090
+    protocol: TCP
+    targetPort: 8090
+    # nodePort: 30003
+  - name : springmysql
+    port: 8080
   selector:
     app: springmysql
