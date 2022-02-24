@@ -1,6 +1,7 @@
-# Prometheus/AlertManager
-- prometheus-community 설명이 좀더 친절  
+# [Prometheus/AlertManager](https://prometheus.io/docs/introduction/overview/)  
+- 오픈소스 모니터링 툴  
 
+> [Prometheus란?](https://medium.com/finda-tech/prometheus%EB%9E%80-cf52c9a8785f)  
 > ## [Prometheus](https://github.com/prometheus-community/prometheus)  
 > [JMX Exporter](https://github.com/prometheus/jmx_exporter)  
 
@@ -24,15 +25,26 @@ cp values.yaml values.yaml.org
 ```
 
 
-#### prometheus-values.yaml 설정
+#### values.yaml 설정
 ```
-alertmanager:
+.
+.
+.
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets:
+            # - localhost:9090
+            - 127.0.0.1:9090
+.
+.
+.
+
   persistentVolume:
-    storageClass: "default"
-server:
-  persistentVolume:
-    size: 2Gi
-    storageClass: "default"
+    ## If true, alertmanager will create/use a Persistent Volume Claim
+    ## If false, use emptyDir
+    ##
+    enabled: true
 ```
 #### namespace 생성
 ```
@@ -42,6 +54,7 @@ kubectl create ns monitoring
 #### 설치
 ```
 helm install prometheus  -n monitoring -f values.yaml .
+ubectl get pvc,pod,svc,ep,ing -n monitoring -lapp=prometheus 
 ```
 
 #### 설정 파일을 받은 후 모니터일 룰과 Alert  룰 설정

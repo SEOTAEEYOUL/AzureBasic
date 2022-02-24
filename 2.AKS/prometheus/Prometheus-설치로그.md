@@ -190,3 +190,32 @@ level=info ts=2022-02-24T12:56:31.619Z caller=coordinator.go:126 component=confi
 level=info ts=2022-02-24T12:56:31.621Z caller=main.go:518 msg=Listening address=:9093
 level=info ts=2022-02-24T12:56:31.622Z caller=tls_config.go:191 msg="TLS is disabled." http2=false
 ```
+
+```
+PS C:\workspace\AzureBasic\2.AKS\prometheus> kubectl get pvc,pod,svc,ep,ing -n monitoring -lapp=prometheus                                                                                    
+NAME                                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+persistentvolumeclaim/prometheus-alertmanager   Bound    pvc-ae66ff4b-77b2-4ee7-ad16-ed50dd2a17fa   2Gi        RWO            default        141m
+persistentvolumeclaim/prometheus-pushgateway    Bound    pvc-70ae0ef8-f196-4d6d-a714-f6bda41c9b86   2Gi        RWO            default        141m
+persistentvolumeclaim/prometheus-server         Bound    pvc-2b36e0df-046d-4162-b0a8-762d27d6183b   8Gi        RWO            default        141m
+
+NAME                                          READY   STATUS    RESTARTS   AGE
+pod/prometheus-alertmanager-f68df6679-h4bd2   2/2     Running   0          72m
+pod/prometheus-node-exporter-pvcqs            1/1     Running   0          141m
+pod/prometheus-pushgateway-8b677dc7c-qj54r    1/1     Running   0          141m
+pod/prometheus-server-5f54d5759-w4dsm         2/2     Running   0          141m
+
+NAME                               TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+service/prometheus-alertmanager    ClusterIP   10.0.21.232    <none>        80/TCP     141m
+service/prometheus-node-exporter   ClusterIP   None           <none>        9100/TCP   141m
+service/prometheus-pushgateway     ClusterIP   10.0.225.250   <none>        9091/TCP   141m
+service/prometheus-server          ClusterIP   10.0.114.170   <none>        80/TCP     141m
+
+NAME                                 ENDPOINTS          AGE
+endpoints/prometheus-alertmanager    10.244.2.31:9093   141m
+endpoints/prometheus-node-exporter   10.240.0.6:9100    141m
+endpoints/prometheus-pushgateway     10.244.2.24:9091   141m
+endpoints/prometheus-server          10.244.2.22:9090   141m
+
+NAME                                       CLASS    HOSTS                                                            ADDRESS          PORTS   AGE
+ingress.networking.k8s.io/prometheus-ing   <none>   prometheus.nodespringboot.org,alert-manager.nodespringboot.org   20.200.227.196   80      97m
+```

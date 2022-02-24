@@ -6,6 +6,12 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+  labels:
+    app: prometheus
+    chart: prometheus-15.4.0
+    component: server
+    heritage: Helm
+    release: prometheus
   name: prometheus-ing
   namespace: monitoring
 spec:
