@@ -5,6 +5,8 @@ Container 란 ?
 [Kubernetes 란 ?](https://kubernetes.io/ko/docs/concepts/overview/what-is-kubernetes/)  
 
 ## Container 
+컨테이너란 호스트 OS상에 논리적인 구획(컨테이너)을 만들고, 어플리케이션을 작동시키기 위해 필요한 라이브러리나 어플리케이션 등을 하나로 모아, 마치 별도의 서버인 것처럼 사용할 수 있게 만든 것
+
 ### [CRI(Container Runtime Interface)](./ContainerRuntimeInterface.md)  
 
 ### [Dockerfile 형식 및 명령어](./Docker.md)  
@@ -30,8 +32,12 @@ curl localhost:8080
 
 #### [SpringBoot+MySQL Containerizing 예제](https://github.com/SEOTAEEYOUL/SpringBootMySQL) 
 
-## [Kubernetes](./Kubernetes.md)
+## [Kubernetes](./Kubernetes.md)  
+> [Kubernetes에 대해서][(](https://medium.com/humanscape-tech/kubernetes%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-a336d2b6e01a))  
 > [Kubernetes cluster(vagrant 를 사용한 1.21.2-00 설치)](https://github.com/SEOTAEEYOUL/kubernetes-cluster)  
+
+Kubernetes는 구글에서 개발되고 사용 중인 컨테이너 Orchestration Management 기술로서  자동화 된 컨테이너 배포, 확장 및 관리가 가능하여 적은 인력으로 대규모의 시스템을  손쉽게 운영 할 수 있는 기술로 3개월 마다 새로운 버전이 출시 됨
+
 
 ### [Cloud Native](./CloudNative.md)  
 
