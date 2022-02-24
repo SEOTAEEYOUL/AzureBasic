@@ -42,6 +42,7 @@ Storing signatures
 ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$
 ```
 ### az acr 를 사용한 빌드 및 ACR 에 push하기
+#### bash(acr-build.sh)
 ```
 PS C:\workspace\SpringBootMySQL> cat acr-build.sh
 . ./podman.env
@@ -287,6 +288,137 @@ service/springmysql created
 PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl create -f springmysql-ing.yaml
 ingress.networking.k8s.io/springmysql-ing created
 PS C:\workspace\AzureBasic\2.AKS\yaml> 
+```
+
+#### PowerShell(acr-build.ps1)
+```
+PS C:\workspace\SpringBootMySQL> ./acr-build.ps1
+Packing source code into tar to upload...
+Excluding '.git' based on default ignore rules
+Excluding '.gitignore' based on default ignore rules
+Uploading archived source code from 'C:\Users\taeey\AppData\Local\Temp\build_archive_48cce1891bfe46d296d7edf95f62f46b.tar.gz'...
+Sending context (78.361 MiB) to registry: acrHomeeee...
+Queued a build with ID: de4
+Waiting for an agent...
+2022/02/24 09:54:54 Downloading source code...
+2022/02/24 09:54:56 Finished downloading source code
+2022/02/24 09:54:57 Using acb_vol_80798a30-7a3e-4319-a668-b2dc98001f30 as the home volume
+2022/02/24 09:54:57 Setting up Docker configuration...
+2022/02/24 09:54:57 Successfully set up Docker configuration
+2022/02/24 09:54:57 Logging in to registry: acrhomeeee.azurecr.io
+2022/02/24 09:54:58 Successfully logged into acrhomeeee.azurecr.io
+2022/02/24 09:54:58 Executing step ID: build. Timeout(sec): 28800, Working directory: '', Network: ''
+2022/02/24 09:54:58 Scanning for dependencies...
+2022/02/24 09:54:59 Successfully scanned dependencies
+2022/02/24 09:54:59 Launching container with name: build
+Sending build context to Docker daemon  88.12MB
+Step 1/13 : FROM openjdk:8-jdk-alpine
+8-jdk-alpine: Pulling from library/openjdk
+e7c96db7181b: Pulling fs layer
+f910a506b6cb: Pulling fs layer
+c2274a1a0e27: Pulling fs layer
+f910a506b6cb: Verifying Checksum
+f910a506b6cb: Download complete
+e7c96db7181b: Verifying Checksum
+e7c96db7181b: Download complete
+e7c96db7181b: Pull complete
+f910a506b6cb: Pull complete
+c2274a1a0e27: Verifying Checksum
+c2274a1a0e27: Download complete
+c2274a1a0e27: Pull complete
+Digest: sha256:94792824df2df33402f201713f932b58cb9de94a0cd524164a0f2283343547b3
+Status: Downloaded newer image for openjdk:8-jdk-alpine
+ ---> a3562aa0b991
+Step 2/13 : RUN addgroup -S spring && adduser -S spring -G spring
+ ---> Running in 435b602713e3
+Removing intermediate container 435b602713e3
+ ---> 0a5c914721d2
+Step 3/13 : USER spring:spring
+ ---> Running in 72ddb37fee71
+Removing intermediate container 72ddb37fee71
+ ---> 9e024b953b31
+Step 4/13 : ARG WAR_FILE=target/*.war
+ ---> Running in 2dae415e8a99
+Removing intermediate container 2dae415e8a99
+ ---> be1bbcbae7f4
+Step 5/13 : ARG APP_NAME=app
+ ---> Running in 9a198e09b902
+Removing intermediate container 9a198e09b902
+ ---> 4ad48aaa38e5
+Step 6/13 : ARG DEPENDENCY=target/classes
+ ---> Running in 8bd04978a68d
+Removing intermediate container 8bd04978a68d
+ ---> a6a016689174
+Step 7/13 : RUN mkdir -p /home/spring
+ ---> Running in 1a2f9cde0a3a
+Removing intermediate container 1a2f9cde0a3a
+ ---> f3b71b537a67
+Step 8/13 : WORKDIR /home/spring
+ ---> Running in ce9fbf05f30e
+Removing intermediate container ce9fbf05f30e
+ ---> f14ffd21357b
+Step 9/13 : COPY ${WAR_FILE} /home/spring/app.war
+ ---> 559808e7d7b4
+Step 10/13 : COPY jmx-exporter/jmx_prometheus.yml /home/spring/jmx_prometheus.yml
+ ---> cde0bf9933bf
+Step 11/13 : COPY ./jmx-exporter/jmx_prometheus_javaagent-0.16.1.jar /home/spring/jmx_prometheus_javaagent.jar
+ ---> 25bf01e867db
+Step 12/13 : EXPOSE 8088
+ ---> Running in 21e27c030203
+Removing intermediate container 21e27c030203
+ ---> 56182f1d8308
+Step 13/13 : ENTRYPOINT java -cp app:app/lib/* -Xms512m -Xmx512m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:MaxMetaspaceSize=128m -XX:MetaspaceSize=128m -XX:ParallelGCThreads=3          -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:/gclog/gc_${HOSTNAME}_$(date +%Y%m%d%H%M%S).log -Dgclog_file=/gclog/gc_${HOSTNAME}_$(date +%Y%m%d%H%M%S).log            -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/gclog/${HOSTNAME}.log               -javaagent:/home/spring/jmx_prometheus_javaagent.jar=8090:/home/spring/jmx_prometheus.yml               -Djava.security.egd=file:/dev/./urandom -jar /home/spring/app.war
+ ---> Running in 0bae65b74b37
+Removing intermediate container 0bae65b74b37
+ ---> 98680e18f881
+Successfully built 98680e18f881
+Successfully tagged acrhomeeee.azurecr.io/springmysql:0.2.1
+2022/02/24 09:55:19 Successfully executed container: build
+2022/02/24 09:55:19 Executing step ID: push. Timeout(sec): 3600, Working directory: '', Network: ''
+2022/02/24 09:55:19 Pushing image: acrhomeeee.azurecr.io/springmysql:0.2.1, attempt 1
+The push refers to repository [acrhomeeee.azurecr.io/springmysql]
+2a052ba43d57: Preparing
+9b7248f24645: Preparing
+aaf969f64b62: Preparing
+8e729351d9b1: Preparing
+ceaf9e1ebef5: Preparing
+9b9b7f3d56a0: Preparing
+f1b5933fe4b5: Preparing
+f1b5933fe4b5: Waiting
+9b9b7f3d56a0: Waiting
+ceaf9e1ebef5: Layer already exists
+9b9b7f3d56a0: Layer already exists
+2a052ba43d57: Pushed
+f1b5933fe4b5: Layer already exists
+8e729351d9b1: Pushed
+9b7248f24645: Pushed
+aaf969f64b62: Pushed
+0.2.1: digest: sha256:1251ccb76ac0c7c3d50f729a9dc5db7ea0f66cf882d869b0494c84eb87726622 size: 1784
+2022/02/24 09:55:22 Successfully pushed image: acrhomeeee.azurecr.io/springmysql:0.2.1
+2022/02/24 09:55:22 Step ID: build marked as successful (elapsed time in seconds: 20.583905)
+2022/02/24 09:55:22 Populating digests for step ID: build...
+2022/02/24 09:55:23 Successfully populated digests for step ID: build
+2022/02/24 09:55:23 Step ID: push marked as successful (elapsed time in seconds: 2.925347)
+2022/02/24 09:55:23 The following dependencies were found:
+2022/02/24 09:55:23
+- image:
+    registry: acrhomeeee.azurecr.io
+    repository: springmysql
+    tag: 0.2.1
+    digest: sha256:1251ccb76ac0c7c3d50f729a9dc5db7ea0f66cf882d869b0494c84eb87726622
+  runtime-dependency:
+    registry: registry.hub.docker.com
+    repository: library/openjdk
+    tag: 8-jdk-alpine
+    digest: sha256:94792824df2df33402f201713f932b58cb9de94a0cd524164a0f2283343547b3
+  git: {}
+
+Run ID: de4 was successful after 29s
+Result
+--------
+0.2.0
+0.2.1
+PS C:\workspace\SpringBootMySQL> 
 ```
 
 ## 배포 결과 확인
