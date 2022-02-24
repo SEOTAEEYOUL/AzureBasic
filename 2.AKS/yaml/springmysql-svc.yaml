@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: springmysql 
-  namespace: homepage 
+  namespace: homeeee 
 spec:
   type: ClusterIP
   ports:

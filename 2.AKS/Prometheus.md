@@ -9,32 +9,49 @@
 
 ---   
 ### Helm Chart 가져오기
-- repo 추가 & 갱신
+#### repo 추가 & 갱신
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 ```
 
-- helm 조회 및 가져오기/Monitoring Folder 에 풀기
+#### helm 조회 및 가져오기/Monitoring Folder 에 풀기
 ```
 helm search repo prometheus 
 helm fetch prometheus-community/kube-prometheus-stack
 
-tar -xzvf kube-prometheus-stack-16.6.2.tgz
-mv kube-prometheus-stack kube-prometheus-stack-16.6.2
+tar -xzvf prometheus-15.4.0.tgz
+mv prometheus prometheus-15.4.0
+cd prometheus-15.4.0
+cp values.yaml values.yaml.org
 ```
 
-- namespace 생성 및 설치
+
+#### prometheus-values.yaml 설정
+```
+alertmanager:
+  persistentVolume:
+    storageClass: "default"
+server:
+  persistentVolume:
+    size: 4Gi
+    storageClass: "default"
+```
+#### namespace 생성 및 설치
 ```
 kubectl create ns monitoring
 ```
 
+#### 설치
+```
+helm install prometheus prometheus-community/prometheus -n monitoring -f prometheus-values.yaml
+```
 ## Slack Incoming Webhook 설정  
 
-### [수신 웹후크 추가하기](https://chatops-cjq7842.slack.com/services/B024Q3VMWES?added=1)  
+### [수신 웹후크 추가하기](https://a-tcl-da.slack.com/services/2308795797558?updated=1)  
 - 웹후크 URL
   ```
-  https://hooks.slack.com/services/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
+  https://hooks.slack.com/services/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
   ```
 - 메시지 전송
   ```
@@ -58,13 +75,14 @@ kubectl create ns monitoring
     - 다이렉트 메시지 : "channel": "@사용자 이름"
 
 - 예
-  ```
-  curl -X POST --data-urlencode "payload={\"channel\": \"#chatops\", \"username\": \"webhookbot\", \"text\": \"이 항목은 #개의 chatops에 포스트되며 webhookbot이라는 봇에서 제공됩니다.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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
+  - bash
+  ```bash
+  curl -X POST --data-urlencode "payload={\"channel\": \"#chatops\", \"username\": \"webhookbot\", \"text\": \"이 항목은 #개의 chatops에 포스트되며 webhookbot이라는 봇에서 제공됩니다.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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
   ```
 
-- 웹후크 URL
-  ```
-  https://hooks.slack.com/services/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
+  - powershell
+  ```posershell
+  curl -X POST --data-urlencode "payload={'channel': '#alert', 'username': 'webhookbot', 'text': '이 항목은 #개의 chatops에 포스트되며 webhookbot이라는  봇에서 제공됩니다.', 'icon_emoji': ':ghost:'}" https://hooks.slack.com/services/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 
   ```
 
 - prometheus-alertmanager-cm.yaml

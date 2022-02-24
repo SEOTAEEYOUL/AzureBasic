@@ -421,6 +421,149 @@ Result
 PS C:\workspace\SpringBootMySQL> 
 ```
 
+#### Homeeee 배포하기
+```
+PS C:\workspace\AzureBasic\2.AKS\yaml> az aks get-credentials --resource-group rg-skcc2-aks --name aks-cluster-homeeee                 
+The behavior of this command has been altered by the following extension: aks-preview
+Merged "aks-cluster-Homeeee" as current context in C:\Users\taeey\.kube\config
+PS C:\workspace\AzureBasic\2.AKS\yaml> 
+PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl get node
+NAME                                STATUS   ROLES   AGE    VERSION
+aks-homeeee01-39011919-vmss000002   Ready    agent   4h8m   v1.21.9
+PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl create ns homeeee 
+namespace/homeeee created
+PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl create -f springmysql-deploy.yaml
+deployment.apps/springmysql created
+PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl create -f springmysql-svc.yaml   
+service/springmysql created
+PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl create -f springmysql-ing.yaml
+ingress.networking.k8s.io/springmysql-ing created
+PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl get pod,svc,ep,ing -n homeeee
+NAME                               READY   STATUS    RESTARTS   AGE
+pod/springmysql-5d459db9cf-f5mrk   1/1     Running   0          45s
+
+NAME                  TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+service/springmysql   ClusterIP   10.0.249.232   <none>        8080/TCP   40s
+
+NAME                    ENDPOINTS          AGE
+endpoints/springmysql   10.244.2.15:8080   40s
+
+NAME                                        CLASS    HOSTS   ADDRESS   PORTS   AGE
+ingress.networking.k8s.io/springmysql-ing   <none>   *                 80      18s
+PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl --namespace ingress-basic get services -o wide  nginx-ingress-ingress-nginx-controller
+NAME                                     TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                      AGE    SELECTOR
+nginx-ingress-ingress-nginx-controller   LoadBalancer   10.0.211.214   20.200.227.196   80:32759/TCP,443:30477/TCP   4h2m   app.kubernetes.io/component=controller,app.kubernetes.io/instance=nginx-ingress,app.kubernetes.io/name=ingress-nginx
+PS C:\workspace\AzureBasic\2.AKS\yaml> 
+```
+```
+PS C:\workspace\AzureBasic\2.AKS\yaml> curl 20.200.227.196/springmysql
+<html>
+<head>
+<meta http-equiv="Context-Type" content="text/html" charset="UTF-8" />
+<title>MAIN PAGE</title>
+<!-- link rel="icon" type="image/x-icon" href="/favicon.ico" -->
+<link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
+<!--
+<script type="text/javascript">
+  location.href="/home.do";
+</script>
+-->
+</head>
+  <img src="/img/apache_tomcat_logo.png" width="200"/>
+  <H1> <font color="#00cccc">Books(SpringBoot + MariaDB, MyBatis) Home </font></H1>
+  <H2> <font color="#00cccc"><a href="/home.do" style="text-decoration:none">Books Schema</a></font></H2>
+  <H2> <font color="#00cccc"><a href="/books.do" style="text-decoration:none">Books</a></font></H2>
+  <!--
+  <table>
+  <tr>
+  <th>Name</th>
+  <th>Property</th>
+  <th>Length</th>
+  </tr>
+  <tr> <td> seqNo </td><td> int </td><td>4 Byte, -2,147,483,648 ~ 2,147,483,647</td> </tr>
+  <tr> <td> title </td><td> string </td><td>80</td> </tr>
+  <tr> <td> author </td><td> string </td><td>40</td> </tr>
+  <tr> <td> published_date </td><td> Date </td><td>yyyy-MM-dd</td></tr>
+  <tr> <td> price </td><td> double </td><td>8 byte, (+/-)4.9E-324 ~ (+/-)1.7976931348623157E308</td></tr>
+  </table>
+  -->
+  </br>
+  <div class="column">
+    <h1> <font color="#cc0000"> Information</font> | Azure Resource </h1>
+  </div>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script>
+  <script>
+    var width = 960,
+        height = 500
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+    d3.csv("worddata.csv", function (data) {
+        showCloud(data)
+        setInterval(function(){
+              showCloud(data)
+        },2000)
+    });
+    //scale.linear: 선형적인 스케일로 표준화를 시킨다.
+    //domain: 데이터의 범위, 입력 크기
+    //range: 표시할 범위, 출력 크기
+    //clamp: domain의 범위를 넘어간 값에 대하여 domain의 최대값으로 고정시킨다.
+    wordScale = d3.scale.linear().domain([0, 100]).range([0, 150]).clamp(true);
+    var keywords = ["CDN 프로필", "애플리케이션 게이트웨이", "가상 머신"]
+    width = 800
+    var svg = d3.select("svg")
+                .append("g")
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+
+    function showCloud(data) {
+      d3.layout.cloud().size([width, height])
+        //클라우드 레이아웃에 데이터 전달
+        .words(data)
+        .rotate(function (d) {
+          return d.text.length > 3 ? 0 : 90;
+        })
+        //스케일로 각 단어의 크기를 설정
+        .fontSize(function (d) {
+          return wordScale(d.frequency);
+        })
+        //클라우드 레이아웃을 초기화 > end이벤트 발생 > 연결된 함수 작동
+        .on("end", draw)
+        .start();
+
+      function draw(words) {
+          var cloud = svg.selectAll("text").data(words)
+          //Entering words
+          cloud.enter()
+            .append("text")
+            .style("font-family", "overwatch")
+            .style("fill", function (d) {
+                return (keywords.indexOf(d.text) > -1 ? "#cc0000" : "#405275");
+            })
+            .style("fill-opacity", .5)
+            .attr("text-anchor", "middle")
+            .attr('font-size', 1)
+            .text(function (d) {
+                return d.text;
+            });
+          cloud
+            .transition()
+            .duration(600)
+            .style("font-size", function (d) {
+                return d.size + "px";
+            })
+            .attr("transform", function (d) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .style("fill-opacity", 1);
+      }
+    }
+  </script>
+</body>
+</html>
+```
+
 ## 배포 결과 확인
 ```
 PS C:\workspace\AzureBasic> kubectl get pod,svc,ep,ing -n homepage
@@ -437,6 +580,7 @@ NAME                                        CLASS    HOSTS   ADDRESS          PO
 ingress.networking.k8s.io/springmysql-ing   <none>   *       20.200.248.217   80      18h
 PS C:\workspace\AzureBasic> 
 ```
+
 
 ### 브라우저에서 보기
 http://springmysql.nodespringboot.org/  

@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: springmysql
-  namespace: homepage
+  namespace: homeeee
 spec:
   replicas: 1
   selector:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: springmysql
-          image: acrhomepage.azurecr.io/springmysql:0.1.2
+          image: acrHomeeee.azurecr.io/springmysql:0.2.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
