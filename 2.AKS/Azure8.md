@@ -12,8 +12,15 @@ Container 란 ?
 컨테이너의 생성, 삭제 등 라이프사이클을 관리하는 스펙  
 gRPC 기반의 API로 플러그인 구조로 추가할 수 있음  
 
+#### OCI(Open Container Initiative)
+컨테이너 런타임 표준 스펙
+
 ### [Dockerfile 형식 및 명령어](./Docker.md)  
+이미지를 기반으로 하여 새로운 이미지를 스크립트 파일을 통해 내가 설정한 나만의 이미지를 생성할 수 있는 일종의 이미지 설정파일  
 #### [podman 설치 및 예제 수행](./podman.md)  
+Pod Manager tool 의 약자  
+OCI 표준 container 와 런타임을 개발, 관리, 실행할 수 있게 해주는 container engine 
+
 ```
 podman build --tag springmysql:0.1.0 .
 podman images
