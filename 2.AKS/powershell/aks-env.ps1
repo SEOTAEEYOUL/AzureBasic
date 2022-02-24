@@ -1,10 +1,10 @@
 # AKS 변수 선언
 Write-Host 'AKS 변수 선언'
-$groupName = 'rg-skcc1-aks'
+$groupName = 'rg-skcc2-aks'
 $locationName = 'koreacentral'
 
 
-$serviceName = 'Homepage'
+$serviceName = 'Homeeee'
 $ownerName = 'SeoTaeYeol'
 $environment = 'Dev'
 $personalInformation = 'No'
