@@ -16,10 +16,6 @@ HTTP(S) 기반의 L7 로드밸런싱 기능을 제공하는 컴포넌트
 ### [AKS Storage Class](./AKS-SC.md)  
 Pod 에서 사용하는 스토리지  
 
-### [AKS Monitoring](./AKS-Monitoring.md)  
-- AKS agent 보기
-- Cluster 보기
-
 ### [AKS(Azure Kubernetes Service) 컴퓨팅 비용 최적화](./AKS-CostOptimization.md)  
 - 비용 최적화 방안 확인  
 ### [Pod 배포하기](./AKS-Pod.md) 
