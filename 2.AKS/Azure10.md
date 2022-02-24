@@ -64,7 +64,7 @@ PS C:\workspace\AzureBasic\2.AKS\yaml>
 ### [Grafana](./grafana/README.md) 
 시계열 데이터(Metric)에 대한 시각화 도구  
 
-### [EFK(ElasticSearch, FluentBit, Kibana)](ElasticSearch.md)
+### [EFK(ElasticSearch, FluentBit, Kibana)](./EKF/README.md)
 커스텀 로깅 솔루션을 구축할 때 가장 많이 쓰이는 컴포넌트의 조합  
 Pod 의 로그를 수집, 저장, 시각화(검색)  
 - Fluentd : 로그 수집
