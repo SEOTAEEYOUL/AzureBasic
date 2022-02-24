@@ -61,7 +61,7 @@ PS C:\workspace\AzureBasic\2.AKS\yaml>
 ### [Prometheus](./prometheus/README.md)  
 오픈소스 시스템 모니터링 및 경고 툴킷  
 
-### [Grafana](./Grafana.md) 
+### [Grafana](./grafana/README.md) 
 시계열 데이터(Metric)에 대한 시각화 도구  
 
 ### [EFK(ElasticSearch, FluentBit, Kibana)](ElasticSearch.md)
