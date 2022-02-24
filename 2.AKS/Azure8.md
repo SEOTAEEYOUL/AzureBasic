@@ -5,9 +5,12 @@ Container 란 ?
 [Kubernetes 란 ?](https://kubernetes.io/ko/docs/concepts/overview/what-is-kubernetes/)  
 
 ## Container 
-컨테이너란 호스트 OS상에 논리적인 구획(컨테이너)을 만들고, 어플리케이션을 작동시키기 위해 필요한 라이브러리나 어플리케이션 등을 하나로 모아, 마치 별도의 서버인 것처럼 사용할 수 있게 만든 것
+컨테이너란 호스트 OS상에 논리적인 구획(컨테이너)을 만들고, 어플리케이션을 작동시키기 위해 필요한 라이브러리나 어플리케이션 등을 하나로 모아, 마치 별도의 서버인 것처럼 사용할 수 있게 만든 것  
 
 ### [CRI(Container Runtime Interface)](./ContainerRuntimeInterface.md)  
+컨테이너 런타임 표준  
+컨테이너의 생성, 삭제 등 라이프사이클을 관리하는 스펙  
+gRPC 기반의 API로 플러그인 구조로 추가할 수 있음  
 
 ### [Dockerfile 형식 및 명령어](./Docker.md)  
 #### [podman 설치 및 예제 수행](./podman.md)  
