@@ -29,7 +29,7 @@ spec:
             limits:
               cpu: 500m
               # cpu: 100m
-              memory: 256Mi
+              memory: 512Mi
               # memory: 2048Mi
           env:
           - name: TITLE
