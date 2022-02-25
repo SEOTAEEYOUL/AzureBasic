@@ -9,6 +9,7 @@ bin/
 ## ignore all .un~
 **/*.un~
 **/*.*~
+**/*.tgz
 
 ## ignor cert.
 **/*.pem
