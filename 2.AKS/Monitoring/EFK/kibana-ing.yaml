@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kibana
+    meta.helm.sh/release-namespace: monitoring
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1  
+  generation: 1
+  labels:
+    app: kibana
+    app.kubernetes.io/managed-by: Helm
+    heritage: Helm
+    release: kibana
+  name: kibana-ing
+  namespace: monitoring
+spec:
+  rules:
+  - host: kibana.nodespringboot.org
+    http:
+      paths:
+      - path: /kibana(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: kibana 
+            port:
+              number: 5601               # 포트를 맞춤 (이름 혹은 숫자)
+      - path: /(.*)
+        # pathType: ImplementationSpecific
+        pathType: Prefix
+        backend:
+          service:
+            name: kibana 
+            port:
+              number: 5601

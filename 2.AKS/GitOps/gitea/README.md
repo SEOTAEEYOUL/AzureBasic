@@ -1,0 +1,164 @@
+# Gitea
+
+> [Git Push Fails - fatal: The remote end hung up unexpectedly](https://confluence.atlassian.com/stashkb/git-push-fails-fatal-the-remote-end-hung-up-unexpectedly-282988530.html)
+
+```
+git config --global http.postBuffer 157286400
+```
+
+## 설치 명령어
+```
+helm repo add gitea-charts https://dl.gitea.io/charts/
+helm search repo gitea
+helm fetch gitea-charts/gitea
+tar -xzvf gitea-5.0.1.tgz
+mv gitea gitea-5.0.1
+cd gitea-5.0.1
+cp values.yaml values.yaml.org
+helm install gitea -n cicd -f values.yaml .
+# helm install gitea gitea-charts/gitea
+```
+
+## 설치 로그
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\gitea\gitea-5.0.1> helm install gitea -n cicd -f values.yaml .
+NAME: gitea
+LAST DEPLOYED: Fri Feb 25 21:24:19 2022
+NAMESPACE: cicd
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get the application URL by running these commands:
+  echo "Visit http://127.0.0.1:3000 to use your application"
+  kubectl --namespace cicd port-forward svc/gitea-http 3000:3000
+PS C:\workspace\AzureBasic\2.AKS\GitOps\gitea\gitea-5.0.1> 
+```
+### gitea 검색
+```
+helm search repo gitea
+NAME                    CHART VERSION   APP VERSION     DESCRIPTION
+gitea-charts/gitea      4.0.1           1.14.3          Gitea Helm chart for Kubernetes
+```
+
+### gitea option (values-custom.yaml)
+- "letsencrypt" 를 통해 인증을 받도록 함(현재 구성하지 않음)
+- ingress 설정
+  ```
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      kubernetes.io/tls-acme: "true"
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - host: gitea.a-tcl-da.net
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: gitea-tls
+        hosts:
+          - gitea.a-tcl-da.net
+  ```
+- service 항목 수정
+  - ClusterIP: None -> ClusterIP 로 변경 ClusterIP 를 받도록 함
+  ```
+  service:
+  http:
+    type: ClusterIP
+    port: 3000
+    clusterIP:
+    # clusterIP: None
+    #loadBalancerIP:
+    #nodePort:
+    #externalTrafficPolicy:
+    #externalIPs:
+    loadBalancerSourceRanges: []
+    annotations:
+  ssh:
+    type: ClusterIP
+    port: 22
+    clusterIP:
+    # clusterIP: None
+    #loadBalancerIP:
+    #nodePort:
+    #externalTrafficPolicy:
+    #externalIPs:
+    loadBalancerSourceRanges: []
+    annotations:
+  ```
+- admin id/pw 변경
+  ```
+  gitea:
+    admin:
+      #existingSecret: gitea-admin-secret
+      username: gitea_admin
+      password: dlatl!00
+      email: "gitea@local.domain"
+  ```
+
+- metric enable
+  ```
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        prometheus-release: prom1
+  ```
+
+- 내장 database (postgresql -> mariadb)
+  ```
+    database:
+    builtIn:
+      postgresql:
+        enabled: false
+      mysql:
+        enabled: false
+      mariadb:
+        enabled: true
+  ```
+
+### helm 설치 로그
+- helm install
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\gitea\gitea-5.0.1> helm install gitea -n cicd -f values.yaml .
+NAME: gitea
+LAST DEPLOYED: Fri Feb 25 21:24:19 2022
+NAMESPACE: cicd
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get the application URL by running these commands:
+  echo "Visit http://127.0.0.1:3000 to use your application"
+  kubectl --namespace cicd port-forward svc/gitea-http 3000:3000
+PS C:\workspace\AzureBasic\2.AKS\GitOps\gitea\gitea-5.0.1> 
+```
+- pod
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\gitea\gitea-5.0.1> kubectl -n cicd get pvc,pod,svc,ep,ing
+NAME                                         STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+persistentvolumeclaim/data-gitea-0           Bound    pvc-29233ff5-1eb3-4ee0-a364-9e31b75b2269   10Gi       RWO            default        11m
+persistentvolumeclaim/data-gitea-mariadb-0   Bound    pvc-17681107-8b85-46bf-8667-b131db0ca61c   10Gi       RWO            default        11m
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+pod/gitea-0                           1/1     Running   0          93s
+pod/gitea-mariadb-0                   1/1     Running   0          93s
+pod/gitea-memcached-9f7986c9c-qzn4p   1/1     Running   0          93s
+
+NAME                      TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)     AGE
+service/gitea-http        ClusterIP   None          <none>        3000/TCP    93s
+service/gitea-mariadb     ClusterIP   10.0.69.216   <none>        3306/TCP    93s
+service/gitea-memcached   ClusterIP   10.0.40.8     <none>        11211/TCP   93s
+service/gitea-ssh         ClusterIP   None          <none>        22/TCP      93s
+
+NAME                        ENDPOINTS           AGE
+endpoints/gitea-http        10.244.3.94:3000    93s
+endpoints/gitea-mariadb     10.244.3.93:3306    93s
+endpoints/gitea-memcached   10.244.3.92:11211   93s
+endpoints/gitea-ssh         10.244.3.94:22      93s
+
+NAME                                  CLASS    HOSTS                      ADDRESS          PORTS   AGE
+ingress.networking.k8s.io/gitea-ing   <none>   gitea.nodespringboot.org   20.200.227.196   80      7m38s
+PS C:\workspace\AzureBasic\2.AKS\GitOps\gitea\gitea-5.0.1>
+```
