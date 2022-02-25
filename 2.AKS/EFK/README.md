@@ -1,4 +1,4 @@
-# ElasticSearch, Fluent-Bit, Kibana
+# [ElasticSearch](https://github.com/elastic/helm-charts), Fluent-Bit, Kibana
 
 ## ElasticSearch Node 의 종류
 | Node | Description |  
@@ -47,41 +47,160 @@
   - 전달받은 데이터로 요청(request)에 응답(response)
 
 
-### 설치
-- 
+### REPO 추가, 구성 변경, 설치
+#### repo 추가 및 가져오기
 ```
-$ helm install elasticsearch -n monitoring -f values-custom.yaml .
+helm repo add elastic https://helm.elastic.co
+helm fetch elastic/elasticsearch
+tar -xzvf elasticsearch-7.16.3.tgz
+cd elasticsearch-7.16.3
+cp values.yaml values.yaml.org
+```
+#### values.yaml  
+ingress eanbled : true 설정
+```
+ingress:
+  enabled: true
+  annotations: {}
+```
+#### 설치
+
+$ helm install elasticsearch -n monitoring -f values.yaml .
+```
+PS C:\workspace\AzureBasic\2.AKS\EFK\elasticsearch-7.16.3> helm install elasticsearch -n monitoring -f values.yaml .
+W0225 11:33:30.771692   23728 warnings.go:70] policy/v1beta1 PodDisruptionBudget is deprecated in v1.21+, unavailable in v1.25+; use policy/v1 PodDisruptionBudget
+W0225 11:33:31.306729   23728 warnings.go:70] policy/v1beta1 PodDisruptionBudget is deprecated in v1.21+, unavailable in v1.25+; use policy/v1 PodDisruptionBudget
 NAME: elasticsearch
-LAST DEPLOYED: Thu Jul 15 06:28:16 2021
+LAST DEPLOYED: Fri Feb 25 11:33:29 2022
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Watch all cluster members come up.
+  $ kubectl get pods --namespace=monitoring -l app=elasticsearch-master -w
+2. Test cluster health using Helm test.
+  $ helm --namespace=monitoring test elasticsearch
+PS C:\workspace\AzureBasic\2.AKS\EFK\elasticsearch-7.16.3> 
+```
+
+#### elasticsearch 구동 확인
+```
+PS C:\workspace\AzureBasic\2.AKS\EFK\elasticsearch-7.16.3> kubectl get pods --namespace=monitoring -l app=elasticsearch-master -w 
+NAME                     READY   STATUS     RESTARTS   AGE
+elasticsearch-master-0   0/1     Init:0/1   0          55s
+elasticsearch-master-1   0/1     Pending    0          55s
+elasticsearch-master-2   0/1     Pending    0          55s
+elasticsearch-master-0   0/1     PodInitializing   0          2m21s
+elasticsearch-master-0   0/1     Running    0          2m50s
+elasticsearch-master-1   0/1     PodInitializing   0          2m58s
+elasticsearch-master-1   0/1     Running           0          2m59s
+elasticsearch-master-2   0/1     PodInitializing   0          3m
+elasticsearch-master-2   0/1     Running           0          3m1s
+elasticsearch-master-0   1/1     Running           0          3m43s
+elasticsearch-master-1   1/1     Running           0          3m47s
+elasticsearch-master-2   1/1     Running           0          3m58s
+```
+
+#### helm test 
+```
+PS C:\workspace\AzureBasic\2.AKS\EFK\elasticsearch-7.16.3> helm --namespace=monitoring test elasticsearch
+NAME: elasticsearch
+LAST DEPLOYED: Fri Feb 25 11:33:29 2022
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+TEST SUITE:     elasticsearch-eohoj-test
+Last Started:   Fri Feb 25 11:41:59 2022
+Last Completed: Fri Feb 25 11:42:00 2022
+Phase:          Succeeded
+NOTES:
+1. Watch all cluster members come up.
+  $ kubectl get pods --namespace=monitoring -l app=elasticsearch-master -w2. Test cluster health using Helm test.
+  $ helm --namespace=monitoring test elasticsearch
+PS C:\workspace\AzureBasic\2.AKS\EFK\elasticsearch-7.16.3> 
+```
+```
+PS C:\workspace\AzureBasic\2.AKS\EFK\elasticsearch-7.16.3> helm -n monitoring list                       
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
+elasticsearch   monitoring      1               2022-02-25 11:33:29.365198 +0900 KST    deployed        elasticsearch-7.16.3    7.16.3
+grafana         monitoring      1               2022-02-24 23:35:59.9799309 +0900 KST   deployed        grafana-6.22.0          8.3.6
+prometheus      monitoring      1               2022-02-24 23:47:43.4181138 +0900 KST   deployed        prometheus-15.4.0       2.31.1
+```
+
+#### 배포 자원 확인
+kubectl -n monitoring get pvc,pod,svc,ep,ing -l app=elasticsearch-master  
+```
+PS C:\workspace\AzureBasic\2.AKS\EFK\elasticsearch-7.16.3> kubectl -n monitoring get pvc,pod,svc,ep,ing -l app=elasticsearch-master
+NAME                                                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+persistentvolumeclaim/elasticsearch-master-elasticsearch-master-0   Bound    pvc-99ac268a-3e97-40d6-9cad-52d6cf6db790   30Gi       RWO            default        14m
+persistentvolumeclaim/elasticsearch-master-elasticsearch-master-1   Bound    pvc-79ed0364-fab6-43e5-88cb-9ec669f38515   30Gi       RWO            default        14m
+persistentvolumeclaim/elasticsearch-master-elasticsearch-master-2   Bound    pvc-e8ba9aa5-e664-4022-a2c3-e04091c16bed   30Gi       RWO            default        14m
+
+NAME                         READY   STATUS    RESTARTS   AGE
+pod/elasticsearch-master-0   1/1     Running   0          14m
+pod/elasticsearch-master-1   1/1     Running   0          14m
+pod/elasticsearch-master-2   1/1     Running   0          14m
+
+NAME                                    TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)             AGE
+service/elasticsearch-master            ClusterIP   10.0.21.210   <none>        9200/TCP,9300/TCP   14m
+service/elasticsearch-master-headless   ClusterIP   None          <none>        9200/TCP,9300/TCP   14m
+
+NAME                                      ENDPOINTS                                                      AGE
+endpoints/elasticsearch-master            10.244.2.85:9200,10.244.3.3:9200,10.244.4.3:9200 + 3 more...   14m
+endpoints/elasticsearch-master-headless   10.244.2.85:9200,10.244.3.3:9200,10.244.4.3:9200 + 3 more...   14m
+PS C:\workspace\AzureBasic\2.AKS\EFK\elasticsearch-7.16.3>
+```
+
+## kibana    
+```
+helm search repo kibana
+helm fetch elastic/kibana
+tar -xzvf kibana-7.16.3.tgz 
+mv kibana kibana-7.16.3
+cd kibana-7.16.3
+cp values.yaml values.yaml.org
+helm install kibana -n monitoring -f values.yaml .
+kubectl -n monitoring get pod,svc,ep,ing  -l app=kibana
+```
+### values.yaml
+```
+
+ingress:
+  enabled: true
+  className: "nginx"
+  pathtype: ImplementationSpecific
+  annotations: {}
+```
+
+### 배포 로그
+```
+PS C:\workspace\AzureBasic\2.AKS\EFK\kibana-7.16.3> helm install kibana -n monitoring -f values.yaml .
+NAME: kibana
+LAST DEPLOYED: Fri Feb 25 11:55:18 2022
 NAMESPACE: monitoring
 STATUS: deployed
 REVISION: 1
 TEST SUITE: None
-NOTES:
--------------------------------------------------------------------------------
- WARNING
+PS C:\workspace\AzureBasic\2.AKS\EFK\kibana-7.16.3> helm ls -n monitoring
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
+elasticsearch   monitoring      1               2022-02-25 11:33:29.365198 +0900 KST    deployed        elasticsearch-7.16.3    7.16.3
+grafana         monitoring      1               2022-02-24 23:35:59.9799309 +0900 KST   deployed        grafana-6.22.0          8.3.6
+kibana          monitoring      1               2022-02-25 11:55:18.625447 +0900 KST    deployed        kibana-7.16.3           7.16.3
+prometheus      monitoring      1               2022-02-24 23:47:43.4181138 +0900 KST   deployed        prometheus-15.4.0       2.31.1
+PS C:\workspace\AzureBasic\2.AKS\EFK> kubectl -n monitoring get pod,svc,ep,ing  -l app=kibana
+NAME                                READY   STATUS    RESTARTS   AGE
+pod/kibana-kibana-fc976c796-9cdwq   1/1     Running   0          9m13s
 
-    Elasticsearch requires some changes in the kernel of the host machine to
-    work as expected. If those values are not set in the underlying operating
-    system, the ES containers fail to boot with ERROR messages.
+NAME                    TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+service/kibana-kibana   ClusterIP   10.0.206.233   <none>        5601/TCP   9m13s
 
-    More information about these requirements can be found in the links below:
+NAME                      ENDPOINTS         AGE
+endpoints/kibana-kibana   10.244.3.9:5601   9m13s
 
-      https://www.elastic.co/guide/en/elasticsearch/reference/current/file-descriptors.html
-      https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
-
-    This chart uses a privileged initContainer to change those settings in the Kernel
-    by running: sysctl -w vm.max_map_count=262144 && sysctl -w fs.file-max=65536
-
-** Please be patient while the chart is being deployed **
-
-  Elasticsearch can be accessed within the cluster on port 9200 at elasticsearch-coordinating-only.monitoring.svc.cluster.local
-
-  To access from outside the cluster execute the following commands:
-
-    kubectl port-forward --namespace monitoring svc/elasticsearch-coordinating-only 9200:9200 &
+NAME                                   CLASS    HOSTS                       ADDRESS          PORTS   AGE
+ingress.networking.k8s.io/kibana-ing   <none>   kibana.nodespringboot.org   20.200.227.196   80      116s
+PS C:\workspace\AzureBasic\2.AKS\EFK> 
 ```
-- kibana ingress 추가    
 
 ## Fluent-bit
 ### Link
@@ -110,18 +229,11 @@ wget https://raw.githubusercontent.com/fluent/fluent-bit-kubernetes-logging/mast
   - namespace : monitoring
   - fluent-bit-ds.yaml : elasticsearch -> elasticsearch-coordinating-only
   ```
-  $ km create -f fluent-bit-service-account.yaml
-  serviceaccount/fluent-bit created
-  $ km create -f fluent-bit-role.yaml
-  Warning: rbac.authorization.k8s.io/v1beta1 ClusterRole is deprecated in v1.17+, unavailable in v1.22+; use rbac.authorization.k8s.io/v1 ClusterRole
-  clusterrole.rbac.authorization.k8s.io/fluent-bit-read created
-  $ km create -f fluent-bit-role-binding.yaml
-  Warning: rbac.authorization.k8s.io/v1beta1 ClusterRoleBinding is deprecated in v1.17+, unavailable in v1.22+; use rbac.authorization.k8s.io/v1 ClusterRoleBinding
-  clusterrolebinding.rbac.authorization.k8s.io/fluent-bit-read created
-  $ km create -f fluent-bit-configmap.yaml
-  configmap/fluent-bit-config created
-  $ km create -f fluent-bit-ds.yaml
-  daemonset.apps/fluent-bit created
+  kubectl -n monitoring creat -f fluent-bit-service-account.yaml
+  kubectl -n monitoring creat -f fluent-bit-role.yaml
+  kubectl -n monitoring creat -f fluent-bit-role-binding.yaml
+  kubectl -n monitoring creat -f fluent-bit-configmap.yaml
+  kubectl -n monitoring creat -f fluent-bit-ds.yaml  
   ```
 
 ### Helm Chart 로 설치하기

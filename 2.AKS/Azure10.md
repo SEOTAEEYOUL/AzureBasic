@@ -85,6 +85,8 @@ springmysql-5d459db9cf-f5mrk   2m           424Mi
 ```
 ```
 kubectl autoscale deployment springmysql -n homeeee --cpu-percent=10 --min=1 --max=10
+or
+kubectl create -f springmysql-hpa.yaml
 kubectl get hpa -n homeeee
 ```
 - 부하주기
