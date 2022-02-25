@@ -139,10 +139,10 @@ PS C:\workspace\AzureBasic\2.AKS\yaml>
 ####  DNS 영역에 A 레코드 삭제
 ```
 az network dns record-set a remove-record `
->>     --resource-group rg-skcc1-network-dev `
->>     --zone-name nodespringboot.org `
->>     --record-set-name * `
->>     --ipv4-address 20.200.248.217
+  --resource-group rg-skcc1-network-dev `
+  --zone-name nodespringboot.org `
+  --record-set-name * `
+  --ipv4-address 20.200.248.217
 ```
 
 ### Sample Test 하기
