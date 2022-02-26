@@ -87,6 +87,7 @@ gitea-charts/gitea      4.0.1           1.14.3          Gitea Helm chart for Kub
     loadBalancerSourceRanges: []
     annotations:
   ```
+  
 - admin id/pw 변경
   ```
   gitea:
@@ -107,16 +108,20 @@ gitea-charts/gitea      4.0.1           1.14.3          Gitea Helm chart for Kub
         prometheus-release: prom1
   ```
 
-- 내장 database (postgresql -> mariadb)
+- 내장 database (postgresql -> mariadb) 
   ```
-    database:
-    builtIn:
-      postgresql:
-        enabled: false
-      mysql:
-        enabled: false
-      mariadb:
-        enabled: true
+  mariadb:
+    enabled: true
+    auth:
+      database: gitea
+      username: gitea
+      password: dlatl!00
+      rootPassword: dlalt!00
+    primary:
+      service:
+        port: 3306
+      persistence:
+        size: 10Gi
   ```
 
 ### helm 설치 로그
@@ -162,3 +167,42 @@ NAME                                  CLASS    HOSTS                      ADDRES
 ingress.networking.k8s.io/gitea-ing   <none>   gitea.nodespringboot.org   20.200.227.196   80      7m38s
 PS C:\workspace\AzureBasic\2.AKS\GitOps\gitea\gitea-5.0.1>
 ```
+
+## Troubleshooting
+### 오류
+- **ERROR: RPC failed; HTTP 413 curl 22 The requested URL returned error: 413 send-pack: unexpected disconnect while reading sideband packet**
+```
+```
+
+### **fatal: the remote end hung up unexpectedly**
+```
+PS C:\workspace\SpringBootMySQL.gitea> git push -u origin master
+Enumerating objects: 116, done.
+Counting objects: 100% (116/116), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (102/102), done.
+Writing objects: 100% (116/116), 2.48 MiB | 101.60 MiB/s, done.
+Total 116 (delta 4), reused 0 (delta 0), pack-reused 0
+error: RPC failed; HTTP 413 curl 22 The requested URL returned error: 413
+send-pack: unexpected disconnect while reading sideband packet
+fatal: the remote end hung up unexpectedly
+Everything up-to-date
+PS C:\workspace\SpringBootMySQL.gitea> 
+```
+
+- 해결
+  ```
+  git config --local http.postBuffer = 1024M # 보통 예제는 20M이 많음
+  git config --local http.maxRequestBuffer = 1024M
+
+  git config --local pack.deltaCacheSize = 1024M
+  git config --local pack.packSizeLimit = 1024M
+  git config --local pack.windowMemory = 1024M
+
+  git config --local core.packedGitLimit - 1024m
+  git config --local core.packedGitWindowSize - 1024m
+  git config --local core.compression - 9
+
+  git config --local ssh.postBuffer = 2048M
+  git config --local ssh.maxRequestBuffer = 2048M
+  ```
