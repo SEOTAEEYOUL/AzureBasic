@@ -161,7 +161,7 @@ kubectl delete -f aks-helloworld-two.yaml --namespace ingress-basic
 
 ## Cert Manage 설치
 ### Label the ingress-basic namespace to disable resource validation
-kubectl label namespace ingress-basic cert-manager.io/disable-validation=true
+**kubectl label namespace ingress-basic cert-manager.io/disable-validation=true**
 ```
 PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl label namespace ingress-basic cert-manager.io/disable-validation=true
 namespace/ingress-basic labeled
@@ -169,7 +169,7 @@ namespace/ingress-basic labeled
 
 
 ### Add the Jetstack Helm repository
-helm repo add jetstack https://charts.jetstack.io
+**helm repo add jetstack https://charts.jetstack.io**
 ```
 PS C:\workspace\AzureBasic\2.AKS\yaml> helm repo add jetstack https://charts.jetstack.io
 "jetstack" has been added to your repositories
