@@ -170,11 +170,7 @@ PS C:\workspace\AzureBasic\2.AKS\GitOps\gitea\gitea-5.0.1>
 
 ## Troubleshooting
 ### 오류
-- **ERROR: RPC failed; HTTP 413 curl 22 The requested URL returned error: 413 send-pack: unexpected disconnect while reading sideband packet**
-```
-```
-
-### **fatal: the remote end hung up unexpectedly**
+#### **fatal: the remote end hung up unexpectedly**
 ```
 PS C:\workspace\SpringBootMySQL.gitea> git push -u origin master
 Enumerating objects: 116, done.
@@ -190,7 +186,22 @@ Everything up-to-date
 PS C:\workspace\SpringBootMySQL.gitea> 
 ```
 
-- 해결
+#### 해결 : ingress(nginx) 에 proxy-body-size: "0" 옵션 설정함
+  ```
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: gitea
+      meta.helm.sh/release-namespace: cicd
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+  ```
+
+#### 참조 설정
   ```
   git config --local http.postBuffer = 1024M # 보통 예제는 20M이 많음
   git config --local http.maxRequestBuffer = 1024M
