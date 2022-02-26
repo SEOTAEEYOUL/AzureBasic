@@ -7,6 +7,6 @@ Gitea, Jenkins, Harbor, ArgoCD 를 통한 GitOps 구성
 
 ### [Jenkins (CI 도구)](./GitOps/jenkins/README.md)
 
-### [Harbor (Container Registry)](./GitOps/jenkins/README.md)
+### [Harbor (Container Registry)](./GitOps/harbor/README.md)
 
 ### [ArgoCD (CD 도구)](./GitOps/argocd/README.md)
