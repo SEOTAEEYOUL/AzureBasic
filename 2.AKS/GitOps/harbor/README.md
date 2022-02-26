@@ -1,14 +1,18 @@
-# Harbor
+# [Harbor](https://github.com/goharbor/harbor)  
+
+최소사양: 2 CPU/4GB 메모리/40GB 디스크  
+권장사양: 4 CPU/8GB 메모리/160GB 디스크  
 
 ## 설치 명령어
 ```
+helm repo add harbor https://helm.goharbor.io
 helm search repo harbor
 helm fetch harbor/harbor
-tar -xzvf harbor-1.7.0.tgz
-mv harbor harbor-1.7.0
-cd harbor-1.7.0
-cp values.yaml values-custom.yaml
-helm install harbor -n cicd -f values-custom.yaml .
+tar -xzvf harbor-1.8.1.tgz
+mv harbor harbor-1.8.1
+cd harbor-1.8.1
+cp values.yaml values.yaml.org
+helm install harbor -n cicd -f values.yaml .
 ```
 
 ## 설치 로그
@@ -20,11 +24,37 @@ bitnami/harbor  10.2.3          2.3.1           Harbor is an an open source trus
 harbor/harbor   1.7.0           2.3.0           An open source trusted cloud native registry th...
 ```
 
-### harbor option (values-custom.yaml)
+### harbor option (values.yaml)
+- ingress domain 설정
+  ```
+  .
+  .
+  .
+    ingress:
+    hosts:
+      core: harbor.nodespringboot.org
+      notary: notary-harbor.nodespringboot.org
+    annotations:
+      # note different ingress controllers may require a different ssl-redirect annotation
+      # for Envoy, use ingress.kubernetes.io/force-ssl-redirect: "true" and remove the nginx lines below
+      ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1  
+      .
+      .
+      .
+  externalURL: https://harbor.nodespringboot.org/
+  .
+  .
+  .
+  ```
 - admin id/pw 변경
   ```
   # The initial password of Harbor admin. Change it from portal after launching Harbor
-  harborAdminPassword: "A-tcl-DA!"
+  harborAdminPassword: "dlatl!00"
   ```
 
 - metric enable
@@ -52,11 +82,11 @@ harbor/harbor   1.7.0           2.3.0           An open source trusted cloud nat
   ```
 
 ### helm 설치 로그
-- helm install
+- helm install harbor -n cicd -f values.yaml .
 ```
-helm install harbor -n cicd -f values-custom.yaml .
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-1.8.1> helm install harbor -n cicd -f values.yaml .
 NAME: harbor
-LAST DEPLOYED: Tue Jul 27 08:14:46 2021
+LAST DEPLOYED: Sat Feb 26 17:54:26 2022
 NAMESPACE: cicd
 STATUS: deployed
 REVISION: 1
@@ -65,6 +95,77 @@ NOTES:
 Please wait for several minutes for Harbor deployment to complete.
 Then you should be able to visit the Harbor portal at https://core.harbor.domain
 For more details, please visit https://github.com/goharbor/harbor
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-1.8.1> 
+```
+
+### 배포 확인
+**kubectl -n cicd get pvc,pod,svc,ep,ing -l app=harbor**
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-1.8.1> kubectl -n cicd get pvc,pod,svc,ep,ing -l app=harbor
+NAME                                                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+persistentvolumeclaim/data-harbor-redis-0               Bound    pvc-144d1bfd-6783-469d-98b0-907682ccd13f   1Gi        RWO            default        106s
+persistentvolumeclaim/data-harbor-trivy-0               Bound    pvc-db2c2630-808d-4bb1-aede-d8646a323c28   5Gi        RWO            default        106s
+persistentvolumeclaim/database-data-harbor-database-0   Bound    pvc-91b39c59-5303-412b-80f2-e4af0d93f692   1Gi        RWO            default        106s
+persistentvolumeclaim/harbor-chartmuseum                Bound    pvc-c72b2c28-25ae-4aab-8ce6-c0122101c37c   5Gi        RWO            default        106s
+persistentvolumeclaim/harbor-jobservice                 Bound    pvc-9deced37-36d1-4858-a432-4586efda4b3f   1Gi        RWO            default        106s
+persistentvolumeclaim/harbor-registry                   Bound    pvc-096594ab-c69e-4c12-a4e3-84d271b3bcf8   5Gi        RWO            default        106s
+
+NAME                                        READY   STATUS    RESTARTS   AGE
+pod/harbor-chartmuseum-d8bf4c58c-g5cpx      1/1     Running   0          106s
+pod/harbor-core-6d867bbf5d-r9q8d            1/1     Running   0          106s
+pod/harbor-database-0                       1/1     Running   0          106s
+pod/harbor-exporter-54c7c5c8ff-q9wp2        1/1     Running   0          106s
+pod/harbor-jobservice-fddb76c5d-99fg6       1/1     Running   0          105s
+pod/harbor-notary-server-5798d99f97-cclzt   1/1     Running   0          105s
+pod/harbor-notary-signer-7796f6d8f-df29t    1/1     Running   0          106s
+pod/harbor-portal-5598f9d6db-mldb6          1/1     Running   0          106s
+pod/harbor-redis-0                          1/1     Running   0          106s
+pod/harbor-registry-5ff7bb5b77-vbltt        2/2     Running   0          105s
+pod/harbor-trivy-0                          1/1     Running   0          106s
+
+NAME                           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                      AGE
+service/harbor-chartmuseum     ClusterIP   10.0.84.217    <none>        80/TCP                       106s
+service/harbor-core            ClusterIP   10.0.46.187    <none>        80/TCP,8001/TCP              106s
+service/harbor-database        ClusterIP   10.0.135.12    <none>        5432/TCP                     106s
+service/harbor-exporter        ClusterIP   10.0.112.17    <none>        8001/TCP                     106s
+service/harbor-jobservice      ClusterIP   10.0.49.214    <none>        80/TCP,8001/TCP              106s
+service/harbor-notary-server   ClusterIP   10.0.157.166   <none>        4443/TCP                     106s
+service/harbor-notary-signer   ClusterIP   10.0.11.221    <none>        7899/TCP                     106s
+service/harbor-portal          ClusterIP   10.0.235.18    <none>        80/TCP                       106s
+service/harbor-redis           ClusterIP   10.0.87.138    <none>        6379/TCP                     106s
+service/harbor-registry        ClusterIP   10.0.147.65    <none>        5000/TCP,8080/TCP,8001/TCP   106s
+service/harbor-trivy           ClusterIP   10.0.89.193    <none>        8080/TCP                     106s
+
+NAME                             ENDPOINTS                                            AGE
+endpoints/harbor-chartmuseum     10.244.3.115:9999                                    106s
+endpoints/harbor-core            10.244.3.113:8001,10.244.3.113:8080                  106s
+endpoints/harbor-database        10.244.3.114:5432                                    106s
+endpoints/harbor-exporter        10.244.4.55:8001                                     106s
+endpoints/harbor-jobservice      10.244.3.116:8080,10.244.3.116:8001                  106s
+endpoints/harbor-notary-server   10.244.4.58:4443                                     106s
+endpoints/harbor-notary-signer   10.244.4.56:7899                                     106s
+endpoints/harbor-portal          10.244.4.57:8080                                     106s
+endpoints/harbor-redis           10.244.4.61:6379                                     106s
+endpoints/harbor-registry        10.244.4.59:8080,10.244.4.59:8001,10.244.4.59:5000   106s
+endpoints/harbor-trivy           10.244.4.60:8080                                     106s
+
+NAME                                              CLASS    HOSTS                              ADDRESS   PORTS     AGE
+ingress.networking.k8s.io/harbor-ingress          <none>   harbor.nodespringboot.org                    80, 443   106s
+ingress.networking.k8s.io/harbor-ingress-notary   <none>   notary.harbor.nodespringboot.org             80, 443   106s
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-1.8.1> 
+```
+
+#### 설치 제거
+helm uninstall harbor -n cicd
+kubectl -n cicd delete pvc -l app=harbor
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor> kubectl -n cicd delete pvc -l app=harbor             
+persistentvolumeclaim "data-harbor-redis-0" deleted
+persistentvolumeclaim "data-harbor-trivy-0" deleted
+persistentvolumeclaim "database-data-harbor-database-0" deleted
+persistentvolumeclaim "harbor-chartmuseum" deleted
+persistentvolumeclaim "harbor-jobservice" deleted
+persistentvolumeclaim "harbor-registry" deleted
 ```
 
 ### Troubleshooting
