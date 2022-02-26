@@ -3,10 +3,10 @@ Gitea, Jenkins, Harbor, ArgoCD 를 통한 GitOps 구성
 - webhook, Jenkinsflies 구성/작성
 - blue/green 배포
 
-### [Gitea (저장소)](./Gitea.md)
+### [Gitea (저장소)](./GitOps/gitea/README.md)
 
-### [Jenkins (CI 도구)](./Jenkins.md)
+### [Jenkins (CI 도구)](./GitOps/jenkins/README.md)
 
-### [Harbor (Container Registry)](./Harbor.md)
+### [Harbor (Container Registry)](./GitOps/jenkins/README.md)
 
-### [ArgoCD (CD 도구)](./ArgoCD.md)
+### [ArgoCD (CD 도구)](./GitOps/argocd/README.md)

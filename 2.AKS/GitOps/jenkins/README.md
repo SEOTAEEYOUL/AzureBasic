@@ -119,20 +119,20 @@ PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins>
 
 ## Plug-In 설치 항목
 ### **"Jenkins 관리 > 플러그인 관리"** 에서 설치  
-| ID | Plugin 명 | Plugin Version |
-| :--- | :--- | :--- |
-| kubernetes | kubernetes | 1.25.7 |  
-| Pipeline:job | workflow-job | 2.41  |  
-| Pipeline | workflow-aggregator | 2.6 |   
-| Credentials Binding | credentials-binding | 1.26 |  
-| git | git | 4.7.2 |   
-| gitea | gitea | 1.21 |   
-| Configuration as Code | configuration-as-code | 1.51 |     
-| Keycloak Authentication | keycloak | 2.3.0 |     
-| Slack Notification | slack | 2.48 |  
-| Docker | docker-plugin | 1.2.2 |
-| docker-build-step | docker-build-step | 2.8 |  
-| prometheus | Prometheus metrics | 2.0.10 |    
+| ID | Plugin 명 | Plugin Version | 기본 설치 여부 |  
+| :--- | :--- | :--- |:---|  
+| kubernetes | kubernetes | 3538.v6b_005a_ddced1 | ○ |   
+| Pipeline:job | workflow-job | 1167.v8fe861b_09ef9  | ○ |     
+| Pipeline | workflow-aggregator | 2.6 | ○ |      
+| Credentials Binding | credentials-binding | 1.27.1 | ○ |     
+| git | git | 4.10.3 | ○ |      
+| gitea | gitea | 1.41 | |   
+| Configuration as Code | configuration-as-code | 1413.vb_1b_8cb_c67a_f4 | ○ |        
+| Keycloak Authentication | keycloak | 2.3.0 | |     
+| Slack Notification | slack | 602.v0da_f7458945d | |  
+| Docker | docker-plugin | 1.2.6 | |
+| docker-build-step | docker-build-step | 2.8 | |  
+| Prometheus metrics | prometheus | 2.0.10 | |    
   
 
 - Jenkins 관리 > 플러그인 관리 > 위의 Plug-in 검색   
