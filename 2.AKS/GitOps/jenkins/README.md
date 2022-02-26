@@ -2,17 +2,23 @@
 
 ## 설치 명령어
 ```
+helm repo add jenkins https://charts.jenkins.io
+helm repo update
 helm search repo jenkins
 helm fetch jenkins/jenkins
-tar -xzvf jenkins-3.5.8.tgz
-mv jenkins jenkins-3.5.8
-cd jenkins-3.5.8
-cp values.yaml values-custom.yaml
-helm install jenkins -n cicd -f values-custom.yaml .
+tar -xzvf jenkins-3.11.4.tgz
+mv jenkins jenkins-3.11.4
+cd jenkins-3.11.4
+cp values.yaml values.yaml.org
+helm install jenkins -n cicd -f values.yaml .
+```
+```
+helm show values jenkins/jenkins > values.yaml
+helm install jenkins -n cicd -f values.yaml .
 ```
 
 ## 설치 로그
-### gitea 검색
+### jenkins 검색
 ```
 helm search repo jenkins
 NAME            CHART VERSION   APP VERSION     DESCRIPTION
@@ -21,79 +27,44 @@ jenkins/jenkins 3.5.8           2.289.2         Jenkins - Build great things at 
 stable/jenkins  2.5.4           lts             DEPRECATED - Open source continuous integration...
 ```
 
-### jenkins option (values-custom.yaml)
-- ingress 설정
-  ```
-  ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: gitea.a-tcl-da.net
-        paths:
-          - path: /
-            pathType: Prefix
-    tls:
-      - secretName: gitea-tls
-        hosts:
-          - gitea.a-tcl-da.net
-  ```
-- admin id/pw 변경
-  ```
-  gitea:
+### jenkins option (values.yaml)
+```
+.
+.
+.
+controller:
+  .
+  .
+  .
+  adminUser: "skccadmin"
+  adminPassword: "dlatl!00"
   admin:
-    #existingSecret: gitea-admin-secret
-    username: daadmin
-    password: "A-tcl-DA!"
-    email: "gitea@a-tcl-da.net"
-  ```
+    existingSecret: ""
+    userKey: jenkins-admin-user
+    passwordKey: jenkins-admin-password
+.
+.
+.
+```
 
-- metric enable
-  ```
-  metrics:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-      additionalLabels:
-        prometheus-release: prom1
-  ```
-
-- oauth
-  ```
-    oauth:
-    enabled: true
-  ```
-
-- 내장 database (postgresql -> mariadb)
-  ```
-    database:
-    builtIn:
-      postgresql:
-        enabled: false
-      mysql:
-        enabled: false
-      mariadb:
-        enabled: true
-  ```
 
 ### helm 설치 로그
-- helm install
+- helm install jenkins -n cicd -f values.yaml .
 ```
- helm install jenkins -f values-custom.yaml -n cicd .
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins\jenkins-3.11.4> helm install jenkins -n cicd -f values.yaml .
 NAME: jenkins
-LAST DEPLOYED: Mon Jul 26 04:55:50 2021
+LAST DEPLOYED: Sat Feb 26 16:49:27 2022
 NAMESPACE: cicd
 STATUS: deployed
 REVISION: 1
 NOTES:
-1. Get your 'daadmin' user password by running:
+1. Get your 'admin' user password by running:
   kubectl exec --namespace cicd -it svc/jenkins -c jenkins -- /bin/cat /run/secrets/chart-admin-password && echo
 2. Get the Jenkins URL to visit by running these commands in the same shell:
   echo http://127.0.0.1:8080
   kubectl --namespace cicd port-forward svc/jenkins 8080:8080
 
-3. Login with the password from step 1 and the username: daadmin
+3. Login with the password from step 1 and the username: admin
 4. Configure security realm and authorization strategy
 5. Use Jenkins Configuration as Code by specifying configScripts in your values.yaml file, see documentation: http:///configuration-as-code and examples: https://github.com/jenkinsci/configuration-as-code-plugin/tree/master/demos
 
@@ -105,32 +76,45 @@ https://jenkins.io/projects/jcasc/
 
 
 NOTE: Consider using a custom image with pre-installed plugins
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins\jenkins-3.11.4> 
 ```
-- pod
+
+### ingress 생성
+
+### 배포 확인
 ```
-kc get pods
-NAME                               READY   STATUS    RESTARTS   AGE
-gitea-0                            1/1     Running   0          78s
-gitea-mariadb-0                    1/1     Running   0          78s
-gitea-memcached-6f7b7f686c-pk2fl   1/1     Running   0          78s
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins> kubectl -n cicd get pvc,pod,svc,ep -l app.kubernetes.io/name=jenkins
+NAME                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+persistentvolumeclaim/jenkins   Bound    pvc-768ced20-b12b-4e1c-a8d8-fcec38940485   8Gi        RWO            default        5m23s
 
-kc get ep
-NAME              ENDPOINTS               AGE
-gitea-http        192.168.97.47:3000      2m22s
-gitea-mariadb     192.168.111.130:3306    2m22s
-gitea-memcached   192.168.127.184:11211   2m22s
-gitea-ssh         192.168.97.47:22        2m22s
+NAME            READY   STATUS    RESTARTS   AGE
+pod/jenkins-0   2/2     Running   0          5m23s
 
-kc get svc
-NAME              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     AGE
-gitea-http        ClusterIP   None             <none>        3000/TCP    2m42s
-gitea-mariadb     ClusterIP   10.100.87.125    <none>        3306/TCP    2m42s
-gitea-memcached   ClusterIP   10.100.121.221   <none>        11211/TCP   2m42s
-gitea-ssh         ClusterIP   None             <none>        22/TCP      2m42s
+NAME                    TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
+service/jenkins         ClusterIP   10.0.102.182   <none>        8080/TCP    5m23s
+service/jenkins-agent   ClusterIP   10.0.71.202    <none>        50000/TCP   5m23s
 
-kc get ing
-NAME    CLASS    HOSTS                ADDRESS   PORTS     AGE
-gitea   <none>   gitea.a-tcl-da.net             80, 443   81s
+NAME                      ENDPOINTS            AGE
+endpoints/jenkins         10.244.3.112:8080    5m23s
+endpoints/jenkins-agent   10.244.3.112:50000   5m23s
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins> kubectl -n cicd get pvc,pod,svc,ep,ing -l app.kubernetes.io/name=jenkins
+NAME                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+persistentvolumeclaim/jenkins   Bound    pvc-768ced20-b12b-4e1c-a8d8-fcec38940485   8Gi        RWO            default        5m30s
+
+NAME            READY   STATUS    RESTARTS   AGE
+pod/jenkins-0   2/2     Running   0          5m30s
+
+NAME                    TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
+service/jenkins         ClusterIP   10.0.102.182   <none>        8080/TCP    5m30s
+service/jenkins-agent   ClusterIP   10.0.71.202    <none>        50000/TCP   5m30s
+
+NAME                      ENDPOINTS            AGE
+endpoints/jenkins         10.244.3.112:8080    5m30s
+endpoints/jenkins-agent   10.244.3.112:50000   5m30s
+
+NAME                                    CLASS    HOSTS                        ADDRESS   PORTS   AGE
+ingress.networking.k8s.io/jenkins-ing   <none>   jenkins.nodespringboot.org             80      21s
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins> 
 ```
 
 ## Plug-In 설치 항목
