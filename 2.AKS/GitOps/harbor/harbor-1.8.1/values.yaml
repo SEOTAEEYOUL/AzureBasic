@@ -47,6 +47,7 @@ expose:
     annotations:
       # note different ingress controllers may require a different ssl-redirect annotation
       # for Envoy, use ingress.kubernetes.io/force-ssl-redirect: "true" and remove the nginx lines below
+      kubernetes.io/ingress.class: nginx
       ingress.kubernetes.io/ssl-redirect: "true"
       ingress.kubernetes.io/proxy-body-size: "0"
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
@@ -354,7 +355,7 @@ updateStrategy:
 logLevel: info
 
 # The initial password of Harbor admin. Change it from portal after launching Harbor
-harborAdminPassword: "dlatl!00"
+harborAdminPassword: "Harbor12345"
 
 # The name of the secret which contains key named "ca.crt". Setting this enables the
 # download link on portal to download the certificate of CA when the certificate isn't

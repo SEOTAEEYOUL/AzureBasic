@@ -11,7 +11,8 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    cert-manager.io/cluster-issuer: letsencrypt
+  creationTimestamp: "2022-02-26T15:27:41Z"
+  generation: 1
   labels:
     app: harbor
     app.kubernetes.io/managed-by: Helm
@@ -20,6 +21,8 @@ metadata:
     release: harbor
   name: harbor-ingress
   namespace: cicd
+  resourceVersion: "936317"
+  uid: 6f3b863a-d9a7-4680-b18b-590aab2f8f07
 spec:
   rules:
   - host: harbor.nodespringboot.org
@@ -30,44 +33,48 @@ spec:
             name: harbor-portal
             port:
               number: 80
-        path: /*
+        path: /
         pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               number: 80
-        path: /api/*
+        path: /api/
         pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               number: 80
-        path: /service/*
+        path: /service/
         pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               number: 80
-        path: /v2*
+        path: /v2
         pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               number: 80
-        path: /chartrepo/*
+        path: /chartrepo/
         pathType: Prefix
       - backend:
           service:
             name: harbor-core
             port:
               number: 80
-        path: /c/*
+        path: /c/
         pathType: Prefix
   tls:
   - hosts:
     - harbor.nodespringboot.org
     secretName: harbor-ingress
+status:
+  loadBalancer:
+    ingress:
+    - ip: 20.200.227.196

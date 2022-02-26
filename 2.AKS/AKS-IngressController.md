@@ -159,7 +159,15 @@ kubectl delete -f aks-helloworld-one.yaml --namespace ingress-basic
 kubectl delete -f aks-helloworld-two.yaml --namespace ingress-basic
 ```
 
-## Cert Manage 설치
+## Cert Manage 설치  
+> [Let's Encrypt](https://letsencrypt.org/ko/getting-started/) [cert-manager](https://github.com/cert-manager/cert-manager)  
+
+- Let's Encrypt  
+  Automatic Certificate Management Environment (ACME) 프로토콜을 사용하는 인증서을 발급하는 CA(인증기관)  
+- cert-manager는 다양한 발급 소스의 TLS 인증서 관리 및 발급을 자동화하는 Kubernetes 추가 기능  
+![cert-manager-architecture.svg](./img/cert-manager-architecture.svg)
+
+
 ### Label the ingress-basic namespace to disable resource validation
 **kubectl label namespace ingress-basic cert-manager.io/disable-validation=true**
 ```
@@ -192,26 +200,28 @@ PS C:\workspace\AzureBasic\2.AKS\yaml>
 #### Helm Chart 조회
 helm search repo jetstack/cert-manager
 ```
-PS C:\workspace\AzureBasic\2.AKS\yaml> helm search repo jetstack/cert-manager
+PS C:\workspace\AzureBasic\2.AKS> helm search repo cert-manager
 NAME                                    CHART VERSION   APP VERSION     DESCRIPTION
+bitnami/cert-manager                    0.4.5           1.7.1           Cert Manager is a Kubernetes add-on to automate...
 jetstack/cert-manager                   v1.7.1          v1.7.1          A Helm chart for cert-manager
 jetstack/cert-manager-approver-policy   v0.3.0          v0.3.0          A Helm chart for cert-manager-approver-policy
 jetstack/cert-manager-csi-driver        v0.2.1          v0.2.0          A Helm chart for cert-manager-csi-driver
 jetstack/cert-manager-csi-driver-spiffe v0.1.0          v0.1.0          A Helm chart for cert-manager-csi-driver-spiffe
 jetstack/cert-manager-istio-csr         v0.3.1          v0.3.0          A Helm chart for istio-csr
 jetstack/cert-manager-trust             v0.1.1          v0.1.0          A Helm chart for cert-manager-trust
-PS C:\workspace\AzureBasic\2.AKS\yaml> 
+stable/cert-manager                     v0.6.7          v0.6.2          A Helm chart for cert-manager
+PS C:\workspace\AzureBasic\2.AKS> 
 ```
 
 #### Helm Chart 설치
 ```
 helm install `
   cert-manager `
+  jetstack/cert-manager `
   --namespace ingress-basic `
-  --version v1.71.1 `
+  --version v1.7.1 `
   --set installCRDs=true `
-  --set nodeSelector."beta\.kubernetes\.io/os"=linux `
-  jetstack/cert-manager
+  --set nodeSelector."kubernetes\.io/os"=linux
 ```
 
 ```
@@ -289,8 +299,41 @@ documentation:
 https://cert-manager.io/docs/usage/ingress/
 ```
 
+```
+PS C:\workspace\AzureBasic\2.AKS> helm install `
+>>   cert-manager `
+>>   jetstack/cert-manager `
+>>   --namespace ingress-basic `
+>>   --version v1.7.1 `
+>>   --set installCRDs=true `
+>>   --set nodeSelector."kubernetes\.io/os"=linux
+NAME: cert-manager
+LAST DEPLOYED: Sat Feb 26 23:44:52 2022
+NAMESPACE: ingress-basic
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+cert-manager v1.7.1 has been deployed successfully!
+
+In order to begin issuing certificates, you will need to set up a ClusterIssuer
+or Issuer resource (for example, by creating a 'letsencrypt-staging' issuer).
+
+More information on the different types of issuers and how to configure them
+can be found in our documentation:
+
+https://cert-manager.io/docs/configuration/
+
+For information on how to configure cert-manager to automatically provision
+Certificates for Ingress resources, take a look at the `ingress-shim`
+documentation:
+
+https://cert-manager.io/docs/usage/ingress/
+PS C:\workspace\AzureBasic\2.AKS> 
+```
+
 ## CA 클러스터 발급자 만들기
-### cluster-issuer.yaml
+### [cluster-issuer.yaml](./yaml/cluster-issuer.yaml)
 ```
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -311,6 +354,11 @@ spec:
               nodeSelector:
                 "kubernetes.io/os": linux
   ```
+  ```
+  PS C:\workspace\AzureBasic\2.AKS\yaml> kubectl apply -f cluster-issuer.yaml
+  clusterissuer.cert-manager.io/letsencrypt created
+  ```
+
 
 ### cert-manager.io CRD 생성 
 - 옵션으로 생성함으로 생성하지 말것

@@ -28,11 +28,11 @@ spec:
           service:
             name: harbor-portal
             port:
-              number: 80               # 포트를 맞춤 (이름 혹은 숫자)
+              number: 8080               # 포트를 맞춤 (이름 혹은 숫자)
       - path: /(.*)
         pathType: Prefix
         backend:
           service:
             name: harbor-portal
             port:
-              number: 80
+              number: 8080
