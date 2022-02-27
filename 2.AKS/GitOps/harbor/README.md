@@ -6,6 +6,7 @@
 권장사양: 4 CPU/8GB 메모리/160GB 디스크  
 
 ## 설치 명령어
+### 1.8.1 (설치 후 로그인이 안됨)
 ```
 helm repo add harbor https://helm.goharbor.io
 helm search repo harbor
@@ -16,8 +17,36 @@ cd harbor-1.8.1
 cp values.yaml values.yaml.org
 helm install harbor -n cicd -f values.yaml .
 ```
+### 1.7.0 (설치 후 정상 로그인 됨)
+```
+helm fetch harbor/harbor --version 1.7.0
+tar -xzvf harbor-1.7.0.tgz
+mv harbor harbor-1.7.0
+cd harbor-1.7.0
+cp values.yaml values.yaml.org
+helm install harbor -n cicd --debug -f values.yaml .
+```
 
 ## 설치 로그
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-1.4.1> helm install harbor -n cicd -f values.yaml .
+W0227 11:33:23.529651   12780 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
+W0227 11:33:23.538333   12780 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
+W0227 11:33:26.711263   12780 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
+W0227 11:33:26.719147   12780 warnings.go:70] extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
+NAME: harbor
+LAST DEPLOYED: Sun Feb 27 11:33:21 2022
+NAMESPACE: cicd
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Please wait for several minutes for Harbor deployment to complete.
+Then you should be able to visit the Harbor portal at https://core.harbor.domain
+For more details, please visit https://github.com/goharbor/harbor
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-1.4.1> 
+```
+
 ### harbor 검색
 ```
 helm search repo harbor
@@ -95,6 +124,70 @@ Please wait for several minutes for Harbor deployment to complete.
 Then you should be able to visit the Harbor portal at https://core.harbor.domain
 For more details, please visit https://github.com/goharbor/harbor
 PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-1.8.1> 
+```
+#### bitnami 설치 로그
+```
+S C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-11.2.4> helm install harbor -n cicd -f values.yaml . 
+NAME: harbor
+LAST DEPLOYED: Sun Feb 27 13:21:23 2022
+NAMESPACE: cicd
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+CHART NAME: harbor
+CHART VERSION: 11.2.4
+APP VERSION: 2.4.1
+
+** Please be patient while the chart is being deployed **
+
+1. Get the Harbor URL:
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc --namespace cicd -w harbor'
+  export SERVICE_IP=$(kubectl get svc --namespace cicd harbor --template "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}")
+  echo "Harbor URL: http://$SERVICE_IP/"
+
+2. Login with the following credentials to see your Harbor application
+
+  echo Username: "admin"
+  echo Password: $(kubectl get secret --namespace cicd harbor-core-envvars -o jsonpath="{.data.HARBOR_ADMIN_PASSWORD}" | base64 --decode)
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-11.2.4> 
+```
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-11.2.4> kubectl get secret --namespace cicd harbor-core-envvars -o jsonpath="{.data.HARBOR_ADMIN_PASSWORD}" | base64
+Wkd4aGRHd2hNREE9DQo=
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-11.2.4> kubectl get secret --namespace cicd harbor-core-envvars -o jsonpath="{.data.HARBOR_ADMIN_PASSWORD}" | base64 -d
+dlatl!00
+```
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-11.2.4> helm upgrade harbor bitnami/harbor --set harborAdminPassword='dlatl!00' -n cicd
+Release "harbor" has been upgraded. Happy Helming!
+NAME: harbor
+LAST DEPLOYED: Sun Feb 27 13:35:25 2022
+NAMESPACE: cicd
+STATUS: deployed
+REVISION: 2
+TEST SUITE: None
+NOTES:
+CHART NAME: harbor
+CHART VERSION: 11.2.4
+APP VERSION: 2.4.1
+
+** Please be patient while the chart is being deployed **
+
+1. Get the Harbor URL:
+
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        Watch the status with: 'kubectl get svc --namespace cicd -w harbor'
+  export SERVICE_IP=$(kubectl get svc --namespace cicd harbor --template "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}")
+  echo "Harbor URL: http://$SERVICE_IP/"
+
+2. Login with the following credentials to see your Harbor application
+
+  echo Username: "admin"
+  echo Password: $(kubectl get secret --namespace cicd harbor-core-envvars -o jsonpath="{.data.HARBOR_ADMIN_PASSWORD}" | base64 --decode)
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor\harbor-11.2.4> 
 ```
 
 ### 배포 확인
