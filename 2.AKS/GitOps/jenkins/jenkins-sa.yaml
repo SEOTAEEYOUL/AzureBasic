@@ -5,6 +5,37 @@ metadata:
   namespace: cicd
   name: jenkins
 ---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: cicd
+  name: jenkins-role
+rules:
+- apiGroups:
+  - "apps"
+  - ""
+  resources:
+  #- services
+  #- deployments
+  #- persistentvolumeclaims
+  - '*'
+  verbs:
+  - '*'
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: jenkins-rolebinding
+  namespace: cicd
+subjects:
+- kind: ServiceAccount
+  name: jenkins
+  namespace: cicd
+roleRef:
+  kind: Role
+  name: jenkins-role
+  apiGroup: rbac.authorization.k8s.io
+---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:

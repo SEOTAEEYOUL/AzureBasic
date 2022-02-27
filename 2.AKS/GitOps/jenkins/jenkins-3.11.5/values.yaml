@@ -45,8 +45,8 @@ controller:
   # When enabling LDAP or another non-Jenkins identity source, the built-in admin account will no longer exist.
   # If you disable the non-Jenkins identity store and instead use the Jenkins internal one,
   # you should revert controller.adminUser to your preferred admin user:
-  adminUser: "skccadmin"
-  adminPassword: "dlatl!00"
+  adminUser: "admin"
+  adminPassword: 'dlatl!00'
   admin:
     existingSecret: ""
     userKey: jenkins-admin-user
@@ -64,8 +64,8 @@ controller:
   #   - --httpPort=8080
   resources:
     requests:
-      cpu: "50m"
-      memory: "256Mi"
+      cpu: "300m"
+      memory: "512Mi"
     limits:
       cpu: "2000m"
       memory: "4096Mi"
@@ -810,7 +810,7 @@ serviceAccount:
 
 serviceAccountAgent:
   # Specifies whether a ServiceAccount should be created
-  create: false
+  create: true
   # The name of the ServiceAccount to use.
   # If not set and create is true, a name is generated using the fullname template
   name:

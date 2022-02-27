@@ -6,10 +6,10 @@ metadata:
   labels:
     app: jenkins
 spec:
-  storageClassName: azurefile
+  storageClassName: default
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
     # - ReadWriteOnce
   resources:
     requests:
-      storage: 50Gi
+      storage: 30Gi

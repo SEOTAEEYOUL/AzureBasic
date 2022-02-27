@@ -28,7 +28,7 @@ spec:
           service:
             name: jenkins
             port:
-              number: 8080               # 포트를 맞춤 (이름 혹은 숫자)
+              number: 8080 
       - path: /(.*)
         pathType: Prefix
         backend:

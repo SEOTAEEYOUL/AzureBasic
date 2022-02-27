@@ -37,12 +37,22 @@ controller:
   .
   .
   .
-  adminUser: "skccadmin"
+  adminUser: "admin"
   adminPassword: "dlatl!00"
   admin:
     existingSecret: ""
     userKey: jenkins-admin-user
     passwordKey: jenkins-admin-password
+.
+.
+.
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "2000m"
+      memory: "4096Mi"
 .
 .
 .
@@ -78,6 +88,37 @@ https://jenkins.io/projects/jcasc/
 
 NOTE: Consider using a custom image with pre-installed plugins
 PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins\jenkins-3.11.4> 
+```
+
+### bitname/jenkins 9.0.2 설치 로그
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins\jenkins-9.0.2> helm install jenkins -n cicd -f values.yaml .
+NAME: jenkins
+LAST DEPLOYED: Sun Feb 27 20:55:01 2022
+NAMESPACE: cicd
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+CHART NAME: jenkins
+CHART VERSION: 9.0.2
+APP VERSION: 2.319.3
+
+** Please be patient while the chart is being deployed **
+
+1. Get the Jenkins URL by running:
+
+** Please ensure an external IP is associated to the jenkins service before proceeding **
+** Watch the status using: kubectl get svc --namespace cicd -w jenkins **
+
+  export SERVICE_IP=$(kubectl get svc --namespace cicd jenkins --template "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}")
+  echo "Jenkins URL: http://$SERVICE_IP/"
+
+2. Login with the following credentials
+
+  echo Username: admin
+  echo Password: $(kubectl get secret --namespace cicd jenkins -o jsonpath="{.data.jenkins-password}" | base64 --decode)
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins\jenkins-9.0.2> 
 ```
 
 ### ingress 생성
@@ -1134,3 +1175,8 @@ secrets:
 - name: jenkins-token-bclfd
 PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins>
 ```
+
+### Jenkins-Configure Cloud
+![jenkins-configure-clouds-0.png](../../img/jenkins-configure-clouds-0.png)  
+![jenkins-configure-clouds-2.png](../../img/jenkins-configure-clouds-2.png)  
+![jenkins-pod-template.png](../../img/jenkins-pod-template.png)  
