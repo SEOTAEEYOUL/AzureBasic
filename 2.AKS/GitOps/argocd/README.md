@@ -1,14 +1,21 @@
-# ArgoCD
+# ArgoCD 
+Kubernetes용 선언적 GitOps 지속적 전달 도구  
+**정책 및 역할 기반 액세스 제어**로 아티팩트를 보호하고, **이미지가 스캔되고 취약성이 없는지 확인**하고, 이미지를 신뢰할 수 있는 것으로 서명하는 **오픈 소스 레지스트리** 
+
+> [Argo CD - Declarative Continuous Delivery for Kubernetes](https://github.com/argoproj)
+> [demo Site](https://cd.apps.argoproj.io/)
 
 ## 설치 명령어
 ```
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
 helm search repo argocd
 helm fetch argo/argo-cd
-tar -xzvf argo-cd-3.10.1.tgz
-mv argo-cd argo-cd-3.10.1
-cd argo-cd-3.10.1
-cp values.yaml values-custom.yaml
-helm install argocd -n cicd -f values-custom.yaml .
+tar -xzvf argo-cd-3.33.8.tgz
+mv argo-cd argo-cd-3.33.8
+cd argo-cd-3.33.8
+cp values.yaml values.yaml.org
+helm install argocd -n cicd -f values.yaml .
 ```
 
 ## 설치 로그
@@ -28,8 +35,9 @@ argo/argo-cd                    3.10.1          2.0.5           A Helm chart for
   configs:
     secret:
       # Argo expects the password in the secret to be bcrypt hashed. You can create this hash with
-      # ARGO_PWD='A-tcl-DA!'
-      # `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'`
+      # ARGO_PWD='dlatl!00'
+      # `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a'`
+      # htpasswd -nbBC 10 $ARGO_PWD | %{$_ -replace(':\n', '')} | sed 's/$2y/$2a/'
       argocdServerAdminPassword: "$2a$10$z2lG4uy6gd1/OjtLzkqC8OAQ9wX5um9akTGSyZdlDiU/6ck498y9O"
       # Password modification time defaults to current time if not set
       # argocdServerAdminPasswordMtime: "2006-01-02T15:04:05Z"
@@ -162,9 +170,9 @@ argo/argo-cd                    3.10.1          2.0.5           A Helm chart for
 ```
 helm search repo argocd
 helm fetch argo/argocd-notifications
-tar -xzvf argocd-notifications-1.4.1.tgz
-mv argocd-notifications argocd-notifications-1.4.1
-cd argocd-notifications
-cp values.yaml values-custom.yaml
-helm install argocd-notifications -n cicd -f values-custom.yaml .
+tar -xzvf argocd-notifications-1.8.0.tgz
+mv argocd-notifications argocd-notifications-1.8.0
+cd argocd-notifications-1.8.0
+cp values.yaml values.yaml.org
+helm install argocd-notifications -n cicd -f values.yaml .
 ```

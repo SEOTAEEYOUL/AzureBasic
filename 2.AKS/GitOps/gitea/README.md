@@ -1,4 +1,6 @@
-# Gitea
+# [Gitea](https://gitea.io/) 
+Go 로 작성된 커뮤니티 관리 경량 코드 호스팅 솔루션  
+MIT 라이선스  
 
 > [Git Push Fails - fatal: The remote end hung up unexpectedly](https://confluence.atlassian.com/stashkb/git-push-fails-fatal-the-remote-end-hung-up-unexpectedly-282988530.html)
 
