@@ -50,9 +50,11 @@ global:
 # you can set api versions here
 apiVersionOverrides:
   # -- String to override apiVersion of certmanager resources rendered by this helm chart
-  certmanager: "" # cert-manager.io/v1
+  # certmanager: "" # cert-manager.io/v1
+  certmanager: "cert-manager.io/v1" # cert-manager.io/v1
   # -- String to override apiVersion of ingresses rendered by this helm chart
-  ingress: "" # networking.k8s.io/v1beta1
+  # ingress: "" # networking.k8s.io/v1beta1
+  ingress: "networking.k8s.io/v1" # networking.k8s.io/v1beta1
 
 # -- Create clusterroles that extend existing clusterroles to interact with argo-cd crds
 ## Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles
@@ -916,9 +918,9 @@ server:
   ## Certificate configuration
   certificate:
     # -- Enables a certificate manager certificate
-    enabled: false
+    enabled: true
     # -- Certificate manager domain
-    domain: argocd.example.com
+    domain: argocd.nodespringboot.org
     issuer:
       # -- Certificate manager issuer
       kind: # ClusterIssuer
@@ -967,7 +969,7 @@ server:
   ## Server metrics service configuration
   metrics:
     # -- Deploy metrics service
-    enabled: false
+    enabled: true
     service:
       # -- Metrics service annotations
       annotations: {}
@@ -1009,6 +1011,12 @@ server:
     # -- Additional ingress annotations
     annotations: {}
     # -- Additional ingress labels
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1   
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+
     labels: {}
     # -- Defines which ingress controller will implement the resource
     ingressClassName: ""
@@ -1023,12 +1031,12 @@ server:
 
     # -- List of ingress paths
     paths:
-      - /
+      - /(.*)
     # -- Ingress path type. One of `Exact`, `Prefix` or `ImplementationSpecific`
     pathType: Prefix
     # -- Additional ingress paths
     extraPaths:
-      # []
+      []
       # - path: /*
       #   backend:
       #     serviceName: ssl-redirect
@@ -1050,7 +1058,7 @@ server:
           - argocd.nodespringboot.org
 
     # -- Uses `server.service.servicePortHttps` instead `server.service.servicePortHttp`
-    https: false
+    https: true
 
   # dedicated ingress for gRPC as documented at
   # Ref: https://argoproj.github.io/argo-cd/operator-manual/ingress/
@@ -1084,8 +1092,8 @@ server:
     ## Secrets must be manually created in the namespace
     ##
     hosts:
-      # []
-      - argocd.nodespringboot.org
+      []
+      # - argocd.example.com
 
     # -- List of ingress paths for dedicated [gRPC-ingress]
     paths:
@@ -1113,10 +1121,10 @@ server:
       []
       # - secretName: argocd-tls-certificate
       #   hosts:
-      #     - argocd.example.com
+      #     - argocd.nodespringboot.org
 
     # -- Uses `server.service.servicePortHttps` instead `server.service.servicePortHttp`
-    https: false
+    https: true
 
   # Create a OpenShift Route with SSL passthrough for UI and CLI
   # Consider setting 'hostname' e.g. https://argocd.apps-crc.testing/ using your Default Ingress Controller Domain
@@ -1409,7 +1417,7 @@ repoServer:
 
   autoscaling:
     # -- Enable Horizontal Pod Autoscaler ([HPA]) for the repo server
-    enabled: false
+    enabled: true
     # -- Minimum number of replicas for the repo server [HPA]
     minReplicas: 1
     # -- Maximum number of replicas for the repo server [HPA]
@@ -1544,7 +1552,7 @@ repoServer:
   ## Repo server metrics service configuration
   metrics:
     # -- Deploy metrics service
-    enabled: true
+    enabled: false
     service:
       # -- Metrics service annotations
       annotations: {}
@@ -1842,7 +1850,7 @@ configs:
     # -- Bcrypt hashed admin password
     ## Argo expects the password in the secret to be bcrypt hashed. You can create this hash with
     ## `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'`
-    argocdServerAdminPassword: ""
+    argocdServerAdminPassword: "$2a$10$g9bi/Gj5TOKwVLC/ZCBYKeaUxM1ObIuq172FT/dUtMQHJwUnzx3xu"
     # -- Admin password modification time. Eg. `"2006-01-02T15:04:05Z"`
     # @default -- `""` (defaults to current time)
     argocdServerAdminPasswordMtime: ""

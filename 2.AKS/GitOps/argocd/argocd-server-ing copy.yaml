@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    meta.helm.sh/release-name: argocd
+    meta.helm.sh/release-namespace: cicd
+  creationTimestamp: "2022-02-27T01:51:15Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/instance: argocd
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/part-of: argocd
+    helm.sh/chart: argo-cd-3.33.8
+  name: argocd-server
+  namespace: cicd
+  resourceVersion: "1117563"
+  uid: c84d7471-3c7d-4f1b-b50b-b2247162e2f0
+spec:
+  rules:
+  - host: argocd.nodespringboot.org
+    http:
+      paths:
+      - backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - argocd.nodespringboot.org
+    secretName: argocd-tls-certificate
+status:
+  loadBalancer: {}
