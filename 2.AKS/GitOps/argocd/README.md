@@ -41,6 +41,11 @@ argo/argo-cd                    3.33.8          v2.2.5          A Helm chart for
   $2a$10$g9bi/Gj5TOKwVLC/ZCBYKeaUxM1ObIuq172FT/dUtMQHJwUnzx3xu
   ```
   ```
+  global:
+    # -- Additional labels to add to all resources
+    additionalLabels: # {}
+      app: argocd
+
   ## Argo Configs
   configs:
     secret:
@@ -108,6 +113,10 @@ argo/argo-cd                    3.33.8          v2.2.5          A Helm chart for
       targetCPUUtilizationPercentage: 50
       targetMemoryUtilizationPercentage: 50
 
+    # exxtraArgs 주석 해제
+    extraArgs:
+        - --insecure
+    
     ingress:
       # -- Enable an ingress resource for the Argo CD server
       enabled: true
@@ -118,7 +127,7 @@ argo/argo-cd                    3.33.8          v2.2.5          A Helm chart for
       nginx.ingress.kubernetes.io/proxy-body-size: "0"
       nginx.ingress.kubernetes.io/use-regex: "true"
       nginx.ingress.kubernetes.io/rewrite-target: /$1   
-      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+      cert-manager.io/cluster-issuer: letsencrypt
 
       labels: {}
       # -- Defines which ingress controller will implement the resource
@@ -162,6 +171,11 @@ argo/argo-cd                    3.33.8          v2.2.5          A Helm chart for
 
       # -- Uses `server.service.servicePortHttps` instead `server.service.servicePortHttp`
       https: true
+
+    # config 수정
+    config:
+        # Argo CD's externally facing base URL (optional). Required when configuring SSO
+        url: https://argocd.chatops.ga
     ```
 
 ### helm 설치 로그
@@ -225,41 +239,43 @@ endpoints/argocd-server                   10.244.3.136:8080,10.244.3.136:8080   
 PS C:\workspace\AzureBasic\2.AKS\GitOps\argocd\argo-cd-3.33.8> 
 ```
 
+### admin password 확인
+**kubectl -n cicd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d**
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\argocd\argo-cd-3.33.8> kubectl -n cicd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+PV8KBnibmQIObzxL
+```
+
+### password 변경
+```
+## pod 안으로 들어가기
+kubectl exec -it -n cicd argocd-server-76b7c65745-cwlb5 -- bash
+## 로그인
+argocd login argocd.nodespringboot.org
+## 비밀번호 변경
+argocd account update-password
+```
+#### 실행 로그
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\argocd\argo-cd-3.33.8> kubectl -n cicd exec argocd-server-86cd4449db-4754h -it -- bash
+argocd@argocd-server-86cd4449db-4754h:~$ argocd login argocd.nodespringboot.org
+WARN[0000] Failed to invoke grpc call. Use flag --grpc-web in grpc calls. To avoid this warning message, use flag --grpc-web. 
+Username: admin           
+Password:
+'admin:login' logged in successfully
+Context 'argocd.nodespringboot.org' updated
+argocd@argocd-server-86cd4449db-4754h:~$ argocd account update-password
+WARN[0000] Failed to invoke grpc call. Use flag --grpc-web in grpc calls. To avoid this warning message, use flag --grpc-web. 
+*** Enter password of currently logged in user (admin): 
+*** Enter new password for user admin:
+*** Confirm new password for user admin:
+Password updated
+Context 'argocd.nodespringboot.org' updated
+argocd@argocd-server-86cd4449db-4754h:~$
+```
+
 ### Troubleshooting
-#### error: endpoints "default-http-backend" not found
-```
-PS C:\workspace\AzureBasic\2.AKS\GitOps\argocd> kubectl -n cicd describe ing argocd-server
-Name:             argocd-server
-Labels:           app.kubernetes.io/component=server
-                  app.kubernetes.io/instance=argocd
-                  app.kubernetes.io/managed-by=Helm
-                  app.kubernetes.io/name=argocd-server
-                  app.kubernetes.io/part-of=argocd
-                  helm.sh/chart=argo-cd-3.33.8
-Namespace:        cicd
-Address:          20.200.227.196
-Default backend:  default-http-backend:80 (<error: endpoints "default-http-backend" not found>)
-TLS:
-  argocd-tls-certificate terminates argocd.nodespringboot.org
-Rules:
-  Host                       Path  Backends
-  ----                       ----  --------
-  argocd.nodespringboot.org
-                             /argocd(/|$)(.*)   argocd-server:80 (10.244.3.142:8080)
-                             /(.*)              argocd-server:80 (10.244.3.142:8080)
-Annotations:                 kubernetes.io/ingress.class: nginx
-                             meta.helm.sh/release-name: argocd
-                             meta.helm.sh/release-namespace: cicd
-                             nginx.ingress.kubernetes.io/proxy-body-size: 0
-                             nginx.ingress.kubernetes.io/rewrite-target: /$1
-                             nginx.ingress.kubernetes.io/use-regex: true
-Events:
-  Type    Reason             Age                 From                      Message
-  ----    ------             ----                ----                      -------
-  Normal  CreateCertificate  109s                cert-manager              Successfully created Certificate "argocd-tls-certificate"
-  Normal  Sync               24s (x4 over 110s)  nginx-ingress-controller  Scheduled for sync
-  Normal  Sync               24s (x4 over 110s)  nginx-ingress-controller  Scheduled for sync
-```
+
 
 ## argocd notification
 
@@ -272,6 +288,15 @@ mv argocd-notifications argocd-notifications-1.8.0
 cd argocd-notifications-1.8.0
 cp values.yaml values.yaml.org
 helm install argocd-notifications -n cicd -f values.yaml .
+```
+
+### valuse.yaml 수정
+#### slack notification 추가
+```
+```
+
+### tempalte 주석 제거
+```
 ```
 
 ### 배포 로그
@@ -294,4 +319,127 @@ PS C:\workspace\AzureBasic\2.AKS\GitOps\argocd\argocd-notifications-1.8.0> kubec
 NAME                                                   READY   STATUS    RESTARTS   AGE
 pod/argocd-notifications-controller-689544845d-r52rs   1/1     Running   0          82s
 PS C:\workspace\AzureBasic\2.AKS\GitOps\argocd\argocd-notifications-1.8.0>
+```
+
+### valuse.yaml 설정
+#### Slack Notification 설정
+```
+xoxb-2047373963104-2315743923363-dROEWhJwZVrRCh1QJt5MkEONsecret:
+  # -- Whether helm chart creates controller secret
+  create: true
+
+  # -- key:value pairs of annotations to be added to the secret
+  annotations: {}
+
+  # -- The name of the secret to use.
+  ## If not set and create is true, the default name 'argocd-notifications-secret' is used
+  name: ""
+
+  # -- Generic key:value pairs to be inserted into the secret
+  ## Can be used for templates, notification services etc. Some examples given below.
+  ## For more information: https://argocd-notifications.readthedocs.io/en/stable/services/overview/
+  items: {}
+    # slack-token:
+    slack-token: "xoxb-2047373963104-2315743923363-dROEWhJwZVrRCh1QJt5MkEON"
+    #   # For more information: https://argocd-notifications.readthedocs.io/en/stable/services/slack/
+```
+
+#### Template .주석 제거(Slack Notification Template 을 풀기 위함)
+```
+# -- The notification template is used to generate the notification content
+## For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
+templates: {}
+  template.app-deployed: |
+    email:
+      subject: New version of an application {{.app.metadata.name}} is up and running.
+    message: |
+      {{if eq .serviceType "slack"}}:white_check_mark:{{end}} Application {{.app.metadata.name}} is now running new version of deployments manifests.
+    slack:
+      attachments: |
+        [{
+          "title": "{{ .app.metadata.name}}",
+          "title_link":"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+          "color": "#18be52",
+          "fields": [
+          {
+            "title": "Sync Status",
+            "value": "{{.app.status.sync.status}}",
+            "short": true
+          },
+          {
+            "title": "Repository",
+            "value": "{{.app.spec.source.repoURL}}",
+            "short": true
+          },
+          {
+            "title": "Revision",
+            "value": "{{.app.status.sync.revision}}",
+            "short": true
+          }
+          {{range $index, $c := .app.status.conditions}}
+          {{if not $index}},{{end}}
+          {{if $index}},{{end}}
+          {
+            "title": "{{$c.type}}",
+            "value": "{{$c.message}}",
+            "short": true
+          }
+          {{end}}
+          ]
+        }]
+  template.app-health-degraded: |
+```
+
+#### trigger 에서 모든 상태 정보를 볼수 있게 주석 제거
+```
+# -- The trigger defines the condition when the notification should be sent
+## For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/
+triggers: {}
+  trigger.on-deployed: |
+    - description: Application is synced and healthy. Triggered once per commit.
+      oncePer: app.status.sync.revision
+      send:
+      - app-deployed
+      when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
+  trigger.on-health-degraded: |
+    - description: Application has degraded
+      send:
+      - app-health-degraded
+      when: app.status.health.status == 'Degraded'
+  trigger.on-sync-failed: |
+    - description: Application syncing has failed
+      send:
+      - app-sync-failed
+      when: app.status.operationState.phase in ['Error', 'Failed']
+  trigger.on-sync-running: |
+    - description: Application is being synced
+      send:
+      - app-sync-running
+      when: app.status.operationState.phase in ['Running']
+  trigger.on-sync-status-unknown: |
+    - description: Application status is 'Unknown'
+      send:
+      - app-sync-status-unknown
+      when: app.status.sync.status == 'Unknown'
+  trigger.on-sync-succeeded: |
+    - description: Application syncing has succeeded
+      send:
+      - app-sync-succeeded
+      when: app.status.operationState.phase in ['Succeeded']
+  
+  # For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/#default-triggers
+  defaultTriggers: |
+    - on-sync-status-unknown
+```
+
+### Slack Notification 적용
+```
+kubectl -n cicd get app
+kubectl patch app nodejs-bot -n cicd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-sync-succeeded.slack":"alert"}}}' --type merge
+kubectl patch app springmysql -n cicd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-sync-succeeded.slack":"alert"}}}' --type merge
+```
+
+#### Repository URL
+```
+kubectl patch app springmysql -n cicd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-sync-succeeded.slack":"alert"}}}' --type merge
 ```

@@ -219,3 +219,10 @@ PS C:\workspace\SpringBootMySQL.gitea>
   git config --local ssh.postBuffer = 2048M
   git config --local ssh.maxRequestBuffer = 2048M
   ```
+
+## Gitea Webhook 설정
+### Slack Notification
+![gitea-webhook-slack-notification.png](../../img/gitea-webhook-slack-notification.png)  
+
+### Build Trigger 설정
+![gitea-webhook-build-trigger.png](../../img/gitea-webhook-build-trigger.png)  

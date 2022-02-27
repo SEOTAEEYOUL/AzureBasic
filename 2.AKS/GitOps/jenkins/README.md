@@ -995,3 +995,142 @@ Finished: FAILURE
 
 ```
 
+## Jenkins Slave 구동을 위한 설정
+
+### Jenkins ServiceAccount, ClusterRoleBinding
+
+#### jenkins-sa.yaml
+```
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: cicd
+  name: jenkins
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: cluster-admin-clusterrolebinding
+subjects:
+- kind: ServiceAccount
+  name: jenkins
+  namespace: cicd
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: cluster-admin-clusterrolebinding-2
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: cicd
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+```
+
+### Jenkins Slave 사용 pvc 추가
+- Jenkins Slave Container Image 빌드시 Pod 로 - 기동되어 빌드 작업을 위해 pvc 를 마운트하여 사용함
+#### cicd-workspace-pvc.yaml
+```
+kind: PersistentVolumeClaim
+metadata:
+  name: cicd-workspace
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: azurefile
+  resources:
+    requests:
+      storage: 50Gi
+```
+
+## Jenkins CI (Slack 연동)
+1. Jenkins 관리 > 플러그인 관리
+2. Slack Notification 설치
+3. 구성 : 
+  Jenkins > System > Global credentials > Secret 에 Slack Token 자격 증명 추가 
+![Slack-Jenkins-CI.png](../../img/Slack-Jenkins-CI.png)  
+
+### Credential 설정
+#### [Gitea](https://plugins.jenkins.io/gitea/)
+![jenkins-환경설정-gitea.png](../../img/jenkins-환경설정-gitea.png)
+
+#### [Slack Notification](https://plugins.jenkins.io/slack/) - Secret Text
+![jenkins-환경설정-SlackNotification.png](../../img/jenkins-환경설정-SlackNotification.png)  
+
+### Pipeline 설정
+#### Build Trigger 설정(Gitea Integration)
+![jenkins-pipeline-BuildTrigger.png](../../img/jenkins-pipeline-BuildTrigger.png)  
+
+#### Advanced Project Options
+**Gitea 저장소 정보(URL, branch) 및 Pipeline Script 명 설정
+![jenkins-pipeline-AdvancedProjectOptions.png](../../img/jenkins-pipeline-AdvancedProjectOptions.png)
+
+### Pipeline 구성 후 Build Now 를 눌러 한번 실행 시켜줘야 함  
+
+## [Kubernetes plugin](https://www.jenkins.io/doc/pipeline/steps/kubernetes/)  
+
+### container
+컨테이너에서 빌드 단계 실행 
+
+### podTemplate
+kubernetes 플러그인에서 사용할 podTemplate 정의  
+
+```
+podTemplate(...) {
+    node(POD_LABEL) {
+        // some steps
+    }
+}
+```
+
+### kubeconfig
+Kubernetes CLI 설정(kubectl)  
+
+### containerLog  
+Kubernetes에서 컨테이너 로그 가져오기  
+
+> [Kubernetes plugin for Jenkins](https://github.com/jenkinsci/kubernetes-plugin) 
+
+### service Acccount
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins> kubectl -n cicd get sa                
+NAME                              SECRETS   AGE
+argocd-application-controller     1         3h7m
+argocd-dex-server                 1         3h7m
+argocd-notifications-bot          1         7h42m
+argocd-notifications-controller   1         7h42m
+argocd-server                     1         3h7m
+default                           1         44h
+gitea-mariadb                     1         26h
+gitea-memcached                   1         26h
+jenkins                           1         25h
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins> kubectl -n cicd get sa jenkins -o yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    meta.helm.sh/release-name: jenkins
+    meta.helm.sh/release-namespace: cicd
+  creationTimestamp: "2022-02-26T07:52:34Z"
+  labels:
+    app.kubernetes.io/component: jenkins-controller
+    app.kubernetes.io/instance: jenkins
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: jenkins
+    helm.sh/chart: jenkins-3.11.4
+  name: jenkins
+  namespace: cicd
+  resourceVersion: "808618"
+  uid: 52b8ce75-48e1-4257-9c79-5e55b5bcb26a
+secrets:
+- name: jenkins-token-bclfd
+PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins>
+```

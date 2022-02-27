@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"ServiceAccount","metadata":{"annotations":{},"name":"jenkins","namespace":"cicd"}}
+    meta.helm.sh/release-name: jenkins
+    meta.helm.sh/release-namespace: cicd
+  creationTimestamp: "2022-02-26T07:52:34Z"
+  labels:
+    app.kubernetes.io/component: jenkins-controller
+    app.kubernetes.io/instance: jenkins
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: jenkins
+    helm.sh/chart: jenkins-3.11.4
+  name: jenkins
+  namespace: cicd
+  resourceVersion: "1255367"
+  uid: 52b8ce75-48e1-4257-9c79-5e55b5bcb26a
+secrets:
+- name: jenkins-token-bclfd
