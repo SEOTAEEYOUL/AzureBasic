@@ -2,6 +2,7 @@
 Go 로 작성된 커뮤니티 관리 경량 코드 호스팅 솔루션  
 MIT 라이선스  
 
+> [Gitea/Jenkins: Setting up Webhooks](https://gcube.wiki.gcube-system.org/gcube/Gitea/Jenkins:_Setting_up_Webhooks)
 > [Git Push Fails - fatal: The remote end hung up unexpectedly](https://confluence.atlassian.com/stashkb/git-push-fails-fatal-the-remote-end-hung-up-unexpectedly-282988530.html)
 
 ```
@@ -221,6 +222,8 @@ PS C:\workspace\SpringBootMySQL.gitea>
   ```
 
 ## Gitea Webhook 설정
+웹훅은 Git 리포지토리 에 커밋이 푸시될 때 Jenkins 프로젝트 의 빌드를 자동으로 트리거하는 메커니즘 입니다.  
+
 ### Slack Notification
 ![gitea-webhook-slack-notification.png](../../img/gitea-webhook-slack-notification.png)  
 

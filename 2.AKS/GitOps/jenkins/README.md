@@ -1092,6 +1092,11 @@ spec:
       storage: 50Gi
 ```
 
+## Gitea 설정
+### Jenkins관리 > 시스템설정 > GiteaServer
+![Jenkins-Jenkins관리-시스템설정-GiteaServer.png](../../img/Jenkins-Jenkins관리-시스템설정-GiteaServer.png) 
+
+
 ## Jenkins CI (Slack 연동)
 1. Jenkins 관리 > 플러그인 관리
 2. Slack Notification 설치
