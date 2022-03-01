@@ -9,7 +9,8 @@
   - ChatOps  
   - VoiceOps  
 > [깃헙 액션으로 ChatOps 구현하기](https://blog.aliencube.org/ko/2020/03/05/implementing-chatops-on-github-actions/)  
-> [데브옵스(DevOps)의 현재와 미래 - ChatOps & VoiceOps (윤석찬)](https://www.slideshare.net/awskorea/devops-on-aws-cloud-and-chatops-voice-ops)
+> [데브옵스(DevOps)의 현재와 미래 - ChatOps & VoiceOps (윤석찬)](https://www.slideshare.net/awskorea/devops-on-aws-cloud-and-chatops-voice-ops)  
+> [How Is Netflix SO GOOD at DevOps?](https://www.bunnyshell.com/blog/how-netflix-does-devops)  
 
 
 ![implementing-chatops-with-github-actions-01-ko.png](./img/implementing-chatops-with-github-actions-01-ko.png)

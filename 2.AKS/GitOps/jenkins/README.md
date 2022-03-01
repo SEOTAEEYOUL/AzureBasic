@@ -359,6 +359,15 @@ spec:
 **Jenkins > 시스템 설정 > Slack**
 ![jenkins-환경설정-Slack.png](../../img/jenkins-환경설정-Slack.png)  
 
+#### Harbor
+```
+kubectl create secret docker-registry harbor `
+  --docker-server=https://harbor.nodespringboot.org `
+  --docker-username=taeyeol --docker-password=Callas007! `
+  --docker-email=taeeyoul@gmail.com `
+  -n cicd
+```
+
 ### Pipeline 설정
 #### Build Trigger 설정(Gitea Integration)
 ![jenkins-pipeline-BuildTrigger.png](../../img/jenkins-pipeline-BuildTrigger.png)  

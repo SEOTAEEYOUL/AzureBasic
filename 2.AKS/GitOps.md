@@ -1,5 +1,6 @@
 # GitOps
 > [Guide To GitOps](https://www.weave.works/technologies/gitops/)  
+> [GitOps vs. DevOps: What’s the Difference?](https://www.bunnyshell.com/blog/gitops-vs-devops)  
 
 
 
@@ -10,8 +11,6 @@
 
 ### Kelsey Hightower
 GitOps is the best thing since configuration as code. Git changed how we collaborate, but declarative configuration is the key to dealing with infrastructure at scale, and sets the stage for the next generation of management tools. 
-
-![GitOps-Timeline.png](./img/GitOps-Timeline.png)  
 
 ## GitOps 관련 도구  
 ### [ArgoCD](https://argoproj.github.io/argo-cd/)  

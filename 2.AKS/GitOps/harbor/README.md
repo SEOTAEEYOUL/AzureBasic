@@ -259,3 +259,14 @@ persistentvolumeclaim "harbor-chartmuseum" deleted
 persistentvolumeclaim "harbor-jobservice" deleted
 persistentvolumeclaim "harbor-registry" deleted
 ```
+
+```
+helm install --wait --name harbor --namespace cicd `
+  harbor/harbor --version v1.2.1 `
+  --set expose.ingress.hosts.core=harbor.${MY_DOMAIN} `
+  --set expose.ingress.hosts.notary=notary.${MY_DOMAIN} `
+  --set expose.tls.secretName=ingress-cert-${LETSENCRYPT_ENVIRONMENT} `
+  --set persistence.enabled=false `
+  --set externalURL=https://harbor.${MY_DOMAIN} `
+  --set harborAdminPassword=admin
+```

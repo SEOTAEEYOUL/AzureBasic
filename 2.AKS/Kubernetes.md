@@ -316,3 +316,14 @@ spec:
   az aks list | jq .[].powerState.code
   "Running"
   ```
+
+
+## QoS(Quality of Service)  
+- 압축가능자원(Compressible Resource) : CPU, 네트워크 대역폭 처럼 제어 가능한 자원
+- 압축불가능자원(Incompressible resource) : 메모리처럼 제어 불가능한 자원  
+
+| Pod 종류 | request/limits | 우선 순위 | 메모리가 전부 사용시 | 사용처 |  
+|:--|:---|:---|:---|:---|
+| Best-Effort | requests 와 limits 을 갖고 있지 않음 | 가장 낮음 | 가장 먼저 삭제 | 테스트 | 
+| Burstable | request 와 limits 가 다르다 ( request < limits ) | 중간 | Best-Effor 파드 다음 삭제 | 개발 |  
+| Guaranteed | request 와 limits 가 동일 | 가장 높음 | Best-Error Pod 나 Burstable Pod 보다 가장 나중에 삭제 | 운영 |  
