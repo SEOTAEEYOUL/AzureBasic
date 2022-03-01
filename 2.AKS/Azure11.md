@@ -50,6 +50,16 @@ DevOps는 개발 팀과 운영 팀 사이의 협업을 촉진하여 더욱 빠�
 - GitHub 와 통합   
 - 오픈 소스 프로젝트에서 작동  
 
+
+
+### [Test Plans](https://docs.microsoft.com/ko-kr/azure/devops/test/overview?view=azure-devops)  
+팀의 모든 사람이 개발 프로세스 전반에 걸쳐 품질과 협업을 촉진하는 데 사용할 수 있는 풍부하고 강력한 도구를 제공  
+
+### Artifacts
+다양한 피드 및 공용 레지스트리의 패키지를 공유하고 사용 
+
+### [Azure DevOps Pipeline 적용](./AzureDevOps.md)  
+SpringBootMySql 예제 적용 
 #### 테스트에 사용한 정보
 | 구분 | 내용 | 
 |:---|:---| 
@@ -57,12 +67,6 @@ DevOps는 개발 팀과 운영 팀 사이의 협업을 촉진하여 더욱 빠�
 | ACR | acrhomeeee.azurecr.io |  
 | Registry | acrHomeeee |  
 | Repogitory | springmysql |  
-
-### [Test Plans](https://docs.microsoft.com/ko-kr/azure/devops/test/overview?view=azure-devops)  
-팀의 모든 사람이 개발 프로세스 전반에 걸쳐 품질과 협업을 촉진하는 데 사용할 수 있는 풍부하고 강력한 도구를 제공  
-
-### Artifacts
-다양한 피드 및 공용 레지스트리의 패키지를 공유하고 사용  
 
 ## blue/green 배포 전략
 - 격리된 Blue 와 Green 2개의 환경에 애플리케이션을 배포해서, Blue 와 Green 리소스 간에 서로 영향을 주지 않도록 하여  배포 위험을 줄이고 가용성을 높일 수 있음  
