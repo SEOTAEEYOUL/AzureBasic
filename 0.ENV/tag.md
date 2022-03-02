@@ -1,4 +1,4 @@
-# Tag
+# Tagging
 Azure 리소스, 리소스 그룹 및 구독에 태그를 적용하여 논리적으로 분류에 활용 할 수 있음
 * [Azure에서 PowerShell을 사용하여 가상 머신에 태그를 지정하는 방법](https://docs.microsoft.com/ko-kr/azure/virtual-machines/tag-powershell)
 * [Azure CLI를 사용하여 VM에 태그를 지정하는 방법](https://docs.microsoft.com/ko-kr/azure/virtual-machines/tag-cli)

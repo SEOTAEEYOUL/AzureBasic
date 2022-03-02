@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/proxy-body-size: "0"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    meta.helm.sh/release-name: harbor
+    meta.helm.sh/release-namespace: cicd
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  creationTimestamp: "2022-03-02T09:22:28Z"
+  generation: 1
+  labels:
+    app: harbor
+    app.kubernetes.io/managed-by: Helm
+    chart: harbor
+    heritage: Helm
+    release: harbor
+  name: harbor-ingress-notary
+  namespace: cicd
+  resourceVersion: "2332825"
+  uid: 4cf9e04e-a20f-48c3-83f7-4200520a79b4
+spec:
+  rules:
+  - host: notary.nodespringboot.org
+    http:
+      paths:
+      - backend:
+          service:
+            name: harbor-notary-server
+            port:
+              number: 4443
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - notary.nodespringboot.org
+    secretName: harbor-ingress
+status:
+  loadBalancer: {}
