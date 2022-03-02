@@ -6,8 +6,9 @@ Gitea, Jenkins, Harbor, ArgoCD 를 통한 GitOps 구성
 ### [Gitea (저장소)](./GitOps/gitea/README.md)
 편리한 설치형 Git 서비스  
 - 저장소 생성
-- CI 를 위한 Jenkins Webhook 등록
-- 사용자 통보를 위한 Slack Webhook 등록
+- **Webhook 추가**
+  - **Gitea** : CI 를 위한 Jenkins Webhook 등록
+  - **Slack** : 사용자 통보를 위한 Slack Webhook 등록
 ![Gietea-repository-sprnigmysql-0.png](./img/Gietea-repository-sprnigmysql-0.png)  
 ![Gietea-repository-sprnigmysql-1.png](./img/Gietea-repository-sprnigmysql-1.png)  
 
