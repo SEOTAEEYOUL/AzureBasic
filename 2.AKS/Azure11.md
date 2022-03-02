@@ -1,5 +1,7 @@
-# Azure DevOps 를 통한 Pod 배포
+# [Azure DevOps](https://azure.microsoft.com/ko-kr/services/devops/#overview) 를 통한 Pod 배포
 Repos 구성, Pipeline 구성, Pod 배포
+
+[Azure DevOps 가격](https://azure.microsoft.com/ko-kr/pricing/details/devops/azure-devops-services/)  
 
 ## [DevOps](../0.ENV/DevOps.md)
 코드 구축을 위한 통합 솔루션  

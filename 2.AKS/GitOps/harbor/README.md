@@ -270,3 +270,5 @@ helm install --wait --name harbor --namespace cicd `
   --set externalURL=https://harbor.${MY_DOMAIN} `
   --set harborAdminPassword=admin
 ```
+
+## 배포 구성하기

@@ -442,3 +442,15 @@ PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins>
 ![jenkins-configure-clouds-0.png](../../img/jenkins-configure-clouds-0.png)  
 ![jenkins-configure-clouds-2.png](../../img/jenkins-configure-clouds-2.png)  
 ![jenkins-pod-template.png](../../img/jenkins-pod-template.png)  
+
+
+## [Azure Container Registry Tasks](https://plugins.jenkins.io/azure-container-registry-tasks/)  
+
+#### Jenkins Dashboard
+![Jenkins-Dashbord.png](../../img/Jenkins-Dashbord.png)  
+
+#### Jenkins Dashboard - SpringMySQL
+![Jenkins-Dashboard-springmysql.png](../../img/Jenkins-Dashboard-springmysql.png) 
+
+#### Jenkins Dashboard - nodejs-bot
+![Jenkins-Dashboard-nodejs-bot.png](../../img/Jenkins-Dashboard-nodejs-bot.png)  

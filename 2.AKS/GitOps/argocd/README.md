@@ -450,3 +450,27 @@ kubectl patch app springmysql -n cicd -p '{"metadata": {"annotations": {"notific
 ![arogcd-app.png](../../img/arogcd-app.png)  
 ![argocd-app-springmysql.png](../../img/argocd-app-springmysql.png)  
 ![argocd-nodejs-bot.png](../../img/argocd-nodejs-bot.png)
+
+## ArgoCD 배포 구성하기
+ Cluster 구성(내장된 것을 그대로 사용하면 됨)
+  - in-cluser :  https//kubernetes.default.svc 1.21
+    ![argocd-cluster.png](../../img/argocd-cluster.png)
+- Project 생성
+  - springmysql, nodejs-bot 생성
+  ![argocd-project-springmysql.png](../../img/argocd-project-springmysql.png)
+- Repositories 구성
+  - 배포할 Repositoris 등록 : gitea 의 SpringMySQL, nodejs 등록
+    ![argocd-repository-springmysql.png](../../img/argocd-repository-springmysql.png)
+- App 생성 (SpringMySQL, nodejs-bot)
+  - GENERAL
+    - Application name
+    - Project 선택
+    - SYNC POLICY 선택
+  - SOURCE
+    - Repository URL 선택
+    - Revison : HEAD
+    - Path : .
+  - DESTINATION
+    - Cluster URL : Cluster 구성 정보 선택
+    - Namespace : 
+  ![arogcd-app-SpringMySQL.png](../../img/arogcd-app-SpringMySQL.png)
