@@ -4,6 +4,7 @@
 - 할당된 역할에 정의된 권한으로 서비스를 이용  
 
 ### ID 및 액세스 관리(IAM, Identity and Access Managmenet)
+- Azure 리소스에 대한 액세스 권한을 부여하기 위해 역할을 할당하는 데 일반적으로 사용하는 페이지
 - Azure Active Directory : 클라우드 및 하이브리드 환경에 ID 및 액세스 관리 기능 제공  
 
 ### [Azure 기본 제공 역활](https://docs.microsoft.com/ko-kr/azure/role-based-access-control/built-in-roles)  
@@ -24,7 +25,8 @@
 - 예) 네트워크 담당자 - 필요 권한 정의
 
 **Scope - 범위 지정**
-- Management Group 적용 / 구독레벨 적용
+- Management Group 적용 / 구독레벨 적용  
+  ![scope-levels.png](./img/scope-levels.png)
 
 **보안주체에게 역활과 범위를 할당**
 - 예) 네트워크 담당자 - 전체 N/W 에 대한 생성/변경/삭제
