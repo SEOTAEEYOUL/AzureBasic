@@ -74,7 +74,7 @@ New Create Project
 #### 5. Pipeline 설정
 - Name : SpringMySQL-CI
 - Agent pool : Azure Pipelines
-- Agent Sepecification : ubuntu-20.04
+- Agent Sepecification : ubuntu-20.04  
   ![AzureDevOps-Pipelines-SpringMySQL-Ci-Pipeline.png](./img/AzureDevOps-Pipelines-SpringMySQL-Ci-Pipeline.png)  
 
 #### 6. Task(Agent job) 설정
