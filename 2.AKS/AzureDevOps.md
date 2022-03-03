@@ -235,6 +235,9 @@ git 소스가 변경될 때 CI 후 CD 가 되도록 설정
 
 ![AzureDevOps-Pipelines-Releases-New Release-AgentJob-Tasks.png](./img/AzureDevOps-Pipelines-Releases-NewRelease-AgentJob-Tasks.png)  
 
+##### 6. Pipeline 명 바꾸기
+- SpringMySQL-CD
+  ![AzureDevOps-Pipelinses-Release-EditPipelineName.png](./img/AzureDevOps-Pipelinses-Release-EditPipelineName.png)  
 
 ---
 ## SpringMySql
