@@ -285,4 +285,15 @@ $(System.DefaultWorkingDirectory)/_SpringMySQL-CI/drop/k8s/springmysql-deploy.ya
 #### SpringMySQL > Pipelines > Pipelines > SpringMySQL-CI > (More actions) > Export to YAML
 ![AzureDevOps-ExportYaml.png](./img/AzureDevOps-ExportYaml.png)   
 #### SpringMySQL > Pipelines > Release > (More actions) > Export
-![AzureDevOps-Release-Export.png](./img/AzureDevOps-Release-Export.png)
+![AzureDevOps-Release-Export.png](./img/AzureDevOps-Release-Export.png)  
+
+### 빌드 후 통보 받기(Service hooks 설정)
+Project Settings > Service hooks > **+ Create subscription** > Service > **Slack**
+![ProjectSettings-Service-Slack-0.png](./img/ProjectSettings-Service-Slack-0.png)  
+![ProjectSettings-Service-Slack-1.png](./img/ProjectSettings-Service-Slack-1.png)  
+![ProjectSettings-Service-Slack-2.png](./img/ProjectSettings-Service-Slack-2.png)  
+![ProjectSettings-Service-Slack-3.png](./img/ProjectSettings-Service-Slack-3.png)  
+
+#### Slack 화면  
+![AzureDevOps-Slack.png](./img/AzureDevOps-Slack.png)  
+

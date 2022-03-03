@@ -35,6 +35,7 @@ DevOps는 개발 팀과 운영 팀 사이의 협업을 촉진하여 더욱 빠�
 
 
 ### Overview
+Project 의 설명등 표현
 
 ### [Boards](https://docs.microsoft.com/ko-kr/azure/devops/boards/get-started/what-is-azure-boards?view=azure-devops) 
 팀원들과 작업을 계획하고 추적하고 논의  
@@ -58,7 +59,8 @@ DevOps는 개발 팀과 운영 팀 사이의 협업을 촉진하여 더욱 빠�
 팀의 모든 사람이 개발 프로세스 전반에 걸쳐 품질과 협업을 촉진하는 데 사용할 수 있는 풍부하고 강력한 도구를 제공  
 
 ### Artifacts
-다양한 피드 및 공용 레지스트리의 패키지를 공유하고 사용 
+다양한 피드 및 공용 레지스트리의 패키지를 공유하고 사용  
+퍼블릭 및 프라이빗 소스에서 Maven, npm, NuGet 및 Python 패키지 피드를 만들고 공유  
 
 ### [Azure DevOps Pipeline 적용](./AzureDevOps.md)  
 SpringBootMySql 예제 적용 
