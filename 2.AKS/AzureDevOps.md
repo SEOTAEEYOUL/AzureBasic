@@ -27,7 +27,8 @@ New Create Project
 
 ## "Repos" > "Files"
 - "Clone in VS Code" 로 소스파일 생성  
-- **Import a repository** 로 Git 저장소의 소스 가져오기
+- **Import a repository** 로 Git 저장소의 소스 가져오기(★)
+  - https://github.com/SEOTAEEYOUL/SpringBootMySQL.git
 - Files
 ![AzureDevOps-SpringMysql-Repos.png](./img/AzureDevOps-SpringMysql-Repos.png)  
 ![AzureDevOps-Repos-ImportaRepository.png](./img/AzureDevOps-Repos-ImportaRepository.png)  
@@ -238,4 +239,11 @@ $(System.DefaultWorkingDirectory)/_SpringMySQL-CI/drop/k8s/springmysql-deploy.ya
 #### 승인하기
 ![AzureDevOps-Release-SpringMySQL-CD-Stage-Pre-deploymentCondition(승인후배포)-1.png](./img/AzureDevOps-Release-SpringMySQL-CD-Stage-Pre-deploymentCondition(승인후배포)-1.png)
 #### 승인 후 배포 결과
-![AzureDevOps-Release-SpringMySQL-CD-Stage-Pre-deploymentCondition(승인후배포)-2.png](./img/AzureDevOps-Release-SpringMySQL-CD-Stage-Pre-deploymentCondition(승인후배포)-2.png)
+![AzureDevOps-Release-SpringMySQL-CD-Stage-Pre-deploymentCondition(승인후배포)-2.png](./img/AzureDevOps-Release-SpringMySQL-CD-Stage-Pre-deploymentCondition(승인후배포)-2.png)  
+![AzureDevOps-Release-SpringMySQL-CD-Stage-Pre-deploymentCondition(승인후배포)-2-0.png](./img/AzureDevOps-Release-SpringMySQL-CD-Stage-Pre-deploymentCondition(승인후배포)-2-0.png)  
+
+### Project(SpringMySQL) Pipeline 을 Export 받기
+#### SpringMySQL > Pipelines > Pipelines > SpringMySQL-CI > (More actions) > Export to YAML
+![AzureDevOps-ExportYaml.png](./img/AzureDevOps-ExportYaml.png)   
+#### SpringMySQL > Pipelines > Release > (More actions) > Export
+![AzureDevOps-Release-Export.png](./img/AzureDevOps-Release-Export.png)
