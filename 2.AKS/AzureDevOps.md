@@ -47,6 +47,12 @@ New Create Project
 ![AzureDevOps-Pipelines-Pipelins-CreatePipeline.png](./img/AzureDevOps-Pipelines-Pipelins-CreatePipeline.png)  
 #### 2. **Use the classic editor** Click
   ![AzureDevOps-Pipeline-Pipelines-CreatePipelines.png](./img/AzureDevOps-Pipelines-Pipelines-CreatePipelines-Connect-UsetheClassicEditor.png)  
+
+#### 3. Select a source
+- **Azure Repos Git** 선택(★)
+- continue 선택  
+![AzureDevOps-Pipelines-AzureReposGit.png](./img/AzureDevOps-Pipelines-AzureReposGit.png)
+
 - Get source -> other Git 선택  
   ``` 
   Default branch for manual and scheduled builds : master
@@ -56,9 +62,7 @@ New Create Project
   Repository : http://gitea.chatops.ga/chatadmin/nodejs-bot-deploy.git
   ```		
   ![AzureDevOps-Pipelines-OtherGit.png](./img/AzureDevOps-Pipelines-OtherGit.png)
-#### 3. Select a source
-- **Azure Repos Git** 선택
-- continue 선택  
+
 
 #### 4. **Empty Job** 클릭  
   ![AzureDevOps-Pipelines-SelectaTemplate-Emptyjob.png](./img/AzureDevOps-Pipelines-SelectaTemplate-Emptyjob.png)  
