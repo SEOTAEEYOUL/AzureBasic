@@ -33,6 +33,14 @@ New Create Project
 ![AzureDevOps-SpringMysql-Repos.png](./img/AzureDevOps-SpringMysql-Repos.png)  
 ![AzureDevOps-Repos-ImportaRepository.png](./img/AzureDevOps-Repos-ImportaRepository.png)  
 
+## Overview > Summary 만들기
+#### SpringMySQL > Summary > **"+ Add Project Description"**
+![AzureDevOps-SpringMySQL-Summary-AddProjectDescription.png](./img/AzureDevOps-SpringMySQL-Summary-AddProjectDescription.png)  
+#### About this project
+- Description : SpringMySQL
+- About : Readme file : SpringMySQL (Repos 선택)
+  ![AzureDevOps-SpringMySQL-Summary-AddProjectDescription-ReadmeFile-SpringMySQL.png](./img/AzureDevOps-SpringMySQL-Summary-AddProjectDescription-ReadmeFile-SpringMySQL.png)  
+
 ## Pipelines 
 ### Pipelines(**CI**)
 #### 1. Pipelines -> Create Pipelines 
