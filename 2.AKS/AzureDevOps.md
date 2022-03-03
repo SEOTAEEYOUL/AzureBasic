@@ -293,6 +293,8 @@ Project Settings > Service hooks > **+ Create subscription** > Service > **Slack
 ![ProjectSettings-Service-Slack-1.png](./img/ProjectSettings-Service-Slack-1.png)  
 ![ProjectSettings-Service-Slack-2.png](./img/ProjectSettings-Service-Slack-2.png)  
 ![ProjectSettings-Service-Slack-3.png](./img/ProjectSettings-Service-Slack-3.png)  
+#### Service Hooks
+![Project-Settings-Servicehooks.png](./img/Project-Settings-Servicehooks.png)  
 
 #### Slack 화면  
 ![AzureDevOps-Slack.png](./img/AzureDevOps-Slack.png)  
