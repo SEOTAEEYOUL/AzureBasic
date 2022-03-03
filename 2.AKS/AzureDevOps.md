@@ -65,17 +65,17 @@ New Create Project
 
 
 #### 4. **Empty Job** 클릭  
-  ![AzureDevOps-Pipelines-SelectaTemplate-Emptyjob.png](./img/AzureDevOps-Pipelines-SelectaTemplate-Emptyjob.png)  
+  ![AzureDevOps-Pipelines-SelectaTemplate-Emptyjob.png](./img/AzureDevOps-Pipelines-SelectATemplate-Emptyjob.png)  
   
   - **Agent job -> Pipeline -> Agent Specification -> ubuntu-20.04**
     
   ![AzureDevOps-Pipelines-nodejs-bot-CI-Agent job.png](./img/AzureDevOps-Pipelines-nodejs-bot-CI-Agent job.png)  
 
 #### 5. Pipeline 설정
-- Name : nodejs-bot-CI
+- Name : SpringMySQL-CI
 - Agent pool : Azure Pipelines
 - Agent Sepecification : ubuntu-20.04
-  ![AzureDevOps-Pipelins-nodejs-bot-Ci-Pipelines.png](./img/AzureDevOps-Pipelins-nodejs-bot-Ci-Pipelines.png)  
+  ![AzureDevOps-Pipelines-SpringMySQL-Ci-Pipeline.png](./img/AzureDevOps-Pipelines-SpringMySQL-Ci-Pipeline.png)  
 
 #### 6. Task(Agent job) 설정
 - Display name :  CI  
