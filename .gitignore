@@ -17,6 +17,7 @@ bin/
 
 ## ignor test
 1.IaaS/.venv/
+3.LandingZone/자료/
 
 ### VS Code ###
 .vscode/
