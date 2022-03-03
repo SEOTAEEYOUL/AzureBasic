@@ -44,6 +44,7 @@ New Create Project
 ## Pipelines 
 ### Pipelines(**CI**)
 #### 1. Pipelines -> Create Pipelines 
+![AzureDevOps-Pipelines-Pipelins-CreatePipeline.png](./img/AzureDevOps-Pipelines-Pipelins-CreatePipeline.png)  
 #### 2. Use the classic editor Click
   ![AzureDevOps-Pipeline-Pipelines-CreatePipelines.png](./img/AzureDevOps-Pipeline-Pipelines-CreatePipelines.png)  
 - Get source -> other Git 선택  
