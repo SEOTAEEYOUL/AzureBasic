@@ -154,16 +154,18 @@ Articatis 의 deploy 의 container tag 를 빌드한 버전으로 바꿔준 후 
 
 ### 3. Add an Artifact
 - Soruce type
-- Project : nodejs-bot
-- Source (build pipeline) : nodejs-bot-CI
+- Project : **SpringMySQL** 선택
+- Source (build pipeline) : **SpringMySQL-CI**
 - Default version : Latest
-- Source alias : _nodejs-bot-CI  
-
+- Source alias : _SpringMySQL-CI
+![AzureDevOps-Pipelines-Release-NewPipeline-Artifacts-0.png](./img/AzureDevOps-Pipelines-Release-NewPipeline-Artifacts-0.png)  
 ![AzureDevOps-Pipelines-Release-NewPipeline-Artifacts.png](./img/AzureDevOps-Pipelines-Release-NewPipeline-Artifacts.png)  
 
 ### 4. Continous deployment trigger(번개 아이콘) 클릭 -> 활성화
 - Continuous deployment trigger : **Enabled**  
 git 소스가 변경될 때 CI 후 CD 가 되도록 설정  
+![AzureDevOps-Pipelines-Release-NewPipeline-Artifacts-ContinousDeploymentTrigger-0.png](./img/AzureDevOps-Pipelines-Release-NewPipeline-Artifacts-ContinousDeploymentTrigger-0.png)  
+
 ![AzureDevOps-Pipelines-Release-NewPipeline-Artifacts-ContinousDeploymentTrigger.png](./img/AzureDevOps-Pipelines-Release-NewPipeline-Artifacts-ContinousDeploymentTrigger.png)  
 
 ### 5. **Stage** Task 설정
@@ -171,13 +173,17 @@ git 소스가 변경될 때 CI 후 CD 가 되도록 설정
 #### 5.2 Agent Job 에 Taks 추가(**+**)
 ##### 5.2.1 **Bash** (Bash Script)
 - Taks version : 3.*
-- Type: Inline
+- Display name : **Bash Script**
+- Type: **Inline** 선택
 - Script  
   ```bash
+  sed -i "s/latest/$(Build.BuildId)/g" $(System.DefaultWorkingDirectory)/_SpringMySQL-CI/drop/k8s/springmysql-deploy.yaml
+  ```
+  ![AzureDevOps-Pipelines-Releases-NewRelease-AgentJob-bash-0.png](./img/AzureDevOps-Pipelines-Releases-NewRelease-AgentJob-bash-0.png)
+  ```bash
   sed -i "s/latest/$(Build.BuildId)/g" $(System.DefaultWorkingDirectory)/_NodeJs-Bot-CI/drop/k8s/nodejs-bot-deploy.yaml
-  ```  
-
-![AzureDevOps-Pipelines-Releases-New Release-AgentJob-bash.png](./img/AzureDevOps-Pipelines-Releases-New Release-AgentJob-bash.png)  
+  ```   
+  ![AzureDevOps-Pipelines-Releases-NewRelease-AgentJob-bash.png](./img/AzureDevOps-Pipelines-Releases-NewRelease-AgentJob-bash.png)  
 
 ##### 5.2.2 **kubectl** (kubectl apply Deployment)
 - Kubectl
@@ -194,7 +200,10 @@ git 소스가 변경될 때 CI 후 CD 가 되도록 설정
   - **Use configuration** 체크
   - Configureation type : Inline configuration
   - Inline configuration
+    ```bash
+    $(System.DefaultWorkingDirectory)/_SpringMySQL-CI/drop/k8s/springmysql-deploy.yaml
     ```
+    ```bash
     $(System.DefaultWorkingDirectory)/_nodejs-bot-CI/drop/k8s/nodejs-bot-deploy.yaml
     ```  
 
@@ -203,7 +212,7 @@ git 소스가 변경될 때 CI 후 CD 가 되도록 설정
 ##### 5.2.3 **kubectl** (kubectl apply Service)
 - Kubectl
   - Taks version: 1.*
-  - Display name : kubectl apply deployment
+  - Display name : kubectl apply service
 - Kubernetes Cluster
   - Service connection type : Kubernetes service connection
   - Kubernetes service connection : aks-cluster-Homeeee
@@ -215,6 +224,9 @@ git 소스가 변경될 때 CI 후 CD 가 되도록 설정
   - **Use configuration** 체크
   - Configureation type : Inline configuration
   - Inline configuration
+    ```
+    $(System.DefaultWorkingDirectory)/_SpringMySQL-CI/drop/k8s/springmysql-svc.yaml
+    ```
     ```
     $(System.DefaultWorkingDirectory)/_nodejs-bot-CI/drop/k8s/nodejs-bot-svc.yaml
     ```  
