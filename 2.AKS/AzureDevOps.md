@@ -86,10 +86,14 @@ New Create Project
 
 
 #### 7. **CI** angent job 의 "+" 로 Task 추가  
+##### 7.1 **Maven** 추가 (Maven pom.xml)
+- 그대로 사용
 ##### 7.1 Node.js tool installer (Use Node 6.x)
-- **코드 커밋시 , 자동 트리거 설정**  
+- 그대로 사용
+##### 7.1.1 **코드 커밋시 , 자동 트리거 설정**  
   - Triggers 탭 선택
   - repository : **Enable continuous integration** check
+    ![AzureDevOps-SpringMySQL-Ci-Tiggers.png](./img/AzureDevOps-SpringMySQL-Ci-Tiggers.png)  
     ![AzureDevOps-nodejs-bot-Ci-Tiggers.png](./img/AzureDevOps-nodejs-bot-Ci-Tiggers.png)  
 
 ##### 7.2 **Copy Files** (Copy Files to)
@@ -97,24 +101,30 @@ New Create Project
 - Source Folder : **$(System.DefaultWorkingDirectory)**
 - Contents : k8s/* 
 - Target Folder : **$(Build.ArtifactStagingDirectory)**
-
+  ![AzureDevOps-SpringMySQL-Ci-CopyFiles.png](./img/AzureDevOps-SpringMySQL-Ci-CopyFiles.png)  
+  ![AzureDevOps-SpringMySQL-Ci-CopyFiles-1.png](./img/AzureDevOps-SpringMySQL-Ci-CopyFiles-1.png)  
 #### 7.3 **Publish Build Artifacts** (Publish Artifact: drop)
 - Display name : Publish Artifact: drop
 - Path to publish : **$(Build.ArtifactStagingDirectory)**
 - Artifact name : drop
 - Artifact publish location : Azure Pipelines
+  ![AzureDevOps-SpringMySQL-Ci-PublishBuildArtifacts.png](./img/AzureDevOps-SpringMySQL-Ci-PublishBuildArtifacts.png)  
+  ![AzureDevOps-SpringMySQL-Ci-PublishBuildArtifacts-1.png](./img/AzureDevOps-SpringMySQL-Ci-PublishBuildArtifacts-1.png)  
 
 ##### 7.4 **Docker** 선택(buildAndPush 로 Taks 추가)
 - Display name : buildAndPush
 - Container Repository
   - Container registry : AKS
 - **New service connection** 생성
-  - Registry type : Azure Container Registry
-  - Subscription: Azure subscrition 1(...)
-  - Azure Container registry : acrHomeeee 
-  - Service connection name : AKS
+  - Registry type : **Azure Container Registry** 선택
+  - Subscription: **Azure subscrition 1(...)** 선택
+  - Azure Container registry : **acrHomeeee** 선택 
+  - Service connection name : **acrHomeeee** 입력
+  - **Grant access permission to all pipelines** 체크
+    ![AzureDevOps-SpringMySQL-Ci-Docker.png](./img/AzureDevOps-SpringMySQL-Ci-Docker.png)  
+    ![AzureDevOps-Pipelines-Pipelins-Tasks-Docker-Newserviceconnection-0.png](./img/AzureDevOps-Pipelines-Pipelins-Tasks-Docker-Newserviceconnection-0.png)  
     ![AzureDevOps-Pipelines-Pipelins-Tasks-Docker-Newserviceconnection.png](./img/AzureDevOps-Pipelines-Pipelins-Tasks-Docker-Newserviceconnection.png)
-- **Container repository** : nodejs-bot
+- **Container repository** : springmysql  
 - **Commands**
   - Command : buildAndPush
   - Dockerfile : **/Dockerfile 
@@ -122,7 +132,8 @@ New Create Project
   - Tags : $(Build.BuildId)
   - **Add Pipeline metadata to image(s)** Check
   - **Add base image metadata to image(s)** Check
-  ![AzureDevOps-Pipelines-nodejs-bot-CI-Task-Docker.png](./img/AzureDevOps-Pipelines-nodejs-bot-CI-Task-Docker.png)  
+    ![AzureDevOps-Pipelines-nodejs-bot-CI-Task-Docker-0.png](./img/AzureDevOps-Pipelines-nodejs-bot-CI-Task-Docker-0.png)  
+    ![AzureDevOps-Pipelines-nodejs-bot-CI-Task-Docker.png](./img/AzureDevOps-Pipelines-nodejs-bot-CI-Task-Docker.png)  
 
 
 #### 8. Save  & queue 클릭
