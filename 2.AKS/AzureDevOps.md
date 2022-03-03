@@ -65,7 +65,7 @@ New Create Project
 
 
 #### 4. **Empty Job** 클릭  
-  ![AzureDevOps-Pipelines-SelectaTemplate-Emptyjob.png](./img/AzureDevOps-Pipelines-SelectATemplate-Emptyjob.png)  
+  ![AzureDevOps-Pipelines-SelectaTemplate-Emptyjob.png](./img/AzureDevOps-Pipelines-SelectaTemplate-Emptyjob.png)  
   
   - **Agent job -> Pipeline -> Agent Specification -> ubuntu-20.04**
     
