@@ -17,7 +17,7 @@
 | 2022.02.07 | 2022.02.08 | 2022.02.09 | 2022.02.10</br>[Azure3](./1.IaaS/Azure3.md)</br>[Azure4](./1.IaaS/Azure4.md) | 2022.02.11 |
 |  |  | | 2022.02.17 </br> [Azure5](./1.IaaS/Azure5.md)  | 2022.02.18 </br> [Azure6](./1.IaaS/Azure6.md)</br>[Azure7](./1.IaaS/Azure7.md) |  
 |  |  | |2022-02-24 </br> [Azure8](./2.AKS/Azure8.md) </br> [Azure9](./2.AKS/Azure9.md) | 2022-02-25 </br> [Azure10](./2.AKS/Azure10.md) | 
-| | | | 2022-03-03 </br> [Azure11](./2.AKS/Azure11.md) </br> [Azure12](./2.AKS/Azure12.md) | 2022-03-04 </br> [Azure13](./3.LandingZone/Azure13.md) |
+| | | | 2022-03-03 </br> [Azure11](./2.AKS/Azure11.md) </br> [Azure12](./2.AKS/Azure12.md) | 2022-03-04 </br> [Azure13](./3.LandingZone/README.md) |
 
 ## 과정 내용
 ### 공통
@@ -46,10 +46,10 @@
 | [Azure11](./2.AKS/Azure11.md) | Azure DevOps 를 통한 Pod 배포 | 2022.03.03 | Repos 구성, Pipeline 구성, Pod 배포 </br> - blue/green 배포 |  
 | [Azure12](./2.AKS/Azure12.md) | OSS 를 통한 Pod 배포 | 2022.03.03 | Gitea, Jenkins, Harbor, ArgoCD 를 통한 GitOps 구성 </br> - webhook, Jenkinsflies 구성/작성 </br> - blue/green 배포 |
 
-### SKT 환경 고려 사항
+### Service 환경 고려 사항
 || 항목 | 날짜 | 내용 | 
 |:---|:---|:---|:---|  
-| [Azure13](./3.LandingZone/Azure13.md) | SKT랜딩존 환경 고려사항 | 2022.03.04 | SKT랜딩존 환경 고려사항 |
+| [Azure13](./3.LandingZone/README.md) | Azure Landing Zone 요소 설명 | 2022.03.04 | Service 구축 시 랜딩존 환경 고려사항 |
 
 ## 공통 환경  
 | 항목 | 날짜 | 내용 | 

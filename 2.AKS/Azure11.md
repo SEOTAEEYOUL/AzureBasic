@@ -8,7 +8,7 @@ Repos 구성, Pipeline 구성, Pod 배포
 DevOps = 소프트웨어 개발 사이클 속도를 높이는 것  
 DevOps는 개발 팀과 운영 팀 사이의 협업을 촉진하여 더욱 빠르고 안정적인 소프트웨어 제공을 지원하는 소프트웨어 개발 방식  
 
-## [GitOps](./GitOps.md)  
+## [GitOps](./GitOps/README.md)  
 - GitOps = 지속적 전달 + 지속적인 작업  
 - Git을 거의 모든 것을 작동하는 소스 로 사용 하는 것  
 - Git 도구에 연결된 특정 시스템 작업 프로세스  
