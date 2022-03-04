@@ -44,5 +44,290 @@
 | Database Admin Role | Azure PaaS DB 제품들의 모든 권한을 가지지만 일부 Network, 보안권한 제한 |  
 
 ※ ARM Template 에서 actions 와 notActions 세부항목으로 권한 정의
+- **PowerShell**
+```
+param ($sourceRole, $destinationRole, $subscriptionId)
+
+if ($subscriptionId) {
+  Write-Output "az account set --subscription=$subscriptionId"
+  az account set --subscription="$subscriptionId"
+}
+else {
+  $subid = (az account show | ConvertFrom-Json).id
+  Write-Output "account ID($subid)"
+  az account show
+}
+
+$users =  az role assignment list --role="$sourceRole" | 
+  ConvertFrom-json | 
+    Where-Object {($_.principalType -eq 'User') -or ($_.principalType -eq 'Group')} 
+
+foreach($user_pi in $users.principalId) {
+  Write-Output "az role assignment create --role '$destinationRole' --assignee $user_pi"
+  az role assignment create --role "$destinationRole" --assignee "$user_pi"
+}
+```
+
+- **ARM Template**
+```
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "roleDefinitions": {
+      "type": "array"
+    },
+    "assignableScopes": {
+      "type": "array"
+    }
+  },
+  "variables": {
+    
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2017-09-01",
+      "copy": {
+        "name": "definitionCount",
+        "count": "[length(parameters('roleDefinitions'))]"
+      },
+      "name": "[guid(subscription().id, parameters('roleDefinitions')[copyIndex()].roleName)]",
+      "properties": {
+        "roleName": "[parameters('roleDefinitions')[copyIndex()].roleName]",
+        "description": "[parameters('roleDefinitions')[copyIndex()].roleDescription]",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": "[parameters('roleDefinitions')[copyIndex()].actions]",
+            "notActions": "[parameters('roleDefinitions')[copyIndex()].notActions]"
+          }
+        ],
+        "assignableScopes": "[parameters('assignableScopes')]"
+      }
+    }    
+  ]
+}
+```
+- **parameters**
+```
+{
+  "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion":"1.0.0.0",
+  "parameters":{
+    "roleDefinitions": {
+      "value": [
+        {
+          "roleName": "SKT Service Owner",
+          "roleDescription": "Service owner role",
+          "actions": [
+            "*"
+          ],
+          "notActions": [
+            "Microsoft.Authorization/elevateAccess/Action",
+            "Microsoft.Blueprint/blueprintAssignments/write",
+            "Microsoft.Blueprint/blueprintAssignments/delete",
+            "Microsoft.Insights/ExtendedDiagnosticSettings/Delete",
+            "Microsoft.Insights/DiagnosticSettings/Delete",
+            "Microsoft.Authorization/roleDefinitions/write",
+            "Microsoft.Authorization/roleDefinitions/delete",
+            "Microsoft.Authorization/policyDefinitions/write",
+            "Microsoft.Authorization/policyDefinitions/delete",
+            "Microsoft.Authorization/policyAssignments/write",
+            "Microsoft.Authorization/policyAssignments/delete",
+            "Microsoft.PolicyInsights/attestations/write",
+            "Microsoft.PolicyInsights/attestations/delete",
+            "Microsoft.PolicyInsights/remediations/write",
+            "Microsoft.PolicyInsights/remediations/delete",
+            "Microsoft.Network/connections/write",
+            "Microsoft.Network/connections/delete",
+            "Microsoft.Network/connections/sharedKey/write",
+            "Microsoft.Network/dscpConfiguration/write",
+            "Microsoft.Network/expressRouteCircuits/write",
+            "Microsoft.Network/expressRouteCircuits/delete",
+            "Microsoft.Network/expressRouteCircuits/authorizations/write",
+            "Microsoft.Network/expressRouteCircuits/authorizations/delete",
+            "Microsoft.Network/expressRouteCircuits/peerings/write",
+            "Microsoft.Network/expressRouteCircuits/peerings/delete",
+            "Microsoft.Network/expressRouteCircuits/peerings/connections/write",
+            "Microsoft.Network/expressRouteCircuits/peerings/connections/delete",
+            "Microsoft.Network/expressRouteCrossConnections/peerings/write",
+            "Microsoft.Network/expressRouteCrossConnections/peerings/delete",
+            "Microsoft.Network/expressRouteGateways/expressRouteConnections/write",
+            "Microsoft.Network/expressRouteGateways/expressRouteConnections/delete",
+            "Microsoft.Network/expressRoutePorts/write",
+            "Microsoft.Network/expressRoutePorts/delete",
+            "Microsoft.Network/localnetworkgateways/write",
+            "Microsoft.Network/localnetworkgateways/delete",
+            "Microsoft.Network/p2sVpnGateways/write",
+            "Microsoft.Network/p2sVpnGateways/delete",
+            "Microsoft.Network/routeFilters/delete",
+            "Microsoft.Network/routeFilters/write",
+            "Microsoft.Network/routeFilters/routeFilterRules/write",
+            "Microsoft.Network/routeFilters/routeFilterRules/delete",
+            "Microsoft.Network/virtualHubs/delete",
+            "Microsoft.Network/virtualHubs/write",
+            "Microsoft.Network/virtualHubs/hubRouteTables/write",
+            "Microsoft.Network/virtualHubs/hubRouteTables/delete",
+            "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections/write",
+            "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections/delete",
+            "Microsoft.Network/virtualHubs/routeTables/write",
+            "Microsoft.Network/virtualHubs/routeTables/delete",
+            "Microsoft.Network/virtualNetworkGateways/write",
+            "Microsoft.Network/virtualNetworkGateways/delete",
+            "Microsoft.Network/virtualNetworks/write",
+            "Microsoft.Network/virtualNetworks/delete",
+            "Microsoft.Network/virtualNetworks/virtualNetworkPeerings/write",
+            "Microsoft.Network/virtualNetworks/virtualNetworkPeerings/delete",
+            "Microsoft.Network/virtualRouters/write",
+            "Microsoft.Network/virtualRouters/delete",
+            "Microsoft.Network/virtualRouters/peerings/write",
+            "Microsoft.Network/virtualRouters/peerings/delete",
+            "Microsoft.Network/virtualWans/delete",
+            "Microsoft.Network/virtualWans/write",
+            "Microsoft.network/virtualWans/p2sVpnServerConfigurations/write",
+            "Microsoft.network/virtualWans/p2sVpnServerConfigurations/delete",
+            "Microsoft.Network/vpnGateways/write",
+            "Microsoft.Network/vpnGateways/delete",
+            "microsoft.network/vpnGateways/vpnConnections/write",
+            "microsoft.network/vpnGateways/vpnConnections/delete",
+            "Microsoft.Network/vpnServerConfigurations/write",
+            "Microsoft.Network/vpnServerConfigurations/delete",
+            "Microsoft.Network/vpnsites/write",
+            "Microsoft.Network/vpnsites/delete",
+            "Microsoft.Network/natGateways/write",
+            "Microsoft.Network/natGateways/delete",
+            "Microsoft.Network/networkInterfaces/tapConfigurations/write",
+            "Microsoft.Network/networkInterfaces/tapConfigurations/delete",
+            "Microsoft.Network/networkWatchers/delete",
+            "Microsoft.Network/networkWatchers/flowLogs/delete",
+            "Microsoft.Network/networkWatchers/flowLogs/write",
+            "Microsoft.Network/networkWatchers/write",
+            "Microsoft.Network/routeTables/write",
+            "Microsoft.Network/routeTables/delete"
+          ]
+        },
+        {
+          "roleName": "SKT Service Contributor",
+          "roleDescription": "Service contributor role",
+          "actions": [
+            "*"
+          ],
+          "notActions": [
+            "Microsoft.Authorization/*/Write",
+            "Microsoft.Authorization/*/Delete",
+            "Microsoft.Authorization/elevateAccess/Action",
+            "Microsoft.Blueprint/blueprintAssignments/write",
+            "Microsoft.Blueprint/blueprintAssignments/delete",
+            "Microsoft.Insights/ExtendedDiagnosticSettings/Delete",
+            "Microsoft.Insights/DiagnosticSettings/Delete",
+            "Microsoft.Authorization/roleDefinitions/write",
+            "Microsoft.Authorization/roleDefinitions/delete",
+            "Microsoft.Authorization/policyDefinitions/write",
+            "Microsoft.Authorization/policyDefinitions/delete",
+            "Microsoft.Authorization/policyAssignments/write",
+            "Microsoft.Authorization/policyAssignments/delete",
+            "Microsoft.PolicyInsights/attestations/write",
+            "Microsoft.PolicyInsights/attestations/delete",
+            "Microsoft.PolicyInsights/remediations/write",
+            "Microsoft.PolicyInsights/remediations/delete",
+            "Microsoft.Network/connections/write",
+            "Microsoft.Network/connections/delete",
+            "Microsoft.Network/connections/sharedKey/write",
+            "Microsoft.Network/dscpConfiguration/write",
+            "Microsoft.Network/expressRouteCircuits/write",
+            "Microsoft.Network/expressRouteCircuits/delete",
+            "Microsoft.Network/expressRouteCircuits/authorizations/write",
+            "Microsoft.Network/expressRouteCircuits/authorizations/delete",
+            "Microsoft.Network/expressRouteCircuits/peerings/write",
+            "Microsoft.Network/expressRouteCircuits/peerings/delete",
+            "Microsoft.Network/expressRouteCircuits/peerings/connections/write",
+            "Microsoft.Network/expressRouteCircuits/peerings/connections/delete",
+            "Microsoft.Network/expressRouteCrossConnections/peerings/write",
+            "Microsoft.Network/expressRouteCrossConnections/peerings/delete",
+            "Microsoft.Network/expressRouteGateways/expressRouteConnections/write",
+            "Microsoft.Network/expressRouteGateways/expressRouteConnections/delete",
+            "Microsoft.Network/expressRoutePorts/write",
+            "Microsoft.Network/expressRoutePorts/delete",
+            "Microsoft.Network/localnetworkgateways/write",
+            "Microsoft.Network/localnetworkgateways/delete",
+            "Microsoft.Network/p2sVpnGateways/write",
+            "Microsoft.Network/p2sVpnGateways/delete",
+            "Microsoft.Network/routeFilters/delete",
+            "Microsoft.Network/routeFilters/write",
+            "Microsoft.Network/routeFilters/routeFilterRules/write",
+            "Microsoft.Network/routeFilters/routeFilterRules/delete",
+            "Microsoft.Network/virtualHubs/delete",
+            "Microsoft.Network/virtualHubs/write",
+            "Microsoft.Network/virtualHubs/hubRouteTables/write",
+            "Microsoft.Network/virtualHubs/hubRouteTables/delete",
+            "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections/write",
+            "Microsoft.Network/virtualHubs/hubVirtualNetworkConnections/delete",
+            "Microsoft.Network/virtualHubs/routeTables/write",
+            "Microsoft.Network/virtualHubs/routeTables/delete",
+            "Microsoft.Network/virtualNetworkGateways/write",
+            "Microsoft.Network/virtualNetworkGateways/delete",
+            "Microsoft.Network/virtualNetworks/write",
+            "Microsoft.Network/virtualNetworks/delete",
+            "Microsoft.Network/virtualNetworks/virtualNetworkPeerings/write",
+            "Microsoft.Network/virtualNetworks/virtualNetworkPeerings/delete",
+            "Microsoft.Network/virtualRouters/write",
+            "Microsoft.Network/virtualRouters/delete",
+            "Microsoft.Network/virtualRouters/peerings/write",
+            "Microsoft.Network/virtualRouters/peerings/delete",
+            "Microsoft.Network/virtualWans/delete",
+            "Microsoft.Network/virtualWans/write",
+            "Microsoft.network/virtualWans/p2sVpnServerConfigurations/write",
+            "Microsoft.network/virtualWans/p2sVpnServerConfigurations/delete",
+            "Microsoft.Network/vpnGateways/write",
+            "Microsoft.Network/vpnGateways/delete",
+            "microsoft.network/vpnGateways/vpnConnections/write",
+            "microsoft.network/vpnGateways/vpnConnections/delete",
+            "Microsoft.Network/vpnServerConfigurations/write",
+            "Microsoft.Network/vpnServerConfigurations/delete",
+            "Microsoft.Network/vpnsites/write",
+            "Microsoft.Network/vpnsites/delete",
+            "Microsoft.Network/natGateways/write",
+            "Microsoft.Network/natGateways/delete",
+            "Microsoft.Network/networkInterfaces/tapConfigurations/write",
+            "Microsoft.Network/networkInterfaces/tapConfigurations/delete",
+            "Microsoft.Network/networkWatchers/delete",
+            "Microsoft.Network/networkWatchers/flowLogs/delete",
+            "Microsoft.Network/networkWatchers/flowLogs/write",
+            "Microsoft.Network/networkWatchers/write",
+            "Microsoft.Network/routeTables/write",
+            "Microsoft.Network/routeTables/delete"
+          ]
+        },
+        {
+          "roleName": "SKT Database Admin",
+          "roleDescription": "Service database admin role",
+          "actions": [
+            "Microsoft.Authorization/*/read",
+            "Microsoft.Insights/alertRules/*",
+            "Microsoft.ResourceHealth/availabilityStatuses/read",
+            "Microsoft.Resources/deployments/*",
+            "Microsoft.Resources/subscriptions/resourceGroups/read",
+            "Microsoft.Sql/*",
+            "Microsoft.DBforMariaDB/*",
+            "Microsoft.DBforMySQL/*",
+            "Microsoft.DBforPostgreSQL/*",
+            "Microsoft.DocumentDB/*",
+            "Microsoft.Cache/*",
+            "microsoft.web/sites/slots/functions/*",
+            "Microsoft.Support/*",
+            "Microsoft.Insights/metrics/read",
+            "Microsoft.Insights/metricDefinitions/read"
+          ],
+          "notActions": [
+            
+          ]
+        }
+      ]
+    }
+  }
+}
+```
 
 

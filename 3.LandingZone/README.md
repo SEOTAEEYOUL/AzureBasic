@@ -1,10 +1,38 @@
-# Landing Zone  
+# Landing Zone(착륙 지점)  
+Landing Zone은 클라우드 환경을 부트스트랩하는 데 사용되는 미리 정의된 규칙, 구성 및 방법 집합  
+대상은 클라우드 구독 또는 계정  
+일반적으로 기업 측 또는 IT Ops 부서의 모든 요구 사항을 충족하는 규제 플랫폼을 설정하기 위한 구성 관리 역할을 함
 
+
+**부트스트랩(Bootstrap)** : 한번 시작되면 알아서 진행되는 일련의 과정(Wiki)  
+
+> [Azure에 대한 Microsoft 클라우드 채택 프레임워크](https://docs.microsoft.com/ko-kr/azure/cloud-adoption-framework/)  
 > [허브 및 스포크 네트워크 토폴로지](https://docs.microsoft.com/ko-kr/azure/cloud-adoption-framework/ready/azure-best-practices/hub-spoke-network-topology)  
 
-## 방향성
+- 랜딩 존을 배포하면 실제로 무엇을 얻을 수 있는지 ?  
+  - Azure 클라우드 마이그레이션을 간소화할 수 있음
+- 어떻게 생겼는가 ?  
+  ![LandingZone.png](./img/LandingZone.jfif)   
+- Azure 구독 및 리소스에 어떤 영향을 주는지 ?  
+
+
+## Landing Zone 이란 ?
+- 클라우드 마이그레이션을 효율적으로 수행하고 관리할 수 있는 조직의 프레임워크를 구축
+- 랜딩 존 내에서 클라우드에서 데이터와 애플리케이션을 사용하는 방법을 결정하는 데 사용할 매개 변수 또는 가드 레일을 선택할 수 있음
+- 랜딩 존(Landing Zone)은 성공적인 cloud adoption strategy 에 필요한 구성 요소
+- 새 집을 짓는 것과 비교할 때, 실제 건설 전에 자원을 확보하는 것
+
+### 요소
+- ID 및 액세스 관리
+- 감사 및 로깅
+- 규정 준수, 규정 및 정책
+- 보안 및 모니터링
+- 네트워킹
+- 기본 인프라
+
+## 방향성(고려사항)
 ### Overall
-- Landing Zone 이 없어 CSP 선호도가 떨어짐
+- Landing Zone 이 없어 CSP 선호도가 떨어짐(구축이 힘듬)
   - 서비스별 개별 구성이 아니나 공통의 서비스/거버넌스 구성
     - **Enterprise-Scale LZ 을 수용하는 아키텍처 수립, Management Group 적용**(★)
 
@@ -14,7 +42,7 @@
   - **Azure AD Connect로 계정/패스워드 동기화**
 
 ### 거버넌스
-- 기존 사업부별 별도 리소스 생성으로 관리 불가
+- 사업부별 별도 리소스 생성으로 관리 불가
   - 확장되는 환경에서도 통합관리 제공
     - **Subscription 구조, Naming Convention, Tagging, Policy, RBAC 적용**(★)
 
@@ -63,8 +91,28 @@
 ## 역활과 권한
 기본 역활을 기준으로 **사전에 정의된 역활(built-in)** 과 **사용자 정의 역활** 을 부여할 수 있음
 - 보안과 관리성을 위해 일부 Built-in Role 할당을 제한하고, Custom Role 을 사용자에게 할당함
+
+
 - 역활과 권할 할당의 흐름은 다음과 같음
 ![LZ-Roles-Assign-Flow.png](./img/LZ-Roles-Assign-Flow.png)  
+
+## Shared Service 영역
+- ER : Vnet 간의 연결은 peering 이 아닌 ER Connect 로 VPN 으로 연결
+- UDR(User Defined Router) - 사용자 정의로 시스템 경로 외에 추가적으로 설정할 때 사용    
+- NSG (Network Security Group, 2000 한계)
+  - 각 서비스 별로 개별적으로 설정함
+  - NSG Rule - IT 보안팀에서 정의
+  - NSG Flow Log 는 v1, v2 가 있으며 v2(전체 로그) 로 설정하여 사용함
+  - NSG Flow Log 는 전체 Deny 후 필요한 것만 허용하는 정책 사용
+- 진단 저장소 설정
+- Azure Storage Acount
+- Azure Event Hub
+- Scecurity Center(Basic, 모든상황, 모든로그) : Network, VM 총괄하여 보기 위한 것  
+  - Data Dog - node
+    - 활동로그 -> Landing Zone Storage Account(Bloc) -> Function App -> DATADOG(datadoghq.com)  
+       [참조 : Splunk Collector 용도](https://docs.datadoghq.com/integrations/azure/?tab=blobstorage#log-collection)  
+    WAF - 수동으로 구성하여 History 용으로 쌓음(자동화 대상이 아님)
+  - Splunk - .NET
 
 ## LZ 에서 신규 서비스 생성 절차
 | Seq.No| 배포단계| 설명 |
@@ -124,6 +172,7 @@ Biz, Tech, Security 관점에서 필수 Tagging 요소만 최소 정의
 |Resource Group | personalinformation | 'yes', 'no' | 개인정보 포함 여부 |
 
 ### [Policy](./Policy.md)
+- 대상 : 자원(Resource)
 1. Policy 전체 분석
 2. 회사 추천, Best Practice 추천 검토
 3. 고객사 담당자 검토
@@ -131,13 +180,31 @@ Biz, Tech, Security 관점에서 필수 Tagging 요소만 최소 정의
 5. 정책(Deny, Audit) 정의
 6. 적용레벨/params 협의
 
+**적용**
+- Corp. 에 적용 후 상속 받음
+- 지우고 새로 만듬(반복적 실행 가능)
+- Policy Type
+  | 항목 | 내용 |
+  |:---|:---|
+  | 감사 | 감사 로그를 남김 |  
+  | 거부 | 조건이 안 맞으면 생성이 안됨 |  
+  | 배포 | 조건에 해당하며 만들어(설정 해) 줌 |  
+
 ### [RBAC](./RBAC.md) 
+- 대상 : 사용자/Group  
+- 사용자나 그룹 차원에서 자원을 Controll 할 수 있는 권한
 고객사가 요청한 권한이 Built-in Role 로 충족되면 설정, Management Group 레벨 적용  
 Custom Role 이 필요하면 생성하여 사용, Subscription 레벨 적용  
 
 ### Logging
 - Azure Monitor - Activity Log 기본 설정
 - Subscription 레벨 적용  
+- Custom Role
+  | Role | Read | Write/Delete |
+  |:---|:---|:---|
+  | Service Owner | ○ | X | 
+  | Service Contributor | ○ | X |
+  | Service Admin | ○ | X |
 
 #### Activity Log 기본 적용 범위
 - Audit Log(Policy)
@@ -147,6 +214,18 @@ Custom Role 이 필요하면 생성하여 사용, Subscription 레벨 적용
 ### 로그 수집
 Azure 에서 발생하는 활동 로그와 Security Center, 애플리케이션 게이트웨이(WAF), 네트워크그룹(NSG)의 로그를 공통 리소스를 통해 수집 On-Premise  로 전송  
 활동로그의 수집을 위한 설정은 가상 네트워크 생성시 자동으로 배포되고 네트워크 보안그룹(NSG)의 로그는 정책에 의해 자동으로 설정이 되지만 WAF 로그 수집과 Security Center 의 로그 설정은 서비스 관리자의 추가 설정이 필요함
+
+Security Center, Application Gateway(L7) WAF enable, NSG Flow Log 를 배포/설정하여 Activity Log 는 blob 을 통해 Datadog로 쌓이며, NSG Flow Log 는 eventlog 를 통해 Splunk 에 쌓임  
+
 **로그 수집 흐름**   
 ![LZ-Log-Collection-Flow.png](./img/LZ-Log-Collection-Flow.png)  
 
+## 유지보수
+
+1. Azure Landing Zone 이 잘 운영되는 것
+2. 생성/수정/삭제
+   - 생성 : 신규는 Audit 으로 하여 생성 후 협의가 끝나면 Deny 
+3. 서비스 연동
+   - divisions 밑에 구독(subscription) 연결 및 RBAC (service owener - Custom) 적용
+   - 자원에 TAG 는 environment, serviceName, persionalInformation 추가
+   - 그외 audit 에 대한 대응 필요

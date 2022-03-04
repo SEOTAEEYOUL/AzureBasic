@@ -40,7 +40,7 @@
 ### AKS
 || 항목 | 날짜 | 내용 | 
 |:---|:---|:---|:---|  
-| [Azure8](./2.AKS/Azure8.md) | Docker/Kubernetes | 2022.02.24 | Container 란 ? </br> - 설치 및 간단한 Docker Image 만들기 </br> Kubernetes 란 ? </br> - Minikube 설치 및 사용 |
+| [Azure8](./2.AKS/Azure8.md) | Docker/Kubernetes | 2022.02.24 | Container 란 ? </br> - 설치 및 간단한 Docker Image 만들기 </br> Kubernetes 란 ?  |
 | [Azure9](./2.AKS/Azure9.md) | Azure Kubernetes Service 구성 | 2022.02.24 | AKS Cluster 설계 및 생성, 로깅, 모니터링 하기 </br> - 3 tier 를 Pod 롤 배포하기 </br> - CDN, mysql(Managed, DaemonSet) 구성 </br> - Ingress Controller 구성 </br>- DNS 에 등록 외부에서 접근하기 |
 | [Azure10](./2.AKS/Azure10.md) | AutoScaler 구성 | 2022.02.25 | Pod, Node AutoScaler 구성 및 모니터링 하기 </br> - deployment </br> - Storage Class </br> - Prometheus/AlertManager, Grafana |
 | [Azure11](./2.AKS/Azure11.md) | Azure DevOps 를 통한 Pod 배포 | 2022.03.03 | Repos 구성, Pipeline 구성, Pod 배포 </br> - blue/green 배포 |  
