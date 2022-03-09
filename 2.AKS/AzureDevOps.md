@@ -198,16 +198,13 @@ git 소스가 변경될 때 CI 후 CD 가 되도록 설정
 - Commands
   - Commands: apply
   - **Use configuration** 체크
-  - Configureation type : Inline configuration
-  - Inline configuration
     ```bash
     $(System.DefaultWorkingDirectory)/_SpringMySQL-CI/drop/k8s/springmysql-deploy.yaml
     ```
     ```bash
     $(System.DefaultWorkingDirectory)/_nodejs-bot-CI/drop/k8s/nodejs-bot-deploy.yaml
     ```  
-
-![AzureDevOps-Pipelines-Releases-New Release-AgentJob-Kubectl-apply-deploy.png](./img/AzureDevOps-Pipelines-Releases-NewRelease-AgentJob-Kubectl-apply-deploy.png)
+    ![AzureDevOps-Pipelines-kubectl-apply-Filepath-deployments.png](.img/AzureDevOps-Pipelines-kubectl-apply-Filepath-deployments.png)
 
 ##### 5.2.3 **kubectl** (kubectl apply Service)
 - Kubectl
@@ -222,18 +219,15 @@ git 소스가 변경될 때 CI 후 CD 가 되도록 설정
 - Commands
   - Commands: apply
   - **Use configuration** 체크
-  - Configureation type : Inline configuration
-  - Inline configuration
+  - Configureation type : File Path
     ```
     $(System.DefaultWorkingDirectory)/_SpringMySQL-CI/drop/k8s/springmysql-svc.yaml
     ```
     ```
     $(System.DefaultWorkingDirectory)/_nodejs-bot-CI/drop/k8s/nodejs-bot-svc.yaml
     ```  
+    ![AzureDevOps-Pipelines-kubectl-apply-Filepath.png](./img/AzureDevOps-Pipelines-kubectl-apply-Filepath.png)
 
-![AzureDevOps-Pipelines-Releases-New Release-AgentJob-Kubectl-apply-service.png](./img/AzureDevOps-Pipelines-Releases-NewRelease-AgentJob-Kubectl-apply-service.png)  
-
-![AzureDevOps-Pipelines-Releases-New Release-AgentJob-Tasks.png](./img/AzureDevOps-Pipelines-Releases-NewRelease-AgentJob-Tasks.png)  
 
 ##### 6. Pipeline 명 바꾸기
 - SpringMySQL-CD
