@@ -48,9 +48,9 @@ secret:
   # -- Generic key:value pairs to be inserted into the secret
   ## Can be used for templates, notification services etc. Some examples given below.
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/services/overview/
-  items: {}
+  items: # {}
     # slack-token:
-    slack-token: "xoxb-2047373963104-2315743923363-dROEWhJwZVrRCh1QJt5MkEON"
+    slack-token: "xoxb-2047373963104-2315743923363-UoAmiEZY3CLhXbb0FEvMkI7i"
     #   # For more information: https://argocd-notifications.readthedocs.io/en/stable/services/slack/
 
     # grafana-apiKey:
@@ -156,7 +156,7 @@ subscriptions: {}
 
 # -- The notification template is used to generate the notification content
 ## For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
-templates: {}
+templates: # {}
   template.app-deployed: |
     email:
       subject: New version of an application {{.app.metadata.name}} is up and running.
@@ -350,7 +350,7 @@ tolerations: []
 
 # -- The trigger defines the condition when the notification should be sent
 ## For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/
-triggers: {}
+triggers: # {}
   trigger.on-deployed: |
     - description: Application is synced and healthy. Triggered once per commit.
       oncePer: app.status.sync.revision

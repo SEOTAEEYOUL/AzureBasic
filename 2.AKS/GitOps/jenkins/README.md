@@ -184,7 +184,7 @@ PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins>
 - Jenkins 관리 > 플러그인 관리 > 위의 Plug-in 검색   
   https://plugins.jenkins.io/${plugin-item}/
 
-## troubleshooting
+## Troubleshooting
 ### Pipeline 오류  
 #### docker 오류
 **Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?** 
@@ -241,10 +241,6 @@ podTemplate(
 java.lang.NoSuchMethodError: No such DSL method 'readProperties' found among steps [archive, bat, build, catchError, checkout, container, containerLog, deleteDir, dir, dockerNode, echo, envVarsForTool, error, fileExists, getContext, git, input, isUnix, junit, library, libraryResource, load, lock, mail, milestone, node, parallel, podTemplate, powershell, properties, publishChecks, pwd, pwsh, readFile, re
 ```
 
-```
-```
-
-
 #### 변수 처리 오류
 ```
 [Pipeline] {
@@ -256,28 +252,28 @@ See 'docker build --help'.
 ```
 **해결책**
 - 변경전(잘못 쓴 Pipeline 소스 'props'가 빠짐)
-```
-    def app             = ["app"]
-    def version         = ["version"]
-```
+  ```
+  def app             = ["app"]
+  def version         = ["version"]
+  ```
 - 변경 후(Pipeline 소스변경)
-```
-		//-- 환경변수 파일 읽어서 변수값 셋팅 
-		def props = readProperties file: 'pipeline.properties'
+  ```
+  //-- 환경변수 파일 읽어서 변수값 셋팅 
+  def props = readProperties file: 'pipeline.properties'
 
-    def image_server    = props["image_server"]
-    def service_account = props["serivce_account"]
-    def docker_id       = props["docker_id"]
-    def cicd_namespace  = props["cicd_namespace"]
-    def cicd_pvc        = props["cicd_pvc"]
-    def namespace       = props["namespace"]
-    def app             = props["app"]
-    def version         = props["version"]
-```
+  def image_server    = props["image_server"]
+  def service_account = props["serivce_account"]
+  def docker_id       = props["docker_id"]
+  def cicd_namespace  = props["cicd_namespace"]
+  def cicd_pvc        = props["cicd_pvc"]
+  def namespace       = props["namespace"]
+  def app             = props["app"]
+  def version         = props["version"]
+  ```
 
 ## Jenkins Slave 구동을 위한 설정
 
-### Jenkins ServiceAccount, ClusterRoleBinding
+### Jenkins ServiceAccount, ClusterRoleBinding (현재 버전은 사용하지 않아도 됨)
 
 #### jenkins-sa.yaml
 ```
@@ -315,7 +311,7 @@ roleRef:
   name: cluster-admin
 ```
 
-### Jenkins Slave 사용 pvc 추가
+### Jenkins Slave 사용 pvc 추가 (현재 구성하지 않고 사용함 - 옵션)
 - Jenkins Slave Container Image 빌드시 Pod 로 - 기동되어 빌드 작업을 위해 pvc 를 마운트하여 사용함
 #### cicd-workspace-pvc.yaml
 ```
@@ -358,6 +354,15 @@ spec:
 ![jenkins-환경설정-SlackNotification.png](../../img/jenkins-환경설정-SlackNotification.png)  
 **Jenkins > 시스템 설정 > Slack**
 ![jenkins-환경설정-Slack.png](../../img/jenkins-환경설정-Slack.png)  
+
+#### Harbor
+```
+kubectl create secret docker-registry harbor `
+  --docker-server=https://harbor.nodespringboot.org `
+  --docker-username=taeyeol --docker-password=Callas007! `
+  --docker-email=taeeyoul@gmail.com `
+  -n cicd
+```
 
 ### Pipeline 설정
 #### Build Trigger 설정(Gitea Integration)
@@ -433,3 +438,15 @@ PS C:\workspace\AzureBasic\2.AKS\GitOps\jenkins>
 ![jenkins-configure-clouds-0.png](../../img/jenkins-configure-clouds-0.png)  
 ![jenkins-configure-clouds-2.png](../../img/jenkins-configure-clouds-2.png)  
 ![jenkins-pod-template.png](../../img/jenkins-pod-template.png)  
+
+
+## [Azure Container Registry Tasks](https://plugins.jenkins.io/azure-container-registry-tasks/)  
+
+#### Jenkins Dashboard
+![Jenkins-Dashbord.png](../../img/Jenkins-Dashbord.png)  
+
+#### Jenkins Dashboard - SpringMySQL
+![Jenkins-Dashboard-springmysql.png](../../img/Jenkins-Dashboard-springmysql.png) 
+
+#### Jenkins Dashboard - nodejs-bot
+![Jenkins-Dashboard-nodejs-bot.png](../../img/Jenkins-Dashboard-nodejs-bot.png)  

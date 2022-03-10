@@ -1,0 +1,185 @@
+def label = "hello-helm-${UUID.randomUUID().toString()}"
+
+/* -------- functions ---------- */
+def notifySlack(STATUS, COLOR) {
+	slackSend (color: COLOR, message: STATUS+" : " +  "${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})")
+}
+
+def notifyMail(STATUS, RECIPIENTS) {
+	emailext body: STATUS+" : " +  "${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})",
+	subject: STATUS + " : " + "${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+	to: RECIPIENTS
+}
+/* ------------------------------ */
+
+def emailRecipients="hiondal@gmail.com,hiondal@daum.net"
+
+notifySlack("STARTED", "#FFFF00")
+notifyMail("STARTED", "${emailRecipients}")
+			
+podTemplate(
+	label: label, 
+	containers: [
+		//container image는 docker search 명령 이용
+		containerTemplate(name: "docker", image: "docker:stable", ttyEnabled: true, command: "cat"),
+		containerTemplate(name: "scanner", image: "newtmitch/sonar-scanner", ttyEnabled: true, command: "cat"),
+		containerTemplate(name: "helm", image: "dtzar/helm-kubectl", ttyEnabled: true, command: "cat")
+	],
+	//volume mount
+	volumes: [
+		hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
+	]
+) 
+{
+	node(label) {
+		stage("Get Source") {
+			git "http://gitlab.169.56.164.244.nip.io:31836/ondalk8s/hello-helm.git"
+		}
+
+		//-- 환경변수 파일 읽어서 변수값 셋팅
+		def props = readProperties  file:"./deployment/pipeline.properties"
+		def tag = props["version"]
+		def dockerRegistry = props["dockerRegistry"]
+		def credentialRegistry=props["credentialRegistry"]
+		def image = props["image"]
+		def baseDeployDir = props["baseDeployDir"]
+		def helmRepository = props["helmRepository"]
+		def helmChartname = props["helmChartname"]
+		def helmRepositoryURI = props["helmRepositoryURI"]
+		def credentialRepository = props["credentialRepository"]
+		def crtRepository = props["crtRepository"]
+		def helmChartfile = "${baseDeployDir}/${helmChartname}-${tag}.tgz"
+		def releaseName = props["releaseName"]
+		def namespace = props["namespace"]
+		
+		try {
+		
+			stage("Inspection Code") {
+				container("scanner") {
+					sh "sonar-scanner \
+						-Dsonar.projectName=hello-helm \
+						-Dsonar.projectKey=hello-helm \
+						-Dsonar.sources=. \
+						-Dsonar.host.url=http://sonarqube.169.56.164.254.nip.io:30630 \
+						-Dsonar.login=213c6f71037d2dbde04359ae0b8694220e734a17"
+				}
+			}
+				
+			stage("Build Microservice image") {
+				container("docker") {
+					docker.withRegistry("${dockerRegistry}", "${credentialRegistry}") {
+						sh "docker build -f ${baseDeployDir}/Dockerfile -t ${image}:${tag} ."
+						sh "docker push ${image}:${tag}"
+						sh "docker tag ${image}:${tag} ${image}:latest"
+						sh "docker push ${image}:latest"
+					}
+				}
+			}
+
+			stage("Image Vulnerability Scanning") {
+				container("docker"){
+					aquaMicroscanner imageName: "${image}:latest", notCompliesCmd: "", onDisallowed: "ignore", outputFormat: "html"
+				}
+			}
+
+			//--- 무중단 배포를 위해 clearup 하지 않음
+			/*
+			stage( "Clean Up Existing Deployments" ) {
+				container("helm") {
+					try {
+						sh "helm delete ${releaseName} --purge"		
+					} catch(e) {
+						echo "Clear-up Error : " + e.getMessage()
+						echo "Continue process !"	
+					}
+				}
+			}
+			*/
+			
+			//-- 이미 설치한 차트인 경우 upgrade하고, 아니면 신규 설치함
+			//-- git에서 CHART파일을 보내는 경우는 CHART파일을 이용하고, 아니면 helm repository를 이용함			 
+			stage( "Deploy to Cluster" ) {
+				container("helm") {
+					boolean isExist = false
+	
+					//====== 이미 설치된 chart 인지 검사 =============
+					String out = sh script: "helm ls -q --namespace ${namespace}", returnStdout: true
+					if(out.contains("${releaseName}")) isExist = true
+					//===========================				
+				
+					if(fileExists("${helmChartfile}")) {
+						//chart 파일이 있는 경우
+						echo "Helm chart exists. !"
+						if (isExist) {
+							echo "Already installed. I will upgrade it with chart file"
+							sh "helm upgrade ${releaseName} ${helmChartfile}"
+						} else {
+							echo "Install with chart file !"
+							sh "helm install ${helmChartfile} --name ${releaseName} --namespace ${namespace}"
+						}	
+					} else {
+						//없는 경우는 helm repository에서 설치
+						echo "Helm chart doesn't exist !" 
+						
+						sh "helm init"	//tiller 설치								
+						
+						//add repo
+						try {
+							withCredentials(
+								[
+									usernamePassword
+										(credentialsId: "${credentialRepository}", 
+											usernameVariable: "helmRepositoryID",
+											passwordVariable: "helmRepositoryPW" 
+										),	
+									file
+										(credentialsId: "${crtRepository}", 
+											variable: "helmRepositoryCertyfile")
+								]
+							) {
+								String secretDir = "tmpsecret"
+								//-- crt파일 처리 
+								sh """
+									mkdir ${secretDir}									
+									cp ${helmRepositoryCertyfile} ${secretDir}/tls.crt								
+								"""
+								//-----
+
+								sh "helm repo add ${helmRepository} ${helmRepositoryURI}  \
+									--ca-file ${secretDir}/tls.crt  \
+									--username ${helmRepositoryID}  \
+									--password ${helmRepositoryPW}" 								
+								
+							}
+
+						} catch(e) {
+							error("Can't get credential ! Stop process")	//종료
+							
+						}
+													
+						sh "helm repo update"		//update chart
+
+						if (isExist) {
+							//upgrade
+							echo "Already installed. I will upgrade it from helm repository"
+							sh "helm upgrade ${releaseName} ${helmRepository}/${helmChartname}"
+							
+						} else {
+							//install
+							echo "Install from helm repository !" 
+							sh "helm install ${helmRepository}/${helmChartname} --name ${releaseName} --namespace ${namespace}"						
+						}						
+										
+					}						
+				}
+			}
+
+			notifySlack("${currentBuild.currentResult}", "#00FF00")
+			notifyMail("${currentBuild.currentResult}", "${emailRecipients}")
+		} catch(e) {
+			currentBuild.result = "FAILED"
+			notifySlack("${currentBuild.currentResult}", "#FF0000")
+			notifyMail("${currentBuild.currentResult}", "${emailRecipients}")
+		}
+	}
+}

@@ -1,0 +1,31 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  generation: 1
+  labels:
+    app: harbor
+    app.kubernetes.io/managed-by: Helm
+    chart: harbor
+    heritage: Helm
+    release: harbor
+  name: harbor-ingress
+  namespace: cicd
+  ownerReferences:
+  - apiVersion: networking.k8s.io/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Ingress
+    name: harbor-ingress
+    uid: 6906ece4-8f2d-4da1-b3e1-6597190b8af5
+  uid: caec7a24-c8c3-49fd-ac71-11ef2f6f6085
+spec:
+  dnsNames:
+  - harbor.nodespringboot.org
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: letsencrypt
+  secretName: harbor-ingress
+  usages:
+  - digital signature
+  - key encipherment

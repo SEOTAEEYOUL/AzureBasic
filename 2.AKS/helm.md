@@ -10,6 +10,8 @@ choco install kubernetes-helm
 ### 공식 헬름 stable 차트
 ```
 helm repo add stable https://charts.helm.sh/stable
+helm repo add incubator https://charts.helm.sh/incubator
+helm repo update
 ```
 
 ### Linux

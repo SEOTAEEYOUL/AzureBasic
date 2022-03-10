@@ -278,6 +278,7 @@ argocd@argocd-server-86cd4449db-4754h:~$
 
 
 ## argocd notification
+Argo CD 알림은 Argo CD 응용 프로그램을 지속적으로 모니터링하고 사용자에게 응용 프로그램 상태의 중요한 변경 사항을 알리는 유연한 방법을 제공  
 
 ### 설치
 ```
@@ -288,15 +289,6 @@ mv argocd-notifications argocd-notifications-1.8.0
 cd argocd-notifications-1.8.0
 cp values.yaml values.yaml.org
 helm install argocd-notifications -n cicd -f values.yaml .
-```
-
-### valuse.yaml 수정
-#### slack notification 추가
-```
-```
-
-### tempalte 주석 제거
-```
 ```
 
 ### 배포 로그
@@ -348,7 +340,7 @@ xoxb-2047373963104-2315743923363-dROEWhJwZVrRCh1QJt5MkEONsecret:
 ```
 # -- The notification template is used to generate the notification content
 ## For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
-templates: {}
+templates: # {}
   template.app-deployed: |
     email:
       subject: New version of an application {{.app.metadata.name}} is up and running.
@@ -394,7 +386,7 @@ templates: {}
 ```
 # -- The trigger defines the condition when the notification should be sent
 ## For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/
-triggers: {}
+triggers: # {}
   trigger.on-deployed: |
     - description: Application is synced and healthy. Triggered once per commit.
       oncePer: app.status.sync.revision
@@ -438,8 +430,47 @@ kubectl -n cicd get app
 kubectl patch app nodejs-bot -n cicd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-sync-succeeded.slack":"alert"}}}' --type merge
 kubectl patch app springmysql -n cicd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-sync-succeeded.slack":"alert"}}}' --type merge
 ```
+```
+PS C:\workspace\AzureBasic\2.AKS\GitOps\harbor> kubectl -n cicd get app
+NAME          SYNC STATUS   HEALTH STATUS
+nodejs-bot    OutOfSync     Missing
+springmysql   OutOfSync     Degraded
+PS C:\workspace\AzureBasic\2.AKS\GitOps\argocd\argocd-notifications-1.8.0> kubectl -n cicd get app   
+NAME          SYNC STATUS   HEALTH STATUS
+nodejs-bot    Synced        Healthy
+springmysql   Synced        Healthy
+PS C:\workspace\AzureBasic\2.AKS\GitOps\argocd\argocd-notifications-1.8.0> 
+```
 
 #### Repository URL
 ```
 kubectl patch app springmysql -n cicd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-sync-succeeded.slack":"alert"}}}' --type merge
 ```
+
+![arogcd-app.png](../../img/arogcd-app.png)  
+![argocd-app-springmysql.png](../../img/argocd-app-springmysql.png)  
+![argocd-nodejs-bot.png](../../img/argocd-nodejs-bot.png)
+
+## ArgoCD 배포 구성하기
+ Cluster 구성(내장된 것을 그대로 사용하면 됨)
+  - in-cluser :  https//kubernetes.default.svc 1.21
+    ![argocd-cluster.png](../../img/argocd-cluster.png)
+- Project 생성
+  - springmysql, nodejs-bot 생성
+  ![argocd-project-springmysql.png](../../img/argocd-project-springmysql.png)
+- Repositories 구성
+  - 배포할 Repositoris 등록 : gitea 의 SpringMySQL, nodejs 등록
+    ![argocd-repository-springmysql.png](../../img/argocd-repository-springmysql.png)
+- App 생성 (SpringMySQL, nodejs-bot)
+  - GENERAL
+    - Application name
+    - Project 선택
+    - SYNC POLICY 선택
+  - SOURCE
+    - Repository URL 선택
+    - Revison : HEAD
+    - Path : .
+  - DESTINATION
+    - Cluster URL : Cluster 구성 정보 선택
+    - Namespace : 
+  ![arogcd-app-SpringMySQL.png](../../img/arogcd-app-SpringMySQL.png)

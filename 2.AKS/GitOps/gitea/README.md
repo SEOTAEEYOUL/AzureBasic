@@ -223,9 +223,18 @@ PS C:\workspace\SpringBootMySQL.gitea>
 
 ## Gitea Webhook 설정
 웹훅은 Git 리포지토리 에 커밋이 푸시될 때 Jenkins 프로젝트 의 빌드를 자동으로 트리거하는 메커니즘 입니다.  
+![Gitea-SpringMySQL-Webhook.png](../../img/Gitea-SpringMySQL-Webhook.png)  
 
 ### Slack Notification
+#### Webhook 추가 : **Slack**
+- 대상 URL : https://hooks.slack.com/services/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
+- 채널 : #alert
+- 사용자 이름 : Gitea
 ![gitea-webhook-slack-notification.png](../../img/gitea-webhook-slack-notification.png)  
 
-### Build Trigger 설정
+### Build Trigger 설정  
+#### Webhook 추가 : **Gitea**
+- 대상 URL : http://jenkins.nodespringboot.org/gitea-webhook/post?job=springmysql  
+- HTTP Method : **POST**
+- POST Content Type : **application/json**
 ![gitea-webhook-build-trigger.png](../../img/gitea-webhook-build-trigger.png)  

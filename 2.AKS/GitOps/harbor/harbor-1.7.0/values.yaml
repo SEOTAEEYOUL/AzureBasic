@@ -45,12 +45,13 @@ expose:
     annotations:
       # note different ingress controllers may require a different ssl-redirect annotation
       # for Envoy, use ingress.kubernetes.io/force-ssl-redirect: "true" and remove the nginx lines below
-      ingress.kubernetes.io/ssl-redirect: "true"
-      ingress.kubernetes.io/proxy-body-size: "0"
-      nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/proxy-body-size: "0"
-      kubernetes.io/ingress.class: nginx
+      # ingress.kubernetes.io/ssl-redirect: "true"
+      # nginx.ingress.kubernetes.io/ssl-redirect: "true"
       cert-manager.io/cluster-issuer: letsencrypt
+      kubernetes.io/ingress.class: nginx
+      ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/use-regex: "true"
 
     notary:
       # notary-specific annotations
@@ -533,13 +534,13 @@ registry:
     password: "harbor_registry_password"
     # If you update the username or password of registry, make sure use cli tool htpasswd to generate the bcrypt hash
     # e.g. "htpasswd -nbBC10 $username $password"
-    htpasswd: "harbor_registry_user:$2y$10$9L4Tc0DJbFFMB6RdSCunrOpTHdwhid4ktBJmLD00bYgqkkGOvll3m"
+    htpasswd: "taeyeol:$2y$10$LKsxgvomonEKxdiy/.nm6.L5UyFsS6vCk0/Pq0NhT5uW3P1q0Yljy"
 
   middleware:
     enabled: false
     type: cloudFront
     cloudFront:
-      baseurl: example.cloudfront.net
+      baseurl: harbor.nodespringboot.org
       keypairid: KEYPAIRID
       duration: 3000s
       ipfilteredby: none
@@ -695,7 +696,7 @@ database:
       repository: goharbor/harbor-db
       tag: v2.3.0
     # The initial superuser password for internal database
-    password: "changeit"
+    password: "dlatl!00"
     # The size limit for Shared memory, pgSQL use it for shared_buffer
     # More details see:
     # https://github.com/goharbor/harbor/issues/15034
@@ -807,7 +808,7 @@ exporter:
     priorityClassName:
 
 metrics:
-  enabled: false
+  enabled: true
   core:
     path: /metrics
     port: 8001
