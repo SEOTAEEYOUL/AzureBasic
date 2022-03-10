@@ -197,7 +197,7 @@ persistence:
   # (this does not apply for PVCs that are created for internal database
   # and redis components, i.e. they are never deleted automatically)
   resourcePolicy: "keep"
-  persistentVolumeClaim:
+  persistentVolumeClaim: 
     registry:
       # Use the existing PVC which must be created manually before bound,
       # and specify the "subPath" if the PVC is shared with other components
