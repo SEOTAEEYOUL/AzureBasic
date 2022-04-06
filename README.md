@@ -9,6 +9,13 @@
 - Apache : Static 문서 처리
 - Tomcat : SpringBoot 기반 Biz 서비스 처리
 
+| 구분 | 진입점/Ingress | Web | WAS | DB | 비고 |
+|:---|:---|:---|:---|:---|:---|
+| AS-IS | L4 | Apache | Tomcat | MySQL/MariaDB | 3-tier 기반 서비스 |
+| Azure | Application GateWay | VM/Apache | VM/Tomcat | MySQL | VM 과 Managed Service(AppG/W, DB) 사용 |  
+| Azure | Application GateWay | CDN | VM/Tomcat | MySQL | CDN 를 통한 고도화 |  
+| AKS | Application Gateway/Ingress Controller | Azure CDN | container/Springboot | MySQL | AKS(Kubernetes Service), CICD(빌드배포, OSS 사용), Container 빌드 포함 | 
+
 ## 일정
 | 월 | 화 | 수 | 목 | 금 |
 |:---:|:---:|:---:|:---:|:---:|
