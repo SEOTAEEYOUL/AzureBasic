@@ -1,5 +1,12 @@
 # git-Test
 
+## 설치
+### [Download for Windows](https://git-scm.com/download/win)
+### Windows Package Manager 를 통한 설치
+```
+winget install --id Git.Git -e --source winget
+```
+
 ## 사용자 정보 입력
 ### git config -global : 특정 사용자(즉 현재 사용자)에게만 적용되는 설정
 ```

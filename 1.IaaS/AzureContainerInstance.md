@@ -12,13 +12,15 @@ $repositoryName="springmysql"
 $tag='0.2.1'
 $accessToken=az acr login --name $acrName --expose-token | jq .accessToken | %{$_ -replace('"', '')}
 
+az acr login -n $acrName
+
 az group create `
   --name $groupName `
   --location $location
 
-az acr login -n $acrName
 
-docker login $loginServer -u $login -p "$accessToken" 
+
+docker login $loginServer -u $user -p "$accessToken" 
 
 az acr repository show-tags -o table -n $acrName --repository ${repositoryName}
 ```
@@ -28,8 +30,13 @@ az acr repository show-tags -o table -n $acrName --repository ${repositoryName}
 az container create `
   --resource-group $groupName `
   --name $containerName `
-  --image acrhomeeee.azurecr.io/springmysql:0.3.1  `
-  --dns-name-label $containerName --ports 8080
+  --image mcr.microsoft.com/azuredocs/aci-helloworld  `
+  --dns-name-label $containerName --ports 8080 `
+  --query ipAddress.fqdn
+  
+  --registry-username $user `
+  --registry-password $accessToken `
+  --query ipAddress.fqdn
 
 az container create \
   --name $containerName \
