@@ -1,6 +1,7 @@
 # git-Test
 
 ## 설치
+### [앱 설치 관리자](https://www.microsoft.com/ko-kr/p/app-installer/9nblggh4nns1?rtc=1#activetab=pivot:overviewtab)  
 ### [Download for Windows](https://git-scm.com/download/win)
 ### Windows Package Manager 를 통한 설치
 ```
