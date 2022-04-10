@@ -1,5 +1,13 @@
 # Azure Storage Account
 
+> [빠른 시작: PowerShell을 사용하여 Blob 업로드, 다운로드 및 나열](https://docs.microsoft.com/ko-kr/azure/storage/blobs/storage-quickstart-blobs-powershell)  
+> [빠른 시작: Azure Storage Explorer를 사용하여 Blob 만들기](https://docs.microsoft.com/ko-kr/azure/storage/blobs/quickstart-storage-explorer)  
+> [Azure Storage Explorer](https://azure.microsoft.com/ko-kr/features/storage-explorer/#overview)  
+> [AzCopy 시작](https://docs.microsoft.com/ko-kr/azure/storage/common/storage-use-azcopy-v10)
+> [AzCopy Windows 64비트](https://aka.ms/downloadazcopy-v10-windows)  
+> [AzCopy를 사용하여 Azure Blob Storage에 파일 업로드](https://docs.microsoft.com/ko-kr/azure/storage/common/storage-use-azcopy-blobs-upload)  
+> [AzCopy를 사용하여 Azure Blob Storage에서 Blob 다운로드](https://docs.microsoft.com/ko-kr/azure/storage/common/storage-use-azcopy-blobs-download)  
+
 ## Storage 계정 유형
 | 스토리지 계정의 유형 | 지원되는 스토리지 서비스 | 중복 옵션 | 사용 |   
 |:---|:---|:---|:---|  
@@ -54,7 +62,7 @@ Get-AzProviderFeature -ProviderNamespace Microsoft.Network -FeatureName AllowGlo
 ```
 ### Stroage Account 만들기
 ```powershell
-$groupName='rg-skcc1-homepage-dev'
+$groupName='rg-skcc7-homepage-dev'
 $locationName='koreacentral'
 
 $storageAccountName = 'skcc1devhomepagedev01'
@@ -69,25 +77,47 @@ $tags = @{
 ```
 
 ```powershell
+## login 하기
+Connect-AzAccount
+
 New-AzStorageAccount `
-  -ResourceGroupName $groupName `
-  -Name $storageAccountName `
-  -Location $locationName `
-  -SkuName $storageAccountSkuName `
-  -Kind StorageV2 `
-  -Tag $tags
+   -ResourceGroupName $groupName `
+   -Name $storageAccountName `
+   -Location $locationName `
+   -SkuName $storageAccountSkuName `
+   -AllowBlobPublicAccess $true `
+   -Kind StorageV2 `
+   -Tag $tags
+```
+```
+PS D:\workspace\AzureBasic> New-AzStorageAccount `
+>>    -ResourceGroupName $groupName `
+>>    -Name $storageAccountName `
+>>    -Location $locationName `
+>>    -SkuName $storageAccountSkuName `
+>>    -AllowBlobPublicAccess $false `
+>>    -Kind StorageV2 `
+>>    -Tag $tags
+
+StorageAccountName    ResourceGroupName     PrimaryLocation SkuName      Kind      AccessTier CreationTime            ProvisioningState EnableHttpsTrafficOnly LargeFileShares
+------------------    -----------------     --------------- -------      ----      ---------- ------------            ----------------- ---------------------- ---------------
+skcc1devhomepagedev01 rg-skcc7-homepage-dev koreacentral    Standard_LRS StorageV2 Hot        2022-04-10 오후 1:35:56 Succeeded         True
+
+PS D:\workspace\AzureBasic>
 ```
 
 ```powershell
-$storage_account = @{
+$storageAccountHT = @{
     Name = $storageAccountName
     ResourceGroupName = $groupName
     Location = $locationName
     SkuName = $storageAccountSkuName
     Kind = 'StorageV2'
+    # AllowBlobPublicAccess = $true
     Tag = $tags
 }
-New-AzStorageAccount @storage_account
+$storageAccount = New-AzStorageAccount @storageAccountHT
+$context = $storageAccount.Context
 ```
 
 ![skccdevhomepagedev.png](./img/skccdevhomepagedev.png)
@@ -98,16 +128,205 @@ $containerName  = "individual-container"
 $prefixName     = "loop"
 
 # Approach 1: Create a container
-New-AzStorageContainer -Name $containerName -Context $ctx
+New-AzStorageContainer -Name $containerName -Context $context
 
 # Approach 2: Create containers with a PowerShell loop
 for ($i = 1; $i -le 3; $i++) { 
-    New-AzStorageContainer -Name (-join($prefixName, $i)) -Context $ctx
-   } 
+    New-AzStorageContainer -Name (-join($prefixName, $i)) -Context $ctx -Permission Blob
+} 
 
 # Approach 3: Create containers using the PowerShell Split method
-"$($prefixName)4 $($prefixName)5 $($prefixName)6".split() | New-AzStorageContainer -Context $ctx
+"$($prefixName)4 $($prefixName)5 $($prefixName)6".split() | New-AzStorageContainer -Context $context
 ```
+
+- 파일의 공용 액세스를 허용하도록 권한을 blob으로 설정 생성
+```
+$containerName = 'quickstartblobs'
+New-AzStorageContainer `
+  -Name $containerName `
+  -Context $context -Permission Blob
+```
+
+### 컨테이너 및 Blob에 대한 익명 퍼블릭 읽기 권한 구성
+```powershell
+# Read the AllowBlobPublicAccess property for the newly created storage account.
+(Get-AzStorageAccount `
+  -ResourceGroupName $groupName `
+  -Name $storageAccountName).AllowBlobPublicAccess
+
+# Set AllowBlobPublicAccess set to false
+Set-AzStorageAccount `
+  -ResourceGroupName $groupName `
+  -Name $storageAccountName `
+  -AllowBlobPublicAccess $true
+
+# Read the AllowBlobPublicAccess property.
+(Get-AzStorageAccount `
+  -ResourceGroupName $groupName `
+  -Name $storageAccountName).AllowBlobPublicAccess
+```
+
+### 컨테이너에 대한 퍼블릭 액세스 수준 설정
+```powershell
+
+```
+
+### Blob Hot,Cool,Archive
+| 구분 | 설명 | |
+|:---|:---|:---|
+| Hot | 자주 액세스하거나 수정하는 데이터를 저장 | 스토리지 비용이 가장 높지만 액세스 비용은 가장 낮음 |
+| Cool | 자주 액세스하거나 수정하지 않는 데이터를 저장  | 최소 30일 동안 저장 |
+| Archive | 거의 액세스하지 않고 요구되는 대기 시간(시간 기준)이 유연한 데이터를 저장하는 데 최적화된 오프라인 계층 | 최소 180일 동안 저장 |
+
+### 컨테이너에 Blob 업로드
+```
+# upload a file to the default account (inferred) access tier
+$Blob1HT = @{
+  File             = 'D:\icon\mariadb_logo_1.png'
+  Container        = $containerName
+  Blob             = "icon\mariadb_logo_1.png"
+  Context          = $context
+  StandardBlobTier = 'Hot'
+}
+Set-AzStorageBlobContent @Blob1HT
+  
+# upload another file to the Cool access tier
+$Blob2HT = @{
+File             = 'D:\icon\Mysql_logo.png'
+Container        = $containerName
+Blob             = 'icon\Mysql_logo.png'
+Context          = $context
+StandardBlobTier = 'Cool'
+}
+Set-AzStorageBlobContent @Blob2HT
+  
+# upload a file to a folder to the Archive access tier
+$Blob3HT = @{
+  File             = 'D:\Downloads\OculusSetup.exe'
+  Container        = $containerName
+  Blob             = "Downloads\OculusSetup.exe"
+  Context          = $context
+  # StandardBlobTier = 'Archive'
+  StandardBlobTier = 'Hot'
+}
+Set-AzStorageBlobContent @Blob3HT
+
+# upload a file to a folder to the Archive access tier
+$Blob4HT = @{
+  File             = 'D:\Downloads\StorageExplorer.exe'
+  Container        = $containerName
+  Blob             = "Downloads\StorageExplorer.exe"
+  Context          = $context
+  StandardBlobTier = 'Archive'
+  # StandardBlobTier = 'Hot'
+}
+Set-AzStorageBlobContent @Blob4HT
+
+# upload a file to a folder to the Archive access tier
+$Blob5HT = @{
+  File             = 'D:\Downloads\azcopy_windows_amd64_10.14.1.zip'
+  Container        = $containerName
+  Blob             = "Downloads\azcopy_windows_amd64_10.14.1.zip"
+  Context          = $context
+  # StandardBlobTier = 'Archive'
+  StandardBlobTier = 'Cool'
+}
+Set-AzStorageBlobContent @Blob5HT
+```
+
+#### Container 의 Blob 나열하기
+```
+Get-AzStorageBlob `
+  -Container $containerName `
+  -Context $context | Select-Object -Property Name
+```
+```
+PS D:\workspace\AzureBasic> Get-AzStorageBlob `
+>>   -Container $containerName `
+>>   -Context $context | Select-Object -Property Name
+
+Name
+----
+Downloads/OculusSetup.exe
+Downloads/StorageExplorer.exe
+Downloads/azcopy_windows_amd64_10.14.1.zip
+icon/Mysql_logo.png
+icon/mariadb_logo_1.png
+
+PS D:\workspace\AzureBasic>
+```
+
+### Blob 다운로드
+#### accesskey 설정(? - 내가 생성한 경우는 안해줘도 됨)
+```
+$accessKey='/9mLe3DkzOx7ugtKEREJ4X8KVH41kqCdLGh7ZYoj6F4SK/nRpgKuJeQMglACbWVmfHPYdBwhz5ze1dSZ/KMI/g=='
+
+$context = New-AzureStorageContext `
+  -StorageAccountName $storageAccountName `
+  -StorageAccountKey $accesskey
+```
+
+#### download
+```
+$blobName = 'Downloads\azcopy_windows_amd64_10.14.1.zip'
+# Get-AzureStorageBlob `
+#   -Blob yourblobname `
+#   -Container $containerName `
+#   -Context $context
+
+# Download first blob
+$blobName = 'icon\mariadb_logo_1.png'
+$DLBlob1HT = @{
+  Blob        = $blobName
+  Container   = $containerName
+  Destination = 'D:\Temp\Download\'
+  Context     = $context
+}
+Get-AzStorageBlobContent @DLBlob1HT
+
+# Download another blob
+$blobName = 'Downloads\OculusSetup.exe'
+$DLBlob2HT = @{
+  Blob        = $blobName
+  Container   = $containerName
+  Destination = 'D:\Temp\Download\'
+  Context     = $context  
+}
+Get-AzStorageBlobContent @DLBlob2HT
+
+# Download the other blob
+## archive 는 down이 안됨(오류 발생)
+$blobName = 'Downloads\StorageExplorer.exe'
+$DLBlob3HT = @{
+  Blob        = $blobName
+  Container   = $containerName
+  Destination = 'D:\Temp\Download\'
+  Context     = $context  
+}
+Get-AzStorageBlobContent @DLBlob3HT
+```
+
+#### AzCopy 를 사용한 데이터 전송
+```
+azcopy login
+
+# 올리기
+$env:AZCOPY_CRED_TYPE = "Anonymous";
+./azcopy.exe copy "https://skcc1devhomepagedev01.blob.core.windows.net/quickstartblobs/flac/01%20-%20%EA%B1%B0%EA%BE%B8%EB%A1%9C%20%EA%B0%95%EC%9D%84%20%EA%B1%B0%EC%8A%AC%EB%9F%AC%20%EC%98%A4%EB%A5%B4%EB%8A%94%20%EC%A0%80%20%ED%9E%98%EC%B0%AC%20%EC%97%B0%EC%96%B4%EB%93%A4%EC%B2%98%EB%9F%BC.flac?sv=2020-10-02&se=2022-05-10T15%3A39%3A32Z&sr=c&sp=rl&sig=Bhao5ibqZZK%2B%2Fc0U0kwRTKt1%2FHPx%2B%2F9eLnhFjrvMfzM%3D" "D:\Temp\Download\01 - 거꾸로 강을 거슬러 오르는 저 힘찬 연어들처럼.flac" --overwrite=prompt --check-md5 FailIfDifferent --from-to=BlobLocal --recursive --log-level=INFO;
+$env:AZCOPY_CRED_TYPE = "";
+
+
+
+
+# 내리기
+$env:AZCOPY_CRED_TYPE = "Anonymous";
+./azcopy.exe copy "D:\Users\taeey\음악\K-Pop\01 - 거꾸로 강을 거슬러 오르는 저 힘찬 연어들처럼.flac" "https://skcc1devhomepagedev01.blob.core.windows.net/quickstartblobs/flac/01%20-%20%EA%B1%B0%EA%BE%B8%EB%A1%9C%20%EA%B0%95%EC%9D%84%20%EA%B1%B0%EC%8A%AC%EB%9F%AC%20%EC%98%A4%EB%A5%B4%EB%8A%94%20%EC%A0%80%20%ED%9E%98%EC%B0%AC%20%EC%97%B0%EC%96%B4%EB%93%A4%EC%B2%98%EB%9F%BC.flac?sv=2020-10-02&se=2022-05-10T15%3A38%3A29Z&sr=c&sp=rwl&sig=c6MxaXwdGxkyamL4REaNWJGjrdC18%2FRqkmDDJWy97gc%3D" --overwrite=prompt --from-to=LocalBlob --blob-type Detect --follow-symlinks --put-md5 --follow-symlinks --disable-auto-decoding=false --recursive --log-level=INFO;
+$env:AZCOPY_CRED_TYPE = "";
+
+```
+
+### Storage Explorer
+![StorageExplorer.png](./img/StorageExplorer.png)
 
 - boot diagnostics 컨테이너  
 ![skccdevhomepagedev-diagnostics.png](./img/skccdevhomepagedev-diagnostics.png)
