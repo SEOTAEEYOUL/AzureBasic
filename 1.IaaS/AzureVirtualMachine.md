@@ -12,6 +12,29 @@
 > [Ubuntu::Long term support and interim releases](https://ubuntu.com/about/release-cycle)  
 > [Microsoft and Canonical Increase Velocity with Azure Tailored Kernel](https://ubuntu.com/blog/microsoft-and-canonical-increase-velocity-with-azure-tailored-kernel)  
 
+
+## VM 크기
+| 시리즈 | 설명 |
+|:---|:---|
+| D 시리즈 v5 | 	범용에 권장되는 최신 세대 D 제품군 크기 |
+| D 시리즈 v4 | 범용 4세대 D 제품군 크기 |
+| B 시리즈 | 지속적인 전체 CPU 성능이 필요하지 않은 워크로드에 적합 |
+| E 시리즈 v5 | 상위 메모리 용도에 맞는 최신 세대 E 제품군 크기 |
+| E 시리즈 v4 | 상위 메모리 용도에 맞는 4세대 E 제품군 크기 | 
+| F 시리즈 v2 | 벡터 처리 워크로드에 대해 최대 2배의 성능 향상 |
+| D 시리즈 v3 | 범용 3세대 D 제품군 크기 |
+| E 시리즈 v3 | 상위 메모리 용도에 맞는 3세대 E 제품군 크기 |  
+
+## 
+- 비용 정보 파악, 프로젝트 비용 추적 
+  - 구독을 분할
+  - Resource Tag 로 추적
+- 프로젝트용임을 나타내는 이름 지정 - Naming Rule
+- 리소스 일관성 규칙 비준수 상황을 자동으로 파악
+  - Policy, Tag 정책  
+  - Azure Blue Print (ISO 27001 요구 사항에 사용하는 거버넌스 도구)
+
+
 ## Portal
 ### 홈 > 가상 머신 > 가상 머신 만들기 
 
