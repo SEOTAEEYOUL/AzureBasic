@@ -19,7 +19,7 @@
 > [Auto Rename Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag)  
 > [Auto close Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag)  
 > [Active File In StatusBar](https://marketplace.visualstudio.com/items?itemName=RoscoP.ActiveFileInStatusBar)  
-> [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
+> [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)  
 > [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)  
 > [Print](https://marketplace.visualstudio.com/items?itemName=pdconsec.vscode-print)  
 
@@ -55,7 +55,6 @@
 
 
 ### 기타
-> [Print](https://marketplace.visualstudio.com/items?itemName=pdconsec.vscode-print)  
 > [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)  
 > [TODO Highlight](https://marketplace.visualstudio.com/items?itemName=wayou.vscode-todo-highlight)  
 > [HTML CSS Support](https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css) : html 에서 css 자동 완성 이용  

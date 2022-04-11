@@ -60,7 +60,7 @@ Please see https://chocolatey.org/docs/troubleshooting for more
 PS C:\workspace\A-TCL-ChatOps> 
 ```
 
-## 일반 패키지 설치(git, base64, curl, jq, grep, openssl 등)
+## 일반 패키지 설치(git, base64, curl, wget, jq, sed, awk, grep, openssl 등)
 ```
 PS C:\workspace\A-TCL-ChatOps> choco install base64
 Chocolatey v0.10.15
