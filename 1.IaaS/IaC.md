@@ -1,4 +1,6 @@
 # IaC(Infrastructure as Code, 코드형 인프라)
+IaC(코드 제공 인프라)는 인프라 프로비전을 자동화하는 프로세스
+
 
 ## IaC(Infrastructure as Code, 코드형 인프라)
 - 수동 프로세스가 아닌 코드를 이용하여 인프라를 관리하고 프로비저닝하는 것 
@@ -6,6 +8,12 @@
 - 반복작업을 자동화하여 작업 시간을 단축할 수 있고 휴먼에러 감소 및 빠른 복원이 장점  
 - 인프라를 코드 형태로 작성, 정의, 배포하는 것을 의미하며 서버, 데이터베이스, 네트워크, 로그, 애플리케이션 설정, 배포 자동화까지 모든 것을 코드 형태로 관리하는 데 목적이 있음  
 - ARM(Azure Resource Manager), Terraform 및 Azure CLI(명령줄 인터페이스)와 같은 도구를 사용하면 필요한 클라우드 인프라를 선언적으로 스크립팅할 수 있음  
+
+- IaC 모델은 적용될 때마다 동일한 환경을 생성
+- 환경 드리프트 문제가 해결
+- 팀이 프로덕션 환경과 비슷한 환경에서 애플리케이션을 조기에 테스트 할 수 있음
+- 가능하면 선언적 정의 파일을 사용
+- Git 를 사용 CMDB 를 별도구성하지 않고 이슈 추적 가능
 
 *<u>프로비저닝(Provisioning)</u>*  
 *사용자의 요구에 맞게 시스템 자원을 할당, 배치, 배포해 두었다가 필요 시 시스템을 즉시 사용할 수 있는 상태로 미리 준비해 두는 것*
@@ -80,4 +88,7 @@ HW Layer 위에 Orchestration 과 Configuration, Bootstrap 기능이 필요
 - Chef, Puppet
 - Terraform
 - AWS CloudFormation
-- ARM(Azure Resource Manager) Template
+- ARM(Azure Resource Manager) Template - Bicep, JSON
+- Azure Automation
+- Azure DevOps 서비스
+- GitHub  작업
