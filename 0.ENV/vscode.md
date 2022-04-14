@@ -58,7 +58,10 @@
 
 ### Python 확장팩  
 [Visual Studio Code를 사용하여 Python 초보자 개발 환경 설정](https://docs.microsoft.com/ko-kr/learn/modules/python-install-vscode/)  
-[Pylance: The best Python extension for VS Code](https://towardsdatascience.com/pylance-the-best-python-extension-for-vs-code-ae299f35548c)
+[Pylance: The best Python extension for VS Code](https://towardsdatascience.com/pylance-the-best-python-extension-for-vs-code-ae299f35548c)  
+
+### Java
+[Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)  
 
 ### Docker
 [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)  
