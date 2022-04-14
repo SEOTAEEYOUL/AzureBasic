@@ -28,6 +28,10 @@
 > [GitLens — Git supercharged](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)  
 > [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)  
 
+### IaC
+> [HashiCorp Terraform](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform)  
+
+
 
 ### Azure  
 > [Docs Authoring Pack](https://marketplace.visualstudio.com/items?itemName=docsmsft.docs-authoring-pack)  
@@ -39,6 +43,9 @@
 > [Azure Terraform](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform)  
 > [Kubernetes](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)  
 > [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)  
+
+### DB
+> [MongoDB for VS Code](https://marketplace.visualstudio.com/items?itemName=mongodb.mongodb-vscode)  
 
 ### AWS
 [AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-toolkit-vscode)
