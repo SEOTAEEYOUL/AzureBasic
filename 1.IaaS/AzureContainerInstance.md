@@ -1,5 +1,13 @@
 # Azure Container Instance
 
+| 구분 | 내용 |
+|:---|:---|
+| Container Registry | acrHomeeee |  
+| Container Repository | springmysql |  
+| Container Image Tag | 0.3.1 |  
+| Container Instance | aci-springmysql |  
+| Container Listen Port | 8080 |
+
 ## Group 생성
 ```powershell
 $groupName = "rg-aci"
@@ -61,6 +69,18 @@ az container show `
   --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" `
   --out table
 ```
+```
+PS D:\workspace\AzureBasic> az container show `
+>>   --resource-group $groupName `
+>>   --name $containerName `
+>>   --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" `
+>>   --out table
+FQDN                                            ProvisioningState
+----------------------------------------------  -------------------
+aci-springmysql.koreacentral.azurecontainer.io  Succeeded
+PS D:\workspace\AzureBasic> 
+```
+
 
 ## 컨테이너 로그 보기
 ```powershell
@@ -147,4 +167,5 @@ aci-springmysql  rg-aci           Succeeded  mcr.microsoft.com/azuredocs/aci-hel
 PS C:\workspace\AzureBasic> 
 ```
 
+**http://aci-springmysql.koreacentral.azurecontainer.io:8080/**  
 ![springmysql.koreacentral.azurecontainer.io-8080.png](./img/springmysql.koreacentral.azurecontainer.io-8080.png)  
