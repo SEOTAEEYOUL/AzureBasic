@@ -30,7 +30,7 @@
 
 ### IaC
 > [HashiCorp Terraform](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform)  
-
+> [Azure Terraform](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform)
 
 
 ### Azure  
