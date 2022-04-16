@@ -21,13 +21,39 @@
 | outbound rules | plb-springmysql-dev-lb-rule1 | IPv4, 인스턴스당 포트 수, 10664 |
 
 ## 만들기
-### 1. 기본사항
+### 1. 기본사항  
+- Name : plb-std-springmysql-internal-dev1
+- SKU : 표준
+- 형식 : 공개
+- 계층 : 지역
 ![lb-springmysql-0.png](./img/lb-springmysql-0.png)  
 
 ### 2.  프런트 엔드 IP 구성
+- Name: plb-springmysql-dev
+- IP유형 : IP 주소
+- 공용 IP 주소 : pip-lb-aci-springmysql
+- 부하분산규칙 : plb-springmysql-dev-lb-rule1
+  - 프런트 엔드 IP 주소 : plb-springmysql-dev
+  - 백 엔드 풀 : plb-std-springmysql-dev-bepool
+  - 프로토콜 : TCP
+  - 포트 : 80
+  - 백 엔드 포트 : 8080
+  - 상태 프로브 : health-probe-8080(HTTP:8080)
+    - 프로토콜 : HTTP
+    - 포트 : 8080
+    - 경로 : /
+    - 간격 : 5
+    - 비정상 임계값 : 2    
 ![lb-springmysql-1.png](./img/lb-springmysql-1.png)  
 
 ### 3-1. 백 엔드 풀
+- 이름 : plb-std-springmysql-dev-bepool
+- 가상 네크워크 : vnet-aci(rg-aci)
+- 백 엔드 풀 구성 : IP 주소
+- IP 버전 : IPv4
+- IP 주소 :
+  - IP 주소 : 10.2.1.4
+  - 리소스 이름 : aci-springmysql(rg-aci)
 ![lb-springmysql-2.png](./img/lb-springmysql-2.png)  
 
 ### 3-2. 백 엔드 풀(plb-std-springmysql-dev-bepool)
@@ -35,9 +61,23 @@
 
 
 ### 4. 인바운드 규칙
+- 부하분산규칙 : plb-springmysql-dev-lb-rule1
+  - 프런트 엔드 IP 주소 : plb-springmysql-dev
+  - 백 엔드 풀 : plb-std-springmysql-dev-bepool
+  - 프로토콜 : TCP
+  - 포트 : 80
+  - 백 엔드 포트 : 8080
+  - 상태 프로브 : health-probe-8080(HTTP:8080)
+    - 프로토콜 : HTTP
+    - 포트 : 8080
+    - 경로 : /
+    - 간격 : 5
+    - 비정상 임계값 : 2   
+
 ![lb-springmysql-4.png](./img/lb-springmysql-4.png)  
 
 ### 5. 아웃바운드 규칙
+- Skip
 ![lb-springmysql-5.png](./img/lb-springmysql-5.png)  
 
 ### 6. 부하 분산 장치 만들기
