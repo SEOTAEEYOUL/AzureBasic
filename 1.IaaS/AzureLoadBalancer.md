@@ -1,6 +1,9 @@
 # Azure LoadBalancer for springmysql(ACI)  
-
-- ACI 용 LoadBalaner 의 경우 ACI(Azure Container Instance) 를 사설 IP 로 만들어야 함(Public Load Balancer 의 경우 IP 를 사용할 수 없음)
+- 백 엔드 리소스 또는 서버의 그룹에서 로드(들어오는 네트워크 트래픽)를 효율적으로 분산하는 장치  
+- Public Load Balancer 의 경우 Public IP 주소로 들어오면 Private IP 주소를 연결함
+  - ACI 용 Public LoadBalaner 의 경우 ACI(Azure Container Instance) 를 사설 IP 로 만들어야 함
+  - Public Load Balancer 의 경우 Backend Pool 에서 Public IP 를 사용할 수 없음
+- Internal Load Balancer 는 Private IP 주소로 받아서 Private IP/NIC 로 연결함  
 
 
 
