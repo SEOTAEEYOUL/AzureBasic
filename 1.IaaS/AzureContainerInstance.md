@@ -11,54 +11,76 @@
 ## Group 생성
 ```powershell
 $groupName = "rg-aci"
-$location = "koreacentral"
-$containerName = "aci-springmysql"
+# $location = "koreacentral"
+$location = "eastus"
+$aciName = "aci-springmysql"
 $acrName = "acrHomeeee"
 $loginServer = "acrhomeeee.azurecr.io"
-$user = "00000000-0000-0000-0000-000000000000"
+$user = "acrHomeeee"
+$password = 'Ax2BMk0y828RhmnGQ***hH=******' # ACR 의 Access Key 의 것 사용
 $repositoryName="springmysql"
-$tag='0.2.1'
-$accessToken=az acr login --name $acrName --expose-token | jq .accessToken | %{$_ -replace('"', '')}
-
-az acr login -n $acrName
+$tag='0.2.2'
 
 az group create `
   --name $groupName `
   --location $location
 
 
-
-docker login $loginServer -u $user -p "$accessToken" 
-
 az acr repository show-tags -o table -n $acrName --repository ${repositoryName}
 ```
 
-## 컨테이너 만들기
+## 컨테이너 만들기 
+### Private IP 및 Linux 사용
+- private network, subnet 에 대한 설정이 있음
+- dns 에 대한 설정이 없음
+
 ```powershell
 az container create `
   --resource-group $groupName `
-  --name $containerName `
-  --image mcr.microsoft.com/azuredocs/aci-helloworld  `
-  --dns-name-label $containerName --ports 8080 `
-  --query ipAddress.fqdn
-  
+  --name $aciName `
+  --registry-login-server $loginServer `
   --registry-username $user `
-  --registry-password $accessToken `
-  --query ipAddress.fqdn
+  --registry-password $password `
+  --image acrhomeeee.azurecr.io/springmysql:0.2.2 `
+  --ip-address Private `
+  --location $location `
+  --os-type linux `
+  --cpu 1 `
+  --memory 1.5 `
+  --vnet vnet-skcc7-dev `
+  --vnet-address-prefix '10.0.0.0/16' `
+  --subnet snet-skcc7-dev-frontend `
+  --subnet-address-prefix '10.0.0.0/24' `
+  --restart-policy Always `
+  --environment-variables NumWords=3 MinLength=5 `
+  --ports 8080 `
+  --protocol TCP
+```
 
-az container create \
-  --name $containerName \
-  --resource-group $groupName \
-  --image $ACR_LOGIN_SERVER/aci-helloworld:v1 \
-  --registry-login-server $ACR_LOGIN_SERVER \
-  --registry-username $(az keyvault secret show --vault-name $AKV_NAME -n $ACR_NAME-pull-usr --query value -o tsv) \
-  --registry-password $(az keyvault secret show --vault-name $AKV_NAME -n $ACR_NAME-pull-pwd --query value -o tsv) \
-  --dns-name-label aci-demo-$RANDOM \
-  --query ipAddress.fqdn
+### Public IP 사용
+- private network, subnet 에 대한 설정이 없음
+- dns 에 대한 설정이 있음
 
-# --image mcr.microsoft.com/azuredocs/aci-helloworld `
-# --image acrhomeeee.azurecr.io/springmysql:0.3.1 `
+```
+$aciName = 'springmysql'
+$location = "koreacentral"
 
+az container create `
+  --resource-group $groupName `
+  --name $aciName `
+  --registry-login-server $loginServer `
+  --registry-username $user `
+  --registry-password $password `
+  --location $location' `
+  --os-type linux `
+  --cpu 1 `
+  --memory 1.5 `
+  --restart-policy Always `
+  --dns-name-label $aciName `
+  --restart-policy Always `
+  --environment-variables NumWords=3 MinLength=5 `
+  --ports 8080 `
+  --protocol TCP
 ```
 
 ### 컨테이너 보기
