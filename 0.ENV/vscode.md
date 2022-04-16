@@ -79,7 +79,7 @@
 > [Base16 Themes](https://marketplace.visualstudio.com/items?itemName=AndrsDC.base16-themes)  
 > [Code Runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)  
 > [CSS Peek](https://marketplace.visualstudio.com/items?itemName=pranaygp.vscode-css-peek) : Ctrl 키로 누른 상태에서 클릭시 정의된 CSS 로 이동  
-> [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock): Visual Studio Code 작업 공간의 색상을 미묘하게 변경  
+> [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock): Visual Studio Code 작업 공간의 색상을 미묘하게 변경(F1, Peacock, Peacock: Change to a favorite color)  
 > [Dracula Refined](https://marketplace.visualstudio.com/items?itemName=mathcale.theme-dracula-refined)  
 
 ## 단축키  
