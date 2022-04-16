@@ -16,6 +16,8 @@
 > [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)  
 > [Bracket Pair Colorizer 2](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2)  
 > [indent-rainbow](https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow)  
+> [Evondev - Indent Rainbow Palettes](https://marketplace.visualstudio.com/items?itemName=evondev.indent-rainbow-palettes)  
+> [colorize](https://marketplace.visualstudio.com/items?itemName=kamikillerto.vscode-colorize)  
 > [Auto Rename Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag)  
 > [Auto close Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag)  
 > [Active File In StatusBar](https://marketplace.visualstudio.com/items?itemName=RoscoP.ActiveFileInStatusBar)  
@@ -40,7 +42,6 @@
 > [Azure Account](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account)  
 > [Azure Resources](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureresourcegroups)  
 > [Azure Resource Manager (ARM) Tools](https://marketplace.visualstudio.com/items?itemName=msazurermtools.azurerm-vscode-tools)  
-> [Azure Terraform](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureterraform)  
 > [Kubernetes](https://marketplace.visualstudio.com/items?itemName=ms-kubernetes-tools.vscode-kubernetes-tools)  
 > [Docker](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)  
 
@@ -78,7 +79,8 @@
 > [Base16 Themes](https://marketplace.visualstudio.com/items?itemName=AndrsDC.base16-themes)  
 > [Code Runner](https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner)  
 > [CSS Peek](https://marketplace.visualstudio.com/items?itemName=pranaygp.vscode-css-peek) : Ctrl 키로 누른 상태에서 클릭시 정의된 CSS 로 이동  
-
+> [Peacock](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock): Visual Studio Code 작업 공간의 색상을 미묘하게 변경  
+> [Dracula Refined](https://marketplace.visualstudio.com/items?itemName=mathcale.theme-dracula-refined)  
 
 ## 단축키  
 
