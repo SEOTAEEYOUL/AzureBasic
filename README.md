@@ -74,9 +74,9 @@
 ## Azure IaaS + PaaS(MySQL)  
 | 항목 | 날짜 | 내용 |  
 |:---|:---|:---|  
-| Apache | 2022.02.08 | 웹서버 구성 확인 |
-| Tomcat | 2022.02.08 | WAS 서버 구성 확인 | 
-| MariaDB | 2022.02.08 | DB 구성 확인 | 
+| [Apache](./1.IaaS/Apache.md) | 2022.02.08 | 웹서버 구성 확인 |
+| [Tomcat](./1.IaaS/Tomcat.md) | 2022.02.08 | WAS 서버 구성 확인 | 
+| [MySQL](./1.IaaS/AzureMySQL.md) | 2022.02.08 | DB 구성 확인 | 
 
 | 항목 | 날짜 | 내용 |
 |:---|:---|:---| 
