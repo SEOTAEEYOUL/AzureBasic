@@ -12,19 +12,9 @@
 | 구분 | 진입점/Ingress | Web | WAS | DB | 비고 |
 |:---|:---|:---|:---|:---|:---|
 | AS-IS | L4 | Apache | Tomcat | MySQL/MariaDB | 3-tier 기반 서비스 |
-| Azure | Application GateWay | VM/Apache | VM/Tomcat | MySQL | VM 과 Managed Service(AppG/W, DB) 사용 |  
-| Azure | Application GateWay | CDN | VM/Tomcat | MySQL | CDN 를 통한 고도화 |  
-| AKS | Application Gateway/Ingress Controller | Azure CDN | container/Springboot | MySQL | AKS(Kubernetes Service), CICD(빌드배포, OSS 사용), Container 빌드 포함 | 
-
-## 일정
-| 월 | 화 | 수 | 목 | 금 |
-|:---:|:---:|:---:|:---:|:---:|
-| 2022.01.24 | 2022.01.25 |2022.01.26 | 2022.01.27</br> [Azure1](./0.ENV/Azure1.md) </br> [Azure2](./0.ENV/Azure2.md) | 2022.01.28 |
-| 2022.01.31 </br> 설날 연휴 | 2022.02.01 </br> 설날 | 2022.02.02 </br> 설날 연휴 | 2022.02.03 | 2022.02.04 |
-| 2022.02.07 | 2022.02.08 | 2022.02.09 | 2022.02.10</br>[Azure3](./1.IaaS/Azure3.md)</br>[Azure4](./1.IaaS/Azure4.md) | 2022.02.11 |
-|  |  | | 2022.02.17 </br> [Azure5](./1.IaaS/Azure5.md)  | 2022.02.18 </br> [Azure6](./1.IaaS/Azure6.md)</br>[Azure7](./1.IaaS/Azure7.md) |  
-|  |  | |2022-02-24 </br> [Azure8](./2.AKS/Azure8.md) </br> [Azure9](./2.AKS/Azure9.md) | 2022-02-25 </br> [Azure10](./2.AKS/Azure10.md) | 
-| | | | 2022-03-03 </br> [Azure11](./2.AKS/Azure11.md) </br> [Azure12](./2.AKS/Azure12.md) | 2022-03-04 </br> [Azure13](./3.LandingZone/README.md) |
+| [Azure](./1.IaaS/aci-hellofiles/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | VM/Apache | VM/Tomcat | MySQL | VM 과 Managed Service(AppG/W, DB) 사용 |  
+| [Azure](./1.IaaS/aci-hellofiles/README.md) | Application GateWay | [Azure CDN](./1.IaaS/AzureCDN.md) | VM/Tomcat | MySQL | CDN 를 통한 고도화 |  
+| [AKS](./2.AKS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | [Azure CDN](./1.IaaS/AzureCDN.md) | container/Springboot | MySQL | AKS(Kubernetes Service), CICD(빌드배포, OSS 사용), Container 빌드 포함 | 
 
 ## 과정 내용
 ### 공통
