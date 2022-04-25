@@ -5,15 +5,16 @@
 - 3-tier 기반의 Sample 을 Azure Cloud 에 구성하는 과정을 통해 익숙해지는 것을 목표로 함
 
 ## AS-IS
-- Apache, Tomcat, MySQL/MariaDB 로 이루어진 서비스
-- Apache : Static 문서 처리
-- Tomcat : SpringBoot 기반 Biz 서비스 처리
+- [Apache](./1.IaaS/Apache.md), [Tomcat](./1.IaaS/Tomcat.md), [MySQL](./1.IaaS/AzureMySQL.md)/MariaDB 로 이루어진 서비스
+- [Apache](./1.IaaS/Apache.md) : Static 문서 처리
+- [Tomcat](./1.IaaS/Tomcat.md) : SpringBoot 기반 Biz 서비스 처리
+
 
 | 구분 | 진입점/Ingress | Web | WAS | DB | 비고 |
 |:---|:---|:---|:---|:---|:---|
 | AS-IS | L4 | Apache | Tomcat | MySQL/MariaDB | 3-tier 기반 서비스 |
-| [Azure](./1.IaaS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | VM/Apache | VM/Tomcat | MySQL | VM 과 Managed Service(AppG/W, DB) 사용 |  
-| [Azure](./1.IaaS/README.md) | Application GateWay | [Azure CDN](./1.IaaS/AzureCDN.md) | VM/Tomcat | MySQL | CDN 를 통한 고도화 |  
+| [Azure](./1.IaaS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | VM/[Apache](./1.IaaS/Apache.md) | VM/[Tomcat](./1.IaaS/Tomcat.md) | MySQL | VM 과 Managed Service(AppG/W, DB) 사용 |  
+| [Azure](./1.IaaS/README.md) | Application GateWay | [Azure CDN](./1.IaaS/AzureCDN.md) | VM/[Tomcat](./1.IaaS/Tomcat.md) | [MySQL](./1.IaaS/AzureMySQL.md) | CDN 를 통한 고도화 |  
 | [AKS](./2.AKS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | [Azure CDN](./1.IaaS/AzureCDN.md) | container/Springboot | MySQL | AKS(Kubernetes Service), CICD(빌드배포, OSS 사용), Container 빌드 포함 | 
 
 ## 과정 내용
