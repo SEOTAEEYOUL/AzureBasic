@@ -1,4 +1,10 @@
 # [Azure Container Instance](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-overview)    
+- 주문형 Hyper-V 격리 컨테이너의 단일 Pod를 제공  
+- 비율 크기 조정, 부하 분산 및 인증서와 같은 개념은 ACI 컨테이너와 함께 제공되지 않음
+  - 5개의 컨테이너 인스턴스로 확장하려면 5개의 고유한 컨테이너 인스턴스를 만듬  
+- 
+
+### 배포 특이 사항
 - ACI Private VNet 배포의 경우 'koreacentral'로 잘 안만들어지는 경우가 발생함(location 'eastus' 변경하면 잘 만들어짐)  
 - ACI Public 은 한국중부(koreacentral) 에서도 잘 만들어짐  
 - [Azure Container Instances에서 Azure 파일 공유 탑재](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-volume-azure-files)
