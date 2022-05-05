@@ -6,7 +6,7 @@
 
 ## 3-tier 샘플
 > [SpringBoot MariaDB Sample](https://github.com/SEOTAEEYOUL/SpringBootMariaDB)  
-> [https://github.com/SEOTAEEYOUL/SpringBootMySQL](https://github.com/SEOTAEEYOUL/SpringBootMySQL)  
+> [SpringBoot MySQL Sample](https://github.com/SEOTAEEYOUL/SpringBootMySQL)  
 
 ## AS-IS
 - [Apache](./1.IaaS/Apache.md), [Tomcat](./1.IaaS/Tomcat.md), [MySQL](./1.IaaS/AzureMySQL.md)/[MariaDB](https://github.com/SEOTAEEYOUL/SpringBootMySQL/blob/main/MariaDB.md) 로 이루어진 서비스
