@@ -12,8 +12,8 @@
 
 | 구분 | 진입점/Ingress | Web | WAS | DB | 비고 |
 |:---|:---|:---|:---|:---|:---|
-| AS-IS | L4 | [Apache](./1.IaaS/Apache.md) | [Tomcat](./1.IaaS/Tomcat.md) | [MySQL](./1.IaaS/AzureMySQL.md)/MariaDB | 3-tier 기반 서비스 |
-| [Azure](./1.IaaS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | [VM](./1.IaaS/AzureVirtualMachine.md)/[Apache](./1.IaaS/Apache.md) | VM/[Tomcat](./1.IaaS/Tomcat.md) | MySQL | VM 과 Managed Service(AppG/W, DB) 사용 |  
+| AS-IS | [L4](./1.IaaS/AzureLoadBalancer.md) | [Apache](./1.IaaS/Apache.md) | [Tomcat](./1.IaaS/Tomcat.md) | [MySQL](./1.IaaS/AzureMySQL.md)/MariaDB | 3-tier 기반 서비스 |
+| [Azure](./1.IaaS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | [VM](./1.IaaS/AzureVirtualMachine.md)/[Apache](./1.IaaS/Apache.md) | VM/[Tomcat](./1.IaaS/Tomcat.md) | [MySQL](./1.IaaS/AzureMySQL.md) | VM 과 Managed Service(AppG/W, DB) 사용 |  
 | [Azure](./1.IaaS/README.md) | [Application GateWay](./1.IaaS/
 AzureApplicationGateway.md) | [Azure CDN](./1.IaaS/AzureCDN.md) | [VM](./1.IaaS/AzureVirtualMachine.md)/[Tomcat](./1.IaaS/Tomcat.md) | [MySQL](./1.IaaS/AzureMySQL.md) | CDN 를 통한 고도화 |  
 | [AKS](./2.AKS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | [Azure CDN](./1.IaaS/AzureCDN.md) | container/Springboot | MySQL | AKS(Kubernetes Service), CICD(빌드배포, OSS 사용), Container 빌드 포함 | 
