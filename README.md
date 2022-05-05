@@ -87,10 +87,10 @@
 ## Azure CaaS(AKS) + PaaS(MySQL)  
 | 과정 | 날짜 | 내용 |
 |:---|:---|:---|  
-| Docker | 2022.02.21 | Container |
-| Kubernetes | 2022.02.21 | Container as a Service, 아키텍처 | 
-| AKS | 2022.02.22 ~ 23 | Azure Kubernetes Service | 
-| DevOps | 2022.03.03 | OSS 기반, Azure DevOps 기반 |  
+| [Docker](./2.AKS/Docker.md) | 2022.02.21 | Container |
+| [Kubernetes](./2.AKS/Kubernetes.md) | 2022.02.21 | Container as a Service, 아키텍처 | 
+| [AKS](./2.AKS/AKS.md) | 2022.02.22 ~ 23 | Azure Kubernetes Service | 
+| [DevOps](./2.AKS/GitOps/README.md) | 2022.03.03 | OSS 기반, [Azure DevOps](./2.AKS/AzureDevOps.md) 기반 |  
 | Landing Zone | 2022.03.04 | Azure Landing Zone 요소 설명 | 
 
 ---
