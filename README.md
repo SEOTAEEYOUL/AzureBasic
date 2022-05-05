@@ -1,8 +1,12 @@
 # Azure Basic
 
-> [Microsoft Azure 설명서](https://github.com/MicrosoftDocs/azure-docs.ko-kr)
+> [Microsoft Azure 설명서](https://github.com/MicrosoftDocs/azure-docs.ko-kr)  
 
 - 3-tier 기반의 Sample 을 Azure Cloud 에 구성하는 과정을 통해 익숙해지는 것을 목표로 함
+
+## 3-tier 샘플
+> [SpringBoot MariaDB Sample](https://github.com/SEOTAEEYOUL/SpringBootMariaDB)  
+> [https://github.com/SEOTAEEYOUL/SpringBootMySQL](https://github.com/SEOTAEEYOUL/SpringBootMySQL)  
 
 ## AS-IS
 - [Apache](./1.IaaS/Apache.md), [Tomcat](./1.IaaS/Tomcat.md), [MySQL](./1.IaaS/AzureMySQL.md)/[MariaDB](https://github.com/SEOTAEEYOUL/SpringBootMySQL/blob/main/MariaDB.md) 로 이루어진 서비스
