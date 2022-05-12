@@ -2,7 +2,9 @@
 
 > [Kubernetes Documentation](https://kubernetes.io/ko/docs/home/)  
 > [kubeadm으로 클러스터 구성하기](https://kubernetes.io/ko/docs/setup/production-environment/tools/kubeadm/_print/)  
-> [kubectl 치트 시트](https://kubernetes.io/ko/docs/reference/kubectl/cheatsheet/) 
+> [kubectl 치트 시트](https://kubernetes.io/ko/docs/reference/kubectl/cheatsheet/)  
+> [An Introduction to Kubernetes
+쿠버네티스 살펴보기](https://subicura.com/remark/kubernetes-intro.html#1)
 
 ## Kubernetes 의 기본 요소와 분산 추상
 
