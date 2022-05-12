@@ -2,6 +2,8 @@
 HashiCorp 가 제공하는 IaC 도구  
 인프라 구축 및 설정을 코드(템플릿 파일)로 관리하면서 인프라 배포를 자동화할 수 있음  
 
+
+> [Get Started - Azure](https://learn.hashicorp.com/collections/terraform/azure-get-started)  
 > [Get Started - AWS](https://learn.hashicorp.com/collections/terraform/aws-get-started?utm_source=terraform_io_download)  
 > [Getting Started with AWS EKS using Terraform](https://medium.com/stakater/getting-started-with-aws-eks-using-terraform-7487ffeac48f)  
 > [Tutorial: Standing up an EKS Cluster with Terraform](https://medium.com/devops-dudes/tutorial-standing-up-an-eks-cluster-with-terraform-4139ff0f1189)  

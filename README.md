@@ -1,21 +1,25 @@
 # Azure Basic
 
-> [Microsoft Azure 설명서](https://github.com/MicrosoftDocs/azure-docs.ko-kr)
+> [Microsoft Azure 설명서](https://github.com/MicrosoftDocs/azure-docs.ko-kr)  
 
 - 3-tier 기반의 Sample 을 Azure Cloud 에 구성하는 과정을 통해 익숙해지는 것을 목표로 함
 
+## 3-tier 샘플
+> [SpringBoot MariaDB Sample](https://github.com/SEOTAEEYOUL/SpringBootMariaDB)  
+> [SpringBoot MySQL Sample](https://github.com/SEOTAEEYOUL/SpringBootMySQL)  
+
 ## AS-IS
-- [Apache](./1.IaaS/Apache.md), [Tomcat](./1.IaaS/Tomcat.md), [MySQL](./1.IaaS/AzureMySQL.md)/MariaDB 로 이루어진 서비스
+- [Apache](./1.IaaS/Apache.md), [Tomcat](./1.IaaS/Tomcat.md), [MySQL](./1.IaaS/AzureMySQL.md)/[MariaDB](https://github.com/SEOTAEEYOUL/SpringBootMySQL/blob/main/MariaDB.md) 로 이루어진 서비스
 - [Apache](./1.IaaS/Apache.md) : Static 문서 처리
-- [Tomcat](./1.IaaS/Tomcat.md) : SpringBoot 기반 Biz 서비스 처리
+- [Tomcat](./1.IaaS/Tomcat.md) : [SpringBoot](https://github.com/SEOTAEEYOUL/SpringBootMySQL/blob/main/Springboot.md) 기반 Biz 서비스 처리
 
 
 | 구분 | 진입점/Ingress | Web | WAS | DB | 비고 |
 |:---|:---|:---|:---|:---|:---|
-| AS-IS | L4 | Apache | Tomcat | MySQL/MariaDB | 3-tier 기반 서비스 |
-| [Azure](./1.IaaS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | VM/[Apache](./1.IaaS/Apache.md) | VM/[Tomcat](./1.IaaS/Tomcat.md) | MySQL | VM 과 Managed Service(AppG/W, DB) 사용 |  
-| [Azure](./1.IaaS/README.md) | Application GateWay | [Azure CDN](./1.IaaS/AzureCDN.md) | VM/[Tomcat](./1.IaaS/Tomcat.md) | [MySQL](./1.IaaS/AzureMySQL.md) | CDN 를 통한 고도화 |  
-| [AKS](./2.AKS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | [Azure CDN](./1.IaaS/AzureCDN.md) | container/Springboot | MySQL | AKS(Kubernetes Service), CICD(빌드배포, OSS 사용), Container 빌드 포함 | 
+| AS-IS | [L4](./1.IaaS/AzureLoadBalancer.md) | [Apache](./1.IaaS/Apache.md) | [Tomcat](./1.IaaS/Tomcat.md) | [MySQL](./1.IaaS/AzureMySQL.md)/[MariaDB](https://github.com/SEOTAEEYOUL/SpringBootMySQL/blob/main/MariaDB.md) | 3-tier 기반 서비스 |
+| [Azure](./1.IaaS/README.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | [VM](./1.IaaS/AzureVirtualMachine.md)/[Apache](./1.IaaS/Apache.md) | [VM](./1.IaaS/AzureVirtualMachine.md)/[Tomcat](./1.IaaS/Tomcat.md) | [MySQL](./1.IaaS/AzureMySQL.md) | VM 과 Managed Service(AppG/W, DB) 사용 |  
+| [Azure](./1.IaaS/README.md) | [Application GateWay](./1.IaaS/AzureApplicationGateway.md) | [Azure CDN](./1.IaaS/AzureCDN.md) | [VM](./1.IaaS/AzureVirtualMachine.md)/[Tomcat](./1.IaaS/Tomcat.md) | [MySQL](./1.IaaS/AzureMySQL.md) | CDN 를 통한 고도화 |  
+| [AKS](./2.AKS/AKS.md) | [Application GateWay](1.IaaS/AzureApplicationGateway.md) | [Azure CDN](./1.IaaS/AzureCDN.md) | container/[SpringBoot](https://github.com/SEOTAEEYOUL/SpringBootMySQL/blob/main/Springboot.md) | [MySQL](./1.IaaS/AzureMySQL.md) | AKS(Kubernetes Service), CICD(빌드배포, OSS 사용), Container 빌드 포함 | 
 
 ## 과정 내용
 ### 공통
@@ -72,25 +76,25 @@
 
 | 항목 | 날짜 | 내용 |
 |:---|:---|:---| 
-| resource group | 2022.02.08 | 자원 그룹 | 
-| VNet | 2022.02.08 | 구독당 하나의 VNet 구성 | 
+| [resource group](./1.IaaS/AzureResourceGroup.md) | 2022.02.08 | 자원 그룹 | 
+| [VNet](./1.IaaS/AzureVirtualNetwork.md) | 2022.02.08 | 구독당 하나의 VNet 구성 | 
 | subnet | 2022.02.08 | DMZ, frontend, backend 로 구분 생성 | 
-| vm | 2022.02.08 | WEB, WAS VM 으로 생성 | 
+| [VM](./1.IaaS/AzureVirtualMachine.md) | 2022.02.08 | WEB, WAS VM 으로 생성 | 
 | MariaDB/MySQL | 2022.02.08 | PaaS(Managed DB) 형태로 생성 |  
-| Azure App Service 도메인 | 2022.02.10 | Domain 생성/관리 |   
-| Azure DNS | 2022.02.10 | Azure 인프라를 사용하여 이름 확인을 제공하는 DNS 도메인에 대한 호스팅 서비스 |  
-| Application Gateway | 2022.02.10 | 웹 애플리케이션에 대한 트래픽을 관리할 수 있도록 하는 웹 트래픽 부하 분산 장치 | 
-| CDN | 2022.02.10 | CDN(콘텐츠 배달 네트워크)은 사용자에게 웹 콘텐츠를 효율적으로 제공할 수 있는 서버의 분산 네트워크 |  
+| [Azure App Service 도메인](./1.IaaS/AzureAppServiceDomain.md) | 2022.02.10 | Domain 생성/관리 |   
+| [Azure DNS](./1.IaaS/AzureDNS.md) | 2022.02.10 | Azure 인프라를 사용하여 이름 확인을 제공하는 DNS 도메인에 대한 호스팅 서비스 |  
+| [Application Gateway](./1.IaaS/AzureApplicationGateway.md) | 2022.02.10 | 웹 애플리케이션에 대한 트래픽을 관리할 수 있도록 하는 웹 트래픽 부하 분산 장치 | 
+| [CDN](./1.IaaS/AzureCDN.md) | 2022.02.10 | CDN(콘텐츠 배달 네트워크)은 사용자에게 웹 콘텐츠를 효율적으로 제공할 수 있는 서버의 분산 네트워크 |  
 
 ---
 
 ## Azure CaaS(AKS) + PaaS(MySQL)  
 | 과정 | 날짜 | 내용 |
 |:---|:---|:---|  
-| Docker | 2022.02.21 | Container |
-| Kubernetes | 2022.02.21 | Container as a Service, 아키텍처 | 
-| AKS | 2022.02.22 ~ 23 | Azure Kubernetes Service | 
-| DevOps | 2022.03.03 | OSS 기반, Azure DevOps 기반 |  
-| Landing Zone | 2022.03.04 | Azure Landing Zone 요소 설명 | 
+| [Docker](./2.AKS/Docker.md) | 2022.02.21 | Container |
+| [Kubernetes](./2.AKS/Kubernetes.md) | 2022.02.21 | Container as a Service, 아키텍처 | 
+| [AKS](./2.AKS/AKS.md) | 2022.02.22 ~ 23 | Azure Kubernetes Service | 
+| [DevOps](./2.AKS/GitOps/README.md) | 2022.03.03 | [OSS 기반](./2.AKS/GitOps/README.md), [Azure DevOps](./2.AKS/AzureDevOps.md) 기반 |  
+| [Landing Zone](./3.LandingZone/README.md) | 2022.03.04 | Azure Landing Zone 요소 설명 | 
 
 ---
