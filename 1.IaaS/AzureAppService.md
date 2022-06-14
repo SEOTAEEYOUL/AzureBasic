@@ -7,7 +7,11 @@
 
 > [빠른 시작: Azure App Service에서 Java 앱 만들기](https://docs.microsoft.com/ko-kr/azure/app-service/quickstart-java?pivots=platform-linux&tabs=javase)  
 > [Azure App Service에서 Linux에 Spring Boot 애플리케이션 배포](https://docs.microsoft.com/ko-kr/azure/developer/java/spring-framework/deploy-spring-boot-java-app-on-linux)  
+<<<<<<< HEAD
 > [Azure 웹앱용 프라이빗 엔드포인트 사용](https://docs.microsoft.com/ko-kr/azure/app-service/networking/private-endpoint)  
+=======
+> [Azure 가상 네트워크에 앱 통합](https://docs.microsoft.com/ko-kr/azure/app-service/overview-vnet-integration)  
+>>>>>>> 3335d71424e39140817182a9b75077edb744cfe7
 
 
 
