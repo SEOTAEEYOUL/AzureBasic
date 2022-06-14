@@ -2,7 +2,8 @@
 HashiCorp 가 제공하는 IaC 도구  
 인프라 구축 및 설정을 코드(템플릿 파일)로 관리하면서 인프라 배포를 자동화할 수 있음  
 
-
+> [Azure의 Terraform 설명서](https://docs.microsoft.com/ko-kr/azure/developer/terraform/)  
+> [Examples](https://github.com/hashicorp/terraform-provider-azurerm/tree/main/examples)  
 > [Get Started - Azure](https://learn.hashicorp.com/collections/terraform/azure-get-started)  
 > [Get Started - AWS](https://learn.hashicorp.com/collections/terraform/aws-get-started?utm_source=terraform_io_download)  
 > [Getting Started with AWS EKS using Terraform](https://medium.com/stakater/getting-started-with-aws-eks-using-terraform-7487ffeac48f)  
@@ -174,6 +175,198 @@ output "<NAME>" {
   value = <VALUE>
   [CONFIG ...]
 }
+```
+
+### 샘플 실행
+#### Login 확인
+```
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> az login
+A web browser has been opened at https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize. Please continue the login in the web browser. If no web browser is available or if the web browser fails to open, use device code flow with `az login --use-device-code`.
+[
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "160bacea-7761-4c83-bfa0-354f9b047f5a",
+    "id": "9ebb0d63-8327-402a-bdd4-e222b01329a1",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "Azure subscription 1",
+    "state": "Enabled",
+    "tenantId": "160bacea-7761-4c83-bfa0-354f9b047f5a",
+    "user": {
+      "name": "ca07456@sktda.onmicrosoft.com",
+      "type": "user"
+    }
+  }
+]
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> az account show
+{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "160bacea-7761-4c83-bfa0-354f9b047f5a",
+  "id": "9ebb0d63-8327-402a-bdd4-e222b01329a1",
+  "isDefault": true,
+  "managedByTenants": [],
+  "name": "Azure subscription 1",
+  "state": "Enabled",
+  "tenantId": "160bacea-7761-4c83-bfa0-354f9b047f5a",
+  "user": {
+    "name": "ca07456@sktda.onmicrosoft.com",
+    "type": "user"
+  }
+}
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> 
+```
+
+#### terraform init
+```
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> terraform init
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding hashicorp/azurerm versions matching "~> 2.0"...
+- Finding latest version of hashicorp/random...
+- Installing hashicorp/azurerm v2.99.0...
+- Installed hashicorp/azurerm v2.99.0 (signed by HashiCorp)
+- Installing hashicorp/random v3.3.1...
+- Installed hashicorp/random v3.3.1 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+PS D:\workspace\AzureBasic\1.IaaS\Terraform>
+```
+
+#### terraform plan
+```
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_resource_group.rg will be created
+  + resource "azurerm_resource_group" "rg" {
+      + id       = (known after apply)
+      + location = "eastus"
+      + name     = (known after apply)
+    }
+
+  # random_pet.rg-name will be created
+  + resource "random_pet" "rg-name" {
+      + id        = (known after apply)
+      + length    = 2
+      + prefix    = "rg"
+      + separator = "-"
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + resource_group_name = (known after apply)
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> 
+```
+
+#### terraform apply
+```
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_resource_group.rg will be created
+  + resource "azurerm_resource_group" "rg" {
+      + id       = (known after apply)
+      + location = "eastus"
+      + name     = (known after apply)
+    }
+
+  # random_pet.rg-name will be created
+  + resource "random_pet" "rg-name" {
+      + id        = (known after apply)
+      + length    = 2
+      + prefix    = "rg"
+      + separator = "-"
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + resource_group_name = (known after apply)
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── 
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_resource_group.rg will be created
+  + resource "azurerm_resource_group" "rg" {
+      + id       = (known after apply)
+      + location = "eastus"
+      + name     = (known after apply)
+    }
+
+  # random_pet.rg-name will be created
+  + resource "random_pet" "rg-name" {
+      + id        = (known after apply)
+      + length    = 2
+      + prefix    = "rg"
+      + separator = "-"
+    }
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + resource_group_name = (known after apply)
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+random_pet.rg-name: Creating...
+random_pet.rg-name: Creation complete after 0s [id=rg-good-lynx]
+azurerm_resource_group.rg: Creating...
+azurerm_resource_group.rg: Creation complete after 4s [id=/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-good-lynx]
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+resource_group_name = "rg-good-lynx"
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> 
+```
+
+#### 결과 확인(terraform output)
+```
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> terraform output
+resource_group_name = "rg-good-lynx"
+PS D:\workspace\AzureBasic\1.IaaS\Terraform> echo "$(terraform output resource_group_name)"
+"rg-good-lynx"
+PS D:\workspace\AzureBasic\1.IaaS\Terraform>
 ```
 
 

@@ -6,7 +6,8 @@
 - Azure App Service는 Azure Container Apps 또는 Azure Functions를 비롯한 다른 Azure 서비스와 통합
 
 > [빠른 시작: Azure App Service에서 Java 앱 만들기](https://docs.microsoft.com/ko-kr/azure/app-service/quickstart-java?pivots=platform-linux&tabs=javase)  
-> [Azure App Service에서 Linux에 Spring Boot 애플리케이션 배포](https://docs.microsoft.com/ko-kr/azure/developer/java/spring-framework/deploy-spring-boot-java-app-on-linux)
+> [Azure App Service에서 Linux에 Spring Boot 애플리케이션 배포](https://docs.microsoft.com/ko-kr/azure/developer/java/spring-framework/deploy-spring-boot-java-app-on-linux)  
+> [Azure 웹앱용 프라이빗 엔드포인트 사용](https://docs.microsoft.com/ko-kr/azure/app-service/networking/private-endpoint)  
 
 
 
