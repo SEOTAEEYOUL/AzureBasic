@@ -312,3 +312,38 @@ PS D:\workspace\AzureBasic>
 | 이름 변경 | git branch -m develop tyseo | |
 | git pull no tracking info 오류 해결 | git branch --set-upstream-to=origin/master | |
 | 삭제 | git branch -d tyseo | |
+
+
+## git tag
+```
+git tag
+git tag 20220710
+git push origin 20220710
+```
+```
+PS D:\workspace\Project-S> git tag
+PS D:\workspace\Project-S> git tag 20220710
+PS D:\workspace\Project-S> git tag
+20220710
+PS D:\workspace\Project-S> git push origin 20220710
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/SEOTAEEYOUL/Project-S.git
+ * [new tag]         20220710 -> 20220710
+PS D:\workspace\Project-S> git tag
+20220710
+PS D:\workspace\Project-S> git branch
+  20220624.01
+  20220624.02
+  20220624.03
+  20220625
+  20220625.01
+  20220701.01
+  20220701.02
+  20220701.03
+  20220705
+  20220706
+  20220708
+  20220708.00
+* main
+PS D:\workspace\Project-S> 
+```
