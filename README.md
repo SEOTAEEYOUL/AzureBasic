@@ -2,6 +2,7 @@
 
 > [Microsoft Azure 설명서](https://github.com/MicrosoftDocs/azure-docs.ko-kr)  
 > [Azure architecture icons](https://docs.microsoft.com/en-gb/azure/architecture/icons/)  
+> [Azure 계산기](https://azure.microsoft.com/ko-kr/pricing/calculator/)  
 
 - 3-tier 기반의 Sample 을 Azure Cloud 에 구성하는 과정을 통해 익숙해지는 것을 목표로 함
 
